@@ -1,0 +1,9 @@
+name: _
+publish_to: none
+environment:
+  sdk: ^3.8.0
+workspace:
+  - convex_dart
+  - convex_dart_builder
+  - example
+  - example/api

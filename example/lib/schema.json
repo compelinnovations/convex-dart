@@ -1,0 +1,19 @@
+{
+  "url": "https://outgoing-akita-910.convex.cloud",
+  "functions": [
+    {
+      "args": {
+        "type": "object",
+        "value": {}
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:get",
+      "returns": {
+        "type": "any"
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    }
+  ]
+}

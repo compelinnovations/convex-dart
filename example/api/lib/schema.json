@@ -1,0 +1,6935 @@
+{
+  "url": "https://outgoing-akita-910.convex.cloud",
+  "functions": [
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "string"
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query1",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "string"
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query2",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "boolean"
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query3",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "boolean"
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "bigint"
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query4",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "bigint"
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "bytes"
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query5",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "bytes"
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "tableName": "tasks",
+              "type": "id"
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query6",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "tableName": "tasks",
+              "type": "id"
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "any"
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query7",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "any"
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "literal",
+              "value": "hi"
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query9",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "literal",
+              "value": "hi"
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "literal",
+              "value": 1
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query10",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "literal",
+              "value": 1
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "literal",
+              "value": true
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query11",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "literal",
+              "value": true
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "string"
+            },
+            "optional": true
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query13",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "string"
+            },
+            "optional": true
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": true
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query14",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": true
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "boolean"
+            },
+            "optional": true
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query15",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "boolean"
+            },
+            "optional": true
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "bigint"
+            },
+            "optional": true
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query16",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "bigint"
+            },
+            "optional": true
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "bytes"
+            },
+            "optional": true
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query17",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "bytes"
+            },
+            "optional": true
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "tableName": "tasks",
+              "type": "id"
+            },
+            "optional": true
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query18",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "tableName": "tasks",
+              "type": "id"
+            },
+            "optional": true
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "any"
+            },
+            "optional": true
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query19",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "any"
+            },
+            "optional": true
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "literal",
+              "value": "hi"
+            },
+            "optional": true
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query20",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "literal",
+              "value": "hi"
+            },
+            "optional": true
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "literal",
+              "value": 1
+            },
+            "optional": true
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query21",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "literal",
+              "value": 1
+            },
+            "optional": true
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "literal",
+              "value": true
+            },
+            "optional": true
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query22",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "literal",
+              "value": true
+            },
+            "optional": true
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query24",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query25",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query26",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "bigint"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query27",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "bigint"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "bytes"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query28",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "bytes"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "tableName": "tasks",
+                  "type": "id"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query29",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "tableName": "tasks",
+                  "type": "id"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "any"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query30",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "any"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "literal",
+                  "value": "hi"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query31",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "literal",
+                  "value": "hi"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "literal",
+                  "value": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query32",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "literal",
+                  "value": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "literal",
+                  "value": true
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query33",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "literal",
+                  "value": true
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "string"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query35",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "string"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "number"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query36",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "number"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query37",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "boolean"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "bigint"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query38",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "bigint"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "bytes"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query39",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "bytes"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "tableName": "tasks",
+                "type": "id"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query40",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "tableName": "tasks",
+                "type": "id"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "any"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query41",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "any"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "null"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query42",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "null"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "literal",
+                "value": "hi"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query43",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "literal",
+                "value": "hi"
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "literal",
+                "value": 1
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query44",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "literal",
+                "value": 1
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "literal",
+                "value": true
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query45",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "literal",
+                "value": true
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query58",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query59",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query60",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "bigint"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query61",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "bigint"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "bytes"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query62",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "bytes"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "tableName": "tasks",
+                    "type": "id"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query63",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "tableName": "tasks",
+                    "type": "id"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "any"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query64",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "any"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "literal",
+                    "value": "hi"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query65",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "literal",
+                    "value": "hi"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "literal",
+                    "value": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query66",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "literal",
+                    "value": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "literal",
+                    "value": true
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query67",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "union",
+                "value": [
+                  {
+                    "type": "literal",
+                    "value": true
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query69",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query70",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "boolean"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query71",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "boolean"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "bigint"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query72",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "bigint"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "bytes"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query73",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "bytes"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "tableName": "tasks",
+                  "type": "id"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query74",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "tableName": "tasks",
+                  "type": "id"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "any"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query75",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "any"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "null"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query76",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "null"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "literal",
+                  "value": "hi"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query77",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "literal",
+                  "value": "hi"
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "literal",
+                  "value": 1
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query78",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "literal",
+                  "value": 1
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "literal",
+                  "value": true
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query79",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "literal",
+                  "value": true
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query81",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query82",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query83",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "bigint"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query84",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "bigint"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "bytes"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query85",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "bytes"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "tableName": "tasks",
+                      "type": "id"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query86",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "tableName": "tasks",
+                      "type": "id"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "any"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query87",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "any"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "literal",
+                      "value": "hi"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query88",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "literal",
+                      "value": "hi"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "literal",
+                      "value": 1
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query89",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "literal",
+                      "value": 1
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "literal",
+                      "value": true
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query90",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "literal",
+                      "value": true
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query92",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query93",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query94",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query95",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query96",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query97",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "bytes"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query98",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "bytes"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "tableName": "tasks",
+                  "type": "id"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query99",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "tableName": "tasks",
+                  "type": "id"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "literal",
+                  "value": "yes"
+                },
+                {
+                  "type": "literal",
+                  "value": "no"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query100",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "literal",
+                  "value": "yes"
+                },
+                {
+                  "type": "literal",
+                  "value": "no"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "literal",
+                  "value": 1
+                },
+                {
+                  "type": "literal",
+                  "value": 2
+                },
+                {
+                  "type": "literal",
+                  "value": 3
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query101",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "literal",
+                  "value": 1
+                },
+                {
+                  "type": "literal",
+                  "value": 2
+                },
+                {
+                  "type": "literal",
+                  "value": 3
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "literal",
+                  "value": "admin"
+                },
+                {
+                  "type": "literal",
+                  "value": "user"
+                },
+                {
+                  "type": "literal",
+                  "value": "guest"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query102",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "literal",
+                  "value": "admin"
+                },
+                {
+                  "type": "literal",
+                  "value": "user"
+                },
+                {
+                  "type": "literal",
+                  "value": "guest"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "bigint"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query103",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "bigint"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query104",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "any"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query105",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "any"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "literal",
+                  "value": true
+                },
+                {
+                  "type": "literal",
+                  "value": false
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query106",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "literal",
+                  "value": true
+                },
+                {
+                  "type": "literal",
+                  "value": false
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "bytes"
+                },
+                {
+                  "type": "bigint"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query107",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "bytes"
+                },
+                {
+                  "type": "bigint"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "literal",
+                  "value": "special"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query108",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "literal",
+                  "value": "special"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "literal",
+                  "value": 42
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query109",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "literal",
+                  "value": 42
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "literal",
+                  "value": "mixed"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query110",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "literal",
+                  "value": "mixed"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "age": {
+                  "fieldType": {
+                    "type": "number"
+                  },
+                  "optional": false
+                },
+                "name": {
+                  "fieldType": {
+                    "type": "string"
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query111",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "age": {
+                  "fieldType": {
+                    "type": "number"
+                  },
+                  "optional": false
+                },
+                "name": {
+                  "fieldType": {
+                    "type": "string"
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "completed": {
+                  "fieldType": {
+                    "type": "boolean"
+                  },
+                  "optional": false
+                },
+                "id": {
+                  "fieldType": {
+                    "tableName": "tasks",
+                    "type": "id"
+                  },
+                  "optional": false
+                },
+                "title": {
+                  "fieldType": {
+                    "type": "string"
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query112",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "completed": {
+                  "fieldType": {
+                    "type": "boolean"
+                  },
+                  "optional": false
+                },
+                "id": {
+                  "fieldType": {
+                    "tableName": "tasks",
+                    "type": "id"
+                  },
+                  "optional": false
+                },
+                "title": {
+                  "fieldType": {
+                    "type": "string"
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "settings": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "notifications": {
+                        "fieldType": {
+                          "type": "boolean"
+                        },
+                        "optional": false
+                      },
+                      "theme": {
+                        "fieldType": {
+                          "type": "string"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                },
+                "user": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "email": {
+                        "fieldType": {
+                          "type": "string"
+                        },
+                        "optional": false
+                      },
+                      "name": {
+                        "fieldType": {
+                          "type": "string"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query113",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "settings": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "notifications": {
+                        "fieldType": {
+                          "type": "boolean"
+                        },
+                        "optional": false
+                      },
+                      "theme": {
+                        "fieldType": {
+                          "type": "string"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                },
+                "user": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "email": {
+                        "fieldType": {
+                          "type": "string"
+                        },
+                        "optional": false
+                      },
+                      "name": {
+                        "fieldType": {
+                          "type": "string"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "email": {
+                  "fieldType": {
+                    "type": "string"
+                  },
+                  "optional": true
+                },
+                "name": {
+                  "fieldType": {
+                    "type": "string"
+                  },
+                  "optional": true
+                },
+                "phone": {
+                  "fieldType": {
+                    "type": "union",
+                    "value": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query114",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "email": {
+                  "fieldType": {
+                    "type": "string"
+                  },
+                  "optional": true
+                },
+                "name": {
+                  "fieldType": {
+                    "type": "string"
+                  },
+                  "optional": true
+                },
+                "phone": {
+                  "fieldType": {
+                    "type": "union",
+                    "value": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "categories": {
+                  "fieldType": {
+                    "type": "array",
+                    "value": {
+                      "type": "union",
+                      "value": [
+                        {
+                          "type": "literal",
+                          "value": "work"
+                        },
+                        {
+                          "type": "literal",
+                          "value": "personal"
+                        },
+                        {
+                          "type": "literal",
+                          "value": "urgent"
+                        }
+                      ]
+                    }
+                  },
+                  "optional": false
+                },
+                "tags": {
+                  "fieldType": {
+                    "type": "array",
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query115",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "categories": {
+                  "fieldType": {
+                    "type": "array",
+                    "value": {
+                      "type": "union",
+                      "value": [
+                        {
+                          "type": "literal",
+                          "value": "work"
+                        },
+                        {
+                          "type": "literal",
+                          "value": "personal"
+                        },
+                        {
+                          "type": "literal",
+                          "value": "urgent"
+                        }
+                      ]
+                    }
+                  },
+                  "optional": false
+                },
+                "tags": {
+                  "fieldType": {
+                    "type": "array",
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "data": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "type": {
+                        "fieldType": {
+                          "type": "union",
+                          "value": [
+                            {
+                              "type": "literal",
+                              "value": "text"
+                            },
+                            {
+                              "type": "literal",
+                              "value": "number"
+                            },
+                            {
+                              "type": "literal",
+                              "value": "boolean"
+                            }
+                          ]
+                        },
+                        "optional": false
+                      },
+                      "value": {
+                        "fieldType": {
+                          "type": "any"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                },
+                "metadata": {
+                  "fieldType": {
+                    "keys": {
+                      "type": "string"
+                    },
+                    "type": "record",
+                    "values": {
+                      "fieldType": {
+                        "type": "any"
+                      },
+                      "optional": false
+                    }
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query116",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "data": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "type": {
+                        "fieldType": {
+                          "type": "union",
+                          "value": [
+                            {
+                              "type": "literal",
+                              "value": "text"
+                            },
+                            {
+                              "type": "literal",
+                              "value": "number"
+                            },
+                            {
+                              "type": "literal",
+                              "value": "boolean"
+                            }
+                          ]
+                        },
+                        "optional": false
+                      },
+                      "value": {
+                        "fieldType": {
+                          "type": "any"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                },
+                "metadata": {
+                  "fieldType": {
+                    "keys": {
+                      "type": "string"
+                    },
+                    "type": "record",
+                    "values": {
+                      "fieldType": {
+                        "type": "any"
+                      },
+                      "optional": false
+                    }
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "comments": {
+                  "fieldType": {
+                    "type": "array",
+                    "value": {
+                      "type": "object",
+                      "value": {
+                        "author": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": false
+                        },
+                        "text": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": false
+                        },
+                        "timestamp": {
+                          "fieldType": {
+                            "type": "number"
+                          },
+                          "optional": false
+                        }
+                      }
+                    }
+                  },
+                  "optional": false
+                },
+                "reviewer": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "id": {
+                        "fieldType": {
+                          "tableName": "tasks",
+                          "type": "id"
+                        },
+                        "optional": false
+                      },
+                      "name": {
+                        "fieldType": {
+                          "type": "string"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": true
+                },
+                "status": {
+                  "fieldType": {
+                    "type": "union",
+                    "value": [
+                      {
+                        "type": "literal",
+                        "value": "pending"
+                      },
+                      {
+                        "type": "literal",
+                        "value": "approved"
+                      },
+                      {
+                        "type": "literal",
+                        "value": "rejected"
+                      }
+                    ]
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query117",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "comments": {
+                  "fieldType": {
+                    "type": "array",
+                    "value": {
+                      "type": "object",
+                      "value": {
+                        "author": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": false
+                        },
+                        "text": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": false
+                        },
+                        "timestamp": {
+                          "fieldType": {
+                            "type": "number"
+                          },
+                          "optional": false
+                        }
+                      }
+                    }
+                  },
+                  "optional": false
+                },
+                "reviewer": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "id": {
+                        "fieldType": {
+                          "tableName": "tasks",
+                          "type": "id"
+                        },
+                        "optional": false
+                      },
+                      "name": {
+                        "fieldType": {
+                          "type": "string"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": true
+                },
+                "status": {
+                  "fieldType": {
+                    "type": "union",
+                    "value": [
+                      {
+                        "type": "literal",
+                        "value": "pending"
+                      },
+                      {
+                        "type": "literal",
+                        "value": "approved"
+                      },
+                      {
+                        "type": "literal",
+                        "value": "rejected"
+                      }
+                    ]
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "config": {
+                  "fieldType": {
+                    "keys": {
+                      "type": "string"
+                    },
+                    "type": "record",
+                    "values": {
+                      "fieldType": {
+                        "type": "union",
+                        "value": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "boolean"
+                          }
+                        ]
+                      },
+                      "optional": false
+                    }
+                  },
+                  "optional": false
+                },
+                "fallback": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "enabled": {
+                        "fieldType": {
+                          "type": "boolean"
+                        },
+                        "optional": false
+                      },
+                      "value": {
+                        "fieldType": {
+                          "type": "any"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query118",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "config": {
+                  "fieldType": {
+                    "keys": {
+                      "type": "string"
+                    },
+                    "type": "record",
+                    "values": {
+                      "fieldType": {
+                        "type": "union",
+                        "value": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "boolean"
+                          }
+                        ]
+                      },
+                      "optional": false
+                    }
+                  },
+                  "optional": false
+                },
+                "fallback": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "enabled": {
+                        "fieldType": {
+                          "type": "boolean"
+                        },
+                        "optional": false
+                      },
+                      "value": {
+                        "fieldType": {
+                          "type": "any"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "data": {
+                  "fieldType": {
+                    "type": "union",
+                    "value": [
+                      {
+                        "type": "object",
+                        "value": {
+                          "content": {
+                            "fieldType": {
+                              "type": "string"
+                            },
+                            "optional": false
+                          },
+                          "type": {
+                            "fieldType": {
+                              "type": "literal",
+                              "value": "text"
+                            },
+                            "optional": false
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "value": {
+                          "content": {
+                            "fieldType": {
+                              "type": "number"
+                            },
+                            "optional": false
+                          },
+                          "type": {
+                            "fieldType": {
+                              "type": "literal",
+                              "value": "number"
+                            },
+                            "optional": false
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "value": {
+                          "content": {
+                            "fieldType": {
+                              "type": "boolean"
+                            },
+                            "optional": false
+                          },
+                          "type": {
+                            "fieldType": {
+                              "type": "literal",
+                              "value": "boolean"
+                            },
+                            "optional": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query119",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "data": {
+                  "fieldType": {
+                    "type": "union",
+                    "value": [
+                      {
+                        "type": "object",
+                        "value": {
+                          "content": {
+                            "fieldType": {
+                              "type": "string"
+                            },
+                            "optional": false
+                          },
+                          "type": {
+                            "fieldType": {
+                              "type": "literal",
+                              "value": "text"
+                            },
+                            "optional": false
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "value": {
+                          "content": {
+                            "fieldType": {
+                              "type": "number"
+                            },
+                            "optional": false
+                          },
+                          "type": {
+                            "fieldType": {
+                              "type": "literal",
+                              "value": "number"
+                            },
+                            "optional": false
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "value": {
+                          "content": {
+                            "fieldType": {
+                              "type": "boolean"
+                            },
+                            "optional": false
+                          },
+                          "type": {
+                            "fieldType": {
+                              "type": "literal",
+                              "value": "boolean"
+                            },
+                            "optional": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "items": {
+                  "fieldType": {
+                    "type": "array",
+                    "value": {
+                      "type": "object",
+                      "value": {
+                        "id": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": false
+                        },
+                        "metadata": {
+                          "fieldType": {
+                            "keys": {
+                              "type": "string"
+                            },
+                            "type": "record",
+                            "values": {
+                              "fieldType": {
+                                "type": "any"
+                              },
+                              "optional": false
+                            }
+                          },
+                          "optional": false
+                        },
+                        "name": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": false
+                        },
+                        "price": {
+                          "fieldType": {
+                            "type": "union",
+                            "value": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "optional": false
+                        },
+                        "quantity": {
+                          "fieldType": {
+                            "type": "number"
+                          },
+                          "optional": true
+                        }
+                      }
+                    }
+                  },
+                  "optional": false
+                },
+                "total": {
+                  "fieldType": {
+                    "type": "number"
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query120",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "items": {
+                  "fieldType": {
+                    "type": "array",
+                    "value": {
+                      "type": "object",
+                      "value": {
+                        "id": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": false
+                        },
+                        "metadata": {
+                          "fieldType": {
+                            "keys": {
+                              "type": "string"
+                            },
+                            "type": "record",
+                            "values": {
+                              "fieldType": {
+                                "type": "any"
+                              },
+                              "optional": false
+                            }
+                          },
+                          "optional": false
+                        },
+                        "name": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": false
+                        },
+                        "price": {
+                          "fieldType": {
+                            "type": "union",
+                            "value": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "optional": false
+                        },
+                        "quantity": {
+                          "fieldType": {
+                            "type": "number"
+                          },
+                          "optional": true
+                        }
+                      }
+                    }
+                  },
+                  "optional": false
+                },
+                "total": {
+                  "fieldType": {
+                    "type": "number"
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "object",
+                "value": {
+                  "posts": {
+                    "fieldType": {
+                      "type": "array",
+                      "value": {
+                        "type": "object",
+                        "value": {
+                          "content": {
+                            "fieldType": {
+                              "type": "union",
+                              "value": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "object",
+                                  "value": {
+                                    "media": {
+                                      "fieldType": {
+                                        "type": "array",
+                                        "value": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "optional": false
+                                    },
+                                    "text": {
+                                      "fieldType": {
+                                        "type": "string"
+                                      },
+                                      "optional": false
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "optional": false
+                          },
+                          "id": {
+                            "fieldType": {
+                              "type": "string"
+                            },
+                            "optional": false
+                          },
+                          "likes": {
+                            "fieldType": {
+                              "type": "number"
+                            },
+                            "optional": false
+                          },
+                          "tags": {
+                            "fieldType": {
+                              "type": "array",
+                              "value": {
+                                "type": "string"
+                              }
+                            },
+                            "optional": false
+                          }
+                        }
+                      }
+                    },
+                    "optional": false
+                  },
+                  "user": {
+                    "fieldType": {
+                      "type": "object",
+                      "value": {
+                        "preferences": {
+                          "fieldType": {
+                            "keys": {
+                              "type": "string"
+                            },
+                            "type": "record",
+                            "values": {
+                              "fieldType": {
+                                "type": "union",
+                                "value": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "boolean"
+                                  }
+                                ]
+                              },
+                              "optional": false
+                            }
+                          },
+                          "optional": false
+                        },
+                        "profile": {
+                          "fieldType": {
+                            "type": "object",
+                            "value": {
+                              "avatar": {
+                                "fieldType": {
+                                  "type": "string"
+                                },
+                                "optional": true
+                              },
+                              "name": {
+                                "fieldType": {
+                                  "type": "string"
+                                },
+                                "optional": false
+                              }
+                            }
+                          },
+                          "optional": false
+                        }
+                      }
+                    },
+                    "optional": false
+                  }
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query121",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "object",
+                "value": {
+                  "posts": {
+                    "fieldType": {
+                      "type": "array",
+                      "value": {
+                        "type": "object",
+                        "value": {
+                          "content": {
+                            "fieldType": {
+                              "type": "union",
+                              "value": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "object",
+                                  "value": {
+                                    "media": {
+                                      "fieldType": {
+                                        "type": "array",
+                                        "value": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "optional": false
+                                    },
+                                    "text": {
+                                      "fieldType": {
+                                        "type": "string"
+                                      },
+                                      "optional": false
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "optional": false
+                          },
+                          "id": {
+                            "fieldType": {
+                              "type": "string"
+                            },
+                            "optional": false
+                          },
+                          "likes": {
+                            "fieldType": {
+                              "type": "number"
+                            },
+                            "optional": false
+                          },
+                          "tags": {
+                            "fieldType": {
+                              "type": "array",
+                              "value": {
+                                "type": "string"
+                              }
+                            },
+                            "optional": false
+                          }
+                        }
+                      }
+                    },
+                    "optional": false
+                  },
+                  "user": {
+                    "fieldType": {
+                      "type": "object",
+                      "value": {
+                        "preferences": {
+                          "fieldType": {
+                            "keys": {
+                              "type": "string"
+                            },
+                            "type": "record",
+                            "values": {
+                              "fieldType": {
+                                "type": "union",
+                                "value": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "boolean"
+                                  }
+                                ]
+                              },
+                              "optional": false
+                            }
+                          },
+                          "optional": false
+                        },
+                        "profile": {
+                          "fieldType": {
+                            "type": "object",
+                            "value": {
+                              "avatar": {
+                                "fieldType": {
+                                  "type": "string"
+                                },
+                                "optional": true
+                              },
+                              "name": {
+                                "fieldType": {
+                                  "type": "string"
+                                },
+                                "optional": false
+                              }
+                            }
+                          },
+                          "optional": false
+                        }
+                      }
+                    },
+                    "optional": false
+                  }
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "object",
+                  "value": {
+                    "required": {
+                      "fieldType": {
+                        "type": "boolean"
+                      },
+                      "optional": false
+                    },
+                    "schema": {
+                      "fieldType": {
+                        "type": "union",
+                        "value": [
+                          {
+                            "type": "object",
+                            "value": {
+                              "primitive": {
+                                "fieldType": {
+                                  "type": "union",
+                                  "value": [
+                                    {
+                                      "type": "literal",
+                                      "value": "string"
+                                    },
+                                    {
+                                      "type": "literal",
+                                      "value": "number"
+                                    },
+                                    {
+                                      "type": "literal",
+                                      "value": "boolean"
+                                    }
+                                  ]
+                                },
+                                "optional": false
+                              }
+                            }
+                          },
+                          {
+                            "type": "object",
+                            "value": {
+                              "fields": {
+                                "fieldType": {
+                                  "keys": {
+                                    "type": "string"
+                                  },
+                                  "type": "record",
+                                  "values": {
+                                    "fieldType": {
+                                      "type": "string"
+                                    },
+                                    "optional": false
+                                  }
+                                },
+                                "optional": false
+                              }
+                            }
+                          },
+                          {
+                            "type": "object",
+                            "value": {
+                              "elementType": {
+                                "fieldType": {
+                                  "type": "string"
+                                },
+                                "optional": false
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "optional": false
+                    },
+                    "type": {
+                      "fieldType": {
+                        "type": "union",
+                        "value": [
+                          {
+                            "type": "literal",
+                            "value": "primitive"
+                          },
+                          {
+                            "type": "literal",
+                            "value": "object"
+                          },
+                          {
+                            "type": "literal",
+                            "value": "array"
+                          }
+                        ]
+                      },
+                      "optional": false
+                    }
+                  }
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query122",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "keys": {
+                "type": "string"
+              },
+              "type": "record",
+              "values": {
+                "fieldType": {
+                  "type": "object",
+                  "value": {
+                    "required": {
+                      "fieldType": {
+                        "type": "boolean"
+                      },
+                      "optional": false
+                    },
+                    "schema": {
+                      "fieldType": {
+                        "type": "union",
+                        "value": [
+                          {
+                            "type": "object",
+                            "value": {
+                              "primitive": {
+                                "fieldType": {
+                                  "type": "union",
+                                  "value": [
+                                    {
+                                      "type": "literal",
+                                      "value": "string"
+                                    },
+                                    {
+                                      "type": "literal",
+                                      "value": "number"
+                                    },
+                                    {
+                                      "type": "literal",
+                                      "value": "boolean"
+                                    }
+                                  ]
+                                },
+                                "optional": false
+                              }
+                            }
+                          },
+                          {
+                            "type": "object",
+                            "value": {
+                              "fields": {
+                                "fieldType": {
+                                  "keys": {
+                                    "type": "string"
+                                  },
+                                  "type": "record",
+                                  "values": {
+                                    "fieldType": {
+                                      "type": "string"
+                                    },
+                                    "optional": false
+                                  }
+                                },
+                                "optional": false
+                              }
+                            }
+                          },
+                          {
+                            "type": "object",
+                            "value": {
+                              "elementType": {
+                                "fieldType": {
+                                  "type": "string"
+                                },
+                                "optional": false
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "optional": false
+                    },
+                    "type": {
+                      "fieldType": {
+                        "type": "union",
+                        "value": [
+                          {
+                            "type": "literal",
+                            "value": "primitive"
+                          },
+                          {
+                            "type": "literal",
+                            "value": "object"
+                          },
+                          {
+                            "type": "literal",
+                            "value": "array"
+                          }
+                        ]
+                      },
+                      "optional": false
+                    }
+                  }
+                },
+                "optional": false
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "object",
+                  "value": {
+                    "content": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": false
+                    },
+                    "formatting": {
+                      "fieldType": {
+                        "type": "object",
+                        "value": {
+                          "bold": {
+                            "fieldType": {
+                              "type": "boolean"
+                            },
+                            "optional": false
+                          },
+                          "color": {
+                            "fieldType": {
+                              "type": "union",
+                              "value": [
+                                {
+                                  "type": "literal",
+                                  "value": "red"
+                                },
+                                {
+                                  "type": "literal",
+                                  "value": "blue"
+                                },
+                                {
+                                  "type": "literal",
+                                  "value": "green"
+                                }
+                              ]
+                            },
+                            "optional": false
+                          },
+                          "italic": {
+                            "fieldType": {
+                              "type": "boolean"
+                            },
+                            "optional": false
+                          }
+                        }
+                      },
+                      "optional": true
+                    },
+                    "type": {
+                      "fieldType": {
+                        "type": "literal",
+                        "value": "text"
+                      },
+                      "optional": false
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "value": {
+                    "alt": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": true
+                    },
+                    "dimensions": {
+                      "fieldType": {
+                        "type": "object",
+                        "value": {
+                          "height": {
+                            "fieldType": {
+                              "type": "number"
+                            },
+                            "optional": false
+                          },
+                          "width": {
+                            "fieldType": {
+                              "type": "number"
+                            },
+                            "optional": false
+                          }
+                        }
+                      },
+                      "optional": false
+                    },
+                    "type": {
+                      "fieldType": {
+                        "type": "literal",
+                        "value": "image"
+                      },
+                      "optional": false
+                    },
+                    "url": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": false
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "value": {
+                    "items": {
+                      "fieldType": {
+                        "type": "array",
+                        "value": {
+                          "type": "string"
+                        }
+                      },
+                      "optional": false
+                    },
+                    "ordered": {
+                      "fieldType": {
+                        "type": "boolean"
+                      },
+                      "optional": false
+                    },
+                    "type": {
+                      "fieldType": {
+                        "type": "literal",
+                        "value": "list"
+                      },
+                      "optional": false
+                    }
+                  }
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query123",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "object",
+                  "value": {
+                    "content": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": false
+                    },
+                    "formatting": {
+                      "fieldType": {
+                        "type": "object",
+                        "value": {
+                          "bold": {
+                            "fieldType": {
+                              "type": "boolean"
+                            },
+                            "optional": false
+                          },
+                          "color": {
+                            "fieldType": {
+                              "type": "union",
+                              "value": [
+                                {
+                                  "type": "literal",
+                                  "value": "red"
+                                },
+                                {
+                                  "type": "literal",
+                                  "value": "blue"
+                                },
+                                {
+                                  "type": "literal",
+                                  "value": "green"
+                                }
+                              ]
+                            },
+                            "optional": false
+                          },
+                          "italic": {
+                            "fieldType": {
+                              "type": "boolean"
+                            },
+                            "optional": false
+                          }
+                        }
+                      },
+                      "optional": true
+                    },
+                    "type": {
+                      "fieldType": {
+                        "type": "literal",
+                        "value": "text"
+                      },
+                      "optional": false
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "value": {
+                    "alt": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": true
+                    },
+                    "dimensions": {
+                      "fieldType": {
+                        "type": "object",
+                        "value": {
+                          "height": {
+                            "fieldType": {
+                              "type": "number"
+                            },
+                            "optional": false
+                          },
+                          "width": {
+                            "fieldType": {
+                              "type": "number"
+                            },
+                            "optional": false
+                          }
+                        }
+                      },
+                      "optional": false
+                    },
+                    "type": {
+                      "fieldType": {
+                        "type": "literal",
+                        "value": "image"
+                      },
+                      "optional": false
+                    },
+                    "url": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": false
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "value": {
+                    "items": {
+                      "fieldType": {
+                        "type": "array",
+                        "value": {
+                          "type": "string"
+                        }
+                      },
+                      "optional": false
+                    },
+                    "ordered": {
+                      "fieldType": {
+                        "type": "boolean"
+                      },
+                      "optional": false
+                    },
+                    "type": {
+                      "fieldType": {
+                        "type": "literal",
+                        "value": "list"
+                      },
+                      "optional": false
+                    }
+                  }
+                }
+              ]
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "api": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "endpoints": {
+                        "fieldType": {
+                          "keys": {
+                            "type": "string"
+                          },
+                          "type": "record",
+                          "values": {
+                            "fieldType": {
+                              "type": "object",
+                              "value": {
+                                "auth": {
+                                  "fieldType": {
+                                    "type": "boolean"
+                                  },
+                                  "optional": true
+                                },
+                                "method": {
+                                  "fieldType": {
+                                    "type": "union",
+                                    "value": [
+                                      {
+                                        "type": "literal",
+                                        "value": "GET"
+                                      },
+                                      {
+                                        "type": "literal",
+                                        "value": "POST"
+                                      },
+                                      {
+                                        "type": "literal",
+                                        "value": "PUT"
+                                      },
+                                      {
+                                        "type": "literal",
+                                        "value": "DELETE"
+                                      }
+                                    ]
+                                  },
+                                  "optional": false
+                                },
+                                "params": {
+                                  "fieldType": {
+                                    "keys": {
+                                      "type": "string"
+                                    },
+                                    "type": "record",
+                                    "values": {
+                                      "fieldType": {
+                                        "type": "union",
+                                        "value": [
+                                          {
+                                            "type": "string"
+                                          },
+                                          {
+                                            "type": "number"
+                                          },
+                                          {
+                                            "type": "boolean"
+                                          }
+                                        ]
+                                      },
+                                      "optional": false
+                                    }
+                                  },
+                                  "optional": false
+                                },
+                                "path": {
+                                  "fieldType": {
+                                    "type": "string"
+                                  },
+                                  "optional": false
+                                },
+                                "response": {
+                                  "fieldType": {
+                                    "type": "any"
+                                  },
+                                  "optional": false
+                                }
+                              }
+                            },
+                            "optional": false
+                          }
+                        },
+                        "optional": false
+                      },
+                      "rateLimit": {
+                        "fieldType": {
+                          "type": "object",
+                          "value": {
+                            "requests": {
+                              "fieldType": {
+                                "type": "number"
+                              },
+                              "optional": false
+                            },
+                            "window": {
+                              "fieldType": {
+                                "type": "union",
+                                "value": [
+                                  {
+                                    "type": "literal",
+                                    "value": "minute"
+                                  },
+                                  {
+                                    "type": "literal",
+                                    "value": "hour"
+                                  },
+                                  {
+                                    "type": "literal",
+                                    "value": "day"
+                                  }
+                                ]
+                              },
+                              "optional": false
+                            }
+                          }
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                },
+                "database": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "tables": {
+                        "fieldType": {
+                          "keys": {
+                            "type": "string"
+                          },
+                          "type": "record",
+                          "values": {
+                            "fieldType": {
+                              "type": "object",
+                              "value": {
+                                "indexes": {
+                                  "fieldType": {
+                                    "type": "array",
+                                    "value": {
+                                      "type": "object",
+                                      "value": {
+                                        "fields": {
+                                          "fieldType": {
+                                            "type": "array",
+                                            "value": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "optional": false
+                                        },
+                                        "name": {
+                                          "fieldType": {
+                                            "type": "string"
+                                          },
+                                          "optional": false
+                                        },
+                                        "unique": {
+                                          "fieldType": {
+                                            "type": "boolean"
+                                          },
+                                          "optional": false
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "optional": false
+                                },
+                                "schema": {
+                                  "fieldType": {
+                                    "keys": {
+                                      "type": "string"
+                                    },
+                                    "type": "record",
+                                    "values": {
+                                      "fieldType": {
+                                        "type": "union",
+                                        "value": [
+                                          {
+                                            "type": "literal",
+                                            "value": "string"
+                                          },
+                                          {
+                                            "type": "literal",
+                                            "value": "number"
+                                          },
+                                          {
+                                            "type": "literal",
+                                            "value": "boolean"
+                                          },
+                                          {
+                                            "type": "literal",
+                                            "value": "date"
+                                          }
+                                        ]
+                                      },
+                                      "optional": false
+                                    }
+                                  },
+                                  "optional": false
+                                }
+                              }
+                            },
+                            "optional": false
+                          }
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query124",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "api": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "endpoints": {
+                        "fieldType": {
+                          "keys": {
+                            "type": "string"
+                          },
+                          "type": "record",
+                          "values": {
+                            "fieldType": {
+                              "type": "object",
+                              "value": {
+                                "auth": {
+                                  "fieldType": {
+                                    "type": "boolean"
+                                  },
+                                  "optional": true
+                                },
+                                "method": {
+                                  "fieldType": {
+                                    "type": "union",
+                                    "value": [
+                                      {
+                                        "type": "literal",
+                                        "value": "GET"
+                                      },
+                                      {
+                                        "type": "literal",
+                                        "value": "POST"
+                                      },
+                                      {
+                                        "type": "literal",
+                                        "value": "PUT"
+                                      },
+                                      {
+                                        "type": "literal",
+                                        "value": "DELETE"
+                                      }
+                                    ]
+                                  },
+                                  "optional": false
+                                },
+                                "params": {
+                                  "fieldType": {
+                                    "keys": {
+                                      "type": "string"
+                                    },
+                                    "type": "record",
+                                    "values": {
+                                      "fieldType": {
+                                        "type": "union",
+                                        "value": [
+                                          {
+                                            "type": "string"
+                                          },
+                                          {
+                                            "type": "number"
+                                          },
+                                          {
+                                            "type": "boolean"
+                                          }
+                                        ]
+                                      },
+                                      "optional": false
+                                    }
+                                  },
+                                  "optional": false
+                                },
+                                "path": {
+                                  "fieldType": {
+                                    "type": "string"
+                                  },
+                                  "optional": false
+                                },
+                                "response": {
+                                  "fieldType": {
+                                    "type": "any"
+                                  },
+                                  "optional": false
+                                }
+                              }
+                            },
+                            "optional": false
+                          }
+                        },
+                        "optional": false
+                      },
+                      "rateLimit": {
+                        "fieldType": {
+                          "type": "object",
+                          "value": {
+                            "requests": {
+                              "fieldType": {
+                                "type": "number"
+                              },
+                              "optional": false
+                            },
+                            "window": {
+                              "fieldType": {
+                                "type": "union",
+                                "value": [
+                                  {
+                                    "type": "literal",
+                                    "value": "minute"
+                                  },
+                                  {
+                                    "type": "literal",
+                                    "value": "hour"
+                                  },
+                                  {
+                                    "type": "literal",
+                                    "value": "day"
+                                  }
+                                ]
+                              },
+                              "optional": false
+                            }
+                          }
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                },
+                "database": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "tables": {
+                        "fieldType": {
+                          "keys": {
+                            "type": "string"
+                          },
+                          "type": "record",
+                          "values": {
+                            "fieldType": {
+                              "type": "object",
+                              "value": {
+                                "indexes": {
+                                  "fieldType": {
+                                    "type": "array",
+                                    "value": {
+                                      "type": "object",
+                                      "value": {
+                                        "fields": {
+                                          "fieldType": {
+                                            "type": "array",
+                                            "value": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "optional": false
+                                        },
+                                        "name": {
+                                          "fieldType": {
+                                            "type": "string"
+                                          },
+                                          "optional": false
+                                        },
+                                        "unique": {
+                                          "fieldType": {
+                                            "type": "boolean"
+                                          },
+                                          "optional": false
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "optional": false
+                                },
+                                "schema": {
+                                  "fieldType": {
+                                    "keys": {
+                                      "type": "string"
+                                    },
+                                    "type": "record",
+                                    "values": {
+                                      "fieldType": {
+                                        "type": "union",
+                                        "value": [
+                                          {
+                                            "type": "literal",
+                                            "value": "string"
+                                          },
+                                          {
+                                            "type": "literal",
+                                            "value": "number"
+                                          },
+                                          {
+                                            "type": "literal",
+                                            "value": "boolean"
+                                          },
+                                          {
+                                            "type": "literal",
+                                            "value": "date"
+                                          }
+                                        ]
+                                      },
+                                      "optional": false
+                                    }
+                                  },
+                                  "optional": false
+                                }
+                              }
+                            },
+                            "optional": false
+                          }
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "workflow": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "steps": {
+                        "fieldType": {
+                          "type": "array",
+                          "value": {
+                            "type": "object",
+                            "value": {
+                              "config": {
+                                "fieldType": {
+                                  "keys": {
+                                    "type": "string"
+                                  },
+                                  "type": "record",
+                                  "values": {
+                                    "fieldType": {
+                                      "type": "any"
+                                    },
+                                    "optional": false
+                                  }
+                                },
+                                "optional": false
+                              },
+                              "error": {
+                                "fieldType": {
+                                  "type": "object",
+                                  "value": {
+                                    "handler": {
+                                      "fieldType": {
+                                        "type": "string"
+                                      },
+                                      "optional": false
+                                    },
+                                    "retry": {
+                                      "fieldType": {
+                                        "type": "object",
+                                        "value": {
+                                          "count": {
+                                            "fieldType": {
+                                              "type": "number"
+                                            },
+                                            "optional": false
+                                          },
+                                          "delay": {
+                                            "fieldType": {
+                                              "type": "number"
+                                            },
+                                            "optional": false
+                                          }
+                                        }
+                                      },
+                                      "optional": false
+                                    }
+                                  }
+                                },
+                                "optional": true
+                              },
+                              "id": {
+                                "fieldType": {
+                                  "type": "string"
+                                },
+                                "optional": false
+                              },
+                              "name": {
+                                "fieldType": {
+                                  "type": "string"
+                                },
+                                "optional": false
+                              },
+                              "next": {
+                                "fieldType": {
+                                  "type": "string"
+                                },
+                                "optional": true
+                              },
+                              "type": {
+                                "fieldType": {
+                                  "type": "union",
+                                  "value": [
+                                    {
+                                      "type": "literal",
+                                      "value": "action"
+                                    },
+                                    {
+                                      "type": "literal",
+                                      "value": "condition"
+                                    },
+                                    {
+                                      "type": "literal",
+                                      "value": "loop"
+                                    }
+                                  ]
+                                },
+                                "optional": false
+                              }
+                            }
+                          }
+                        },
+                        "optional": false
+                      },
+                      "triggers": {
+                        "fieldType": {
+                          "type": "array",
+                          "value": {
+                            "type": "union",
+                            "value": [
+                              {
+                                "type": "object",
+                                "value": {
+                                  "cron": {
+                                    "fieldType": {
+                                      "type": "string"
+                                    },
+                                    "optional": false
+                                  },
+                                  "type": {
+                                    "fieldType": {
+                                      "type": "literal",
+                                      "value": "schedule"
+                                    },
+                                    "optional": false
+                                  }
+                                }
+                              },
+                              {
+                                "type": "object",
+                                "value": {
+                                  "type": {
+                                    "fieldType": {
+                                      "type": "literal",
+                                      "value": "webhook"
+                                    },
+                                    "optional": false
+                                  },
+                                  "url": {
+                                    "fieldType": {
+                                      "type": "string"
+                                    },
+                                    "optional": false
+                                  }
+                                }
+                              },
+                              {
+                                "type": "object",
+                                "value": {
+                                  "eventType": {
+                                    "fieldType": {
+                                      "type": "string"
+                                    },
+                                    "optional": false
+                                  },
+                                  "type": {
+                                    "fieldType": {
+                                      "type": "literal",
+                                      "value": "event"
+                                    },
+                                    "optional": false
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "optional": false
+                      },
+                      "variables": {
+                        "fieldType": {
+                          "keys": {
+                            "type": "string"
+                          },
+                          "type": "record",
+                          "values": {
+                            "fieldType": {
+                              "type": "union",
+                              "value": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "array",
+                                  "value": {
+                                    "type": "any"
+                                  }
+                                }
+                              ]
+                            },
+                            "optional": false
+                          }
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "tasks.js:query125",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "workflow": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "steps": {
+                        "fieldType": {
+                          "type": "array",
+                          "value": {
+                            "type": "object",
+                            "value": {
+                              "config": {
+                                "fieldType": {
+                                  "keys": {
+                                    "type": "string"
+                                  },
+                                  "type": "record",
+                                  "values": {
+                                    "fieldType": {
+                                      "type": "any"
+                                    },
+                                    "optional": false
+                                  }
+                                },
+                                "optional": false
+                              },
+                              "error": {
+                                "fieldType": {
+                                  "type": "object",
+                                  "value": {
+                                    "handler": {
+                                      "fieldType": {
+                                        "type": "string"
+                                      },
+                                      "optional": false
+                                    },
+                                    "retry": {
+                                      "fieldType": {
+                                        "type": "object",
+                                        "value": {
+                                          "count": {
+                                            "fieldType": {
+                                              "type": "number"
+                                            },
+                                            "optional": false
+                                          },
+                                          "delay": {
+                                            "fieldType": {
+                                              "type": "number"
+                                            },
+                                            "optional": false
+                                          }
+                                        }
+                                      },
+                                      "optional": false
+                                    }
+                                  }
+                                },
+                                "optional": true
+                              },
+                              "id": {
+                                "fieldType": {
+                                  "type": "string"
+                                },
+                                "optional": false
+                              },
+                              "name": {
+                                "fieldType": {
+                                  "type": "string"
+                                },
+                                "optional": false
+                              },
+                              "next": {
+                                "fieldType": {
+                                  "type": "string"
+                                },
+                                "optional": true
+                              },
+                              "type": {
+                                "fieldType": {
+                                  "type": "union",
+                                  "value": [
+                                    {
+                                      "type": "literal",
+                                      "value": "action"
+                                    },
+                                    {
+                                      "type": "literal",
+                                      "value": "condition"
+                                    },
+                                    {
+                                      "type": "literal",
+                                      "value": "loop"
+                                    }
+                                  ]
+                                },
+                                "optional": false
+                              }
+                            }
+                          }
+                        },
+                        "optional": false
+                      },
+                      "triggers": {
+                        "fieldType": {
+                          "type": "array",
+                          "value": {
+                            "type": "union",
+                            "value": [
+                              {
+                                "type": "object",
+                                "value": {
+                                  "cron": {
+                                    "fieldType": {
+                                      "type": "string"
+                                    },
+                                    "optional": false
+                                  },
+                                  "type": {
+                                    "fieldType": {
+                                      "type": "literal",
+                                      "value": "schedule"
+                                    },
+                                    "optional": false
+                                  }
+                                }
+                              },
+                              {
+                                "type": "object",
+                                "value": {
+                                  "type": {
+                                    "fieldType": {
+                                      "type": "literal",
+                                      "value": "webhook"
+                                    },
+                                    "optional": false
+                                  },
+                                  "url": {
+                                    "fieldType": {
+                                      "type": "string"
+                                    },
+                                    "optional": false
+                                  }
+                                }
+                              },
+                              {
+                                "type": "object",
+                                "value": {
+                                  "eventType": {
+                                    "fieldType": {
+                                      "type": "string"
+                                    },
+                                    "optional": false
+                                  },
+                                  "type": {
+                                    "fieldType": {
+                                      "type": "literal",
+                                      "value": "event"
+                                    },
+                                    "optional": false
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "optional": false
+                      },
+                      "variables": {
+                        "fieldType": {
+                          "keys": {
+                            "type": "string"
+                          },
+                          "type": "record",
+                          "values": {
+                            "fieldType": {
+                              "type": "union",
+                              "value": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "array",
+                                  "value": {
+                                    "type": "any"
+                                  }
+                                }
+                              ]
+                            },
+                            "optional": false
+                          }
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    }
+  ]
+}

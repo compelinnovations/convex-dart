@@ -1,0 +1,46 @@
+name: convex_dart
+description: A Flutter package for Convex backend integration, enabling developers to interact with Convex services, manage data, and build applications with real-time synchronization.
+version: 0.1.0
+
+environment:
+  sdk: ^3.8.1
+  flutter: ">=3.3.0"
+
+dependencies:
+  collection: ^1.19.1
+  dart_mappable: ^4.6.0
+  dart_mappable_extras: ^0.1.0
+  flutter:
+    sdk: flutter
+
+  flutter_rust_bridge: 2.11.1
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.9.0
+  plugin_platform_interface: ^2.0.2
+
+dev_dependencies:
+  build_runner: ^2.7.1
+  ffi: ^2.1.4
+  ffigen: ^19.1.0
+  flutter_lints: ^6.0.0
+  freezed: ^3.2.0
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        ffiPlugin: true
+      ios:
+        ffiPlugin: true
+      linux:
+        ffiPlugin: true
+      macos:
+        ffiPlugin: true
+      windows:
+        ffiPlugin: true
+
+resolution: workspace

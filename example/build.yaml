@@ -1,0 +1,6 @@
+targets:
+  $default:
+    builders:
+      convex_dart_builder:
+        options:
+          input_file: lib/schema.json

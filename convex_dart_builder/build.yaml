@@ -1,0 +1,8 @@
+builders:
+  convex_dart_builder:
+    import: "package:convex_dart_builder/builder.dart"
+    builder_factories: ["convexDartBuilder"]
+    build_extensions: { ".json": ["**"] }
+    auto_apply: dependents
+    build_to: source
+    runs_before: ["dart_mappable_builder"]
