@@ -38,6 +38,7 @@ class ConvexDartBuilder extends Builder {
     // Get a list of all the .dart files in the lib directory
     final libPath = path.dirname(schemaPath);
     final libDir = Directory(libPath);
+    // Wipe any existing dart files
     await wipeDartFiles(libDir);
 
     final FunctionsSpec functionsSpec;

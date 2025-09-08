@@ -1,0 +1,92 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "api test",
+            "cwd": "example/api",
+            "request": "launch",
+            "type": "dart",
+            "program": "tests/",
+        },
+        {
+            "name": "convex-dart",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "convex_dart",
+            "cwd": "convex_dart",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "convex_dart (profile mode)",
+            "cwd": "convex_dart",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "convex_dart (release mode)",
+            "cwd": "convex_dart",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "convex_dart_builder",
+            "cwd": "convex_dart_builder",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "example",
+            "cwd": "example",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "example (profile mode)",
+            "cwd": "example",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "example (release mode)",
+            "cwd": "example",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "api",
+            "cwd": "example/api",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "api (profile mode)",
+            "cwd": "example/api",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "api (release mode)",
+            "cwd": "example/api",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "build_tool",
+            "cwd": "convex_dart/cargokit/build_tool",
+            "request": "launch",
+            "type": "dart"
+        }
+    ]
+}

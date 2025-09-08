@@ -4,3 +4,9 @@ targets:
       convex_dart_builder:
         options:
           input_file: lib/schema.json
+      dart_mappable_builder:
+        generate_for:
+          - lib/src/functions/**.dart
+          - lib/src/literals.dart
+          - lib/src/schema.dart
+          - lib/src/client.dart

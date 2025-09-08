@@ -11,6 +11,8 @@ final formatter = DartFormatter(
 );
 
 class ClientBuildContext {
+  final Map<({String functionName, String folderName}), List<String>> typedefs =
+      {};
   final Map<String, String> outputs = {};
   final Set<JsLiteral> literals = {};
   final Set<String> tables = {};
@@ -90,6 +92,17 @@ class FunctionsSpec with FunctionsSpecMappable {
           function.fileName,
         );
         context.outputs[filePath] = code;
+        // Add the typedefs to the global context
+        for (final typedef in functionContext.typedefs) {
+          final key = (
+            functionName: function.functionName,
+            folderName: function.folderName,
+          );
+          context.typedefs[key] = [
+            ...context.typedefs[key] ?? [],
+            typedef.name,
+          ];
+        }
       } catch (e) {
         print(
           "Failed to build function ${function.convexFunctionIdentifier}. Check the file and ensure it is valid.\nContents: $e",
@@ -103,10 +116,22 @@ class FunctionsSpec with FunctionsSpecMappable {
     _buildSchema(context);
     // Create the literals.dart file
     _buildLiterals(context);
+    // Creat the entrypoint file
+    _buildEntrypoint(context);
     // Format the code
     for (final entry in context.outputs.entries) {
       context.outputs[entry.key] = formatter.format(entry.value);
     }
+  }
+
+  void _buildEntrypoint(ClientBuildContext context) {
+    context.outputs["client.dart"] =
+        """
+export 'src/client.dart';
+export 'src/schema.dart';
+export 'src/literals.dart';
+${functions.map((entry) => "export 'src/functions/${entry.folderName}/${entry.fileName}' show ${entry.functionName}, ${entry.argsTypeName}, ${entry.returnsTypeName};").join("\n")}
+    """;
   }
 
   void _buildSchema(ClientBuildContext context) {
@@ -115,13 +140,31 @@ class FunctionsSpec with FunctionsSpecMappable {
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 import "dart:typed_data";
-import "package:convex_dart/src/convex_dart_for_generated_code.dart";""");
+import "package:convex_dart/src/convex_dart_for_generated_code.dart";
+part 'schema.mapper.dart';
+""");
     for (final tableName in context.tables) {
-      schemaBuffer.writeln(
-        "class ${tableName.pascalCase}Schema extends ConvexSchema {",
-      );
-      schemaBuffer.writeln("  const ${tableName.pascalCase}Schema();");
-      schemaBuffer.writeln("}");
+      schemaBuffer.writeln("""
+@MappableClass(includeCustomMappers: [_${tableName.pascalCase}IdMapper()])
+class ${tableName.pascalCase}Id with ${tableName.pascalCase}IdMappable implements TableId {
+  @override
+  final String value;
+  static const String tableName = "$tableName";
+  const ${tableName.pascalCase}Id(this.value);
+}
+
+class _${tableName.pascalCase}IdMapper extends SimpleMapper<${tableName.pascalCase}Id> {
+  const _${tableName.pascalCase}IdMapper();
+  @override
+  ${tableName.pascalCase}Id decode(dynamic value) {
+    return ${tableName.pascalCase}Id(value);
+  }
+  @override
+  dynamic encode(${tableName.pascalCase}Id self) {
+    return self.value;
+  }
+}
+""");
     }
     context.outputs[path.join("src", "schema.dart")] = schemaBuffer.toString();
   }
@@ -133,10 +176,17 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";""");
 // ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
+@internal.MappableLib(
+  generateInitializerForScope: internal.InitializerScope.package,
+)
+library;
+
 import 'package:convex_dart/src/convex_dart_for_generated_code.dart'
     as internal;
+import './client.init.dart';
 class ConvexClient {
   static Future<void> init() async {
+    initializeMappers();
     await internal.ConvexClient.init(
       deploymentUrl: "$url",
       clientId: "flutter-rust-client",
@@ -144,6 +194,32 @@ class ConvexClient {
   }
 }
     """;
+    //     // Create the client.dart file
+    //     context.outputs[path.join("src", "client.dart")] =
+    //         """
+    // // ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
+    // // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
+    // // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
+    // @internal.MappableLib(
+    //   generateInitializerForScope: internal.InitializerScope.package,
+    // )
+    // library;
+
+    // import 'package:convex_dart/src/convex_dart_for_generated_code.dart'
+    //     as internal;
+    // import './client.init.dart';
+    // ${context.typedefs.entries.map((entry) => "import './functions/${entry.key.folderName}/${entry.key.functionName}.dart' as ${entry.key.folderName}${entry.key.functionName.pascalCase};").join("\n")}
+    // class ConvexClient {
+    //   static Future<void> init() async {
+    //     initializeMappers();
+    //     ${context.typedefs.entries.map((entry) => entry.value.map((mapper) => "${entry.key.folderName}${entry.key.functionName.pascalCase}.${mapper}Mapper.ensureInitialized();").join("\n")).join("\n")}
+    //     await internal.ConvexClient.init(
+    //       deploymentUrl: "$url",
+    //       clientId: "flutter-rust-client",
+    //     );
+    //   }
+    // }
+    //     """;
   }
 
   void _buildLiterals(ClientBuildContext context) {
@@ -151,7 +227,11 @@ class ConvexClient {
 // ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_raw_type, inference_failure_on_untyped_parameter
-import "package:convex_dart/src/convex_dart_for_generated_code.dart";""");
+import "package:convex_dart/src/convex_dart_for_generated_code.dart";
+""");
+    if (context.literals.isNotEmpty) {
+      literalsBuffer.writeln("part 'literals.mapper.dart';");
+    }
     for (final literal in context.literals) {
       literalsBuffer.writeln(literal._literalCode);
     }
@@ -214,8 +294,25 @@ class FunctionSpec with FunctionSpecMappable {
   }
 
   String get convexFunctionIdentifier {
-    return "$folderName.$functionName";
+    return "$folderName:$functionName";
   }
+
+  // The name of the typedef for the arguments
+  // e.g. "MyFunctionArgs or void"
+  String get argsTypeName {
+    switch (args) {
+      case JsAny():
+        return "void";
+      case JsObject():
+        return "${functionName.pascalCase}Args";
+      default:
+        throw UnimplementedError(
+          "Unsupported argument type: ${args.type} for the function $functionName.",
+        );
+    }
+  }
+
+  String get returnsTypeName => "${functionName.pascalCase}Response";
 
   void build(FunctionBuildContext context) {
     context.headerBuffer.write("""
@@ -229,14 +326,8 @@ import "../../literals.dart";
 part '${fileName.substring(0, fileName.length - 5)}.mapper.dart';
 """);
 
-    // The name of the typedef for the arguments
-    // e.g. "MyFunctionArgs or void"
-    final String argsTypeName;
     switch (args) {
-      case JsAny():
-        argsTypeName = "void";
       case JsObject obj:
-        argsTypeName = "${functionName.pascalCase}Args";
         context.typeBuffer.write(obj.buildClassCode(context, argsTypeName));
       default:
         throw ArgumentError(
@@ -249,10 +340,17 @@ part '${fileName.substring(0, fileName.length - 5)}.mapper.dart';
       JsObject obj => obj,
       _ => JsObject({"body": JsField(returns, false)}, "object"),
     };
-    final returnsTypeName = "${functionName.pascalCase}Response";
     context.typeBuffer.write(
       returnsObject.buildClassCode(context, returnsTypeName),
     );
+    final opperationType = switch (functionType) {
+      FunctionType.query => "QueryOperation",
+      FunctionType.mutation => "MutationOperation",
+      FunctionType.action => "ActionOperation",
+    };
+    context.headerBuffer.write("""
+final $functionName = $opperationType<$argsTypeName,$returnsTypeName>("$convexFunctionIdentifier", (input) => ${args is JsAny ? "{}" : "input.toMap()"},  (result) => ${returnsTypeName}Mapper.fromMap(result));
+""");
   }
 }
 
@@ -320,8 +418,7 @@ class JsNull extends JsType with JsNullMappable {
 class JsBigInt extends JsType with JsBigIntMappable {
   const JsBigInt(super.type);
   @override
-  String dartType(FunctionBuildContext context, {String? fieldName}) =>
-      'BigInt';
+  String dartType(FunctionBuildContext context, {String? fieldName}) => 'int';
 }
 
 @MappableClass(discriminatorValue: 'bytes')
@@ -380,11 +477,29 @@ class JsLiteral extends JsType with JsLiteralMappable {
       valueString = value;
     }
     return """
-class $_literalTypeName extends Literal {
+@MappableClass(includeCustomMappers: [_${_literalTypeName}Mapper()])
+class $_literalTypeName  with ${_literalTypeName}Mappable implements Literal {
   const $_literalTypeName();
   @override
   final value = $valueString; 
-}""";
+}
+
+class _${_literalTypeName}Mapper extends SimpleMapper<$_literalTypeName> {
+  const _${_literalTypeName}Mapper();
+  @override
+  $_literalTypeName decode(dynamic value) {
+      assert(value == $valueString);
+      return $_literalTypeName();
+  }
+  @override
+  dynamic encode($_literalTypeName self) {
+    return self.value;
+  }
+}
+
+
+
+""";
   }
 
   @override
@@ -500,16 +615,8 @@ class $className with ${className}Mappable {
   }
 
   String buildTypeDefinition(FunctionBuildContext context, String name) {
-    if (value.isEmpty) {
-      throw UnimplementedError(
-        "Nested objects must contain at least one field. If you are seeing this, please file an issue on GitHub.",
-      );
-    }
-    if (value.values.any((element) => element.fieldType is JsNull)) {
-      throw UnimplementedError(
-        "Objects cannot contains a field which only is only null. If you are seeing this, please file an issue on GitHub.",
-      );
-    }
+    return buildClassCode(context, name);
+
     final annotation =
         "@MappableRecord(hook: RemoveUndefinedFields([${optionalFields.map((entry) => "'${entry.key}'").join(",")}]),includeCustomMappers: convexMappers)";
     final record =
@@ -535,6 +642,6 @@ class ConvexId extends JsType with ConvexIdMappable {
   @override
   String dartType(FunctionBuildContext context, {String? fieldName}) {
     context.clientContext.tables.add(tableName);
-    return "Id<${tableName.pascalCase}Schema>";
+    return "${tableName.pascalCase}Id";
   }
 }
