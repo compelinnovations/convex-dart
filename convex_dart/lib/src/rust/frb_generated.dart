@@ -67,7 +67,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => 1831926979;
+  int get rustContentHash => 1838872697;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -119,6 +119,14 @@ abstract class RustLibApi extends BaseApi {
   });
 
   void crateSubscriptionHandleCancel({required SubscriptionHandle that});
+
+  BTreeMapStringValue crateDartValueConversionBtreemapDartValueToBtreemap({
+    required BTreeMapStringDartValue btreemap,
+  });
+
+  BTreeMapStringDartValue crateDartValueConversionBtreemapToBtreemapDartValue({
+    required BTreeMapStringValue btreemap,
+  });
 
   Map<String, DartValue> crateDartValueConversionBtreemapToHashmap({
     required BTreeMapStringValue btreemap,
@@ -504,6 +512,74 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  BTreeMapStringValue crateDartValueConversionBtreemapDartValueToBtreemap({
+    required BTreeMapStringDartValue btreemap,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapStringDartValue(
+            btreemap,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 10)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapStringValue,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kCrateDartValueConversionBtreemapDartValueToBtreemapConstMeta,
+        argValues: [btreemap],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateDartValueConversionBtreemapDartValueToBtreemapConstMeta =>
+      const TaskConstMeta(
+        debugName: "btreemap_dart_value_to_btreemap",
+        argNames: ["btreemap"],
+      );
+
+  @override
+  BTreeMapStringDartValue crateDartValueConversionBtreemapToBtreemapDartValue({
+    required BTreeMapStringValue btreemap,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapStringValue(
+            btreemap,
+            serializer,
+          );
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 11)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData:
+              sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerBTreeMapStringDartValue,
+          decodeErrorData: null,
+        ),
+        constMeta:
+            kCrateDartValueConversionBtreemapToBtreemapDartValueConstMeta,
+        argValues: [btreemap],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta
+  get kCrateDartValueConversionBtreemapToBtreemapDartValueConstMeta =>
+      const TaskConstMeta(
+        debugName: "btreemap_to_btreemap_dart_value",
+        argNames: ["btreemap"],
+      );
+
+  @override
   Map<String, DartValue> crateDartValueConversionBtreemapToHashmap({
     required BTreeMapStringValue btreemap,
   }) {
@@ -515,7 +591,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             btreemap,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 10)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 12)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_Map_String_dart_value_None,
@@ -546,7 +622,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             btreemap,
             serializer,
           );
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 11)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_Map_String_dart_value_None,
@@ -575,7 +651,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_Map_String_dart_value_None(hashmap, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 12)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 14)!;
         },
         codec: SseCodec(
           decodeSuccessData:
@@ -604,7 +680,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_Map_String_dart_value_None(hashmap, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 15)!;
         },
         codec: SseCodec(
           decodeSuccessData:

@@ -1,24 +1,27 @@
 export 'schema.dart';
 export 'literal.dart';
+export 'unions.dart';
 export 'encode.dart';
+export 'package:fast_immutable_collections/fast_immutable_collections.dart';
+
 export 'rust/lib.dart' show BTreeMapStringValue;
 export 'convex_client.dart' show ConvexClient;
 export 'opperations.dart'
     show QueryOperation, MutationOperation, ActionOperation;
-export 'package:json_annotation/json_annotation.dart';
-export 'annotations.dart';
-export 'package:dart_mappable_extras/dart_mappable_extras.dart'
+export 'optional.dart';
+export './rust/dart_value.dart' show DartValue;
+export './rust/dart_value/conversion.dart'
     show
-        RemoveUndefinedFields,
-        Defined,
-        Optional,
-        Undefined,
-        Union2,
-        Union3,
-        Union4,
-        Union5,
-        Union6,
-        Union7,
-        Union8,
-        Union9;
-export 'package:dart_mappable/dart_mappable.dart';
+        hashmapToBtreemap,
+        btreemapToHashmap,
+        hashmapToBtreemapDartValue,
+        btreemapDartValueToBtreemap;
+export 'rust/lib.dart' show BTreeMapStringDartValue;
+export 'rust/dart_value.dart' show DartValue_Object;
+export 'bytes.dart' show Uint8ListWithEquality;
+
+extension Then<T> on T {
+  R then<R>(R Function(T) then) {
+    return then(this);
+  }
+}

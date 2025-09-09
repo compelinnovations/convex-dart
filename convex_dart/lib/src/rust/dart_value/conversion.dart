@@ -33,3 +33,15 @@ Map<String, DartValue> btreemapToHashmapDartValue({
 }) => RustLib.instance.api.crateDartValueConversionBtreemapToHashmapDartValue(
   btreemap: btreemap,
 );
+
+BTreeMapStringValue btreemapDartValueToBtreemap({
+  required BTreeMapStringDartValue btreemap,
+}) => RustLib.instance.api.crateDartValueConversionBtreemapDartValueToBtreemap(
+  btreemap: btreemap,
+);
+
+BTreeMapStringDartValue btreemapToBtreemapDartValue({
+  required BTreeMapStringValue btreemap,
+}) => RustLib.instance.api.crateDartValueConversionBtreemapToBtreemapDartValue(
+  btreemap: btreemap,
+);

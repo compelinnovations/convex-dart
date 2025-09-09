@@ -3,16 +3,16 @@ import 'package:recase/recase.dart';
 import 'package:path/path.dart' as path;
 import 'package:collection/collection.dart';
 import 'package:dart_style/dart_style.dart';
+import 'dart:math';
 part 'types.mapper.dart';
 
 final deepEqual = DeepCollectionEquality.unordered();
 final formatter = DartFormatter(
   languageVersion: DartFormatter.latestLanguageVersion,
 );
+final random = Random();
 
 class ClientBuildContext {
-  final Map<({String functionName, String folderName}), List<String>> typedefs =
-      {};
   final Map<String, String> outputs = {};
   final Set<JsLiteral> literals = {};
   final Set<String> tables = {};
@@ -22,46 +22,10 @@ class ClientBuildContext {
 class FunctionBuildContext {
   final StringBuffer headerBuffer = StringBuffer();
   final StringBuffer functionBuffer = StringBuffer();
-  final StringBuffer typeBuffer = StringBuffer();
   final StringBuffer typedefBuffer = StringBuffer();
 
   final ClientBuildContext clientContext;
-  final List<({JsObject type, String name})> typedefs = [];
   FunctionBuildContext(this.clientContext);
-  String addTypedef(
-    String fieldName,
-    JsObject type,
-    FunctionBuildContext context,
-  ) {
-    // If this type is already a typedef, then we can just return the name
-    final existingTypedef = typedefs.firstWhereOrNull(
-      (element) => deepEqual.equals(element.type.toJson(), type.toJson()),
-    );
-
-    if (existingTypedef != null) {
-      return existingTypedef.name;
-    }
-
-    // Create a unique name for the typedef
-    final originalName = "${fieldName.pascalCase}Typedef";
-    String typedefName = originalName;
-    int count = 0;
-    while (typedefs.any((element) => element.name == typedefName)) {
-      typedefName = originalName + count.toString();
-      count++;
-    }
-
-    // Asert that we aren not overwriting an existing typedef
-    if (typedefs.any((element) => element.name == typedefName)) {
-      throw UnimplementedError(
-        "We are overwriting an existing typedef: $typedefName",
-      );
-    }
-
-    typedefs.add((type: type, name: typedefName));
-    typedefBuffer.write(type.buildTypeDefinition(context, typedefName));
-    return typedefName;
-  }
 }
 
 @MappableClass()
@@ -83,7 +47,6 @@ class FunctionsSpec with FunctionsSpecMappable {
         final code =
             "${functionContext.headerBuffer}"
             "\n${functionContext.functionBuffer}"
-            "\n${functionContext.typeBuffer}"
             "\n${functionContext.typedefBuffer}";
         final filePath = path.join(
           "src",
@@ -92,17 +55,6 @@ class FunctionsSpec with FunctionsSpecMappable {
           function.fileName,
         );
         context.outputs[filePath] = code;
-        // Add the typedefs to the global context
-        for (final typedef in functionContext.typedefs) {
-          final key = (
-            functionName: function.functionName,
-            folderName: function.folderName,
-          );
-          context.typedefs[key] = [
-            ...context.typedefs[key] ?? [],
-            typedef.name,
-          ];
-        }
       } catch (e) {
         print(
           "Failed to build function ${function.convexFunctionIdentifier}. Check the file and ensure it is valid.\nContents: $e",
@@ -120,7 +72,9 @@ class FunctionsSpec with FunctionsSpecMappable {
     _buildEntrypoint(context);
     // Format the code
     for (final entry in context.outputs.entries) {
-      context.outputs[entry.key] = formatter.format(entry.value);
+      try {
+        context.outputs[entry.key] = formatter.format(entry.value);
+      } catch (e) {}
     }
   }
 
@@ -130,7 +84,7 @@ class FunctionsSpec with FunctionsSpecMappable {
 export 'src/client.dart';
 export 'src/schema.dart';
 export 'src/literals.dart';
-${functions.map((entry) => "export 'src/functions/${entry.folderName}/${entry.fileName}' show ${entry.functionName}, ${entry.argsTypeName}, ${entry.returnsTypeName};").join("\n")}
+${functions.map((entry) => "export 'src/functions/${entry.folderName}/${entry.fileName}' show  ${entry.argsTypeName != "void" ? "${entry.argsTypeName}," : ""} ${entry.returnsTypeName};").join("\n")}
     """;
   }
 
@@ -141,27 +95,28 @@ ${functions.map((entry) => "export 'src/functions/${entry.folderName}/${entry.fi
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 import "dart:typed_data";
 import "package:convex_dart/src/convex_dart_for_generated_code.dart";
-part 'schema.mapper.dart';
 """);
     for (final tableName in context.tables) {
       schemaBuffer.writeln("""
-@MappableClass(includeCustomMappers: [_${tableName.pascalCase}IdMapper()])
-class ${tableName.pascalCase}Id with ${tableName.pascalCase}IdMappable implements TableId {
+class ${tableName.pascalCase}Id  implements TableId {
   @override
   final String value;
   static const String tableName = "$tableName";
   const ${tableName.pascalCase}Id(this.value);
-}
-
-class _${tableName.pascalCase}IdMapper extends SimpleMapper<${tableName.pascalCase}Id> {
-  const _${tableName.pascalCase}IdMapper();
   @override
-  ${tableName.pascalCase}Id decode(dynamic value) {
-    return ${tableName.pascalCase}Id(value);
+  bool operator ==(Object other) {
+    if (other is ${tableName.pascalCase}Id) {
+      return value == other.value;
+    }
+    return false;
   }
+
   @override
-  dynamic encode(${tableName.pascalCase}Id self) {
-    return self.value;
+  int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return value;
   }
 }
 """);
@@ -176,17 +131,10 @@ class _${tableName.pascalCase}IdMapper extends SimpleMapper<${tableName.pascalCa
 // ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
-@internal.MappableLib(
-  generateInitializerForScope: internal.InitializerScope.package,
-)
-library;
-
 import 'package:convex_dart/src/convex_dart_for_generated_code.dart'
     as internal;
-import './client.init.dart';
 class ConvexClient {
   static Future<void> init() async {
-    initializeMappers();
     await internal.ConvexClient.init(
       deploymentUrl: "$url",
       clientId: "flutter-rust-client",
@@ -194,32 +142,6 @@ class ConvexClient {
   }
 }
     """;
-    //     // Create the client.dart file
-    //     context.outputs[path.join("src", "client.dart")] =
-    //         """
-    // // ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
-    // // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
-    // // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
-    // @internal.MappableLib(
-    //   generateInitializerForScope: internal.InitializerScope.package,
-    // )
-    // library;
-
-    // import 'package:convex_dart/src/convex_dart_for_generated_code.dart'
-    //     as internal;
-    // import './client.init.dart';
-    // ${context.typedefs.entries.map((entry) => "import './functions/${entry.key.folderName}/${entry.key.functionName}.dart' as ${entry.key.folderName}${entry.key.functionName.pascalCase};").join("\n")}
-    // class ConvexClient {
-    //   static Future<void> init() async {
-    //     initializeMappers();
-    //     ${context.typedefs.entries.map((entry) => entry.value.map((mapper) => "${entry.key.folderName}${entry.key.functionName.pascalCase}.${mapper}Mapper.ensureInitialized();").join("\n")).join("\n")}
-    //     await internal.ConvexClient.init(
-    //       deploymentUrl: "$url",
-    //       clientId: "flutter-rust-client",
-    //     );
-    //   }
-    // }
-    //     """;
   }
 
   void _buildLiterals(ClientBuildContext context) {
@@ -229,9 +151,7 @@ class ConvexClient {
 // ignore_for_file: strict_raw_type, inference_raw_type, inference_failure_on_untyped_parameter
 import "package:convex_dart/src/convex_dart_for_generated_code.dart";
 """);
-    if (context.literals.isNotEmpty) {
-      literalsBuffer.writeln("part 'literals.mapper.dart';");
-    }
+
     for (final literal in context.literals) {
       literalsBuffer.writeln(literal._literalCode);
     }
@@ -323,12 +243,15 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
 import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
-part '${fileName.substring(0, fileName.length - 5)}.mapper.dart';
 """);
 
     switch (args) {
+      case JsAny():
+        break;
       case JsObject obj:
-        context.typeBuffer.write(obj.buildClassCode(context, argsTypeName));
+        context.typedefBuffer.write(
+          "typedef $argsTypeName = ${obj.dartType(context)};",
+        );
       default:
         throw ArgumentError(
           'Function arguments must be either JsAny (for dynamic/any type) or JsObject (for structured object types). '
@@ -340,16 +263,41 @@ part '${fileName.substring(0, fileName.length - 5)}.mapper.dart';
       JsObject obj => obj,
       _ => JsObject({"body": JsField(returns, false)}, "object"),
     };
-    context.typeBuffer.write(
-      returnsObject.buildClassCode(context, returnsTypeName),
+    context.typedefBuffer.write(
+      "typedef $returnsTypeName = ${returnsObject.dartType(context)};",
     );
+
     final opperationType = switch (functionType) {
       FunctionType.query => "QueryOperation",
       FunctionType.mutation => "MutationOperation",
       FunctionType.action => "ActionOperation",
     };
-    context.headerBuffer.write("""
-final $functionName = $opperationType<$argsTypeName,$returnsTypeName>("$convexFunctionIdentifier", (input) => ${args is JsAny ? "{}" : "input.toMap()"},  (result) => ${returnsTypeName}Mapper.fromMap(result));
+    String serializeCode;
+    if (args is JsAny) {
+      serializeCode = "{}";
+    } else {
+      serializeCode = args.serialize(context, "args", nullable: false);
+      // Remove the "encodeValue(" and ")"
+      serializeCode = serializeCode.substring(12, serializeCode.length - 1);
+    }
+
+    // TODO: Handle primitive return types
+    final deserializeCode = returns.deserialize(
+      context,
+      "decodeValue(map)",
+      nullable: false,
+    );
+
+    context.functionBuffer.writeln("""
+BTreeMapStringValue serialize($argsTypeName args) {
+  return hashmapToBtreemap(hashmap: $serializeCode);
+}
+
+""");
+    context.functionBuffer.writeln("""
+$returnsTypeName deserialize(DartValue map) {
+  return $deserializeCode;
+}
 """);
   }
 }
@@ -359,8 +307,8 @@ class JsField with JsFieldMappable {
   final JsType fieldType;
   final bool optional;
   const JsField(this.fieldType, this.optional);
-  String dartType(FunctionBuildContext context, {required String? fieldName}) {
-    String type = fieldType.dartType(context, fieldName: fieldName);
+  String dartType(FunctionBuildContext context) {
+    String type = fieldType.dartType(context);
     if (optional) {
       type = "Optional<$type>";
     }
@@ -373,60 +321,170 @@ sealed class JsType with JsTypeMappable {
   final String type;
 
   const JsType(this.type);
-  String dartType(FunctionBuildContext context, {String? fieldName});
+  String dartType(FunctionBuildContext context);
+  String serialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  });
+  String deserialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  });
 }
 
 @MappableClass(discriminatorValue: 'any')
 class JsAny extends JsType with JsAnyMappable {
   const JsAny(super.type);
   @override
-  String dartType(FunctionBuildContext context, {String? fieldName}) =>
-      'dynamic';
+  String dartType(FunctionBuildContext context) => 'dynamic';
+  @override
+  String serialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) => "encodeValue($name)";
+
+  @override
+  String deserialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    return name;
+  }
 }
 
 @MappableClass(discriminatorValue: 'boolean')
 class JsBoolean extends JsType with JsBooleanMappable {
   const JsBoolean(super.type);
   @override
-  String dartType(FunctionBuildContext context, {String? fieldName}) => 'bool';
+  String dartType(FunctionBuildContext context) => 'bool';
+  @override
+  String serialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) => "encodeValue($name)";
+  @override
+  String deserialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    final suffix = nullable ? "?" : "";
+    return "($name as bool$suffix)";
+  }
 }
 
 @MappableClass(discriminatorValue: 'string')
 class JsString extends JsType with JsStringMappable {
   const JsString(super.type);
   @override
-  String dartType(FunctionBuildContext context, {String? fieldName}) =>
-      'String';
+  String dartType(FunctionBuildContext context) => 'String';
+  @override
+  String serialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) => "encodeValue($name)";
+  @override
+  String deserialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    final suffix = nullable ? "?" : "";
+    return "($name as String$suffix)";
+  }
 }
 
 @MappableClass(discriminatorValue: 'number')
 class JsNumber extends JsType with JsNumberMappable {
   const JsNumber(super.type);
   @override
-  String dartType(FunctionBuildContext context, {String? fieldName}) =>
-      'double';
+  String dartType(FunctionBuildContext context) => 'double';
+  @override
+  String serialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) => "encodeValue($name)";
+  @override
+  String deserialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    final suffix = nullable ? "?" : "";
+    return "($name as double$suffix)";
+  }
 }
 
 @MappableClass(discriminatorValue: 'null')
 class JsNull extends JsType with JsNullMappable {
   const JsNull(super.type);
   @override
-  String dartType(FunctionBuildContext context, {String? fieldName}) => 'void';
+  String dartType(FunctionBuildContext context) => 'void';
+  @override
+  String serialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) => "null";
+  @override
+  String deserialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    return "null";
+  }
 }
 
 @MappableClass(discriminatorValue: 'bigint')
 class JsBigInt extends JsType with JsBigIntMappable {
   const JsBigInt(super.type);
   @override
-  String dartType(FunctionBuildContext context, {String? fieldName}) => 'int';
+  String dartType(FunctionBuildContext context) => 'int';
+  @override
+  String serialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) => "encodeValue($name)";
+  @override
+  String deserialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    final suffix = nullable ? "?" : "";
+    return "($name as int$suffix)";
+  }
 }
 
 @MappableClass(discriminatorValue: 'bytes')
 class JsBytes extends JsType with JsBytesMappable {
   const JsBytes(super.type);
   @override
-  String dartType(FunctionBuildContext context, {String? fieldName}) =>
-      'Uint8List';
+  String dartType(FunctionBuildContext context) => 'Uint8ListWithEquality';
+  @override
+  String serialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) => "encodeValue($name)";
+  @override
+  String deserialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    final suffix = nullable ? "?" : "";
+    return "($name as Uint8ListWithEquality$suffix)";
+  }
 }
 
 @MappableClass(discriminatorValue: 'literal')
@@ -435,7 +493,7 @@ class JsLiteral extends JsType with JsLiteralMappable {
   const JsLiteral(this.value, super.type);
 
   /// The name of the class which we will generate for this literal
-  String get _literalTypeName {
+  String get literalTypeName {
     // Remove any non-alphanumeric characters
     String buildValue = value.toString().replaceAll(
       RegExp(r'[^a-zA-Z0-9]'),
@@ -477,35 +535,57 @@ class JsLiteral extends JsType with JsLiteralMappable {
       valueString = value;
     }
     return """
-@MappableClass(includeCustomMappers: [_${_literalTypeName}Mapper()])
-class $_literalTypeName  with ${_literalTypeName}Mappable implements Literal {
-  const $_literalTypeName();
+
+class $literalTypeName implements Literal {
+  const $literalTypeName();
+  const $literalTypeName.validate(dynamic value):assert(value == $valueString, r"Value mismatch for $literalTypeName");
+  
   @override
   final value = $valueString; 
-}
 
-class _${_literalTypeName}Mapper extends SimpleMapper<$_literalTypeName> {
-  const _${_literalTypeName}Mapper();
   @override
-  $_literalTypeName decode(dynamic value) {
-      assert(value == $valueString);
-      return $_literalTypeName();
+  bool operator ==(Object other) {
+    if (other is $literalTypeName) {
+      return value == other.value;
+    }
+    return false;
   }
+
   @override
-  dynamic encode($_literalTypeName self) {
-    return self.value;
+  int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return r"$literalTypeName($value)";
   }
 }
-
-
-
 """;
   }
 
   @override
-  String dartType(FunctionBuildContext context, {String? fieldName}) {
+  String dartType(FunctionBuildContext context) {
     context.clientContext.literals.add(this);
-    return _literalTypeName;
+    return literalTypeName;
+  }
+
+  @override
+  String serialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) => "encodeValue($name)";
+  @override
+  String deserialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    if (nullable) {
+      return "$name == null ? null : $literalTypeName.validate($name)";
+    }
+    // While we really don't have to, it would be nice to catch any mismatches between
+    // the type returned by the backend and the value we expect.
+    return "$literalTypeName.validate($name)";
   }
 }
 
@@ -518,14 +598,37 @@ class JsUnion extends JsType with JsUnionMappable {
   bool get isRealUnion => value.where((e) => e is! JsNull).length > 1;
 
   @override
-  String dartType(FunctionBuildContext context, {String? fieldName}) {
-    final realTypes = value.where((e) => e is! JsNull).toList();
-    final containsNull = value.any((e) => e is JsNull);
-    if (realTypes.length > 9) {
+  String dartType(FunctionBuildContext context) {
+    // We do not support all unions.
+
+    // If this is a union of a type and null,
+    // return a nullable type
+    if (value.length == 2 &&
+        value.any((e) => e is JsNull) &&
+        value.any((e) => e is! JsNull)) {
+      final realType = value.where((e) => e is! JsNull).first;
+      return "${realType.dartType(context)}?";
+    }
+
+    // If a union contains a type other than a literal or null, throw and error
+    if (value.any((e) => e is! JsLiteral && e is! JsNull)) {
       throw UnimplementedError(
-        "Union types with more than 9 types are not supported. If you need more, feel free to submit an issue on GitHub.",
+        "The type generator only supports unions of literals and null. If you are seeing this, please file an issue on GitHub.",
       );
     }
+
+    // A union may not contain a String type and a ConvexId type
+    // We have no way to differentiate between the two
+    // So we need to throw an error
+    if (value.any((e) => e is JsString) && value.any((e) => e is ConvexId)) {
+      throw UnimplementedError(
+        "A union may not contain a String type and a ConvexId type. If you are seeing this, please file an issue on GitHub.",
+      );
+    }
+
+    final realTypes = value.where((e) => e is! JsNull).toList();
+    final containsNull = value.any((e) => e is JsNull);
+
     if (realTypes.isEmpty) {
       throw UnimplementedError(
         "Your union most contain at least one type which is not null.",
@@ -545,6 +648,47 @@ class JsUnion extends JsType with JsUnionMappable {
     }
     return type;
   }
+
+  @override
+  String serialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    // Do we need to cast?
+
+    final realTypes = value.where((e) => e is! JsNull).toList();
+    if (realTypes.length == 1) {
+      return realTypes[0].serialize(context, name, nullable: true);
+    } else {
+      final List<String> ons = [];
+      for (final type in realTypes) {
+        final argName = "on${random.nextInt(1000000)}";
+        ons.add(
+          "($argName) => ${type.serialize(context, argName, nullable: nullable)}",
+        );
+      }
+      nullable = nullable || value.any((e) => e is JsNull);
+      final dot = nullable ? "?." : ".";
+
+      return "encodeValue($name${dot}split(${ons.join(", ")}))";
+    }
+  }
+
+  @override
+  String deserialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    // Do we need to cast?
+    final realTypes = value.where((e) => e is! JsNull).toList();
+    if (realTypes.length == 1) {
+      return realTypes[0].deserialize(context, name, nullable: true);
+    } else {
+      return "Union${realTypes.length}<${realTypes.map((e) => e.dartType(context)).join(', ')}>($name)";
+    }
+  }
 }
 
 @MappableClass(discriminatorValue: 'record')
@@ -553,13 +697,37 @@ class JsRecord extends JsType with JsRecordMappable {
   final JsField values;
   const JsRecord(this.keys, this.values, super.type);
   @override
-  String dartType(FunctionBuildContext context, {String? fieldName}) {
+  String dartType(FunctionBuildContext context) {
     if (keys is! JsString) {
       throw UnimplementedError(
         "Record keys must be a string. If you are seeing this, please file an issue on GitHub.",
       );
     }
-    return "Map<String, ${values.dartType(context, fieldName: null)}>";
+    return "IMap<String, ${values.dartType(context)}>";
+  }
+
+  @override
+  String serialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    final dot = nullable ? "?." : ".";
+    final argName = "on${random.nextInt(1000000)}";
+    return "encodeValue({for (final $argName in $name${dot}entries) $argName${dot}key: encodeValue(${values.fieldType.serialize(context, "$argName${dot}value", nullable: nullable)})})";
+  }
+
+  @override
+  String deserialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    final suffix = nullable ? "?" : "";
+    final dot = nullable ? "?." : ".";
+    final keyArgName = "on${random.nextInt(1000000)}";
+    final valueArgName = "on${random.nextInt(1000000)}";
+    return "($name as IMap<String, dynamic>$suffix)${dot}map(($keyArgName, $valueArgName) => MapEntry( $keyArgName, ${values.fieldType.deserialize(context, valueArgName, nullable: nullable)}))";
   }
 }
 
@@ -571,57 +739,59 @@ class JsObject extends JsType with JsObjectMappable {
   Iterable<MapEntry<String, JsField>> get optionalFields =>
       value.entries.where((entry) => entry.value.optional);
 
-  String buildClassCode(FunctionBuildContext context, String className) {
-    if (value.values.any((element) => element.fieldType is JsNull)) {
-      throw UnimplementedError(
-        "Objects cannot contains a field which only is only null. If you are seeing this, please file an issue on GitHub.",
-      );
-    }
-
-    final annotation =
-        "@MappableClass(hook: RemoveUndefinedFields([${optionalFields.map((entry) => "'${entry.key}'").join(",")}]),includeCustomMappers: convexMappers)";
-
-    final fieldsBuffer = StringBuffer();
-    for (final entry in value.entries) {
-      fieldsBuffer.writeln(
-        "  final ${entry.value.dartType(context, fieldName: entry.key)} ${entry.key};",
-      );
-    }
-    final argsBuffer = StringBuffer();
-    if (value.isNotEmpty) {
-      argsBuffer.write("{");
-      for (final entry in value.entries) {
-        if (entry.value.dartType(context, fieldName: entry.key).endsWith("?")) {
-          argsBuffer.writeln("this.${entry.key},");
-        } else {
-          argsBuffer.writeln("required this.${entry.key},");
-        }
-      }
-      argsBuffer.write("}");
-    }
-
-    return """
-$annotation
-class $className with ${className}Mappable {
-  $fieldsBuffer
-  const $className($argsBuffer);
-}
-""";
+  @override
+  String dartType(FunctionBuildContext context) {
+    return "({${value.entries.map((entry) => "${entry.value.dartType(context)} ${entry.key}").join(",")}})";
   }
 
   @override
-  String dartType(FunctionBuildContext context, {String? fieldName}) {
-    return context.addTypedef(fieldName ?? "", this, context);
+  String serialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    final dot = nullable ? "?." : ".";
+    final buffer = StringBuffer("{");
+    for (final entry in value.entries) {
+      if (entry.value.optional) {
+        buffer.write(
+          "if ($name$dot${entry.key}${dot}isDefined) '${entry.key}': ${entry.value.fieldType.serialize(context, "$name$dot${entry.key}${dot}asDefined()${dot}value", nullable: nullable)},",
+        );
+      } else {
+        buffer.write(
+          "'${entry.key}': ${entry.value.fieldType.serialize(context, "$name$dot${entry.key}", nullable: nullable)},",
+        );
+      }
+    }
+    buffer.write("}");
+    return "encodeValue($buffer)";
   }
 
-  String buildTypeDefinition(FunctionBuildContext context, String name) {
-    return buildClassCode(context, name);
-
-    final annotation =
-        "@MappableRecord(hook: RemoveUndefinedFields([${optionalFields.map((entry) => "'${entry.key}'").join(",")}]),includeCustomMappers: convexMappers)";
-    final record =
-        "({${value.entries.map((entry) => "${entry.value.dartType(context, fieldName: entry.key)} ${entry.key}").join(",")}})";
-    return "$annotation\ntypedef $name = $record;\n";
+  @override
+  String deserialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    final suffix = nullable ? "?" : "";
+    final dot = nullable ? "?." : ".";
+    final argName = "on${random.nextInt(1000000)}";
+    final buffer = StringBuffer(
+      "($name as IMap<String, dynamic>$suffix)${dot}then(($argName) => (",
+    );
+    for (final entry in value.entries) {
+      if (entry.value.optional) {
+        buffer.write(
+          "${entry.key}: $argName${dot}containsKey('${entry.key}') ? Defined(${entry.value.fieldType.deserialize(context, "$argName['${entry.key}']", nullable: nullable)}) : Undefined<${entry.value.fieldType.dartType(context)}>(),",
+        );
+      } else {
+        buffer.write(
+          "${entry.key}: ${entry.value.fieldType.deserialize(context, "$argName['${entry.key}']", nullable: nullable)},",
+        );
+      }
+    }
+    buffer.write("))");
+    return buffer.toString();
   }
 }
 
@@ -630,8 +800,31 @@ class JsArray extends JsType with JsArrayMappable {
   final JsType value;
   const JsArray(this.value, super.type);
   @override
-  String dartType(FunctionBuildContext context, {String? fieldName}) {
-    return "List<${value.dartType(context)}>";
+  String dartType(FunctionBuildContext context) {
+    return "IList<${value.dartType(context)}>";
+  }
+
+  @override
+  String serialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    final dot = nullable ? "?." : ".";
+    final argName = "on${random.nextInt(1000000)}";
+    return "encodeValue($name${dot}map(($argName) => ${value.serialize(context, argName, nullable: nullable)})${dot}toIList())";
+  }
+
+  @override
+  String deserialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    final suffix = nullable ? "?" : "";
+    final dot = nullable ? "?." : ".";
+    final randName = "on${random.nextInt(1000000)}";
+    return "($name as IList<dynamic>$suffix)${dot}map(($randName) => ${value.deserialize(context, randName, nullable: nullable)})${dot}toIList()";
   }
 }
 
@@ -639,9 +832,33 @@ class JsArray extends JsType with JsArrayMappable {
 class ConvexId extends JsType with ConvexIdMappable {
   final String tableName;
   const ConvexId(this.tableName, super.type);
+
+  String get typeName => "${tableName.pascalCase}Id";
+
   @override
-  String dartType(FunctionBuildContext context, {String? fieldName}) {
+  String dartType(FunctionBuildContext context) {
     context.clientContext.tables.add(tableName);
-    return "${tableName.pascalCase}Id";
+    return typeName;
+  }
+
+  @override
+  String serialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    return "encodeValue($name)";
+  }
+
+  @override
+  String deserialize(
+    FunctionBuildContext context,
+    String name, {
+    required bool nullable,
+  }) {
+    if (nullable) {
+      return "$name == null ? null : $typeName($name as String)";
+    }
+    return "$typeName($name as String)";
   }
 }

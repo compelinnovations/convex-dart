@@ -99,3 +99,17 @@ pub fn btreemap_to_hashmap_dart_value(
 ) -> HashMap<String, DartValue> {
     btreemap.into_iter().map(|(k, v)| (k, v.into())).collect()
 }
+
+#[frb(sync)]
+pub fn btreemap_dart_value_to_btreemap(
+    btreemap: BTreeMap<String, DartValue>,
+) -> BTreeMap<String, Value> {
+    btreemap.into_iter().map(|(k, v)| (k, v.into())).collect()
+}
+
+#[frb(sync)]
+pub fn btreemap_to_btreemap_dart_value(
+    btreemap: BTreeMap<String, Value>,
+) -> BTreeMap<String, DartValue> {
+    btreemap.into_iter().map(|(k, v)| (k, v.into())).collect()
+}

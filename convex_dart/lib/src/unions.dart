@@ -1,5 +1,5 @@
-// Copied from the extension_type_unions package with some modifications.
-// Uses regular classes instead of extensions. due to limitations of dart_mappable.
+// Copied from the great extension_type_unions
+// package to make the primary constructor public.
 
 // Copyright (c) 2024, the Dart project authors.  Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
@@ -23,20 +23,12 @@ class InvalidUnionTypeException implements Exception {
 }
 
 /// Emulate the union of the types [X1] and [X2].
-class Union2<X1, X2> {
-  final Object? value;
-
+extension type Union2<X1, X2>(Object? value) {
   /// Create a [Union2] value from the first type argument.
   Union2.in1(X1 this.value);
 
   /// Create a [Union2] value from the second type argument.
   Union2.in2(X2 this.value);
-
-  static Union2<X1, X2> fromObject<X1, X2>(Object? value) {
-    if (value is X1) return Union2.in1(value);
-    if (value is X2) return Union2.in2(value);
-    throw InvalidUnionTypeException("Union2<$X1, $X2>", value);
-  }
 
   /// Return true iff this [Union2] has type [X1] or [X2].
   bool get isValid => value is X1 || value is X2;
@@ -81,9 +73,7 @@ class Union2<X1, X2> {
 }
 
 /// Emulate the union of the types [X1], [X2], and [X3].
-class Union3<X1, X2, X3> {
-  final Object? value;
-
+extension type Union3<X1, X2, X3>(Object? value) {
   /// Create a [Union3] value from the first type argument.
   Union3.in1(X1 this.value);
 
@@ -92,13 +82,6 @@ class Union3<X1, X2, X3> {
 
   /// Create a [Union3] value from the third type argument.
   Union3.in3(X3 this.value);
-
-  static Union3<X1, X2, X3> fromObject<X1, X2, X3>(Object? value) {
-    if (value is X1) return Union3.in1(value);
-    if (value is X2) return Union3.in2(value);
-    if (value is X3) return Union3.in3(value);
-    throw InvalidUnionTypeException("Union3<$X1, $X2, $X3>", value);
-  }
 
   /// Return true iff this [Union3] has a type in [X1] .. [X3].
   bool get isValid => value is X1 || value is X2 || value is X3;
@@ -155,9 +138,7 @@ class Union3<X1, X2, X3> {
 }
 
 /// Emulate the union of the types [X1] .. [X4].
-class Union4<X1, X2, X3, X4> {
-  final Object? value;
-
+extension type Union4<X1, X2, X3, X4>(Object? value) {
   /// Create a [Union4] value from the first type argument.
   Union4.in1(X1 this.value);
 
@@ -169,14 +150,6 @@ class Union4<X1, X2, X3, X4> {
 
   /// Create a [Union4] value from the fourth type argument.
   Union4.in4(X4 this.value);
-
-  static Union4<X1, X2, X3, X4> fromObject<X1, X2, X3, X4>(Object? value) {
-    if (value is X1) return Union4.in1(value);
-    if (value is X2) return Union4.in2(value);
-    if (value is X3) return Union4.in3(value);
-    if (value is X4) return Union4.in4(value);
-    throw InvalidUnionTypeException("Union4<$X1, $X2, $X3, $X4>", value);
-  }
 
   /// Return true iff this [Union4] has a type in [X1] .. [X4].
   bool get isValid => value is X1 || value is X2 || value is X3 || value is X4;
@@ -250,9 +223,7 @@ class Union4<X1, X2, X3, X4> {
 }
 
 /// Emulate the union of the types [X1] .. [X5].
-class Union5<X1, X2, X3, X4, X5> {
-  final Object? value;
-
+extension type Union5<X1, X2, X3, X4, X5>(Object? value) {
   /// Create a [Union5] value from the first type argument.
   Union5.in1(X1 this.value);
 
@@ -267,17 +238,6 @@ class Union5<X1, X2, X3, X4, X5> {
 
   /// Create a [Union5] value from the fifth type argument.
   Union5.in5(X5 this.value);
-
-  static Union5<X1, X2, X3, X4, X5> fromObject<X1, X2, X3, X4, X5>(
-    Object? value,
-  ) {
-    if (value is X1) return Union5.in1(value);
-    if (value is X2) return Union5.in2(value);
-    if (value is X3) return Union5.in3(value);
-    if (value is X4) return Union5.in4(value);
-    if (value is X5) return Union5.in5(value);
-    throw InvalidUnionTypeException("Union5<$X1, $X2, $X3, $X4, $X5>", value);
-  }
 
   /// Return true iff this [Union5] has a type in [X1] .. [X5].
   bool get isValid =>
@@ -365,9 +325,7 @@ class Union5<X1, X2, X3, X4, X5> {
 }
 
 /// Emulate the union of the types [X1] .. [X6].
-class Union6<X1, X2, X3, X4, X5, X6> {
-  final Object? value;
-
+extension type Union6<X1, X2, X3, X4, X5, X6>(Object? value) {
   /// Create a [Union6] value from the first type argument.
   Union6.in1(X1 this.value);
 
@@ -385,21 +343,6 @@ class Union6<X1, X2, X3, X4, X5, X6> {
 
   /// Create a [Union6] value from the sixth type argument.
   Union6.in6(X6 this.value);
-
-  static Union6<X1, X2, X3, X4, X5, X6> fromObject<X1, X2, X3, X4, X5, X6>(
-    Object? value,
-  ) {
-    if (value is X1) return Union6.in1(value);
-    if (value is X2) return Union6.in2(value);
-    if (value is X3) return Union6.in3(value);
-    if (value is X4) return Union6.in4(value);
-    if (value is X5) return Union6.in5(value);
-    if (value is X6) return Union6.in6(value);
-    throw InvalidUnionTypeException(
-      "Union6<$X1, $X2, $X3, $X4, $X5, $X6>",
-      value,
-    );
-  }
 
   /// Return true iff this [Union6] has a type in [X1] .. [X6].
   bool get isValid =>
@@ -511,9 +454,7 @@ class Union6<X1, X2, X3, X4, X5, X6> {
 }
 
 /// Emulate the union of the types [X1] .. [X7].
-class Union7<X1, X2, X3, X4, X5, X6, X7> {
-  final Object? value;
-
+extension type Union7<X1, X2, X3, X4, X5, X6, X7>(Object? value) {
   /// Create a [Union7] value from the first type argument.
   Union7.in1(X1 this.value);
 
@@ -534,21 +475,6 @@ class Union7<X1, X2, X3, X4, X5, X6, X7> {
 
   /// Create a [Union7] value from the seventh type argument.
   Union7.in7(X7 this.value);
-
-  static Union7<X1, X2, X3, X4, X5, X6, X7>
-  fromObject<X1, X2, X3, X4, X5, X6, X7>(Object? value) {
-    if (value is X1) return Union7.in1(value);
-    if (value is X2) return Union7.in2(value);
-    if (value is X3) return Union7.in3(value);
-    if (value is X4) return Union7.in4(value);
-    if (value is X5) return Union7.in5(value);
-    if (value is X6) return Union7.in6(value);
-    if (value is X7) return Union7.in7(value);
-    throw InvalidUnionTypeException(
-      "Union7<$X1, $X2, $X3, $X4, $X5, $X6, $X7>",
-      value,
-    );
-  }
 
   /// Return true iff this [Union7] has a type in [X1] .. [X7].
   bool get isValid =>
@@ -674,9 +600,7 @@ class Union7<X1, X2, X3, X4, X5, X6, X7> {
 }
 
 /// Emulate the union of the types [X1] .. [X8].
-class Union8<X1, X2, X3, X4, X5, X6, X7, X8> {
-  final Object? value;
-
+extension type Union8<X1, X2, X3, X4, X5, X6, X7, X8>(Object? value) {
   /// Create a [Union8] value from the first type argument.
   Union8.in1(X1 this.value);
 
@@ -839,9 +763,7 @@ class Union8<X1, X2, X3, X4, X5, X6, X7, X8> {
 }
 
 /// Emulate the union of the types [X1] .. [X9].
-class Union9<X1, X2, X3, X4, X5, X6, X7, X8, X9> {
-  final Object? value;
-
+extension type Union9<X1, X2, X3, X4, X5, X6, X7, X8, X9>(Object? value) {
   /// Create a [Union9] value from the first type argument.
   Union9.in1(X1 this.value);
 
@@ -850,23 +772,6 @@ class Union9<X1, X2, X3, X4, X5, X6, X7, X8, X9> {
 
   /// Create a [Union9] value from the third type argument.
   Union9.in3(X3 this.value);
-
-  static Union9<X1, X2, X3, X4, X5, X6, X7, X8, X9>
-  fromObject<X1, X2, X3, X4, X5, X6, X7, X8, X9>(Object? value) {
-    if (value is X1) return Union9.in1(value);
-    if (value is X2) return Union9.in2(value);
-    if (value is X3) return Union9.in3(value);
-    if (value is X4) return Union9.in4(value);
-    if (value is X5) return Union9.in5(value);
-    if (value is X6) return Union9.in6(value);
-    if (value is X7) return Union9.in7(value);
-    if (value is X8) return Union9.in8(value);
-    if (value is X9) return Union9.in9(value);
-    throw InvalidUnionTypeException(
-      "Union9<$X1, $X2, $X3, $X4, $X5, $X6, $X7, $X8, $X9>",
-      value,
-    );
-  }
 
   /// Create a [Union9] value from the fourth type argument.
   Union9.in4(X4 this.value);
