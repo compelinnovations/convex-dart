@@ -151,3 +151,10 @@ extension on JsType {
     }
   }
 }
+
+enum Hi {
+  hi(1);
+
+  final dynamic value;
+  const Hi(this.value);
+}

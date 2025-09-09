@@ -13,8 +13,10 @@ final formatter = DartFormatter(
 final random = Random();
 
 class ClientBuildContext {
+  int enumCounter = 1;
+  final enumValues = <String, Set<dynamic>>{};
   final Map<String, String> outputs = {};
-  final Set<JsLiteral> literals = {};
+
   final Set<String> tables = {};
   ClientBuildContext();
 }
@@ -152,8 +154,24 @@ class ConvexClient {
 import "package:convex_dart/src/convex_dart_for_generated_code.dart";
 """);
 
-    for (final literal in context.literals) {
-      literalsBuffer.writeln(literal._literalCode);
+    for (final literal in context.enumValues.entries) {
+      literalsBuffer.writeln("""
+enum ${literal.key} implements Literal {
+${literal.value.map((e) => "  ${JsLiteral.enumSuffix(e)}(${JsLiteral.enumValueCode(e)}),").join("\n")};
+
+@override
+final value;
+const ${literal.key}(this.value);
+
+static ${literal.key} fromDynamic(dynamic value) {
+  return switch (value) {
+    ${literal.value.map((e) => " ${JsLiteral.enumValueCode(e)} => ${literal.key}.${JsLiteral.enumSuffix(e)},").join("\n")}
+    _ => throw UnimplementedError("Unsupported value: \$value"),
+  };
+}
+
+
+""");
     }
     context.outputs[path.join("src", "literals.dart")] = literalsBuffer
         .toString();
@@ -493,7 +511,7 @@ class JsLiteral extends JsType with JsLiteralMappable {
   const JsLiteral(this.value, super.type);
 
   /// The name of the class which we will generate for this literal
-  String get literalTypeName {
+  static String enumSuffix(dynamic value) {
     // Remove any non-alphanumeric characters
     String buildValue = value.toString().replaceAll(
       RegExp(r'[^a-zA-Z0-9]'),
@@ -508,8 +526,8 @@ class JsLiteral extends JsType with JsLiteralMappable {
     return buildValue;
   }
 
-  // The code of the literal class
-  String get _literalCode {
+  // The vale which is placed inside the enum
+  static String enumValueCode(dynamic value) {
     // Ensure that this literal type can be encoded
     if (value is! String &&
         value is! int &&
@@ -530,42 +548,16 @@ class JsLiteral extends JsType with JsLiteralMappable {
       // This means that we can work around issue
       // https://github.com/get-convex/convex-backend/issues/213
       // by converting the int to a double
-      valueString = (value as int).toDouble();
+      valueString = value.toDouble();
     } else {
       valueString = value;
     }
-    return """
-
-class $literalTypeName implements Literal {
-  const $literalTypeName();
-  const $literalTypeName.validate(dynamic value):assert(value == $valueString, r"Value mismatch for $literalTypeName");
-  
-  @override
-  final value = $valueString; 
-
-  @override
-  bool operator ==(Object other) {
-    if (other is $literalTypeName) {
-      return value == other.value;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode => value.hashCode;
-
-  @override
-  String toString() {
-    return r"$literalTypeName($value)";
-  }
-}
-""";
+    return valueString;
   }
 
   @override
   String dartType(FunctionBuildContext context) {
-    context.clientContext.literals.add(this);
-    return literalTypeName;
+    throw UnimplementedError("This should be unreachable");
   }
 
   @override
@@ -580,33 +572,27 @@ class $literalTypeName implements Literal {
     String name, {
     required bool nullable,
   }) {
-    if (nullable) {
-      return "$name == null ? null : $literalTypeName.validate($name)";
-    }
-    // While we really don't have to, it would be nice to catch any mismatches between
-    // the type returned by the backend and the value we expect.
-    return "$literalTypeName.validate($name)";
+    throw UnimplementedError("This should be unreachable");
   }
 }
 
 @MappableClass(discriminatorValue: 'union')
 class JsUnion extends JsType with JsUnionMappable {
   final List<JsType> value;
-  const JsUnion(this.value, super.type);
+
+  JsUnion(this.value, super.type);
 
   // Whether this uses the real union type, or is only a nullable type
   bool get isRealUnion => value.where((e) => e is! JsNull).length > 1;
 
   @override
   String dartType(FunctionBuildContext context) {
-    // We do not support all unions.
-
     // If this is a union of a type and null,
     // return a nullable type
     if (value.length == 2 &&
         value.any((e) => e is JsNull) &&
         value.any((e) => e is! JsNull)) {
-      final realType = value.where((e) => e is! JsNull).first;
+      final realType = value.where((e) => e is! JsNull).single;
       return "${realType.dartType(context)}?";
     }
 
@@ -616,37 +602,21 @@ class JsUnion extends JsType with JsUnionMappable {
         "The type generator only supports unions of literals and null. If you are seeing this, please file an issue on GitHub.",
       );
     }
-
-    // A union may not contain a String type and a ConvexId type
-    // We have no way to differentiate between the two
-    // So we need to throw an error
-    if (value.any((e) => e is JsString) && value.any((e) => e is ConvexId)) {
-      throw UnimplementedError(
-        "A union may not contain a String type and a ConvexId type. If you are seeing this, please file an issue on GitHub.",
-      );
+    // Find the enum which matches the literal types
+    final literalTypes = value
+        .whereType<JsLiteral>()
+        .map((e) => e.value)
+        .toSet();
+    for (final i in context.clientContext.enumValues.entries) {
+      if (literalTypes == i.value) {
+        return i.key;
+      }
     }
-
-    final realTypes = value.where((e) => e is! JsNull).toList();
-    final containsNull = value.any((e) => e is JsNull);
-
-    if (realTypes.isEmpty) {
-      throw UnimplementedError(
-        "Your union most contain at least one type which is not null.",
-      );
-    }
-    String type;
-    // If there is only one type, then we can just return the type
-    if (realTypes.length == 1) {
-      type = realTypes[0].dartType(context);
-    } else {
-      // If there are multiple types, then we need to create a union type
-      type =
-          "Union${realTypes.length}<${realTypes.map((e) => e.dartType(context)).join(', ')}>";
-    }
-    if (containsNull) {
-      type = "$type?";
-    }
-    return type;
+    // Create a new enum if none exists
+    final name = "Enum${context.clientContext.enumCounter}";
+    context.clientContext.enumCounter++;
+    context.clientContext.enumValues[name] = literalTypes;
+    return name;
   }
 
   @override
@@ -655,8 +625,6 @@ class JsUnion extends JsType with JsUnionMappable {
     String name, {
     required bool nullable,
   }) {
-    // Do we need to cast?
-
     final realTypes = value.where((e) => e is! JsNull).toList();
     if (realTypes.length == 1) {
       return realTypes[0].serialize(context, name, nullable: true);
@@ -703,6 +671,11 @@ class JsRecord extends JsType with JsRecordMappable {
         "Record keys must be a string. If you are seeing this, please file an issue on GitHub.",
       );
     }
+    if (values is JsLiteral) {
+      throw UnimplementedError(
+        "You may not use a literal type in a record. Literal types are only supported in unions.",
+      );
+    }
     return "IMap<String, ${values.dartType(context)}>";
   }
 
@@ -741,6 +714,11 @@ class JsObject extends JsType with JsObjectMappable {
 
   @override
   String dartType(FunctionBuildContext context) {
+    if (value.values.any((entry) => entry.fieldType is JsLiteral)) {
+      throw UnimplementedError(
+        "You may not use a literal type in an object. Literal types are only supported in unions.",
+      );
+    }
     return "({${value.entries.map((entry) => "${entry.value.dartType(context)} ${entry.key}").join(",")}})";
   }
 
@@ -801,6 +779,11 @@ class JsArray extends JsType with JsArrayMappable {
   const JsArray(this.value, super.type);
   @override
   String dartType(FunctionBuildContext context) {
+    if (value is JsLiteral) {
+      throw UnimplementedError(
+        "You may not use a literal type in an array. Literal types are only supported in unions.",
+      );
+    }
     return "IList<${value.dartType(context)}>";
   }
 
