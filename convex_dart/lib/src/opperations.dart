@@ -1,28 +1,41 @@
 import 'package:convex_dart/src/convex_dart_for_generated_code.dart';
+import 'package:convex_dart/src/rust/dart_value/function.dart';
+import 'package:convex_dart/src/rust/lib.dart';
 
-sealed class Operation<Input, Output> {
+sealed class Operation<Input, Output_> {
   final String identifier;
 
-  final Map<String, dynamic> Function(Input input) encodeArgs;
-  final Output Function(dynamic result) decodeResult;
+  final BTreeMapStringValue Function(Input input) encodeArgs;
+  final Output_ Function(DartValue result) decodeResult;
   const Operation(this.identifier, this.encodeArgs, this.decodeResult);
 
   ConvexClient get client => ConvexClient.instance;
-  Future<Output> execute(Input args);
+  Future<Output_> execute(Input args);
 }
 
-class QueryOperation<Input, Output> extends Operation<Input, Output> {
+class QueryOperation<Input, Output_> extends Operation<Input, Output_> {
   const QueryOperation(super.identifier, super.encodeArgs, super.decodeResult);
 
   @override
-  Future<Output> execute(Input args) async {
-    return decodeResult(
-      decodeValue(await client.query(identifier, encodeMap(encodeArgs(args)))),
+  Future<Output_> execute(Input args) async {
+    return decodeResult(await client.query(identifier, encodeArgs(args)));
+  }
+
+  Future<SubscriptionHandle> subscribe(
+    Input args,
+    SubscribeEvent<Output_> Function(SubscribeEvent result) onUpdate,
+  ) {
+    return client.subscribe(
+      name: identifier,
+      args: encodeArgs(args),
+      onUpdate: (value) {
+        onUpdate(SubscribeEvent.fromDartFunctionResult(value, decodeResult));
+      },
     );
   }
 }
 
-class MutationOperation<Input, Output> extends Operation<Input, Output> {
+class MutationOperation<Input, Output_> extends Operation<Input, Output_> {
   const MutationOperation(
     super.identifier,
     super.encodeArgs,
@@ -30,30 +43,63 @@ class MutationOperation<Input, Output> extends Operation<Input, Output> {
   );
 
   @override
-  Future<Output> execute(Input args) async {
+  Future<Output_> execute(Input args) async {
     return decodeResult(
-      decodeValue(
-        await client.mutation(
-          name: identifier,
-          args: encodeMap(encodeArgs(args)),
-        ),
-      ),
+      await client.mutation(name: identifier, args: encodeArgs(args)),
     );
   }
 }
 
-class ActionOperation<Input, Output> extends Operation<Input, Output> {
+class ActionOperation<Input, Output_> extends Operation<Input, Output_> {
   const ActionOperation(super.identifier, super.encodeArgs, super.decodeResult);
 
   @override
-  Future<Output> execute(Input args) async {
+  Future<Output_> execute(Input args) async {
     return decodeResult(
-      decodeValue(
-        await client.action(
-          name: identifier,
-          args: encodeMap(encodeArgs(args)),
-        ),
-      ),
+      await client.action(name: identifier, args: encodeArgs(args)),
     );
   }
+}
+
+sealed class SubscribeEvent<T> {
+  const SubscribeEvent();
+
+  static SubscribeEvent<T> fromDartFunctionResult<T>(
+    DartFunctionResult result,
+    T Function(DartValue value) decodeResult,
+  ) {
+    return switch (result) {
+      DartFunctionResult_Value i => SuccessEvent(decodeResult(i.field0)),
+      DartFunctionResult_ErrorMessage i => ClientErrorEvent(i.field0),
+      DartFunctionResult_ConvexError i => ConvexErrorEvent(
+        i.field0.message,
+        decodeValue(i.field0.data),
+      ),
+    };
+  }
+}
+
+/// The error message of a Convex function run that does not complete
+/// successfully.
+class ClientErrorEvent<T> extends SubscribeEvent<T> {
+  final String message;
+  const ClientErrorEvent(this.message);
+}
+
+/// The error payload of a Convex function run that doesn't complete
+/// successfully, with an application-level error.
+class ConvexErrorEvent<T> extends SubscribeEvent<T> {
+  /// From any error, redacted from prod deployments.
+  final String message;
+
+  /// Custom application error data payload that can be passed from your
+  /// function to a client.
+  final dynamic data;
+  const ConvexErrorEvent(this.message, this.data);
+}
+
+/// The result of a successful subscription
+class SuccessEvent<T> extends SubscribeEvent<T> {
+  final T data;
+  const SuccessEvent(this.data);
 }

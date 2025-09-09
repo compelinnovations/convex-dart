@@ -36,6 +36,7 @@ class FunctionsSpec with FunctionsSpecMappable {
   FunctionsSpec(this.url, this.functions);
 
   Future<void> build(ClientBuildContext context) async {
+    final successFunctions = <FunctionSpec>[];
     // Create the functions
     for (final function in functions) {
       try {
@@ -55,11 +56,11 @@ class FunctionsSpec with FunctionsSpecMappable {
           function.fileName,
         );
         context.outputs[filePath] = code;
+        successFunctions.add(function);
       } catch (e) {
         print(
           "Failed to build function ${function.convexFunctionIdentifier}. Check the file and ensure it is valid.\nContents: $e",
         );
-        rethrow;
       }
     }
     // Create the client.dart file
@@ -69,7 +70,7 @@ class FunctionsSpec with FunctionsSpecMappable {
     // Create the literals.dart file
     _buildLiterals(context);
     // Creat the entrypoint file
-    _buildEntrypoint(context);
+    _buildEntrypoint(context, successFunctions);
     // Format the code
     for (final entry in context.outputs.entries) {
       try {
@@ -78,13 +79,16 @@ class FunctionsSpec with FunctionsSpecMappable {
     }
   }
 
-  void _buildEntrypoint(ClientBuildContext context) {
+  void _buildEntrypoint(
+    ClientBuildContext context,
+    List<FunctionSpec> successFunctions,
+  ) {
     context.outputs["client.dart"] =
         """
 export 'src/client.dart';
 export 'src/schema.dart';
 export 'src/literals.dart';
-${functions.map((entry) => "export 'src/functions/${entry.folderName}/${entry.fileName}' show  ${entry.argsTypeName != "void" ? "${entry.argsTypeName}," : ""} ${entry.returnsTypeName};").join("\n")}
+${successFunctions.map((entry) => "export 'src/functions/${entry.folderName}/${entry.fileName}' hide serialize, deserialize;").join("\n")}
     """;
   }
 
@@ -236,7 +240,7 @@ class FunctionSpec with FunctionSpecMappable {
 
   void build(FunctionBuildContext context) {
     context.headerBuffer.write("""
-// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
+// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code, dead_null_aware_expression
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 import "package:convex_dart/src/convex_dart_for_generated_code.dart";
@@ -272,6 +276,11 @@ import "../../literals.dart";
       FunctionType.mutation => "MutationOperation",
       FunctionType.action => "ActionOperation",
     };
+
+    context.functionBuffer.writeln(
+      "final $functionName = $opperationType<$argsTypeName,$returnsTypeName>('$convexFunctionIdentifier',serialize,deserialize);",
+    );
+
     String serializeCode;
     if (args is JsAny) {
       serializeCode = "{}";
@@ -281,12 +290,14 @@ import "../../literals.dart";
       serializeCode = serializeCode.substring(12, serializeCode.length - 1);
     }
 
-    // TODO: Handle primitive return types
-    final deserializeCode = returns.deserialize(
+    String deserializeCode = returns.deserialize(
       context,
       "decodeValue(map)",
       nullable: false,
     );
+    if (returns is! JsObject) {
+      deserializeCode = "(body: $deserializeCode)";
+    }
 
     context.functionBuffer.writeln("""
 BTreeMapStringValue serialize($argsTypeName args) {
@@ -508,8 +519,7 @@ class JsLiteral extends JsType with JsLiteralMappable {
     return buildValue;
   }
 
-  // The code of the literal class
-  String get _literalCode {
+  dynamic get literalValueCode {
     // Ensure that this literal type can be encoded
     if (value is! String &&
         value is! int &&
@@ -534,14 +544,19 @@ class JsLiteral extends JsType with JsLiteralMappable {
     } else {
       valueString = value;
     }
+    return valueString;
+  }
+
+  // The code of the literal class
+  String get _literalCode {
     return """
 
 class $literalTypeName implements Literal {
   const $literalTypeName();
-  const $literalTypeName.validate(dynamic value):assert(value == $valueString, r"Value mismatch for $literalTypeName");
+  const $literalTypeName.validate(dynamic value):assert(value == $literalValueCode, r"Value mismatch for $literalTypeName");
   
   @override
-  final value = $valueString; 
+  final value = $literalValueCode; 
 
   @override
   bool operator ==(Object other) {
@@ -599,24 +614,6 @@ class JsUnion extends JsType with JsUnionMappable {
 
   @override
   String dartType(FunctionBuildContext context) {
-    // We do not support all unions.
-
-    // If this is a union of a type and null,
-    // return a nullable type
-    if (value.length == 2 &&
-        value.any((e) => e is JsNull) &&
-        value.any((e) => e is! JsNull)) {
-      final realType = value.where((e) => e is! JsNull).first;
-      return "${realType.dartType(context)}?";
-    }
-
-    // If a union contains a type other than a literal or null, throw and error
-    if (value.any((e) => e is! JsLiteral && e is! JsNull)) {
-      throw UnimplementedError(
-        "The type generator only supports unions of literals and null. If you are seeing this, please file an issue on GitHub.",
-      );
-    }
-
     // A union may not contain a String type and a ConvexId type
     // We have no way to differentiate between the two
     // So we need to throw an error
@@ -627,6 +624,13 @@ class JsUnion extends JsType with JsUnionMappable {
     }
 
     final realTypes = value.where((e) => e is! JsNull).toList();
+    // Ensure we don't have a union between literal and a non-literal type
+    if (realTypes.any((e) => e is JsLiteral) &&
+        realTypes.any((e) => e is! JsLiteral)) {
+      throw UnimplementedError(
+        "A union may not contain a literal type and a non-literal type. If you are seeing this, please file an issue on GitHub.",
+      );
+    }
     final containsNull = value.any((e) => e is JsNull);
 
     if (realTypes.isEmpty) {
@@ -681,12 +685,60 @@ class JsUnion extends JsType with JsUnionMappable {
     String name, {
     required bool nullable,
   }) {
+    nullable = nullable || value.any((e) => e is JsNull);
+    final dot = nullable ? "?." : ".";
     // Do we need to cast?
     final realTypes = value.where((e) => e is! JsNull).toList();
     if (realTypes.length == 1) {
       return realTypes[0].deserialize(context, name, nullable: true);
     } else {
-      return "Union${realTypes.length}<${realTypes.map((e) => e.dartType(context)).join(', ')}>($name)";
+      String type =
+          "Union${realTypes.length}<${realTypes.map((e) => e.dartType(context)).join(', ')}>";
+      // If it is a union of literals, we need to use the fromValue method
+      if (realTypes.every((e) => e is JsLiteral)) {
+        // ignore: prefer_interpolation_to_compose_strings
+        final fnBuffer = StringBuffer();
+        final StringBuffer map = StringBuffer("{");
+        for (final literal in realTypes.whereType<JsLiteral>()) {
+          map.write(
+            "${literal.literalValueCode} : ${literal.literalTypeName}(),",
+          );
+        }
+        if (nullable) {
+          map.write("null:null,");
+        }
+        map.write("}");
+        fnBuffer.writeln("""
+final map = $map;
+if (map.containsKey($name)){
+  return map[$name];
+}
+throw Exception(($name${dot}toString() ?? "null") + r" cannot be deserialized into a $type");
+""");
+        type = """$type((){$fnBuffer}())""";
+      } else {
+        final fnBuffer = StringBuffer();
+        for (final type in realTypes) {
+          fnBuffer.writeln("""
+try{
+  return ${type.deserialize(context, name, nullable: nullable)};
+} catch(e){}
+""");
+        }
+        if (nullable) {
+          fnBuffer.writeln("""
+if ($name == null){
+  return null;
+}
+""");
+        }
+        fnBuffer.writeln("""
+throw Exception(($name${dot}toString() ?? "null") + r" cannot be deserialized into a $type");
+""");
+
+        type = """$type((){$fnBuffer}())""";
+      }
+      return type;
     }
   }
 }

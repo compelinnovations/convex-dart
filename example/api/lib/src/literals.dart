@@ -278,56 +278,6 @@ class $FalseLiteral implements Literal {
   }
 }
 
-class $SpecialLiteral implements Literal {
-  const $SpecialLiteral();
-  const $SpecialLiteral.validate(dynamic value)
-    : assert(value == 'special', r"Value mismatch for $SpecialLiteral");
-
-  @override
-  final value = 'special';
-
-  @override
-  bool operator ==(Object other) {
-    if (other is $SpecialLiteral) {
-      return value == other.value;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode => value.hashCode;
-
-  @override
-  String toString() {
-    return r"$SpecialLiteral(special)";
-  }
-}
-
-class $42Literal implements Literal {
-  const $42Literal();
-  const $42Literal.validate(dynamic value)
-    : assert(value == 42.0, r"Value mismatch for $42Literal");
-
-  @override
-  final value = 42.0;
-
-  @override
-  bool operator ==(Object other) {
-    if (other is $42Literal) {
-      return value == other.value;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode => value.hashCode;
-
-  @override
-  String toString() {
-    return r"$42Literal(42)";
-  }
-}
-
 class $MixedLiteral implements Literal {
   const $MixedLiteral();
   const $MixedLiteral.validate(dynamic value)

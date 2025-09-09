@@ -1,4 +1,4 @@
-// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
+// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code, dead_null_aware_expression
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 import "package:convex_dart/src/convex_dart_for_generated_code.dart";
@@ -6,24 +6,22 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+final query110 = QueryOperation<Query110Args, Query110Response>(
+  'tasks:query110',
+  serialize,
+  deserialize,
+);
 BTreeMapStringValue serialize(Query110Args args) {
-  return hashmapToBtreemap(
-    hashmap: {
-      'i': encodeValue(
-        args.i?.split(
-          (on211231) => encodeValue(on211231),
-          (on190711) => encodeValue(on190711),
-        ),
-      ),
-    },
-  );
+  return hashmapToBtreemap(hashmap: {'i': encodeValue(args.i)});
 }
 
 Query110Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on470425) => (i: Union2<bool, $MixedLiteral>(on470425['i'])),
+    (on358059) => (
+      i: on358059['i'] == null ? null : $MixedLiteral.validate(on358059['i']),
+    ),
   );
 }
 
-typedef Query110Args = ({Union2<bool, $MixedLiteral>? i});
-typedef Query110Response = ({Union2<bool, $MixedLiteral>? i});
+typedef Query110Args = ({$MixedLiteral? i});
+typedef Query110Response = ({$MixedLiteral? i});

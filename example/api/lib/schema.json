@@ -3,19 +3,6 @@
   "functions": [
     {
       "args": {
-        "type": "any"
-      },
-      "functionType": "Query",
-      "identifier": "tasks.js:query0",
-      "returns": {
-        "type": "any"
-      },
-      "visibility": {
-        "kind": "public"
-      }
-    },
-    {
-      "args": {
         "type": "object",
         "value": {
           "i": {
@@ -3888,103 +3875,6 @@
               "type": "union",
               "value": [
                 {
-                  "type": "string"
-                },
-                {
-                  "type": "literal",
-                  "value": "special"
-                }
-              ]
-            },
-            "optional": false
-          }
-        }
-      },
-      "functionType": "Query",
-      "identifier": "tasks.js:query108",
-      "returns": {
-        "type": "object",
-        "value": {
-          "i": {
-            "fieldType": {
-              "type": "union",
-              "value": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "literal",
-                  "value": "special"
-                }
-              ]
-            },
-            "optional": false
-          }
-        }
-      },
-      "visibility": {
-        "kind": "public"
-      }
-    },
-    {
-      "args": {
-        "type": "object",
-        "value": {
-          "i": {
-            "fieldType": {
-              "type": "union",
-              "value": [
-                {
-                  "type": "number"
-                },
-                {
-                  "type": "literal",
-                  "value": 42
-                }
-              ]
-            },
-            "optional": false
-          }
-        }
-      },
-      "functionType": "Query",
-      "identifier": "tasks.js:query109",
-      "returns": {
-        "type": "object",
-        "value": {
-          "i": {
-            "fieldType": {
-              "type": "union",
-              "value": [
-                {
-                  "type": "number"
-                },
-                {
-                  "type": "literal",
-                  "value": 42
-                }
-              ]
-            },
-            "optional": false
-          }
-        }
-      },
-      "visibility": {
-        "kind": "public"
-      }
-    },
-    {
-      "args": {
-        "type": "object",
-        "value": {
-          "i": {
-            "fieldType": {
-              "type": "union",
-              "value": [
-                {
-                  "type": "boolean"
-                },
-                {
                   "type": "literal",
                   "value": "mixed"
                 },
@@ -4006,9 +3896,6 @@
             "fieldType": {
               "type": "union",
               "value": [
-                {
-                  "type": "boolean"
-                },
                 {
                   "type": "literal",
                   "value": "mixed"
@@ -6449,6 +6336,204 @@
                   "optional": false
                 }
               }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "any"
+      },
+      "functionType": "Query",
+      "identifier": "primitive_returns.js:voidReturn",
+      "returns": {
+        "type": "any"
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "any"
+      },
+      "functionType": "Query",
+      "identifier": "primitive_returns.js:strReturn",
+      "returns": {
+        "type": "string"
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "any"
+      },
+      "functionType": "Query",
+      "identifier": "primitive_returns.js:numReturn",
+      "returns": {
+        "type": "number"
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "any"
+      },
+      "functionType": "Query",
+      "identifier": "primitive_returns.js:boolReturn",
+      "returns": {
+        "type": "boolean"
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "any"
+      },
+      "functionType": "Query",
+      "identifier": "primitive_returns.js:int64Return",
+      "returns": {
+        "type": "bigint"
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "any"
+      },
+      "functionType": "Query",
+      "identifier": "primitive_returns.js:bytesReturn",
+      "returns": {
+        "type": "bytes"
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "any"
+      },
+      "functionType": "Query",
+      "identifier": "primitive_returns.js:nullReturn",
+      "returns": {
+        "type": "null"
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "any"
+      },
+      "functionType": "Query",
+      "identifier": "primitive_returns.js:unionReturn",
+      "returns": {
+        "type": "union",
+        "value": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "any"
+      },
+      "functionType": "Query",
+      "identifier": "primitive_returns.js:arrayReturn",
+      "returns": {
+        "type": "array",
+        "value": {
+          "type": "string"
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "any"
+      },
+      "functionType": "Query",
+      "identifier": "primitive_returns.js:idReturn",
+      "returns": {
+        "tableName": "tasks",
+        "type": "id"
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "any"
+      },
+      "functionType": "Query",
+      "identifier": "primitive_returns.js:recordReturn",
+      "returns": {
+        "keys": {
+          "type": "string"
+        },
+        "type": "record",
+        "values": {
+          "fieldType": {
+            "type": "string"
+          },
+          "optional": false
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "any"
+      },
+      "functionType": "Query",
+      "identifier": "primitive_returns.js:anyReturn",
+      "returns": {
+        "type": "any"
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "any"
+      },
+      "functionType": "Query",
+      "identifier": "primitive_returns.js:objectReturn",
+      "returns": {
+        "type": "object",
+        "value": {
+          "i": {
+            "fieldType": {
+              "type": "string"
             },
             "optional": false
           }

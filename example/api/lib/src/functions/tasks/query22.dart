@@ -1,4 +1,4 @@
-// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
+// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code, dead_null_aware_expression
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 import "package:convex_dart/src/convex_dart_for_generated_code.dart";
@@ -6,6 +6,11 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+final query22 = QueryOperation<Query22Args, Query22Response>(
+  'tasks:query22',
+  serialize,
+  deserialize,
+);
 BTreeMapStringValue serialize(Query22Args args) {
   return hashmapToBtreemap(
     hashmap: {if (args.i.isDefined) 'i': encodeValue(args.i.asDefined().value)},
@@ -14,9 +19,9 @@ BTreeMapStringValue serialize(Query22Args args) {
 
 Query22Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on167299) => (
-      i: on167299.containsKey('i')
-          ? Defined($TrueLiteral.validate(on167299['i']))
+    (on795780) => (
+      i: on795780.containsKey('i')
+          ? Defined($TrueLiteral.validate(on795780['i']))
           : Undefined<$TrueLiteral>(),
     ),
   );

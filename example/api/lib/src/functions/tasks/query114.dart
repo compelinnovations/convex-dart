@@ -1,4 +1,4 @@
-// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
+// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code, dead_null_aware_expression
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 import "package:convex_dart/src/convex_dart_for_generated_code.dart";
@@ -6,6 +6,11 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+final query114 = QueryOperation<Query114Args, Query114Response>(
+  'tasks:query114',
+  serialize,
+  deserialize,
+);
 BTreeMapStringValue serialize(Query114Args args) {
   return hashmapToBtreemap(
     hashmap: {
@@ -22,16 +27,16 @@ BTreeMapStringValue serialize(Query114Args args) {
 
 Query114Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on958060) => (
-      i: (on958060['i'] as IMap<String, dynamic>).then(
-        (on115217) => (
-          email: on115217.containsKey('email')
-              ? Defined((on115217['email'] as String))
+    (on778608) => (
+      i: (on778608['i'] as IMap<String, dynamic>).then(
+        (on141558) => (
+          email: on141558.containsKey('email')
+              ? Defined((on141558['email'] as String))
               : Undefined<String>(),
-          name: on115217.containsKey('name')
-              ? Defined((on115217['name'] as String))
+          name: on141558.containsKey('name')
+              ? Defined((on141558['name'] as String))
               : Undefined<String>(),
-          phone: (on115217['phone'] as String?),
+          phone: (on141558['phone'] as String?),
         ),
       ),
     ),

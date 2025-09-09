@@ -1,4 +1,4 @@
-// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
+// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code, dead_null_aware_expression
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 import "package:convex_dart/src/convex_dart_for_generated_code.dart";
@@ -6,6 +6,11 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+final query113 = QueryOperation<Query113Args, Query113Response>(
+  'tasks:query113',
+  serialize,
+  deserialize,
+);
 BTreeMapStringValue serialize(Query113Args args) {
   return hashmapToBtreemap(
     hashmap: {
@@ -25,19 +30,19 @@ BTreeMapStringValue serialize(Query113Args args) {
 
 Query113Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on65979) => (
-      i: (on65979['i'] as IMap<String, dynamic>).then(
-        (on845735) => (
-          settings: (on845735['settings'] as IMap<String, dynamic>).then(
-            (on67992) => (
-              notifications: (on67992['notifications'] as bool),
-              theme: (on67992['theme'] as String),
+    (on738424) => (
+      i: (on738424['i'] as IMap<String, dynamic>).then(
+        (on556330) => (
+          settings: (on556330['settings'] as IMap<String, dynamic>).then(
+            (on146090) => (
+              notifications: (on146090['notifications'] as bool),
+              theme: (on146090['theme'] as String),
             ),
           ),
-          user: (on845735['user'] as IMap<String, dynamic>).then(
-            (on548509) => (
-              email: (on548509['email'] as String),
-              name: (on548509['name'] as String),
+          user: (on556330['user'] as IMap<String, dynamic>).then(
+            (on711738) => (
+              email: (on711738['email'] as String),
+              name: (on711738['name'] as String),
             ),
           ),
         ),

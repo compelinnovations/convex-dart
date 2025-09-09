@@ -1,4 +1,4 @@
-// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
+// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code, dead_null_aware_expression
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 import "package:convex_dart/src/convex_dart_for_generated_code.dart";
@@ -6,12 +6,17 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+final query87 = QueryOperation<Query87Args, Query87Response>(
+  'tasks:query87',
+  serialize,
+  deserialize,
+);
 BTreeMapStringValue serialize(Query87Args args) {
   return hashmapToBtreemap(
     hashmap: {
       'i': encodeValue({
-        for (final on734108 in args.i.entries)
-          on734108.key: encodeValue(encodeValue(on734108.value)),
+        for (final on985206 in args.i.entries)
+          on985206.key: encodeValue(encodeValue(on985206.value)),
       }),
     },
   );
@@ -19,9 +24,9 @@ BTreeMapStringValue serialize(Query87Args args) {
 
 Query87Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on897345) => (
-      i: (on897345['i'] as IMap<String, dynamic>).map(
-        (on423211, on84411) => MapEntry(on423211, on84411),
+    (on627840) => (
+      i: (on627840['i'] as IMap<String, dynamic>).map(
+        (on721619, on168943) => MapEntry(on721619, on168943),
       ),
     ),
   );

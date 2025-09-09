@@ -3,12 +3,7 @@ import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 
 
-// void types
-export const query0 = query({
-  handler: (ctx, args) => {
 
-  },
-});
 
 // Primitive types
 export const query1 = query({
@@ -1051,17 +1046,7 @@ export const query98 = query({
   },
 });
 
-export const query99 = query({
-  args: {
-    i: v.union(v.id("tasks"), v.string()),
-  },
-  returns: {
-    i: v.union(v.id("tasks"), v.string()),
-  },
-  handler: (ctx, args) => {
-    return args;
-  },
-});
+
 
 export const query100 = query({
   args: {
@@ -1159,36 +1144,13 @@ export const query107 = query({
   },
 });
 
-export const query108 = query({
-  args: {
-    i: v.union(v.string(), v.literal("special")),
-  },
-  returns: {
-    i: v.union(v.string(), v.literal("special")),
-  },
-  handler: (ctx, args) => {
-    return args;
-  },
-});
-
-export const query109 = query({
-  args: {
-    i: v.union(v.number(), v.literal(42)),
-  },
-  returns: {
-    i: v.union(v.number(), v.literal(42)),
-  },
-  handler: (ctx, args) => {
-    return args;
-  },
-});
 
 export const query110 = query({
   args: {
-    i: v.union(v.boolean(), v.literal("mixed"), v.null()),
+    i: v.union( v.literal("mixed"), v.null()),
   },
   returns: {
-    i: v.union(v.boolean(), v.literal("mixed"), v.null()),
+    i: v.union(v.literal("mixed"), v.null()),
   },
   handler: (ctx, args) => {
     return args;

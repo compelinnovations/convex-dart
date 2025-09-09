@@ -1,4 +1,4 @@
-// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
+// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code, dead_null_aware_expression
 // ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 import "package:convex_dart/src/convex_dart_for_generated_code.dart";
@@ -6,6 +6,11 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+final query120 = QueryOperation<Query120Args, Query120Response>(
+  'tasks:query120',
+  serialize,
+  deserialize,
+);
 BTreeMapStringValue serialize(Query120Args args) {
   return hashmapToBtreemap(
     hashmap: {
@@ -13,16 +18,18 @@ BTreeMapStringValue serialize(Query120Args args) {
         'items': encodeValue(
           args.i.items
               .map(
-                (on12308) => encodeValue({
-                  'id': encodeValue(on12308.id),
+                (on377517) => encodeValue({
+                  'id': encodeValue(on377517.id),
                   'metadata': encodeValue({
-                    for (final on289223 in on12308.metadata.entries)
-                      on289223.key: encodeValue(encodeValue(on289223.value)),
+                    for (final on442536 in on377517.metadata.entries)
+                      on442536.key: encodeValue(encodeValue(on442536.value)),
                   }),
-                  'name': encodeValue(on12308.name),
-                  'price': encodeValue(on12308.price),
-                  if (on12308.quantity.isDefined)
-                    'quantity': encodeValue(on12308.quantity.asDefined().value),
+                  'name': encodeValue(on377517.name),
+                  'price': encodeValue(on377517.price),
+                  if (on377517.quantity.isDefined)
+                    'quantity': encodeValue(
+                      on377517.quantity.asDefined().value,
+                    ),
                 }),
               )
               .toIList(),
@@ -35,28 +42,28 @@ BTreeMapStringValue serialize(Query120Args args) {
 
 Query120Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on429365) => (
-      i: (on429365['i'] as IMap<String, dynamic>).then(
-        (on242399) => (
-          items: (on242399['items'] as IList<dynamic>)
+    (on410591) => (
+      i: (on410591['i'] as IMap<String, dynamic>).then(
+        (on425118) => (
+          items: (on425118['items'] as IList<dynamic>)
               .map(
-                (on550584) => (on550584 as IMap<String, dynamic>).then(
-                  (on473355) => (
-                    id: (on473355['id'] as String),
-                    metadata: (on473355['metadata'] as IMap<String, dynamic>)
+                (on608213) => (on608213 as IMap<String, dynamic>).then(
+                  (on725496) => (
+                    id: (on725496['id'] as String),
+                    metadata: (on725496['metadata'] as IMap<String, dynamic>)
                         .map(
-                          (on929601, on828203) => MapEntry(on929601, on828203),
+                          (on694448, on342282) => MapEntry(on694448, on342282),
                         ),
-                    name: (on473355['name'] as String),
-                    price: (on473355['price'] as double?),
-                    quantity: on473355.containsKey('quantity')
-                        ? Defined((on473355['quantity'] as double))
+                    name: (on725496['name'] as String),
+                    price: (on725496['price'] as double?),
+                    quantity: on725496.containsKey('quantity')
+                        ? Defined((on725496['quantity'] as double))
                         : Undefined<double>(),
                   ),
                 ),
               )
               .toIList(),
-          total: (on242399['total'] as double),
+          total: (on425118['total'] as double),
         ),
       ),
     ),
