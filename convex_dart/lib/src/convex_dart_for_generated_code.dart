@@ -1,5 +1,6 @@
 export 'schema.dart';
 export 'literal.dart';
+export 'unions.dart';
 export 'encode.dart';
 export 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
