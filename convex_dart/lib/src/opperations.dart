@@ -23,7 +23,7 @@ class QueryOperation<Input, Output_> extends Operation<Input, Output_> {
 
   Future<SubscriptionHandle> subscribe(
     Input args,
-    SubscribeEvent<Output_> Function(SubscribeEvent result) onUpdate,
+    void Function(SubscribeEvent<Output_> result) onUpdate,
   ) {
     return client.subscribe(
       name: identifier,
