@@ -5,5 +5,4 @@ environment:
 workspace:
   - convex_dart
   - convex_dart_builder
-  - example
   - example/api

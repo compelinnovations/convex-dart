@@ -8,4 +8,7 @@
     "**/__pycache__": true
   },
   "hide-files.files": [],
+  "rust-analyzer.linkedProjects": [
+    "convex_dart/rust/Cargo.toml"
+  ]
 }
