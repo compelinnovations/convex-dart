@@ -195,6 +195,5 @@ target
 #.idea/
 
 # Ignore all Dart Mapper generated files
-*.mapper.dart
 *.dll
 *.so
