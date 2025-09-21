@@ -84,6 +84,11 @@ sealed class SubscribeEvent<T> {
 class ClientErrorEvent<T> extends SubscribeEvent<T> {
   final String message;
   const ClientErrorEvent(this.message);
+
+  @override
+  String toString() {
+    return 'ClientErrorEvent(message: $message)';
+  }
 }
 
 /// The error payload of a Convex function run that doesn't complete
@@ -96,10 +101,20 @@ class ConvexErrorEvent<T> extends SubscribeEvent<T> {
   /// function to a client.
   final dynamic data;
   const ConvexErrorEvent(this.message, this.data);
+
+  @override
+  String toString() {
+    return 'ConvexErrorEvent(message: $message, data: $data)';
+  }
 }
 
 /// The result of a successful subscription
 class SuccessEvent<T> extends SubscribeEvent<T> {
   final T data;
   const SuccessEvent(this.data);
+
+  @override
+  String toString() {
+    return 'SuccessEvent(data: $data)';
+  }
 }
