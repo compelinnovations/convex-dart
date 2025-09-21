@@ -25,12 +25,12 @@ BTreeMapStringValue serialize(Query112Args args) {
 
 Query112Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on691774) => (
-      i: (on691774['i'] as IMap<String, dynamic>).then(
-        (on66714) => (
-          completed: (on66714['completed'] as bool),
-          id: TasksId(on66714['id'] as String),
-          title: (on66714['title'] as String),
+    (on165210) => (
+      i: (on165210['i'] as IMap<String, dynamic>).then(
+        (on295626) => (
+          completed: (on295626['completed'] as bool),
+          id: TasksId(on295626['id'] as String),
+          title: (on295626['title'] as String),
         ),
       ),
     ),

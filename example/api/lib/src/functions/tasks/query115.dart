@@ -18,18 +18,18 @@ BTreeMapStringValue serialize(Query115Args args) {
         'categories': encodeValue(
           args.i.categories
               .map(
-                (on801690) => encodeValue(
-                  on801690.split(
-                    (on568385) => encodeValue(on568385),
-                    (on32142) => encodeValue(on32142),
-                    (on671097) => encodeValue(on671097),
+                (on817225) => encodeValue(
+                  on817225.split(
+                    (on540137) => encodeValue(on540137),
+                    (on242494) => encodeValue(on242494),
+                    (on795961) => encodeValue(on795961),
                   ),
                 ),
               )
               .toIList(),
         ),
         'tags': encodeValue(
-          args.i.tags.map((on845710) => encodeValue(on845710)).toIList(),
+          args.i.tags.map((on110672) => encodeValue(on110672)).toIList(),
         ),
       }),
     },
@@ -38,31 +38,31 @@ BTreeMapStringValue serialize(Query115Args args) {
 
 Query115Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on87642) => (
-      i: (on87642['i'] as IMap<String, dynamic>).then(
-        (on669531) => (
-          categories: (on669531['categories'] as IList<dynamic>)
+    (on715751) => (
+      i: (on715751['i'] as IMap<String, dynamic>).then(
+        (on46794) => (
+          categories: (on46794['categories'] as IList<dynamic>)
               .map(
                 (
-                  on837789,
+                  on752260,
                 ) => Union3<$WorkLiteral, $PersonalLiteral, $UrgentLiteral>(() {
                   final map = {
                     'work': $WorkLiteral(),
                     'personal': $PersonalLiteral(),
                     'urgent': $UrgentLiteral(),
                   };
-                  if (map.containsKey(on837789)) {
-                    return map[on837789];
+                  if (map.containsKey(on752260)) {
+                    return map[on752260];
                   }
                   throw Exception(
-                    (on837789.toString() ?? "null") +
+                    (on752260.toString() ?? "null") +
                         r" cannot be deserialized into a Union3<$WorkLiteral, $PersonalLiteral, $UrgentLiteral>",
                   );
                 }()),
               )
               .toIList(),
-          tags: (on669531['tags'] as IList<dynamic>)
-              .map((on320205) => (on320205 as String))
+          tags: (on46794['tags'] as IList<dynamic>)
+              .map((on841272) => (on841272 as String))
               .toIList(),
         ),
       ),

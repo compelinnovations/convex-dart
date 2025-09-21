@@ -129,3 +129,5 @@ export 'src/functions/primitive_returns/anyReturn.dart'
     hide serialize, deserialize;
 export 'src/functions/primitive_returns/objectReturn.dart'
     hide serialize, deserialize;
+export 'src/functions/primitive_returns/privateObjectReturn.dart'
+    hide serialize, deserialize;

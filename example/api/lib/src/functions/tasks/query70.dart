@@ -15,8 +15,8 @@ BTreeMapStringValue serialize(Query70Args args) {
   return hashmapToBtreemap(
     hashmap: {
       'i': encodeValue({
-        for (final on876459 in args.i.entries)
-          on876459.key: encodeValue(encodeValue(on876459.value)),
+        for (final on892386 in args.i.entries)
+          on892386.key: encodeValue(encodeValue(on892386.value)),
       }),
     },
   );
@@ -24,9 +24,9 @@ BTreeMapStringValue serialize(Query70Args args) {
 
 Query70Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on278736) => (
-      i: (on278736['i'] as IMap<String, dynamic>).map(
-        (on353057, on336437) => MapEntry(on353057, (on336437 as double)),
+    (on209079) => (
+      i: (on209079['i'] as IMap<String, dynamic>).map(
+        (on317641, on418112) => MapEntry(on317641, (on418112 as double)),
       ),
     ),
   );

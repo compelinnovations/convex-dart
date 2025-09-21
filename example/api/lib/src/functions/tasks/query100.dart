@@ -16,8 +16,8 @@ BTreeMapStringValue serialize(Query100Args args) {
     hashmap: {
       'i': encodeValue(
         args.i.split(
-          (on879655) => encodeValue(on879655),
-          (on828731) => encodeValue(on828731),
+          (on198482) => encodeValue(on198482),
+          (on603303) => encodeValue(on603303),
         ),
       ),
     },
@@ -26,14 +26,14 @@ BTreeMapStringValue serialize(Query100Args args) {
 
 Query100Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on796800) => (
+    (on62519) => (
       i: Union2<$YesLiteral, $NoLiteral>(() {
         final map = {'yes': $YesLiteral(), 'no': $NoLiteral()};
-        if (map.containsKey(on796800['i'])) {
-          return map[on796800['i']];
+        if (map.containsKey(on62519['i'])) {
+          return map[on62519['i']];
         }
         throw Exception(
-          (on796800['i'].toString() ?? "null") +
+          (on62519['i'].toString() ?? "null") +
               r" cannot be deserialized into a Union2<$YesLiteral, $NoLiteral>",
         );
       }()),

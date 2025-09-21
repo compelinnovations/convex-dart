@@ -102,3 +102,12 @@ export const objectReturn = query({
     return { i: "Hello" };
   },
 });
+
+export const privateObjectReturn = query({
+  returns: v.object({
+    _i: v.string(),
+  }),
+  handler: (ctx, args) => {
+    return { _i: "Hello" };
+  },
+});

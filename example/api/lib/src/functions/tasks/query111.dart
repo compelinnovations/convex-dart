@@ -24,11 +24,11 @@ BTreeMapStringValue serialize(Query111Args args) {
 
 Query111Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on958856) => (
-      i: (on958856['i'] as IMap<String, dynamic>).then(
-        (on106229) => (
-          age: (on106229['age'] as double),
-          name: (on106229['name'] as String),
+    (on902953) => (
+      i: (on902953['i'] as IMap<String, dynamic>).then(
+        (on856750) => (
+          age: (on856750['age'] as double),
+          name: (on856750['name'] as String),
         ),
       ),
     ),

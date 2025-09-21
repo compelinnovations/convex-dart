@@ -17,7 +17,7 @@ BTreeMapStringValue serialize(Query26Args args) {
 
 Query26Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on542693) => (i: (on542693['i'] as bool?)),
+    (on701163) => (i: (on701163['i'] as bool?)),
   );
 }
 

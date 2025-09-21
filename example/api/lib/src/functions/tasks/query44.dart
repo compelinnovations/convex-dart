@@ -14,18 +14,16 @@ final query44 = QueryOperation<Query44Args, Query44Response>(
 BTreeMapStringValue serialize(Query44Args args) {
   return hashmapToBtreemap(
     hashmap: {
-      'i': encodeValue(
-        args.i.map((on963976) => encodeValue(on963976)).toIList(),
-      ),
+      'i': encodeValue(args.i.map((on6213) => encodeValue(on6213)).toIList()),
     },
   );
 }
 
 Query44Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on516401) => (
-      i: (on516401['i'] as IList<dynamic>)
-          .map((on735090) => $1Literal.validate(on735090))
+    (on106071) => (
+      i: (on106071['i'] as IList<dynamic>)
+          .map((on751138) => $1Literal.validate(on751138))
           .toIList(),
     ),
   );

@@ -17,8 +17,8 @@ BTreeMapStringValue serialize(Query31Args args) {
 
 Query31Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on874735) =>
-        (i: on874735['i'] == null ? null : $HiLiteral.validate(on874735['i'])),
+    (on587232) =>
+        (i: on587232['i'] == null ? null : $HiLiteral.validate(on587232['i'])),
   );
 }
 

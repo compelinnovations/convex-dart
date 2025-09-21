@@ -30,19 +30,19 @@ BTreeMapStringValue serialize(Query113Args args) {
 
 Query113Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on738424) => (
-      i: (on738424['i'] as IMap<String, dynamic>).then(
-        (on556330) => (
-          settings: (on556330['settings'] as IMap<String, dynamic>).then(
-            (on146090) => (
-              notifications: (on146090['notifications'] as bool),
-              theme: (on146090['theme'] as String),
+    (on463849) => (
+      i: (on463849['i'] as IMap<String, dynamic>).then(
+        (on866837) => (
+          settings: (on866837['settings'] as IMap<String, dynamic>).then(
+            (on56572) => (
+              notifications: (on56572['notifications'] as bool),
+              theme: (on56572['theme'] as String),
             ),
           ),
-          user: (on556330['user'] as IMap<String, dynamic>).then(
-            (on711738) => (
-              email: (on711738['email'] as String),
-              name: (on711738['name'] as String),
+          user: (on866837['user'] as IMap<String, dynamic>).then(
+            (on148112) => (
+              email: (on148112['email'] as String),
+              name: (on148112['name'] as String),
             ),
           ),
         ),

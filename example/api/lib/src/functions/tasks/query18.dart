@@ -19,9 +19,9 @@ BTreeMapStringValue serialize(Query18Args args) {
 
 Query18Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on69684) => (
-      i: on69684.containsKey('i')
-          ? Defined(TasksId(on69684['i'] as String))
+    (on669341) => (
+      i: on669341.containsKey('i')
+          ? Defined(TasksId(on669341['i'] as String))
           : Undefined<TasksId>(),
     ),
   );

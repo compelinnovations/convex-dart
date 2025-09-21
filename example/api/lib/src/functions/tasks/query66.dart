@@ -15,7 +15,7 @@ BTreeMapStringValue serialize(Query66Args args) {
   return hashmapToBtreemap(
     hashmap: {
       'i': encodeValue(
-        args.i.map((on516177) => encodeValue(on516177)).toIList(),
+        args.i.map((on331780) => encodeValue(on331780)).toIList(),
       ),
     },
   );
@@ -23,11 +23,11 @@ BTreeMapStringValue serialize(Query66Args args) {
 
 Query66Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on986714) => (
-      i: (on986714['i'] as IList<dynamic>)
+    (on25964) => (
+      i: (on25964['i'] as IList<dynamic>)
           .map(
-            (on655686) =>
-                on655686 == null ? null : $1Literal.validate(on655686),
+            (on668745) =>
+                on668745 == null ? null : $1Literal.validate(on668745),
           )
           .toIList(),
     ),

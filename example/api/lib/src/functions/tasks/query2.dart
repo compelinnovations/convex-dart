@@ -17,7 +17,7 @@ BTreeMapStringValue serialize(Query2Args args) {
 
 Query2Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on746356) => (i: (on746356['i'] as double)),
+    (on885015) => (i: (on885015['i'] as double)),
   );
 }
 

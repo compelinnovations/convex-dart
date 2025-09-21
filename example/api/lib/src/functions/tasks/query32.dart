@@ -17,8 +17,8 @@ BTreeMapStringValue serialize(Query32Args args) {
 
 Query32Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on802184) =>
-        (i: on802184['i'] == null ? null : $1Literal.validate(on802184['i'])),
+    (on548130) =>
+        (i: on548130['i'] == null ? null : $1Literal.validate(on548130['i'])),
   );
 }
 

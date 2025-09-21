@@ -19,9 +19,9 @@ BTreeMapStringValue serialize(Query17Args args) {
 
 Query17Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on857759) => (
-      i: on857759.containsKey('i')
-          ? Defined((on857759['i'] as Uint8ListWithEquality))
+    (on572717) => (
+      i: on572717.containsKey('i')
+          ? Defined((on572717['i'] as Uint8ListWithEquality))
           : Undefined<Uint8ListWithEquality>(),
     ),
   );

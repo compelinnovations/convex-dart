@@ -18,16 +18,16 @@ BTreeMapStringValue serialize(Query116Args args) {
         'data': encodeValue({
           'type': encodeValue(
             args.i.data.type.split(
-              (on177488) => encodeValue(on177488),
-              (on160859) => encodeValue(on160859),
-              (on6960) => encodeValue(on6960),
+              (on942094) => encodeValue(on942094),
+              (on357751) => encodeValue(on357751),
+              (on883) => encodeValue(on883),
             ),
           ),
           'value': encodeValue(args.i.data.value),
         }),
         'metadata': encodeValue({
-          for (final on957183 in args.i.metadata.entries)
-            on957183.key: encodeValue(encodeValue(on957183.value)),
+          for (final on998635 in args.i.metadata.entries)
+            on998635.key: encodeValue(encodeValue(on998635.value)),
         }),
       }),
     },
@@ -36,30 +36,30 @@ BTreeMapStringValue serialize(Query116Args args) {
 
 Query116Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on945935) => (
-      i: (on945935['i'] as IMap<String, dynamic>).then(
-        (on562485) => (
-          data: (on562485['data'] as IMap<String, dynamic>).then(
-            (on248007) => (
+    (on978892) => (
+      i: (on978892['i'] as IMap<String, dynamic>).then(
+        (on834603) => (
+          data: (on834603['data'] as IMap<String, dynamic>).then(
+            (on194053) => (
               type: Union3<$TextLiteral, $NumberLiteral, $BooleanLiteral>(() {
                 final map = {
                   'text': $TextLiteral(),
                   'number': $NumberLiteral(),
                   'boolean': $BooleanLiteral(),
                 };
-                if (map.containsKey(on248007['type'])) {
-                  return map[on248007['type']];
+                if (map.containsKey(on194053['type'])) {
+                  return map[on194053['type']];
                 }
                 throw Exception(
-                  (on248007['type'].toString() ?? "null") +
+                  (on194053['type'].toString() ?? "null") +
                       r" cannot be deserialized into a Union3<$TextLiteral, $NumberLiteral, $BooleanLiteral>",
                 );
               }()),
-              value: on248007['value'],
+              value: on194053['value'],
             ),
           ),
-          metadata: (on562485['metadata'] as IMap<String, dynamic>).map(
-            (on561554, on451060) => MapEntry(on561554, on451060),
+          metadata: (on834603['metadata'] as IMap<String, dynamic>).map(
+            (on531827, on409634) => MapEntry(on531827, on409634),
           ),
         ),
       ),

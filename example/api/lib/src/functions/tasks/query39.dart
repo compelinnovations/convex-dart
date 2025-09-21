@@ -15,7 +15,7 @@ BTreeMapStringValue serialize(Query39Args args) {
   return hashmapToBtreemap(
     hashmap: {
       'i': encodeValue(
-        args.i.map((on864981) => encodeValue(on864981)).toIList(),
+        args.i.map((on101950) => encodeValue(on101950)).toIList(),
       ),
     },
   );
@@ -23,9 +23,9 @@ BTreeMapStringValue serialize(Query39Args args) {
 
 Query39Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on560428) => (
-      i: (on560428['i'] as IList<dynamic>)
-          .map((on671849) => (on671849 as Uint8ListWithEquality))
+    (on523527) => (
+      i: (on523527['i'] as IList<dynamic>)
+          .map((on552559) => (on552559 as Uint8ListWithEquality))
           .toIList(),
     ),
   );

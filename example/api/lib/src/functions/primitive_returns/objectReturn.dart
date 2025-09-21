@@ -17,7 +17,7 @@ BTreeMapStringValue serialize(void args) {
 
 ObjectReturnResponse deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on12444) => (i: (on12444['i'] as String)),
+    (on402719) => (i: (on402719['i'] as String)),
   );
 }
 

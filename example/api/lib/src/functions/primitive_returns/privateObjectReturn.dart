@@ -6,20 +6,19 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
-final query28 = QueryOperation<Query28Args, Query28Response>(
-  'tasks:query28',
+final privateObjectReturn = QueryOperation<void, PrivateObjectReturnResponse>(
+  'primitive_returns:privateObjectReturn',
   serialize,
   deserialize,
 );
-BTreeMapStringValue serialize(Query28Args args) {
-  return hashmapToBtreemap(hashmap: {'i': encodeValue(args.i)});
+BTreeMapStringValue serialize(void args) {
+  return hashmapToBtreemap(hashmap: {});
 }
 
-Query28Response deserialize(DartValue map) {
+PrivateObjectReturnResponse deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on753571) => (i: (on753571['i'] as Uint8ListWithEquality?)),
+    (on116579) => ($_i: (on116579['_i'] as String)),
   );
 }
 
-typedef Query28Args = ({Uint8ListWithEquality? i});
-typedef Query28Response = ({Uint8ListWithEquality? i});
+typedef PrivateObjectReturnResponse = ({String $_i});

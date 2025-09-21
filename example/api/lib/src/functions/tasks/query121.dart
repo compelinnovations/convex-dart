@@ -17,29 +17,29 @@ BTreeMapStringValue serialize(Query121Args args) {
       'i': encodeValue(
         args.i
             .map(
-              (on101446) => encodeValue({
+              (on595122) => encodeValue({
                 'posts': encodeValue(
-                  on101446.posts
+                  on595122.posts
                       .map(
-                        (on601151) => encodeValue({
+                        (on116343) => encodeValue({
                           'content': encodeValue(
-                            on601151.content.split(
-                              (on548809) => encodeValue(on548809),
-                              (on262886) => encodeValue({
+                            on116343.content.split(
+                              (on352392) => encodeValue(on352392),
+                              (on150720) => encodeValue({
                                 'media': encodeValue(
-                                  on262886.media
-                                      .map((on998939) => encodeValue(on998939))
+                                  on150720.media
+                                      .map((on668926) => encodeValue(on668926))
                                       .toIList(),
                                 ),
-                                'text': encodeValue(on262886.text),
+                                'text': encodeValue(on150720.text),
                               }),
                             ),
                           ),
-                          'id': encodeValue(on601151.id),
-                          'likes': encodeValue(on601151.likes),
+                          'id': encodeValue(on116343.id),
+                          'likes': encodeValue(on116343.likes),
                           'tags': encodeValue(
-                            on601151.tags
-                                .map((on25393) => encodeValue(on25393))
+                            on116343.tags
+                                .map((on635240) => encodeValue(on635240))
                                 .toIList(),
                           ),
                         }),
@@ -48,23 +48,23 @@ BTreeMapStringValue serialize(Query121Args args) {
                 ),
                 'user': encodeValue({
                   'preferences': encodeValue({
-                    for (final on608370 in on101446.user.preferences.entries)
-                      on608370.key: encodeValue(
+                    for (final on963633 in on595122.user.preferences.entries)
+                      on963633.key: encodeValue(
                         encodeValue(
-                          on608370.value.split(
-                            (on328511) => encodeValue(on328511),
-                            (on387939) => encodeValue(on387939),
-                            (on552295) => encodeValue(on552295),
+                          on963633.value.split(
+                            (on749706) => encodeValue(on749706),
+                            (on474856) => encodeValue(on474856),
+                            (on99275) => encodeValue(on99275),
                           ),
                         ),
                       ),
                   }),
                   'profile': encodeValue({
-                    if (on101446.user.profile.avatar.isDefined)
+                    if (on595122.user.profile.avatar.isDefined)
                       'avatar': encodeValue(
-                        on101446.user.profile.avatar.asDefined().value,
+                        on595122.user.profile.avatar.asDefined().value,
                       ),
-                    'name': encodeValue(on101446.user.profile.name),
+                    'name': encodeValue(on595122.user.profile.name),
                   }),
                 }),
               }),
@@ -77,89 +77,89 @@ BTreeMapStringValue serialize(Query121Args args) {
 
 Query121Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on370101) => (
-      i: (on370101['i'] as IList<dynamic>)
+    (on945631) => (
+      i: (on945631['i'] as IList<dynamic>)
           .map(
-            (on498062) => (on498062 as IMap<String, dynamic>).then(
-              (on321249) => (
-                posts: (on321249['posts'] as IList<dynamic>)
+            (on191635) => (on191635 as IMap<String, dynamic>).then(
+              (on812600) => (
+                posts: (on812600['posts'] as IList<dynamic>)
                     .map(
-                      (on269623) => (on269623 as IMap<String, dynamic>).then(
-                        (on377967) => (
+                      (on670485) => (on670485 as IMap<String, dynamic>).then(
+                        (on858852) => (
                           content:
                               Union2<
                                 String,
                                 ({IList<String> media, String text})
                               >(() {
                                 try {
-                                  return (on377967['content'] as String);
+                                  return (on858852['content'] as String);
                                 } catch (e) {}
 
                                 try {
-                                  return (on377967['content']
+                                  return (on858852['content']
                                           as IMap<String, dynamic>)
                                       .then(
-                                        (on353009) => (
+                                        (on268631) => (
                                           media:
-                                              (on353009['media']
+                                              (on268631['media']
                                                       as IList<dynamic>)
                                                   .map(
-                                                    (on320873) =>
-                                                        (on320873 as String),
+                                                    (on666949) =>
+                                                        (on666949 as String),
                                                   )
                                                   .toIList(),
-                                          text: (on353009['text'] as String),
+                                          text: (on268631['text'] as String),
                                         ),
                                       );
                                 } catch (e) {}
 
                                 throw Exception(
-                                  (on377967['content'].toString() ?? "null") +
+                                  (on858852['content'].toString() ?? "null") +
                                       r" cannot be deserialized into a Union2<String, ({IList<String> media,String text})>",
                                 );
                               }()),
-                          id: (on377967['id'] as String),
-                          likes: (on377967['likes'] as double),
-                          tags: (on377967['tags'] as IList<dynamic>)
-                              .map((on338196) => (on338196 as String))
+                          id: (on858852['id'] as String),
+                          likes: (on858852['likes'] as double),
+                          tags: (on858852['tags'] as IList<dynamic>)
+                              .map((on305771) => (on305771 as String))
                               .toIList(),
                         ),
                       ),
                     )
                     .toIList(),
-                user: (on321249['user'] as IMap<String, dynamic>).then(
-                  (on583494) => (
+                user: (on812600['user'] as IMap<String, dynamic>).then(
+                  (on873066) => (
                     preferences:
-                        (on583494['preferences'] as IMap<String, dynamic>).map(
-                          (on234295, on845885) => MapEntry(
-                            on234295,
+                        (on873066['preferences'] as IMap<String, dynamic>).map(
+                          (on174241, on203605) => MapEntry(
+                            on174241,
                             Union3<String, double, bool>(() {
                               try {
-                                return (on845885 as String);
+                                return (on203605 as String);
                               } catch (e) {}
 
                               try {
-                                return (on845885 as double);
+                                return (on203605 as double);
                               } catch (e) {}
 
                               try {
-                                return (on845885 as bool);
+                                return (on203605 as bool);
                               } catch (e) {}
 
                               throw Exception(
-                                (on845885.toString() ?? "null") +
+                                (on203605.toString() ?? "null") +
                                     r" cannot be deserialized into a Union3<String, double, bool>",
                               );
                             }()),
                           ),
                         ),
-                    profile: (on583494['profile'] as IMap<String, dynamic>)
+                    profile: (on873066['profile'] as IMap<String, dynamic>)
                         .then(
-                          (on702690) => (
-                            avatar: on702690.containsKey('avatar')
-                                ? Defined((on702690['avatar'] as String))
+                          (on226812) => (
+                            avatar: on226812.containsKey('avatar')
+                                ? Defined((on226812['avatar'] as String))
                                 : Undefined<String>(),
-                            name: (on702690['name'] as String),
+                            name: (on226812['name'] as String),
                           ),
                         ),
                   ),

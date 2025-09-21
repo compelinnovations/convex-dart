@@ -791,9 +791,19 @@ class JsObject extends JsType with JsObjectMappable {
   Iterable<MapEntry<String, JsField>> get optionalFields =>
       value.entries.where((entry) => entry.value.optional);
 
+  String dartSafeName(String name) {
+    if (name.startsWith("_")) {
+      name = "\$$name";
+    }
+    if (_dartKeywords.contains(name)) {
+      name = "\$$name";
+    }
+    return name;
+  }
+
   @override
   String dartType(FunctionBuildContext context) {
-    return "({${value.entries.map((entry) => "${entry.value.dartType(context)} ${entry.key}").join(",")}})";
+    return "({${value.entries.map((entry) => "${entry.value.dartType(context)} ${dartSafeName(entry.key)}").join(",")}})";
   }
 
   @override
@@ -807,11 +817,11 @@ class JsObject extends JsType with JsObjectMappable {
     for (final entry in value.entries) {
       if (entry.value.optional) {
         buffer.write(
-          "if ($name$dot${entry.key}${dot}isDefined) '${entry.key}': ${entry.value.fieldType.serialize(context, "$name$dot${entry.key}${dot}asDefined()${dot}value", nullable: nullable)},",
+          "if ($name$dot${dartSafeName(entry.key)}${dot}isDefined) '${entry.key}': ${entry.value.fieldType.serialize(context, "$name$dot${dartSafeName(entry.key)}${dot}asDefined()${dot}value", nullable: nullable)},",
         );
       } else {
         buffer.write(
-          "'${entry.key}': ${entry.value.fieldType.serialize(context, "$name$dot${entry.key}", nullable: nullable)},",
+          "'${entry.key}': ${entry.value.fieldType.serialize(context, "$name$dot${dartSafeName(entry.key)}", nullable: nullable)},",
         );
       }
     }
@@ -834,11 +844,11 @@ class JsObject extends JsType with JsObjectMappable {
     for (final entry in value.entries) {
       if (entry.value.optional) {
         buffer.write(
-          "${entry.key}: $argName${dot}containsKey('${entry.key}') ? Defined(${entry.value.fieldType.deserialize(context, "$argName['${entry.key}']", nullable: nullable)}) : Undefined<${entry.value.fieldType.dartType(context)}>(),",
+          "${dartSafeName(entry.key)}: $argName${dot}containsKey('${entry.key}') ? Defined(${entry.value.fieldType.deserialize(context, "$argName['${entry.key}']", nullable: nullable)}) : Undefined<${entry.value.fieldType.dartType(context)}>(),",
         );
       } else {
         buffer.write(
-          "${entry.key}: ${entry.value.fieldType.deserialize(context, "$argName['${entry.key}']", nullable: nullable)},",
+          "${dartSafeName(entry.key)}: ${entry.value.fieldType.deserialize(context, "$argName['${entry.key}']", nullable: nullable)},",
         );
       }
     }
@@ -914,3 +924,67 @@ class ConvexId extends JsType with ConvexIdMappable {
     return "$typeName($name as String)";
   }
 }
+
+List<String> _dartKeywords = [
+  'abstract',
+  'as',
+  'assert',
+  'async',
+  'await',
+  'break',
+  'case',
+  'catch',
+  'class',
+  'const',
+  'continue',
+  'covariant',
+  'default',
+  'deferred',
+  'do',
+  'dynamic',
+  'else',
+  'enum',
+  'export',
+  'extends',
+  'extension',
+  'external',
+  'factory',
+  'false',
+  'final',
+  'finally',
+  'for',
+  'Function',
+  'get',
+  'hide',
+  'if',
+  'implements',
+  'import',
+  'in',
+  'interface',
+  'is',
+  'library',
+  'mixin',
+  'new',
+  'null',
+  'on',
+  'operator',
+  'part',
+  'rethrow',
+  'return',
+  'set',
+  'show',
+  'static',
+  'super',
+  'switch',
+  'sync',
+  'this',
+  'throw',
+  'true',
+  'try',
+  'typedef',
+  'var',
+  'void',
+  'while',
+  'with',
+  'yield',
+];

@@ -13,14 +13,14 @@ final query42 = QueryOperation<Query42Args, Query42Response>(
 );
 BTreeMapStringValue serialize(Query42Args args) {
   return hashmapToBtreemap(
-    hashmap: {'i': encodeValue(args.i.map((on263011) => null).toIList())},
+    hashmap: {'i': encodeValue(args.i.map((on509161) => null).toIList())},
   );
 }
 
 Query42Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on878180) => (
-      i: (on878180['i'] as IList<dynamic>).map((on523273) => null).toIList(),
+    (on179585) => (
+      i: (on179585['i'] as IList<dynamic>).map((on419071) => null).toIList(),
     ),
   );
 }

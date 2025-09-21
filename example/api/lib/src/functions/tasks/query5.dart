@@ -17,7 +17,7 @@ BTreeMapStringValue serialize(Query5Args args) {
 
 Query5Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on898393) => (i: (on898393['i'] as Uint8ListWithEquality)),
+    (on388072) => (i: (on388072['i'] as Uint8ListWithEquality)),
   );
 }
 

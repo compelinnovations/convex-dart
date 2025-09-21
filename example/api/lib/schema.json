@@ -6542,6 +6542,27 @@
       "visibility": {
         "kind": "public"
       }
+    },
+    {
+      "args": {
+        "type": "any"
+      },
+      "functionType": "Query",
+      "identifier": "primitive_returns.js:privateObjectReturn",
+      "returns": {
+        "type": "object",
+        "value": {
+          "_i": {
+            "fieldType": {
+              "type": "string"
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
     }
   ]
 }
