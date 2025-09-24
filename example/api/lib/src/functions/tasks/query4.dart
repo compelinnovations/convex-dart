@@ -6,6 +6,40 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query4Args {
+  final int i;
+
+  const Query4Args({required this.i});
+
+  factory Query4Args.fromJson(Map<String, dynamic> json) {
+    return Query4Args(i: json['i'] as int);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'i': i};
+  }
+
+  Query4Args copyWith({int? i}) {
+    return Query4Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query4Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query4 = QueryOperation<Query4Args, Query4Response>(
   'tasks:query4',
   serialize,
@@ -17,9 +51,8 @@ BTreeMapStringValue serialize(Query4Args args) {
 
 Query4Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on81036) => (i: (on81036['i'] as int)),
+    (on227232) => (i: (on227232['i'] as int)),
   );
 }
 
-typedef Query4Args = ({int i});
 typedef Query4Response = ({int i});

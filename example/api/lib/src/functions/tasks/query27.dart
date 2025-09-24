@@ -6,20 +6,61 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
-final query27 = QueryOperation<Query27Args, Query27Response>(
-  'tasks:query27',
-  serialize,
-  deserialize,
-);
-BTreeMapStringValue serialize(Query27Args args) {
-  return hashmapToBtreemap(hashmap: {'i': encodeValue(args.i)});
+class Query27Args {
+  final int? i;
+
+  const Query27Args({
+    required this.i,
+  });
+
+  factory Query27Args.fromJson(Map<String, dynamic> json) {
+    return Query27Args(
+      i: json['i'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'i': i,
+    };
+  }
+
+  Query27Args copyWith({
+    int?? i,
+  }) {
+    return Query27Args(
+      i: i ?? this.i,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query27Args &&
+        other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
 }
+
+
+final query27 = QueryOperation<Query27Args,Query27Response>('tasks:query27',serialize,deserialize);
+BTreeMapStringValue serialize(Query27Args args) {
+  return hashmapToBtreemap(hashmap: {'i': encodeValue(args.i),});
+}
+
 
 Query27Response deserialize(DartValue map) {
-  return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on723028) => (i: (on723028['i'] as int?)),
-  );
+  return (decodeValue(map) as IMap<String, dynamic>).then((on398593) => (i: (on398593['i'] as int?),));
 }
 
-typedef Query27Args = ({int? i});
+
 typedef Query27Response = ({int? i});

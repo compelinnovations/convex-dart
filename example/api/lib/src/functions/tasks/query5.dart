@@ -6,6 +6,40 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query5Args {
+  final Uint8ListWithEquality i;
+
+  const Query5Args({required this.i});
+
+  factory Query5Args.fromJson(Map<String, dynamic> json) {
+    return Query5Args(i: json['i']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'i': i};
+  }
+
+  Query5Args copyWith({Uint8ListWithEquality? i}) {
+    return Query5Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query5Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query5 = QueryOperation<Query5Args, Query5Response>(
   'tasks:query5',
   serialize,
@@ -17,9 +51,8 @@ BTreeMapStringValue serialize(Query5Args args) {
 
 Query5Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on388072) => (i: (on388072['i'] as Uint8ListWithEquality)),
+    (on35187) => (i: (on35187['i'] as Uint8ListWithEquality)),
   );
 }
 
-typedef Query5Args = ({Uint8ListWithEquality i});
 typedef Query5Response = ({Uint8ListWithEquality i});

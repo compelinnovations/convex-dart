@@ -6,6 +6,40 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query9Args {
+  final $HiLiteral i;
+
+  const Query9Args({required this.i});
+
+  factory Query9Args.fromJson(Map<String, dynamic> json) {
+    return Query9Args(i: json['i']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'i': i};
+  }
+
+  Query9Args copyWith({$HiLiteral? i}) {
+    return Query9Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query9Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query9 = QueryOperation<Query9Args, Query9Response>(
   'tasks:query9',
   serialize,
@@ -17,9 +51,8 @@ BTreeMapStringValue serialize(Query9Args args) {
 
 Query9Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on800856) => (i: $HiLiteral.validate(on800856['i'])),
+    (on599617) => (i: $HiLiteral.validate(on599617['i'])),
   );
 }
 
-typedef Query9Args = ({$HiLiteral i});
 typedef Query9Response = ({$HiLiteral i});

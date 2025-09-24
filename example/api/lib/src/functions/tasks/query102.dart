@@ -6,6 +6,42 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query102Args {
+  final Union3<$AdminLiteral, $UserLiteral, $GuestLiteral> i;
+
+  const Query102Args({required this.i});
+
+  factory Query102Args.fromJson(Map<String, dynamic> json) {
+    return Query102Args(i: json['i']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'i': i};
+  }
+
+  Query102Args copyWith({
+    Union3<$AdminLiteral, $UserLiteral, $GuestLiteral>? i,
+  }) {
+    return Query102Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query102Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query102 = QueryOperation<Query102Args, Query102Response>(
   'tasks:query102',
   serialize,
@@ -16,9 +52,9 @@ BTreeMapStringValue serialize(Query102Args args) {
     hashmap: {
       'i': encodeValue(
         args.i.split(
-          (on440912) => encodeValue(on440912),
-          (on610185) => encodeValue(on610185),
-          (on292558) => encodeValue(on292558),
+          (on41539) => encodeValue(on41539),
+          (on548994) => encodeValue(on548994),
+          (on614129) => encodeValue(on614129),
         ),
       ),
     },
@@ -27,18 +63,18 @@ BTreeMapStringValue serialize(Query102Args args) {
 
 Query102Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on103195) => (
+    (on379447) => (
       i: Union3<$AdminLiteral, $UserLiteral, $GuestLiteral>(() {
         final map = {
           'admin': $AdminLiteral(),
           'user': $UserLiteral(),
           'guest': $GuestLiteral(),
         };
-        if (map.containsKey(on103195['i'])) {
-          return map[on103195['i']];
+        if (map.containsKey(on379447['i'])) {
+          return map[on379447['i']];
         }
         throw Exception(
-          (on103195['i'].toString() ?? "null") +
+          (on379447['i'].toString() ?? "null") +
               r" cannot be deserialized into a Union3<$AdminLiteral, $UserLiteral, $GuestLiteral>",
         );
       }()),
@@ -46,7 +82,6 @@ Query102Response deserialize(DartValue map) {
   );
 }
 
-typedef Query102Args = ({Union3<$AdminLiteral, $UserLiteral, $GuestLiteral> i});
 typedef Query102Response = ({
   Union3<$AdminLiteral, $UserLiteral, $GuestLiteral> i,
 });

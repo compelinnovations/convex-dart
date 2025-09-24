@@ -6,6 +6,50 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query113Args {
+  final ({
+    ({bool notifications, String theme}) settings,
+    ({String email, String name}) user,
+  })
+  i;
+
+  const Query113Args({required this.i});
+
+  factory Query113Args.fromJson(Map<String, dynamic> json) {
+    return Query113Args(i: json['i']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'i': i};
+  }
+
+  Query113Args copyWith({
+    ({
+      ({bool notifications, String theme}) settings,
+      ({String email, String name}) user,
+    })?
+    i,
+  }) {
+    return Query113Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query113Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query113 = QueryOperation<Query113Args, Query113Response>(
   'tasks:query113',
   serialize,
@@ -30,19 +74,19 @@ BTreeMapStringValue serialize(Query113Args args) {
 
 Query113Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on463849) => (
-      i: (on463849['i'] as IMap<String, dynamic>).then(
-        (on866837) => (
-          settings: (on866837['settings'] as IMap<String, dynamic>).then(
-            (on56572) => (
-              notifications: (on56572['notifications'] as bool),
-              theme: (on56572['theme'] as String),
+    (on511021) => (
+      i: (on511021['i'] as IMap<String, dynamic>).then(
+        (on415181) => (
+          settings: (on415181['settings'] as IMap<String, dynamic>).then(
+            (on54275) => (
+              notifications: (on54275['notifications'] as bool),
+              theme: (on54275['theme'] as String),
             ),
           ),
-          user: (on866837['user'] as IMap<String, dynamic>).then(
-            (on148112) => (
-              email: (on148112['email'] as String),
-              name: (on148112['name'] as String),
+          user: (on415181['user'] as IMap<String, dynamic>).then(
+            (on360963) => (
+              email: (on360963['email'] as String),
+              name: (on360963['name'] as String),
             ),
           ),
         ),
@@ -51,13 +95,6 @@ Query113Response deserialize(DartValue map) {
   );
 }
 
-typedef Query113Args = ({
-  ({
-    ({bool notifications, String theme}) settings,
-    ({String email, String name}) user,
-  })
-  i,
-});
 typedef Query113Response = ({
   ({
     ({bool notifications, String theme}) settings,

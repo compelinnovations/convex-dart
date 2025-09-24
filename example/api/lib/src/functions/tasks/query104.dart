@@ -6,53 +6,79 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
-final query104 = QueryOperation<Query104Args, Query104Response>(
-  'tasks:query104',
-  serialize,
-  deserialize,
-);
-BTreeMapStringValue serialize(Query104Args args) {
-  return hashmapToBtreemap(
-    hashmap: {
-      'i': encodeValue(
-        args.i?.split(
-          (on347144) => encodeValue(on347144),
-          (on302349) => encodeValue(on302349),
-          (on349111) => encodeValue(on349111),
-        ),
-      ),
-    },
-  );
+class Query104Args {
+  final Union3<String, double, bool>? i;
+
+  const Query104Args({
+    required this.i,
+  });
+
+  factory Query104Args.fromJson(Map<String, dynamic> json) {
+    return Query104Args(
+      i: json['i'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'i': i,
+    };
+  }
+
+  Query104Args copyWith({
+    Union3<String, double, bool>?? i,
+  }) {
+    return Query104Args(
+      i: i ?? this.i,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query104Args &&
+        other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
 }
+
+
+final query104 = QueryOperation<Query104Args,Query104Response>('tasks:query104',serialize,deserialize);
+BTreeMapStringValue serialize(Query104Args args) {
+  return hashmapToBtreemap(hashmap: {'i': encodeValue(args.i?.split((on590727) => encodeValue(on590727), (on659929) => encodeValue(on659929), (on995693) => encodeValue(on995693))),});
+}
+
 
 Query104Response deserialize(DartValue map) {
-  return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on479241) => (
-      i: Union3<String, double, bool>(() {
-        try {
-          return (on479241['i'] as String?);
-        } catch (e) {}
+  return (decodeValue(map) as IMap<String, dynamic>).then((on461584) => (i: Union3<String, double, bool>((){try{
+  return (on461584['i'] as String?);
+} catch(e){}
 
-        try {
-          return (on479241['i'] as double?);
-        } catch (e) {}
+try{
+  return (on461584['i'] as double?);
+} catch(e){}
 
-        try {
-          return (on479241['i'] as bool?);
-        } catch (e) {}
+try{
+  return (on461584['i'] as bool?);
+} catch(e){}
 
-        if (on479241['i'] == null) {
-          return null;
-        }
-
-        throw Exception(
-          (on479241['i']?.toString() ?? "null") +
-              r" cannot be deserialized into a Union3<String, double, bool>",
-        );
-      }()),
-    ),
-  );
+if (on461584['i'] == null){
+  return null;
 }
 
-typedef Query104Args = ({Union3<String, double, bool>? i});
+throw Exception((on461584['i']?.toString() ?? "null") + r" cannot be deserialized into a Union3<String, double, bool>");
+
+}()),));
+}
+
+
 typedef Query104Response = ({Union3<String, double, bool>? i});

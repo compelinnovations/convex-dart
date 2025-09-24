@@ -6,6 +6,68 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query120Args {
+  final ({
+    IList<
+      ({
+        String id,
+        IMap<String, dynamic> metadata,
+        String name,
+        double? price,
+        Optional<double> quantity,
+      })
+    >
+    items,
+    double total,
+  })
+  i;
+
+  const Query120Args({required this.i});
+
+  factory Query120Args.fromJson(Map<String, dynamic> json) {
+    return Query120Args(i: json['i']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'i': i};
+  }
+
+  Query120Args copyWith({
+    ({
+      IList<
+        ({
+          String id,
+          IMap<String, dynamic> metadata,
+          String name,
+          double? price,
+          Optional<double> quantity,
+        })
+      >
+      items,
+      double total,
+    })?
+    i,
+  }) {
+    return Query120Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query120Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query120 = QueryOperation<Query120Args, Query120Response>(
   'tasks:query120',
   serialize,
@@ -18,17 +80,17 @@ BTreeMapStringValue serialize(Query120Args args) {
         'items': encodeValue(
           args.i.items
               .map(
-                (on352144) => encodeValue({
-                  'id': encodeValue(on352144.id),
+                (on487570) => encodeValue({
+                  'id': encodeValue(on487570.id),
                   'metadata': encodeValue({
-                    for (final on370032 in on352144.metadata.entries)
-                      on370032.key: encodeValue(encodeValue(on370032.value)),
+                    for (final on853105 in on487570.metadata.entries)
+                      on853105.key: encodeValue(encodeValue(on853105.value)),
                   }),
-                  'name': encodeValue(on352144.name),
-                  'price': encodeValue(on352144.price),
-                  if (on352144.quantity.isDefined)
+                  'name': encodeValue(on487570.name),
+                  'price': encodeValue(on487570.price),
+                  if (on487570.quantity.isDefined)
                     'quantity': encodeValue(
-                      on352144.quantity.asDefined().value,
+                      on487570.quantity.asDefined().value,
                     ),
                 }),
               )
@@ -42,50 +104,34 @@ BTreeMapStringValue serialize(Query120Args args) {
 
 Query120Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on441172) => (
-      i: (on441172['i'] as IMap<String, dynamic>).then(
-        (on95245) => (
-          items: (on95245['items'] as IList<dynamic>)
+    (on12732) => (
+      i: (on12732['i'] as IMap<String, dynamic>).then(
+        (on797846) => (
+          items: (on797846['items'] as IList<dynamic>)
               .map(
-                (on548026) => (on548026 as IMap<String, dynamic>).then(
-                  (on203406) => (
-                    id: (on203406['id'] as String),
-                    metadata: (on203406['metadata'] as IMap<String, dynamic>)
+                (on706946) => (on706946 as IMap<String, dynamic>).then(
+                  (on98440) => (
+                    id: (on98440['id'] as String),
+                    metadata: (on98440['metadata'] as IMap<String, dynamic>)
                         .map(
-                          (on214897, on264105) => MapEntry(on214897, on264105),
+                          (on920972, on974828) => MapEntry(on920972, on974828),
                         ),
-                    name: (on203406['name'] as String),
-                    price: (on203406['price'] as double?),
-                    quantity: on203406.containsKey('quantity')
-                        ? Defined((on203406['quantity'] as double))
+                    name: (on98440['name'] as String),
+                    price: (on98440['price'] as double?),
+                    quantity: on98440.containsKey('quantity')
+                        ? Defined((on98440['quantity'] as double))
                         : Undefined<double>(),
                   ),
                 ),
               )
               .toIList(),
-          total: (on95245['total'] as double),
+          total: (on797846['total'] as double),
         ),
       ),
     ),
   );
 }
 
-typedef Query120Args = ({
-  ({
-    IList<
-      ({
-        String id,
-        IMap<String, dynamic> metadata,
-        String name,
-        double? price,
-        Optional<double> quantity,
-      })
-    >
-    items,
-    double total,
-  })
-  i,
-});
 typedef Query120Response = ({
   ({
     IList<

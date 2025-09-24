@@ -6,21 +6,61 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
-final query31 = QueryOperation<Query31Args, Query31Response>(
-  'tasks:query31',
-  serialize,
-  deserialize,
-);
-BTreeMapStringValue serialize(Query31Args args) {
-  return hashmapToBtreemap(hashmap: {'i': encodeValue(args.i)});
+class Query31Args {
+  final $HiLiteral? i;
+
+  const Query31Args({
+    required this.i,
+  });
+
+  factory Query31Args.fromJson(Map<String, dynamic> json) {
+    return Query31Args(
+      i: json['i'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'i': i,
+    };
+  }
+
+  Query31Args copyWith({
+    $HiLiteral?? i,
+  }) {
+    return Query31Args(
+      i: i ?? this.i,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query31Args &&
+        other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
 }
+
+
+final query31 = QueryOperation<Query31Args,Query31Response>('tasks:query31',serialize,deserialize);
+BTreeMapStringValue serialize(Query31Args args) {
+  return hashmapToBtreemap(hashmap: {'i': encodeValue(args.i),});
+}
+
 
 Query31Response deserialize(DartValue map) {
-  return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on587232) =>
-        (i: on587232['i'] == null ? null : $HiLiteral.validate(on587232['i'])),
-  );
+  return (decodeValue(map) as IMap<String, dynamic>).then((on310102) => (i: on310102['i'] == null ? null : $HiLiteral.validate(on310102['i']),));
 }
 
-typedef Query31Args = ({$HiLiteral? i});
+
 typedef Query31Response = ({$HiLiteral? i});

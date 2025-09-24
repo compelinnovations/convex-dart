@@ -6,6 +6,50 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query115Args {
+  final ({
+    IList<Union3<$WorkLiteral, $PersonalLiteral, $UrgentLiteral>> categories,
+    IList<String> tags,
+  })
+  i;
+
+  const Query115Args({required this.i});
+
+  factory Query115Args.fromJson(Map<String, dynamic> json) {
+    return Query115Args(i: json['i']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'i': i};
+  }
+
+  Query115Args copyWith({
+    ({
+      IList<Union3<$WorkLiteral, $PersonalLiteral, $UrgentLiteral>> categories,
+      IList<String> tags,
+    })?
+    i,
+  }) {
+    return Query115Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query115Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query115 = QueryOperation<Query115Args, Query115Response>(
   'tasks:query115',
   serialize,
@@ -18,18 +62,18 @@ BTreeMapStringValue serialize(Query115Args args) {
         'categories': encodeValue(
           args.i.categories
               .map(
-                (on817225) => encodeValue(
-                  on817225.split(
-                    (on540137) => encodeValue(on540137),
-                    (on242494) => encodeValue(on242494),
-                    (on795961) => encodeValue(on795961),
+                (on65130) => encodeValue(
+                  on65130.split(
+                    (on373484) => encodeValue(on373484),
+                    (on157840) => encodeValue(on157840),
+                    (on865078) => encodeValue(on865078),
                   ),
                 ),
               )
               .toIList(),
         ),
         'tags': encodeValue(
-          args.i.tags.map((on110672) => encodeValue(on110672)).toIList(),
+          args.i.tags.map((on715650) => encodeValue(on715650)).toIList(),
         ),
       }),
     },
@@ -38,31 +82,31 @@ BTreeMapStringValue serialize(Query115Args args) {
 
 Query115Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on715751) => (
-      i: (on715751['i'] as IMap<String, dynamic>).then(
-        (on46794) => (
-          categories: (on46794['categories'] as IList<dynamic>)
+    (on973633) => (
+      i: (on973633['i'] as IMap<String, dynamic>).then(
+        (on680095) => (
+          categories: (on680095['categories'] as IList<dynamic>)
               .map(
                 (
-                  on752260,
+                  on202290,
                 ) => Union3<$WorkLiteral, $PersonalLiteral, $UrgentLiteral>(() {
                   final map = {
                     'work': $WorkLiteral(),
                     'personal': $PersonalLiteral(),
                     'urgent': $UrgentLiteral(),
                   };
-                  if (map.containsKey(on752260)) {
-                    return map[on752260];
+                  if (map.containsKey(on202290)) {
+                    return map[on202290];
                   }
                   throw Exception(
-                    (on752260.toString() ?? "null") +
+                    (on202290.toString() ?? "null") +
                         r" cannot be deserialized into a Union3<$WorkLiteral, $PersonalLiteral, $UrgentLiteral>",
                   );
                 }()),
               )
               .toIList(),
-          tags: (on46794['tags'] as IList<dynamic>)
-              .map((on841272) => (on841272 as String))
+          tags: (on680095['tags'] as IList<dynamic>)
+              .map((on377484) => (on377484 as String))
               .toIList(),
         ),
       ),
@@ -70,13 +114,6 @@ Query115Response deserialize(DartValue map) {
   );
 }
 
-typedef Query115Args = ({
-  ({
-    IList<Union3<$WorkLiteral, $PersonalLiteral, $UrgentLiteral>> categories,
-    IList<String> tags,
-  })
-  i,
-});
 typedef Query115Response = ({
   ({
     IList<Union3<$WorkLiteral, $PersonalLiteral, $UrgentLiteral>> categories,

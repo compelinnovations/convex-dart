@@ -6,6 +6,40 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query100Args {
+  final Union2<$YesLiteral, $NoLiteral> i;
+
+  const Query100Args({required this.i});
+
+  factory Query100Args.fromJson(Map<String, dynamic> json) {
+    return Query100Args(i: json['i']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'i': i};
+  }
+
+  Query100Args copyWith({Union2<$YesLiteral, $NoLiteral>? i}) {
+    return Query100Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query100Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query100 = QueryOperation<Query100Args, Query100Response>(
   'tasks:query100',
   serialize,
@@ -16,8 +50,8 @@ BTreeMapStringValue serialize(Query100Args args) {
     hashmap: {
       'i': encodeValue(
         args.i.split(
-          (on198482) => encodeValue(on198482),
-          (on603303) => encodeValue(on603303),
+          (on757858) => encodeValue(on757858),
+          (on793344) => encodeValue(on793344),
         ),
       ),
     },
@@ -26,14 +60,14 @@ BTreeMapStringValue serialize(Query100Args args) {
 
 Query100Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on62519) => (
+    (on2031) => (
       i: Union2<$YesLiteral, $NoLiteral>(() {
         final map = {'yes': $YesLiteral(), 'no': $NoLiteral()};
-        if (map.containsKey(on62519['i'])) {
-          return map[on62519['i']];
+        if (map.containsKey(on2031['i'])) {
+          return map[on2031['i']];
         }
         throw Exception(
-          (on62519['i'].toString() ?? "null") +
+          (on2031['i'].toString() ?? "null") +
               r" cannot be deserialized into a Union2<$YesLiteral, $NoLiteral>",
         );
       }()),
@@ -41,5 +75,4 @@ Query100Response deserialize(DartValue map) {
   );
 }
 
-typedef Query100Args = ({Union2<$YesLiteral, $NoLiteral> i});
 typedef Query100Response = ({Union2<$YesLiteral, $NoLiteral> i});

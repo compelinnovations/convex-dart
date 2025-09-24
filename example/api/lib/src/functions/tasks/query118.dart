@@ -6,6 +6,50 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query118Args {
+  final ({
+    IMap<String, Union3<String, double, bool>> config,
+    ({bool enabled, dynamic value}) fallback,
+  })
+  i;
+
+  const Query118Args({required this.i});
+
+  factory Query118Args.fromJson(Map<String, dynamic> json) {
+    return Query118Args(i: json['i']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'i': i};
+  }
+
+  Query118Args copyWith({
+    ({
+      IMap<String, Union3<String, double, bool>> config,
+      ({bool enabled, dynamic value}) fallback,
+    })?
+    i,
+  }) {
+    return Query118Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query118Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query118 = QueryOperation<Query118Args, Query118Response>(
   'tasks:query118',
   serialize,
@@ -16,13 +60,13 @@ BTreeMapStringValue serialize(Query118Args args) {
     hashmap: {
       'i': encodeValue({
         'config': encodeValue({
-          for (final on665296 in args.i.config.entries)
-            on665296.key: encodeValue(
+          for (final on62628 in args.i.config.entries)
+            on62628.key: encodeValue(
               encodeValue(
-                on665296.value.split(
-                  (on224716) => encodeValue(on224716),
-                  (on206628) => encodeValue(on206628),
-                  (on927425) => encodeValue(on927425),
+                on62628.value.split(
+                  (on925066) => encodeValue(on925066),
+                  (on177166) => encodeValue(on177166),
+                  (on751570) => encodeValue(on751570),
                 ),
               ),
             ),
@@ -38,36 +82,36 @@ BTreeMapStringValue serialize(Query118Args args) {
 
 Query118Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on583567) => (
-      i: (on583567['i'] as IMap<String, dynamic>).then(
-        (on34275) => (
-          config: (on34275['config'] as IMap<String, dynamic>).map(
-            (on663930, on606942) => MapEntry(
-              on663930,
+    (on967990) => (
+      i: (on967990['i'] as IMap<String, dynamic>).then(
+        (on40927) => (
+          config: (on40927['config'] as IMap<String, dynamic>).map(
+            (on510218, on102849) => MapEntry(
+              on510218,
               Union3<String, double, bool>(() {
                 try {
-                  return (on606942 as String);
+                  return (on102849 as String);
                 } catch (e) {}
 
                 try {
-                  return (on606942 as double);
+                  return (on102849 as double);
                 } catch (e) {}
 
                 try {
-                  return (on606942 as bool);
+                  return (on102849 as bool);
                 } catch (e) {}
 
                 throw Exception(
-                  (on606942.toString() ?? "null") +
+                  (on102849.toString() ?? "null") +
                       r" cannot be deserialized into a Union3<String, double, bool>",
                 );
               }()),
             ),
           ),
-          fallback: (on34275['fallback'] as IMap<String, dynamic>).then(
-            (on173588) => (
-              enabled: (on173588['enabled'] as bool),
-              value: on173588['value'],
+          fallback: (on40927['fallback'] as IMap<String, dynamic>).then(
+            (on463915) => (
+              enabled: (on463915['enabled'] as bool),
+              value: on463915['value'],
             ),
           ),
         ),
@@ -76,13 +120,6 @@ Query118Response deserialize(DartValue map) {
   );
 }
 
-typedef Query118Args = ({
-  ({
-    IMap<String, Union3<String, double, bool>> config,
-    ({bool enabled, dynamic value}) fallback,
-  })
-  i,
-});
 typedef Query118Response = ({
   ({
     IMap<String, Union3<String, double, bool>> config,

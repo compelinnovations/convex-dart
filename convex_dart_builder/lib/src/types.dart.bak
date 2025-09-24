@@ -12,16 +12,6 @@ final formatter = DartFormatter(
 );
 final random = Random();
 
-String _dartSafeName(String name) {
-  if (name.startsWith("_")) {
-    name = "\$$name";
-  }
-  if (_dartKeywords.contains(name)) {
-    name = "\$$name";
-  }
-  return name;
-}
-
 class ClientBuildContext {
   final Map<String, String> outputs = {};
   final Set<JsLiteral> literals = {};
@@ -33,277 +23,9 @@ class FunctionBuildContext {
   final StringBuffer headerBuffer = StringBuffer();
   final StringBuffer functionBuffer = StringBuffer();
   final StringBuffer typedefBuffer = StringBuffer();
-  final StringBuffer classBuffer = StringBuffer();
 
   final ClientBuildContext clientContext;
   FunctionBuildContext(this.clientContext);
-  
-  void generateClassDefinition(String className, JsObject obj) {
-    if (obj.value.isEmpty) {
-      return; // Skip empty objects
-    }
-
-    classBuffer.writeln('class $className {');
-
-    // Add fields
-    for (final entry in obj.value.entries) {
-      final fieldType = entry.value.dartType(this);
-      final fieldName = _dartSafeName(entry.key);
-      classBuffer.writeln('  final $fieldType $fieldName;');
-    }
-
-    classBuffer.writeln();
-
-    // Add constructor
-    classBuffer.writeln('  const $className({');
-    for (final entry in obj.value.entries) {
-      final fieldName = _dartSafeName(entry.key);
-      if (entry.value.optional) {
-        classBuffer.writeln('    this.$fieldName = const Undefined(),');
-      } else {
-        classBuffer.writeln('    required this.$fieldName,');
-      }
-    }
-    classBuffer.writeln('  });');
-
-    classBuffer.writeln();
-
-    // Add empty() factory constructor
-    classBuffer.writeln('  factory $className.empty() {');
-    classBuffer.writeln('    return $className(');
-    for (final entry in obj.value.entries) {
-      final fieldName = _dartSafeName(entry.key);
-      if (entry.value.optional) {
-        // Optional fields use Undefined() as default
-        // No need to specify them in constructor call since constructor has default
-      } else {
-        // Required fields need proper default values
-        final defaultValue = _getDefaultValueForType(entry.value.fieldType);
-        classBuffer.writeln('      $fieldName: $defaultValue,');
-      }
-    }
-    classBuffer.writeln('    );');
-    classBuffer.writeln('  }');
-
-    classBuffer.writeln();
-
-    // Add fromJson factory constructor
-    classBuffer.writeln('  factory $className.fromJson(Map<String, dynamic> json) {');
-    classBuffer.writeln('    return $className(');
-    for (final entry in obj.value.entries) {
-      final fieldName = _dartSafeName(entry.key);
-      final jsonKey = entry.key;
-      final fieldType = entry.value.fieldType;
-
-      if (entry.value.optional) {
-        classBuffer.writeln(
-          '      $fieldName: json[\'$jsonKey\'] != null ? Defined(${_generateFromJsonValue(fieldType, "json[\'$jsonKey\']")}) : const Undefined(),',
-        );
-      } else {
-        classBuffer.writeln(
-          '      $fieldName: ${_generateFromJsonValue(fieldType, "json[\'$jsonKey\']")},',
-        );
-      }
-    }
-    classBuffer.writeln('    );');
-    classBuffer.writeln('  }');
-
-    classBuffer.writeln();
-
-    // Add toJson method
-    classBuffer.writeln('  Map<String, dynamic> toJson() {');
-    classBuffer.writeln('    return {');
-    for (final entry in obj.value.entries) {
-      final fieldName = _dartSafeName(entry.key);
-      final jsonKey = entry.key;
-      final fieldType = entry.value.fieldType;
-
-      if (entry.value.optional) {
-        classBuffer.writeln(
-          '      if ($fieldName.isDefined) \'$jsonKey\': ${_generateToJsonValue(fieldType, "$fieldName.asDefined().value")},',
-        );
-      } else {
-        classBuffer.writeln(
-          '      \'$jsonKey\': ${_generateToJsonValue(fieldType, fieldName)},',
-        );
-      }
-    }
-    classBuffer.writeln('    };');
-    classBuffer.writeln('  }');
-
-    classBuffer.writeln();
-
-    // Add copyWith method
-    classBuffer.writeln('  $className copyWith({');
-    for (final entry in obj.value.entries) {
-      final fieldType = entry.value.dartType(this);
-      final fieldName = _dartSafeName(entry.key);
-      classBuffer.writeln('    $fieldType? $fieldName,');
-    }
-    classBuffer.writeln('  }) {');
-    classBuffer.writeln('    return $className(');
-    for (final entry in obj.value.entries) {
-      final fieldName = _dartSafeName(entry.key);
-      classBuffer.writeln('      $fieldName: $fieldName ?? this.$fieldName,');
-    }
-    classBuffer.writeln('    );');
-    classBuffer.writeln('  }');
-
-    classBuffer.writeln();
-
-    // Add equals method
-    classBuffer.writeln('  @override');
-    classBuffer.writeln('  bool operator ==(Object other) {');
-    classBuffer.writeln('    if (identical(this, other)) return true;');
-    classBuffer.writeln('    return other is $className &&');
-
-    final entries = obj.value.entries.toList();
-    for (int i = 0; i < entries.length; i++) {
-      final entry = entries[i];
-      final fieldName = _dartSafeName(entry.key);
-      final isLast = i == entries.length - 1;
-
-      if (isLast) {
-        classBuffer.writeln('        other.$fieldName == $fieldName;');
-      } else {
-        classBuffer.writeln('        other.$fieldName == $fieldName &&');
-      }
-    }
-    classBuffer.writeln('  }');
-
-    classBuffer.writeln();
-
-    // Add hashCode method
-    classBuffer.writeln('  @override');
-    classBuffer.writeln('  int get hashCode {');
-    classBuffer.write('    return ');
-
-    for (int i = 0; i < entries.length; i++) {
-      final entry = entries[i];
-      final fieldName = _dartSafeName(entry.key);
-      final isLast = i == entries.length - 1;
-
-      if (isLast) {
-        classBuffer.writeln('$fieldName.hashCode;');
-      } else {
-        classBuffer.write('$fieldName.hashCode ^ ');
-      }
-    }
-    classBuffer.writeln('  }');
-
-    classBuffer.writeln();
-
-    // Add toString method
-    classBuffer.writeln('  @override');
-    classBuffer.writeln('  String toString() {');
-    classBuffer.writeln('    return toJson().toString();');
-    classBuffer.writeln('  }');
-
-    classBuffer.writeln('}');
-    classBuffer.writeln();
-  }
-
-  String _dartSafeName(String name) {
-    if (name.startsWith("_")) {
-      name = "\$$name";
-    }
-    if (_dartKeywords.contains(name)) {
-      name = "\$$name";
-    }
-    return name;
-  }
-
-  String _generateFromJsonValue(JsType fieldType, String jsonValue) {
-    return switch (fieldType) {
-      JsString _ => '$jsonValue as String',
-      JsNumber _ => '$jsonValue as double',
-      JsBigInt _ => '$jsonValue as int',
-      JsBoolean _ => '$jsonValue as bool',
-      JsArray _ => jsonValue, // Keep complex types as-is for now
-      JsObject obj => _generateObjectFromJson(obj, jsonValue),
-      JsUnion union => _generateUnionFromJson(union, jsonValue),
-      ConvexId convexId => "${convexId.typeName}($jsonValue as String)",
-      JsLiteral literal => _generateLiteralFromJson(literal, jsonValue),
-      _ => jsonValue, // fallback for complex types
-    };
-  }
-
-  String _generateObjectFromJson(JsObject obj, String jsonValue) {
-    // For record types, we need to reconstruct them properly
-    if (obj.value.isEmpty) {
-      return "null";
-    }
-
-    // For now, keep it simple and let the type system handle it
-    return jsonValue;
-  }
-
-  String _generateUnionFromJson(JsUnion union, String jsonValue) {
-    // For unions, especially literal unions, we need special handling
-    // For now, keep it simple
-    return jsonValue;
-  }
-
-  String _generateLiteralFromJson(JsLiteral literal, String jsonValue) {
-    // For literals, we need to validate the value
-    return "${literal.literalTypeName}.validate($jsonValue)";
-  }
-
-  String _generateToJsonValue(JsType fieldType, String fieldValue) {
-    // Simple conversion for basic types
-    return fieldValue; // Most types can be serialized as-is
-  }
-
-  String _getDefaultValueForType(JsType fieldType) {
-    return switch (fieldType) {
-      JsString _ => "''",
-      JsNumber _ => "0.0",
-      JsBigInt _ => "0",
-      JsBoolean _ => "false",
-      JsArray _ => "const []",
-      JsObject obj => _getDefaultValueForObject(obj),
-      JsUnion union => _getDefaultValueForUnion(union),
-      ConvexId convexId => "${convexId.typeName}('')",
-      JsLiteral literal => "const ${literal.literalTypeName}()",
-      _ => "null", // Fallback for complex types
-    };
-  }
-
-  String _getDefaultValueForObject(JsObject obj) {
-    if (obj.value.isEmpty) {
-      return "()"; // Empty record
-    }
-    // For complex objects, create empty record with default values
-    final entries = obj.value.entries.map((entry) {
-      final fieldName = _dartSafeName(entry.key);
-      if (entry.value.optional) {
-        return "$fieldName: const Undefined()";
-      } else {
-        final defaultValue = _getDefaultValueForType(entry.value.fieldType);
-        return "$fieldName: $defaultValue";
-      }
-    }).join(', ');
-    return "($entries)";
-  }
-
-  String _getDefaultValueForUnion(JsUnion union) {
-    // For unions, use the first non-null type's default, properly wrapped
-    final realTypes = union.value.where((e) => e is! JsNull).toList();
-    if (realTypes.isNotEmpty) {
-      final firstType = realTypes.first;
-      final defaultValue = _getDefaultValueForType(firstType);
-
-      // For union types, we need to create the proper Union constructor
-      if (realTypes.length == 1) {
-        return defaultValue;
-      } else {
-        // Create the union with the first type as the selected variant
-        final unionTypeName = "Union${realTypes.length}";
-        return "$unionTypeName($defaultValue)";
-      }
-    }
-    return "null";
-  }
 }
 
 @MappableClass()
@@ -323,7 +45,7 @@ class FunctionsSpec with FunctionsSpecMappable {
         }
         final functionContext = FunctionBuildContext(context);
         function.build(functionContext);
-            final code =
+        final code =
             "${functionContext.headerBuffer}"
             "\n${functionContext.functionBuffer}"
             "\n${functionContext.typedefBuffer}";
@@ -334,41 +56,6 @@ class FunctionsSpec with FunctionsSpecMappable {
           function.fileName,
         );
         context.outputs[filePath] = code;
-
-        // Generate JSON models if the function has argument classes
-        if (function.args is JsObject &&
-            (function.args as JsObject).value.isNotEmpty) {
-          final jsonModelCode = _buildJsonModel(functionContext, function);
-          final jsonModelPath = path.join(
-            "src",
-            "models",
-            "json",
-            "${function.functionName.snakeCase}_args.dart",
-          );
-          context.outputs[jsonModelPath] = jsonModelCode;
-
-          // Generate ObjectBox models for the same class
-          final objectBoxModel = _buildObjectBoxModel(function);
-          final objectBoxPath = path.join(
-            "src",
-            "models",
-            "objectbox",
-            "box",
-            "${function.functionName.snakeCase}_args_box.dart",
-          );
-          context.outputs[objectBoxPath] = objectBoxModel;
-
-          // Generate ObjectBox repository
-          final objectBoxRepo = _buildObjectBoxRepository(function);
-          final objectBoxRepoPath = path.join(
-            "src",
-            "models",
-            "objectbox",
-            "repos",
-            "${function.functionName.snakeCase}_args_repo.dart",
-          );
-          context.outputs[objectBoxRepoPath] = objectBoxRepo;
-        }
         successFunctions.add(function);
       } catch (e) {
         print(
@@ -475,208 +162,6 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
     context.outputs[path.join("src", "literals.dart")] = literalsBuffer
         .toString();
   }
-
-  String _buildJsonModel(FunctionBuildContext functionContext, FunctionSpec function) {
-    // Build a standalone JSON model class (copy of the generated class from function context)
-    final headerBuffer = StringBuffer("""
-// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
-// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
-// ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
-import "package:convex_dart/src/convex_dart_for_generated_code.dart";
-import "dart:typed_data";
-import "../../schema.dart";
-import "../../literals.dart";
-""");
-
-    return headerBuffer.toString() + functionContext.classBuffer.toString();
-  }
-
-  String _buildObjectBoxModel(FunctionSpec function) {
-    final className = "${function.functionName.pascalCase}Args";
-    final boxClassName = "${className}Box";
-    final obj = function.args as JsObject;
-
-    final buffer = StringBuffer("""
-import 'package:objectbox/objectbox.dart';
-import 'dart:convert';
-
-@Entity()
-class $boxClassName {
-  @Id()
-  int id = 0;
-
-""");
-
-    // Generate fields
-    for (final entry in obj.value.entries) {
-      final fieldName = _dartSafeName(entry.key);
-      final fieldType = _convertToObjectBoxType(entry.value.fieldType);
-      final isOptional = entry.value.optional;
-
-      if (fieldName.contains("At") || fieldName.contains("Date")) {
-        buffer.writeln('  @Property(type: PropertyType.dateNano)');
-        // For date fields, use int for nanoseconds storage
-        buffer.writeln('  int${isOptional ? "?" : ""} $fieldName;');
-      } else {
-        buffer.writeln('  $fieldType${isOptional ? "?" : ""} $fieldName;');
-      }
-    }
-
-    buffer.writeln();
-
-    // Generate constructor
-    buffer.writeln('  $boxClassName({');
-    buffer.writeln('    this.id = 0,');
-    for (final entry in obj.value.entries) {
-      final fieldName = _dartSafeName(entry.key);
-      if (entry.value.optional) {
-        buffer.writeln('    this.$fieldName,');
-      } else {
-        buffer.writeln('    required this.$fieldName,');
-      }
-    }
-    buffer.writeln('  });');
-
-    buffer.writeln();
-
-    // Generate fromMap factory
-    buffer.writeln('  factory $boxClassName.fromMap(Map<String, dynamic> map) {');
-    buffer.writeln('    return $boxClassName(');
-    buffer.writeln('      id: 0,');
-    for (final entry in obj.value.entries) {
-      final fieldName = _dartSafeName(entry.key);
-      final mapKey = entry.key;
-      final fieldType = _convertToObjectBoxType(entry.value.fieldType);
-
-      if (_isComplexType(entry.value.fieldType)) {
-        buffer.writeln('      $fieldName: jsonEncode(map[\'$mapKey\']),');
-      } else if (fieldName.contains("At") || fieldName.contains("Date")) {
-        if (entry.value.optional) {
-          buffer.writeln('      $fieldName: (map[\'$mapKey\'] as double?)?.round(),');
-        } else {
-          buffer.writeln('      $fieldName: (map[\'$mapKey\'] as double).round(),');
-        }
-      } else if (fieldType == "String" && !entry.value.optional) {
-        buffer.writeln('      $fieldName: map[\'$mapKey\']?.toString() ?? \'\',');
-      } else {
-        buffer.writeln('      $fieldName: map[\'$mapKey\'],');
-      }
-    }
-    buffer.writeln('    );');
-    buffer.writeln('  }');
-
-    buffer.writeln();
-
-    // Generate toMap method
-    buffer.writeln('  Map<String, dynamic> toMap() {');
-    buffer.writeln('    return {');
-    for (final entry in obj.value.entries) {
-      final fieldName = _dartSafeName(entry.key);
-      final mapKey = entry.key;
-
-      if (_isComplexType(entry.value.fieldType)) {
-        buffer.writeln('      \'$mapKey\': $fieldName != null ? jsonDecode($fieldName!) : null,');
-      } else if (fieldName.contains("At") || fieldName.contains("Date")) {
-        buffer.writeln('      \'$mapKey\': $fieldName?.toDouble(),');
-      } else {
-        buffer.writeln('      \'$mapKey\': $fieldName,');
-      }
-    }
-    buffer.writeln('    };');
-    buffer.writeln('  }');
-    buffer.writeln('}');
-
-    return buffer.toString();
-  }
-
-  String _buildObjectBoxRepository(FunctionSpec function) {
-    final className = "${function.functionName.pascalCase}Args";
-    final boxClassName = "${className}Box";
-    final repoClassName = "${className}BoxRepo";
-
-    return """
-import 'package:api/objectbox.g.dart';
-import '../box/${function.functionName.snakeCase}_args_box.dart';
-
-class $repoClassName {
-  final Box<$boxClassName> _box;
-
-  $repoClassName(this._box);
-
-  // Create from map
-  int createFromMap(Map<String, dynamic> map) {
-    final boxModel = $boxClassName.fromMap(map);
-    return _box.put(boxModel);
-  }
-
-  // Read as map
-  Map<String, dynamic>? getAsMap(int id) {
-    final boxModel = _box.get(id);
-    return boxModel?.toMap();
-  }
-
-  // Read Box
-  $boxClassName? getBox(int id) {
-   return _box.get(id);
-  }
-
-  // Removes all records.
-  void removeAll() => _box.removeAll();
-
-  // Bulk insert from maps
-  void putManyFromMaps(List<Map<String, dynamic>> maps) {
-    final entities = maps.map((map) => $boxClassName.fromMap(map)).toList();
-    _box.putMany(entities);
-  }
-
-  // Bulk delete by a list of DB IDs.
-  void removeMany(List<int> ids) => _box.removeMany(ids);
-
-  List<Map<String, dynamic>> getAllAsMaps() {
-    return _box.getAll().map((boxModel) => boxModel.toMap()).toList();
-  }
-
-  List<$boxClassName> getAllBox() {
-    return _box.getAll();
-  }
-
-  // Update from map
-  void updateFromMap(Map<String, dynamic> map, int id) {
-    final boxModel = $boxClassName.fromMap(map)..id = id;
-    _box.put(boxModel);
-  }
-
-  // Delete
-  bool delete(int id) {
-    return _box.remove(id);
-  }
-}
-""";
-  }
-
-  String _convertToObjectBoxType(JsType dartType) {
-    return switch (dartType) {
-      JsString _ => "String",
-      JsNumber _ => "double",
-      JsBigInt _ => "int",
-      JsBoolean _ => "bool",
-      JsArray _ => "String", // Store arrays as JSON strings
-      JsObject _ => "String", // Store objects as JSON strings
-      JsUnion _ => "String", // Store unions as strings
-      ConvexId _ => "String", // Store IDs as strings
-      JsLiteral _ => "String", // Store literals as strings
-      _ => "String", // Fallback to String
-    };
-  }
-
-  bool _isComplexType(JsType dartType) {
-    return switch (dartType) {
-      JsObject _ => true,
-      JsArray _ => true,
-      JsUnion _ => true,
-      _ => false,
-    };
-  }
 }
 
 @MappableEnum(mode: ValuesMode.named)
@@ -736,13 +221,11 @@ class FunctionSpec with FunctionSpecMappable {
     return "$folderName:$functionName";
   }
 
-  // The name of the class for the arguments
+  // The name of the typedef for the arguments
   // e.g. "MyFunctionArgs or void"
   String get argsTypeName {
     switch (args) {
       case JsAny():
-        return "void";
-      case JsObject obj when obj.value.isEmpty:
         return "void";
       case JsObject():
         return "${functionName.pascalCase}Args";
@@ -766,21 +249,13 @@ import "../../schema.dart";
 import "../../literals.dart";
 """);
 
-    // Add import for args class if it exists
-    switch (args) {
-      case JsAny():
-        break;
-      case JsObject obj when obj.value.isNotEmpty:
-        context.headerBuffer.writeln('import "../../models/json/${functionName.snakeCase}_args.dart";');
-      default:
-        break;
-    }
-
     switch (args) {
       case JsAny():
         break;
       case JsObject obj:
-        context.generateClassDefinition(argsTypeName, obj);
+        context.typedefBuffer.write(
+          "typedef $argsTypeName = ${obj.dartType(context)};",
+        );
       default:
         throw ArgumentError(
           'Function arguments must be either JsAny (for dynamic/any type) or JsObject (for structured object types). '
@@ -812,23 +287,6 @@ import "../../literals.dart";
     } else if (args is JsObject && (args as JsObject).value.isEmpty) {
       // Handle empty args object
       serializeCode = "{}";
-    } else if (args is JsObject) {
-      // Generate serialization code for class properties instead of record fields
-      final obj = args as JsObject;
-      final buffer = StringBuffer("{");
-      for (final entry in obj.value.entries) {
-        if (entry.value.optional) {
-          buffer.write(
-            "if (args.${_dartSafeName(entry.key)}.isDefined) '${entry.key}': ${entry.value.fieldType.serialize(context, "args.${_dartSafeName(entry.key)}.asDefined().value", nullable: false)},",
-          );
-        } else {
-          buffer.write(
-            "'${entry.key}': ${entry.value.fieldType.serialize(context, "args.${_dartSafeName(entry.key)}", nullable: false)},",
-          );
-        }
-      }
-      buffer.write("}");
-      serializeCode = buffer.toString();
     } else {
       serializeCode = args.serialize(context, "args", nullable: false);
       // Remove the "encodeValue(" and ")"

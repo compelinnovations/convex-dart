@@ -6,6 +6,40 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query22Args {
+  final Optional<$TrueLiteral> i;
+
+  const Query22Args({this.i});
+
+  factory Query22Args.fromJson(Map<String, dynamic> json) {
+    return Query22Args(i: json['i'] != null ? json['i'] : const Undefined());
+  }
+
+  Map<String, dynamic> toJson() {
+    return {if (i.isDefined) 'i': i.asDefined().value};
+  }
+
+  Query22Args copyWith({Optional<$TrueLiteral>? i}) {
+    return Query22Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query22Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query22 = QueryOperation<Query22Args, Query22Response>(
   'tasks:query22',
   serialize,
@@ -19,13 +53,12 @@ BTreeMapStringValue serialize(Query22Args args) {
 
 Query22Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on191231) => (
-      i: on191231.containsKey('i')
-          ? Defined($TrueLiteral.validate(on191231['i']))
+    (on830198) => (
+      i: on830198.containsKey('i')
+          ? Defined($TrueLiteral.validate(on830198['i']))
           : Undefined<$TrueLiteral>(),
     ),
   );
 }
 
-typedef Query22Args = ({Optional<$TrueLiteral> i});
 typedef Query22Response = ({Optional<$TrueLiteral> i});

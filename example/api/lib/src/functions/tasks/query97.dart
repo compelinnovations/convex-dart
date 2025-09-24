@@ -6,48 +6,75 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
-final query97 = QueryOperation<Query97Args, Query97Response>(
-  'tasks:query97',
-  serialize,
-  deserialize,
-);
-BTreeMapStringValue serialize(Query97Args args) {
-  return hashmapToBtreemap(
-    hashmap: {
-      'i': encodeValue(
-        args.i?.split(
-          (on498644) => encodeValue(on498644),
-          (on819401) => encodeValue(on819401),
-        ),
-      ),
-    },
-  );
+class Query97Args {
+  final Union2<double, bool>? i;
+
+  const Query97Args({
+    required this.i,
+  });
+
+  factory Query97Args.fromJson(Map<String, dynamic> json) {
+    return Query97Args(
+      i: json['i'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'i': i,
+    };
+  }
+
+  Query97Args copyWith({
+    Union2<double, bool>?? i,
+  }) {
+    return Query97Args(
+      i: i ?? this.i,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query97Args &&
+        other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
 }
+
+
+final query97 = QueryOperation<Query97Args,Query97Response>('tasks:query97',serialize,deserialize);
+BTreeMapStringValue serialize(Query97Args args) {
+  return hashmapToBtreemap(hashmap: {'i': encodeValue(args.i?.split((on858997) => encodeValue(on858997), (on141988) => encodeValue(on141988))),});
+}
+
 
 Query97Response deserialize(DartValue map) {
-  return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on179754) => (
-      i: Union2<double, bool>(() {
-        try {
-          return (on179754['i'] as double?);
-        } catch (e) {}
+  return (decodeValue(map) as IMap<String, dynamic>).then((on417570) => (i: Union2<double, bool>((){try{
+  return (on417570['i'] as double?);
+} catch(e){}
 
-        try {
-          return (on179754['i'] as bool?);
-        } catch (e) {}
+try{
+  return (on417570['i'] as bool?);
+} catch(e){}
 
-        if (on179754['i'] == null) {
-          return null;
-        }
-
-        throw Exception(
-          (on179754['i']?.toString() ?? "null") +
-              r" cannot be deserialized into a Union2<double, bool>",
-        );
-      }()),
-    ),
-  );
+if (on417570['i'] == null){
+  return null;
 }
 
-typedef Query97Args = ({Union2<double, bool>? i});
+throw Exception((on417570['i']?.toString() ?? "null") + r" cannot be deserialized into a Union2<double, bool>");
+
+}()),));
+}
+
+
 typedef Query97Response = ({Union2<double, bool>? i});

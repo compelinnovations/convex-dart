@@ -6,6 +6,40 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query21Args {
+  final Optional<$1Literal> i;
+
+  const Query21Args({this.i});
+
+  factory Query21Args.fromJson(Map<String, dynamic> json) {
+    return Query21Args(i: json['i'] != null ? json['i'] : const Undefined());
+  }
+
+  Map<String, dynamic> toJson() {
+    return {if (i.isDefined) 'i': i.asDefined().value};
+  }
+
+  Query21Args copyWith({Optional<$1Literal>? i}) {
+    return Query21Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query21Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query21 = QueryOperation<Query21Args, Query21Response>(
   'tasks:query21',
   serialize,
@@ -19,13 +53,12 @@ BTreeMapStringValue serialize(Query21Args args) {
 
 Query21Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on976408) => (
-      i: on976408.containsKey('i')
-          ? Defined($1Literal.validate(on976408['i']))
+    (on826600) => (
+      i: on826600.containsKey('i')
+          ? Defined($1Literal.validate(on826600['i']))
           : Undefined<$1Literal>(),
     ),
   );
 }
 
-typedef Query21Args = ({Optional<$1Literal> i});
 typedef Query21Response = ({Optional<$1Literal> i});

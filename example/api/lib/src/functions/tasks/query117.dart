@@ -6,6 +6,52 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query117Args {
+  final ({
+    IList<({String author, String text, double timestamp})> comments,
+    Optional<({TasksId id, String name})> reviewer,
+    Union3<$PendingLiteral, $ApprovedLiteral, $RejectedLiteral> status,
+  })
+  i;
+
+  const Query117Args({required this.i});
+
+  factory Query117Args.fromJson(Map<String, dynamic> json) {
+    return Query117Args(i: json['i']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'i': i};
+  }
+
+  Query117Args copyWith({
+    ({
+      IList<({String author, String text, double timestamp})> comments,
+      Optional<({TasksId id, String name})> reviewer,
+      Union3<$PendingLiteral, $ApprovedLiteral, $RejectedLiteral> status,
+    })?
+    i,
+  }) {
+    return Query117Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query117Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query117 = QueryOperation<Query117Args, Query117Response>(
   'tasks:query117',
   serialize,
@@ -18,10 +64,10 @@ BTreeMapStringValue serialize(Query117Args args) {
         'comments': encodeValue(
           args.i.comments
               .map(
-                (on137305) => encodeValue({
-                  'author': encodeValue(on137305.author),
-                  'text': encodeValue(on137305.text),
-                  'timestamp': encodeValue(on137305.timestamp),
+                (on698944) => encodeValue({
+                  'author': encodeValue(on698944.author),
+                  'text': encodeValue(on698944.text),
+                  'timestamp': encodeValue(on698944.timestamp),
                 }),
               )
               .toIList(),
@@ -33,9 +79,9 @@ BTreeMapStringValue serialize(Query117Args args) {
           }),
         'status': encodeValue(
           args.i.status.split(
-            (on767602) => encodeValue(on767602),
-            (on210091) => encodeValue(on210091),
-            (on918044) => encodeValue(on918044),
+            (on837153) => encodeValue(on837153),
+            (on898146) => encodeValue(on898146),
+            (on623926) => encodeValue(on623926),
           ),
         ),
       }),
@@ -45,26 +91,26 @@ BTreeMapStringValue serialize(Query117Args args) {
 
 Query117Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on36734) => (
-      i: (on36734['i'] as IMap<String, dynamic>).then(
-        (on396339) => (
-          comments: (on396339['comments'] as IList<dynamic>)
+    (on801541) => (
+      i: (on801541['i'] as IMap<String, dynamic>).then(
+        (on32405) => (
+          comments: (on32405['comments'] as IList<dynamic>)
               .map(
-                (on378530) => (on378530 as IMap<String, dynamic>).then(
-                  (on703256) => (
-                    author: (on703256['author'] as String),
-                    text: (on703256['text'] as String),
-                    timestamp: (on703256['timestamp'] as double),
+                (on822476) => (on822476 as IMap<String, dynamic>).then(
+                  (on999573) => (
+                    author: (on999573['author'] as String),
+                    text: (on999573['text'] as String),
+                    timestamp: (on999573['timestamp'] as double),
                   ),
                 ),
               )
               .toIList(),
-          reviewer: on396339.containsKey('reviewer')
+          reviewer: on32405.containsKey('reviewer')
               ? Defined(
-                  (on396339['reviewer'] as IMap<String, dynamic>).then(
-                    (on198424) => (
-                      id: TasksId(on198424['id'] as String),
-                      name: (on198424['name'] as String),
+                  (on32405['reviewer'] as IMap<String, dynamic>).then(
+                    (on359807) => (
+                      id: TasksId(on359807['id'] as String),
+                      name: (on359807['name'] as String),
                     ),
                   ),
                 )
@@ -75,11 +121,11 @@ Query117Response deserialize(DartValue map) {
               'approved': $ApprovedLiteral(),
               'rejected': $RejectedLiteral(),
             };
-            if (map.containsKey(on396339['status'])) {
-              return map[on396339['status']];
+            if (map.containsKey(on32405['status'])) {
+              return map[on32405['status']];
             }
             throw Exception(
-              (on396339['status'].toString() ?? "null") +
+              (on32405['status'].toString() ?? "null") +
                   r" cannot be deserialized into a Union3<$PendingLiteral, $ApprovedLiteral, $RejectedLiteral>",
             );
           }()),
@@ -89,14 +135,6 @@ Query117Response deserialize(DartValue map) {
   );
 }
 
-typedef Query117Args = ({
-  ({
-    IList<({String author, String text, double timestamp})> comments,
-    Optional<({TasksId id, String name})> reviewer,
-    Union3<$PendingLiteral, $ApprovedLiteral, $RejectedLiteral> status,
-  })
-  i,
-});
 typedef Query117Response = ({
   ({
     IList<({String author, String text, double timestamp})> comments,

@@ -6,6 +6,40 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query95Args {
+  final Union3<String, double, bool> i;
+
+  const Query95Args({required this.i});
+
+  factory Query95Args.fromJson(Map<String, dynamic> json) {
+    return Query95Args(i: json['i']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'i': i};
+  }
+
+  Query95Args copyWith({Union3<String, double, bool>? i}) {
+    return Query95Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query95Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query95 = QueryOperation<Query95Args, Query95Response>(
   'tasks:query95',
   serialize,
@@ -16,9 +50,9 @@ BTreeMapStringValue serialize(Query95Args args) {
     hashmap: {
       'i': encodeValue(
         args.i.split(
-          (on352734) => encodeValue(on352734),
-          (on242849) => encodeValue(on242849),
-          (on478425) => encodeValue(on478425),
+          (on229429) => encodeValue(on229429),
+          (on113304) => encodeValue(on113304),
+          (on661462) => encodeValue(on661462),
         ),
       ),
     },
@@ -27,22 +61,22 @@ BTreeMapStringValue serialize(Query95Args args) {
 
 Query95Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on437992) => (
+    (on401897) => (
       i: Union3<String, double, bool>(() {
         try {
-          return (on437992['i'] as String);
+          return (on401897['i'] as String);
         } catch (e) {}
 
         try {
-          return (on437992['i'] as double);
+          return (on401897['i'] as double);
         } catch (e) {}
 
         try {
-          return (on437992['i'] as bool);
+          return (on401897['i'] as bool);
         } catch (e) {}
 
         throw Exception(
-          (on437992['i'].toString() ?? "null") +
+          (on401897['i'].toString() ?? "null") +
               r" cannot be deserialized into a Union3<String, double, bool>",
         );
       }()),
@@ -50,5 +84,4 @@ Query95Response deserialize(DartValue map) {
   );
 }
 
-typedef Query95Args = ({Union3<String, double, bool> i});
 typedef Query95Response = ({Union3<String, double, bool> i});

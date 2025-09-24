@@ -6,6 +6,40 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query90Args {
+  final IMap<String, $TrueLiteral?> i;
+
+  const Query90Args({required this.i});
+
+  factory Query90Args.fromJson(Map<String, dynamic> json) {
+    return Query90Args(i: json['i']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'i': i};
+  }
+
+  Query90Args copyWith({IMap<String, $TrueLiteral?>? i}) {
+    return Query90Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query90Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query90 = QueryOperation<Query90Args, Query90Response>(
   'tasks:query90',
   serialize,
@@ -15,8 +49,8 @@ BTreeMapStringValue serialize(Query90Args args) {
   return hashmapToBtreemap(
     hashmap: {
       'i': encodeValue({
-        for (final on533607 in args.i.entries)
-          on533607.key: encodeValue(encodeValue(on533607.value)),
+        for (final on50387 in args.i.entries)
+          on50387.key: encodeValue(encodeValue(on50387.value)),
       }),
     },
   );
@@ -24,16 +58,15 @@ BTreeMapStringValue serialize(Query90Args args) {
 
 Query90Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on483556) => (
-      i: (on483556['i'] as IMap<String, dynamic>).map(
-        (on243624, on610555) => MapEntry(
-          on243624,
-          on610555 == null ? null : $TrueLiteral.validate(on610555),
+    (on949177) => (
+      i: (on949177['i'] as IMap<String, dynamic>).map(
+        (on846929, on773340) => MapEntry(
+          on846929,
+          on773340 == null ? null : $TrueLiteral.validate(on773340),
         ),
       ),
     ),
   );
 }
 
-typedef Query90Args = ({IMap<String, $TrueLiteral?> i});
 typedef Query90Response = ({IMap<String, $TrueLiteral?> i});

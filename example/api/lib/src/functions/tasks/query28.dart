@@ -6,20 +6,61 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
-final query28 = QueryOperation<Query28Args, Query28Response>(
-  'tasks:query28',
-  serialize,
-  deserialize,
-);
-BTreeMapStringValue serialize(Query28Args args) {
-  return hashmapToBtreemap(hashmap: {'i': encodeValue(args.i)});
+class Query28Args {
+  final Uint8ListWithEquality? i;
+
+  const Query28Args({
+    required this.i,
+  });
+
+  factory Query28Args.fromJson(Map<String, dynamic> json) {
+    return Query28Args(
+      i: json['i'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'i': i,
+    };
+  }
+
+  Query28Args copyWith({
+    Uint8ListWithEquality?? i,
+  }) {
+    return Query28Args(
+      i: i ?? this.i,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query28Args &&
+        other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
 }
+
+
+final query28 = QueryOperation<Query28Args,Query28Response>('tasks:query28',serialize,deserialize);
+BTreeMapStringValue serialize(Query28Args args) {
+  return hashmapToBtreemap(hashmap: {'i': encodeValue(args.i),});
+}
+
 
 Query28Response deserialize(DartValue map) {
-  return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on753571) => (i: (on753571['i'] as Uint8ListWithEquality?)),
-  );
+  return (decodeValue(map) as IMap<String, dynamic>).then((on476560) => (i: (on476560['i'] as Uint8ListWithEquality?),));
 }
 
-typedef Query28Args = ({Uint8ListWithEquality? i});
+
 typedef Query28Response = ({Uint8ListWithEquality? i});

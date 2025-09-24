@@ -43,7 +43,7 @@ class ConvexDartBuilder extends Builder {
     await wipeDartFiles(libDir);
 
     print("DEBUG: Starting schema parsing...");
-
+    
     // Parse JSON manually first to debug
     Map<String, dynamic> jsonData;
     try {
@@ -58,7 +58,7 @@ class ConvexDartBuilder extends Builder {
     if (jsonData['functions'] is List) {
       final functions = jsonData['functions'] as List;
       print("DEBUG: Found ${functions.length} functions");
-
+      
       // Check each function for args field - only show missing ones
       int missingArgsCount = 0;
       for (int i = 0; i < functions.length; i++) {
@@ -67,20 +67,16 @@ class ConvexDartBuilder extends Builder {
           final identifier = func['identifier'] ?? 'unknown';
           if (!func.containsKey('args')) {
             missingArgsCount++;
-            print(
-              "ERROR: Function at index $i (identifier: $identifier) is missing 'args' field",
-            );
+            print("ERROR: Function at index $i (identifier: $identifier) is missing 'args' field");
             print("ERROR: Function keys: ${func.keys.toList()}");
-
+            
             // Only show the first few missing args to avoid overflow
             if (missingArgsCount <= 3) {
               print("ERROR: Function content: ${jsonEncode(func)}");
             }
           }
         } else {
-          print(
-            "ERROR: Function at index $i is not a Map: ${func.runtimeType}",
-          );
+          print("ERROR: Function at index $i is not a Map: ${func.runtimeType}");
         }
       }
       print("DEBUG: Functions missing args: $missingArgsCount");
@@ -88,50 +84,14 @@ class ConvexDartBuilder extends Builder {
       print("ERROR: 'functions' field is not a List or is missing");
     }
 
-    // Filter out api/auth HttpAction functions before parsing
-    final Map<String, dynamic> modifiedJsonData = Map.from(jsonData);
-    if (jsonData['functions'] is List) {
-      final functions = jsonData['functions'] as List;
-      final filteredFunctions = <dynamic>[];
-
-      for (final function in functions) {
-        if (function is Map<String, dynamic>) {
-          final functionType = function['functionType'] as String?;
-          final path = function['path'] as String?;
-
-          // Filter out api/auth HttpAction functions specifically, and also .well-known
-          if (functionType == 'HttpAction' &&
-              path != null &&
-              (path.startsWith('/api/auth') ||
-                  path.startsWith('/.well-known'))) {
-            print('Filtering out HttpAction: $path');
-            continue;
-          }
-
-          filteredFunctions.add(function);
-        } else {
-          filteredFunctions.add(function);
-        }
-      }
-
-      modifiedJsonData['functions'] = filteredFunctions;
-      print(
-        "DEBUG: Filtered ${functions.length - filteredFunctions.length} api/auth HttpAction functions",
-      );
-    }
-
-    final modifiedContents = jsonEncode(modifiedJsonData);
-
     print("DEBUG: Attempting FunctionsSpecMapper.fromJson...");
     final FunctionsSpec functionsSpec;
     try {
-      functionsSpec = FunctionsSpecMapper.fromJson(modifiedContents);
+      functionsSpec = FunctionsSpecMapper.fromJson(contents);
       print("DEBUG: FunctionsSpecMapper.fromJson succeeded!");
     } catch (e) {
       print("ERROR: FunctionsSpecMapper.fromJson failed: $e");
-      print(
-        "ERROR: Modified schema content length: ${modifiedContents.length}",
-      );
+      print("ERROR: Full schema content length: ${contents.length}");
       rethrow;
     }
 

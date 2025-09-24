@@ -6,6 +6,40 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query103Args {
+  final Union2<int, double> i;
+
+  const Query103Args({required this.i});
+
+  factory Query103Args.fromJson(Map<String, dynamic> json) {
+    return Query103Args(i: json['i']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'i': i};
+  }
+
+  Query103Args copyWith({Union2<int, double>? i}) {
+    return Query103Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query103Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query103 = QueryOperation<Query103Args, Query103Response>(
   'tasks:query103',
   serialize,
@@ -16,8 +50,8 @@ BTreeMapStringValue serialize(Query103Args args) {
     hashmap: {
       'i': encodeValue(
         args.i.split(
-          (on758090) => encodeValue(on758090),
-          (on728886) => encodeValue(on728886),
+          (on27784) => encodeValue(on27784),
+          (on454698) => encodeValue(on454698),
         ),
       ),
     },
@@ -26,18 +60,18 @@ BTreeMapStringValue serialize(Query103Args args) {
 
 Query103Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on818362) => (
+    (on601630) => (
       i: Union2<int, double>(() {
         try {
-          return (on818362['i'] as int);
+          return (on601630['i'] as int);
         } catch (e) {}
 
         try {
-          return (on818362['i'] as double);
+          return (on601630['i'] as double);
         } catch (e) {}
 
         throw Exception(
-          (on818362['i'].toString() ?? "null") +
+          (on601630['i'].toString() ?? "null") +
               r" cannot be deserialized into a Union2<int, double>",
         );
       }()),
@@ -45,5 +79,4 @@ Query103Response deserialize(DartValue map) {
   );
 }
 
-typedef Query103Args = ({Union2<int, double> i});
 typedef Query103Response = ({Union2<int, double> i});

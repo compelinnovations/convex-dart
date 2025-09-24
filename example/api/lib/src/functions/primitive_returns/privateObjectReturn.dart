@@ -17,7 +17,7 @@ BTreeMapStringValue serialize(void args) {
 
 PrivateObjectReturnResponse deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on116579) => ($_i: (on116579['_i'] as String)),
+    (on988245) => ($_i: (on988245['_i'] as String)),
   );
 }
 

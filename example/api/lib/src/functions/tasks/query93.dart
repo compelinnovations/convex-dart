@@ -6,6 +6,40 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query93Args {
+  final Union2<bool, double> i;
+
+  const Query93Args({required this.i});
+
+  factory Query93Args.fromJson(Map<String, dynamic> json) {
+    return Query93Args(i: json['i']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'i': i};
+  }
+
+  Query93Args copyWith({Union2<bool, double>? i}) {
+    return Query93Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query93Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query93 = QueryOperation<Query93Args, Query93Response>(
   'tasks:query93',
   serialize,
@@ -16,8 +50,8 @@ BTreeMapStringValue serialize(Query93Args args) {
     hashmap: {
       'i': encodeValue(
         args.i.split(
-          (on388509) => encodeValue(on388509),
-          (on601204) => encodeValue(on601204),
+          (on667585) => encodeValue(on667585),
+          (on992031) => encodeValue(on992031),
         ),
       ),
     },
@@ -26,18 +60,18 @@ BTreeMapStringValue serialize(Query93Args args) {
 
 Query93Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on631136) => (
+    (on324525) => (
       i: Union2<bool, double>(() {
         try {
-          return (on631136['i'] as bool);
+          return (on324525['i'] as bool);
         } catch (e) {}
 
         try {
-          return (on631136['i'] as double);
+          return (on324525['i'] as double);
         } catch (e) {}
 
         throw Exception(
-          (on631136['i'].toString() ?? "null") +
+          (on324525['i'].toString() ?? "null") +
               r" cannot be deserialized into a Union2<bool, double>",
         );
       }()),
@@ -45,5 +79,4 @@ Query93Response deserialize(DartValue map) {
   );
 }
 
-typedef Query93Args = ({Union2<bool, double> i});
 typedef Query93Response = ({Union2<bool, double> i});

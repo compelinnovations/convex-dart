@@ -6,6 +6,40 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query17Args {
+  final Optional<Uint8ListWithEquality> i;
+
+  const Query17Args({this.i});
+
+  factory Query17Args.fromJson(Map<String, dynamic> json) {
+    return Query17Args(i: json['i'] != null ? json['i'] : const Undefined());
+  }
+
+  Map<String, dynamic> toJson() {
+    return {if (i.isDefined) 'i': i.asDefined().value};
+  }
+
+  Query17Args copyWith({Optional<Uint8ListWithEquality>? i}) {
+    return Query17Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query17Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query17 = QueryOperation<Query17Args, Query17Response>(
   'tasks:query17',
   serialize,
@@ -19,13 +53,12 @@ BTreeMapStringValue serialize(Query17Args args) {
 
 Query17Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on572717) => (
-      i: on572717.containsKey('i')
-          ? Defined((on572717['i'] as Uint8ListWithEquality))
+    (on474778) => (
+      i: on474778.containsKey('i')
+          ? Defined((on474778['i'] as Uint8ListWithEquality))
           : Undefined<Uint8ListWithEquality>(),
     ),
   );
 }
 
-typedef Query17Args = ({Optional<Uint8ListWithEquality> i});
 typedef Query17Response = ({Optional<Uint8ListWithEquality> i});

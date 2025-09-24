@@ -6,6 +6,42 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query16Args {
+  final Optional<int> i;
+
+  const Query16Args({this.i});
+
+  factory Query16Args.fromJson(Map<String, dynamic> json) {
+    return Query16Args(
+      i: json['i'] != null ? json['i'] as int : const Undefined(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {if (i.isDefined) 'i': i.asDefined().value};
+  }
+
+  Query16Args copyWith({Optional<int>? i}) {
+    return Query16Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query16Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query16 = QueryOperation<Query16Args, Query16Response>(
   'tasks:query16',
   serialize,
@@ -19,13 +55,12 @@ BTreeMapStringValue serialize(Query16Args args) {
 
 Query16Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on20410) => (
-      i: on20410.containsKey('i')
-          ? Defined((on20410['i'] as int))
+    (on545626) => (
+      i: on545626.containsKey('i')
+          ? Defined((on545626['i'] as int))
           : Undefined<int>(),
     ),
   );
 }
 
-typedef Query16Args = ({Optional<int> i});
 typedef Query16Response = ({Optional<int> i});

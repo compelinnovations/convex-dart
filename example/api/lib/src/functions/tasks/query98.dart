@@ -6,6 +6,40 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query98Args {
+  final Union2<Uint8ListWithEquality, String> i;
+
+  const Query98Args({required this.i});
+
+  factory Query98Args.fromJson(Map<String, dynamic> json) {
+    return Query98Args(i: json['i']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'i': i};
+  }
+
+  Query98Args copyWith({Union2<Uint8ListWithEquality, String>? i}) {
+    return Query98Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query98Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query98 = QueryOperation<Query98Args, Query98Response>(
   'tasks:query98',
   serialize,
@@ -16,8 +50,8 @@ BTreeMapStringValue serialize(Query98Args args) {
     hashmap: {
       'i': encodeValue(
         args.i.split(
-          (on67110) => encodeValue(on67110),
-          (on596427) => encodeValue(on596427),
+          (on496760) => encodeValue(on496760),
+          (on547945) => encodeValue(on547945),
         ),
       ),
     },
@@ -26,18 +60,18 @@ BTreeMapStringValue serialize(Query98Args args) {
 
 Query98Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on298254) => (
+    (on789364) => (
       i: Union2<Uint8ListWithEquality, String>(() {
         try {
-          return (on298254['i'] as Uint8ListWithEquality);
+          return (on789364['i'] as Uint8ListWithEquality);
         } catch (e) {}
 
         try {
-          return (on298254['i'] as String);
+          return (on789364['i'] as String);
         } catch (e) {}
 
         throw Exception(
-          (on298254['i'].toString() ?? "null") +
+          (on789364['i'].toString() ?? "null") +
               r" cannot be deserialized into a Union2<Uint8ListWithEquality, String>",
         );
       }()),
@@ -45,5 +79,4 @@ Query98Response deserialize(DartValue map) {
   );
 }
 
-typedef Query98Args = ({Union2<Uint8ListWithEquality, String> i});
 typedef Query98Response = ({Union2<Uint8ListWithEquality, String> i});

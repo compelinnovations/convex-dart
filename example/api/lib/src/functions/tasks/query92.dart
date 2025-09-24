@@ -6,6 +6,40 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query92Args {
+  final Union2<String, double> i;
+
+  const Query92Args({required this.i});
+
+  factory Query92Args.fromJson(Map<String, dynamic> json) {
+    return Query92Args(i: json['i']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'i': i};
+  }
+
+  Query92Args copyWith({Union2<String, double>? i}) {
+    return Query92Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query92Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query92 = QueryOperation<Query92Args, Query92Response>(
   'tasks:query92',
   serialize,
@@ -16,8 +50,8 @@ BTreeMapStringValue serialize(Query92Args args) {
     hashmap: {
       'i': encodeValue(
         args.i.split(
-          (on747460) => encodeValue(on747460),
-          (on898522) => encodeValue(on898522),
+          (on61020) => encodeValue(on61020),
+          (on96741) => encodeValue(on96741),
         ),
       ),
     },
@@ -26,18 +60,18 @@ BTreeMapStringValue serialize(Query92Args args) {
 
 Query92Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on570520) => (
+    (on18115) => (
       i: Union2<String, double>(() {
         try {
-          return (on570520['i'] as String);
+          return (on18115['i'] as String);
         } catch (e) {}
 
         try {
-          return (on570520['i'] as double);
+          return (on18115['i'] as double);
         } catch (e) {}
 
         throw Exception(
-          (on570520['i'].toString() ?? "null") +
+          (on18115['i'].toString() ?? "null") +
               r" cannot be deserialized into a Union2<String, double>",
         );
       }()),
@@ -45,5 +79,4 @@ Query92Response deserialize(DartValue map) {
   );
 }
 
-typedef Query92Args = ({Union2<String, double> i});
 typedef Query92Response = ({Union2<String, double> i});

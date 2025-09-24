@@ -6,6 +6,40 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
+class Query112Args {
+  final ({bool completed, TasksId id, String title}) i;
+
+  const Query112Args({required this.i});
+
+  factory Query112Args.fromJson(Map<String, dynamic> json) {
+    return Query112Args(i: json['i']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'i': i};
+  }
+
+  Query112Args copyWith({({bool completed, TasksId id, String title})? i}) {
+    return Query112Args(i: i ?? this.i);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Query112Args && other.i == i;
+  }
+
+  @override
+  int get hashCode {
+    return i.hashCode;
+  }
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+}
+
 final query112 = QueryOperation<Query112Args, Query112Response>(
   'tasks:query112',
   serialize,
@@ -25,17 +59,16 @@ BTreeMapStringValue serialize(Query112Args args) {
 
 Query112Response deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on165210) => (
-      i: (on165210['i'] as IMap<String, dynamic>).then(
-        (on295626) => (
-          completed: (on295626['completed'] as bool),
-          id: TasksId(on295626['id'] as String),
-          title: (on295626['title'] as String),
+    (on831187) => (
+      i: (on831187['i'] as IMap<String, dynamic>).then(
+        (on424317) => (
+          completed: (on424317['completed'] as bool),
+          id: TasksId(on424317['id'] as String),
+          title: (on424317['title'] as String),
         ),
       ),
     ),
   );
 }
 
-typedef Query112Args = ({({bool completed, TasksId id, String title}) i});
 typedef Query112Response = ({({bool completed, TasksId id, String title}) i});
