@@ -23,9 +23,12 @@ String _generateHttpEndpointKeyFromString(String convexIdentifier) {
 
     // Try to determine category from function name
     String category = 'default';
-    if (functionName.toLowerCase().contains('auth') || functionName.toLowerCase().contains('profile')) {
+    if (functionName.toLowerCase().contains('auth') ||
+        functionName.toLowerCase().contains('profile')) {
       category = 'auth';
-    } else if (functionName.toLowerCase().contains('cashcount') || functionName.toLowerCase().contains('field') || functionName.toLowerCase().contains('signup')) {
+    } else if (functionName.toLowerCase().contains('cashcount') ||
+        functionName.toLowerCase().contains('field') ||
+        functionName.toLowerCase().contains('signup')) {
       category = 'cashcount';
     }
 
@@ -50,12 +53,10 @@ class ClientBuildContext {
   final Set<String> tables = {};
   final Map<String, dynamic>? mappingData;
   final Map<String, dynamic>? objectBoxFunctionsData;
-  
-  ClientBuildContext({
-    this.mappingData,
-    this.objectBoxFunctionsData,
-  });
+
+  ClientBuildContext({this.mappingData, this.objectBoxFunctionsData});
 }
+
 class FunctionBuildContext {
   final StringBuffer headerBuffer = StringBuffer();
   final StringBuffer functionBuffer = StringBuffer();
@@ -64,7 +65,7 @@ class FunctionBuildContext {
 
   final ClientBuildContext clientContext;
   FunctionBuildContext(this.clientContext);
-  
+
   void generateClassDefinition(String className, JsObject obj) {
     if (obj.value.isEmpty) {
       return; // Skip empty objects
@@ -115,7 +116,9 @@ class FunctionBuildContext {
     classBuffer.writeln();
 
     // Add fromJson factory constructor
-    classBuffer.writeln('  factory $className.fromJson(Map<String, dynamic> json) {');
+    classBuffer.writeln(
+      '  factory $className.fromJson(Map<String, dynamic> json) {',
+    );
     classBuffer.writeln('    return $className(');
     for (final entry in obj.value.entries) {
       final fieldName = _dartSafeName(entry.key);
@@ -320,15 +323,17 @@ class FunctionBuildContext {
       return "()"; // Empty record
     }
     // For complex objects, create empty record with default values
-    final entries = obj.value.entries.map((entry) {
-      final fieldName = _dartSafeName(entry.key);
-      if (entry.value.optional) {
-        return "$fieldName: const Undefined()";
-      } else {
-        final defaultValue = _getDefaultValueForType(entry.value.fieldType);
-        return "$fieldName: $defaultValue";
-      }
-    }).join(', ');
+    final entries = obj.value.entries
+        .map((entry) {
+          final fieldName = _dartSafeName(entry.key);
+          if (entry.value.optional) {
+            return "$fieldName: const Undefined()";
+          } else {
+            final defaultValue = _getDefaultValueForType(entry.value.fieldType);
+            return "$fieldName: $defaultValue";
+          }
+        })
+        .join(', ');
     return "($entries)";
   }
 
@@ -387,7 +392,7 @@ class FunctionsSpec with FunctionsSpecMappable {
         }
         final functionContext = FunctionBuildContext(context);
         function.build(functionContext);
-            final code =
+        final code =
             "${functionContext.headerBuffer}"
             "\n${functionContext.functionBuffer}"
             "\n${functionContext.typedefBuffer}";
@@ -406,7 +411,8 @@ class FunctionsSpec with FunctionsSpecMappable {
         if (function.args is JsObject &&
             (function.args as JsObject).value.isNotEmpty) {
           final jsonModelCode = _buildJsonModel(functionContext, function);
-          final requestTypeName = customNames['requestType'] ?? function.functionName;
+          final requestTypeName =
+              customNames['requestType'] ?? function.functionName;
 
           final jsonModelPath = path.join(
             "src",
@@ -415,7 +421,9 @@ class FunctionsSpec with FunctionsSpecMappable {
             "${requestTypeName.snakeCase}.dart",
           );
           context.outputs[jsonModelPath] = jsonModelCode;
-          print("DEBUG: Generated request JSON model: ${requestTypeName.snakeCase}.dart");
+          print(
+            "DEBUG: Generated request JSON model: ${requestTypeName.snakeCase}.dart",
+          );
         }
 
         // Generate RESPONSE JSON models based on configuration
@@ -424,8 +432,15 @@ class FunctionsSpec with FunctionsSpecMappable {
           final returnsSchema = function.returns;
 
           if (returnsSchema is JsObject) {
-            print("DEBUG: Response schema structure for $responseTypeName: ${returnsSchema.value.keys}");
-            final responseModelCode = _buildResponseJsonModel(function, responseTypeName, returnsSchema.value, context);
+            print(
+              "DEBUG: Response schema structure for $responseTypeName: ${returnsSchema.value.keys}",
+            );
+            final responseModelCode = _buildResponseJsonModel(
+              function,
+              responseTypeName,
+              returnsSchema.value,
+              context,
+            );
             final responseModelPath = path.join(
               "src",
               "models",
@@ -433,9 +448,13 @@ class FunctionsSpec with FunctionsSpecMappable {
               "${responseTypeName.snakeCase}.dart",
             );
             context.outputs[responseModelPath] = responseModelCode;
-            print("DEBUG: Generated response JSON model: ${responseTypeName.snakeCase}.dart");
+            print(
+              "DEBUG: Generated response JSON model: ${responseTypeName.snakeCase}.dart",
+            );
           } else {
-            print("DEBUG: Cannot generate response JSON model: ${responseTypeName.snakeCase}.dart (returns is not a JsObject)");
+            print(
+              "DEBUG: Cannot generate response JSON model: ${responseTypeName.snakeCase}.dart (returns is not a JsObject)",
+            );
           }
         }
 
@@ -447,41 +466,64 @@ class FunctionsSpec with FunctionsSpecMappable {
           if (returnsSchema is JsObject) {
             // Find the list field in the response schema
             final valueSchema = returnsSchema.value;
-            print("DEBUG: Looking for 'list' field in schema keys: ${valueSchema.keys}");
+            print(
+              "DEBUG: Looking for 'list' field in schema keys: ${valueSchema.keys}",
+            );
 
             final listField = valueSchema['list'];
             if (listField != null) {
-              print("DEBUG: Found list field with fieldType: ${listField.fieldType.runtimeType}");
+              print(
+                "DEBUG: Found list field with fieldType: ${listField.fieldType.runtimeType}",
+              );
 
               if (listField.fieldType is JsArray) {
                 final arrayFieldType = listField.fieldType as JsArray;
                 if (arrayFieldType.value is JsObject) {
                   final listItemSchema = arrayFieldType.value as JsObject;
-                  final responseListModelCode = _buildResponseJsonModel(function, responseListTypeName, listItemSchema.value, context);
+                  final responseListModelCode = _buildResponseJsonModel(
+                    function,
+                    responseListTypeName,
+                    listItemSchema.value,
+                    context,
+                  );
                   final responseListModelPath = path.join(
                     "src",
                     "models",
                     "json",
                     "${responseListTypeName.snakeCase}.dart",
                   );
-                  context.outputs[responseListModelPath] = responseListModelCode;
-                  print("DEBUG: Generated responseList JSON model: ${responseListTypeName.snakeCase}.dart");
+                  context.outputs[responseListModelPath] =
+                      responseListModelCode;
+                  print(
+                    "DEBUG: Generated responseList JSON model: ${responseListTypeName.snakeCase}.dart",
+                  );
                 } else {
-                  print("DEBUG: Cannot generate responseList JSON model: ${responseListTypeName.snakeCase}.dart (list array value is not a JsObject, it's ${arrayFieldType.value.runtimeType})");
+                  print(
+                    "DEBUG: Cannot generate responseList JSON model: ${responseListTypeName.snakeCase}.dart (list array value is not a JsObject, it's ${arrayFieldType.value.runtimeType})",
+                  );
                 }
               } else {
-                print("DEBUG: Cannot generate responseList JSON model: ${responseListTypeName.snakeCase}.dart (list fieldType is not JsArray, it's ${listField.fieldType.runtimeType})");
+                print(
+                  "DEBUG: Cannot generate responseList JSON model: ${responseListTypeName.snakeCase}.dart (list fieldType is not JsArray, it's ${listField.fieldType.runtimeType})",
+                );
               }
             } else {
-              print("DEBUG: Cannot generate responseList JSON model: ${responseListTypeName.snakeCase}.dart (no list field found)");
+              print(
+                "DEBUG: Cannot generate responseList JSON model: ${responseListTypeName.snakeCase}.dart (no list field found)",
+              );
             }
           } else {
-            print("DEBUG: Cannot generate responseList JSON model: ${responseListTypeName.snakeCase}.dart (returns is not a JsObject)");
+            print(
+              "DEBUG: Cannot generate responseList JSON model: ${responseListTypeName.snakeCase}.dart (returns is not a JsObject)",
+            );
           }
         }
 
         // Check if ObjectBox models should be generated for this function
-        final shouldCreateObjectBox = _shouldCreateObjectBoxModel(context, function);
+        final shouldCreateObjectBox = _shouldCreateObjectBoxModel(
+          context,
+          function,
+        );
 
         if (shouldCreateObjectBox) {
           // ObjectBox generation logic:
@@ -490,17 +532,27 @@ class FunctionsSpec with FunctionsSpecMappable {
           String objectBoxTypeName;
           if (customNames.containsKey('responseList')) {
             objectBoxTypeName = customNames['responseList']!;
-            print("DEBUG: Creating ObjectBox for responseList type '$objectBoxTypeName' (function: ${function.convexFunctionIdentifier})");
+            print(
+              "DEBUG: Creating ObjectBox for responseList type '$objectBoxTypeName' (function: ${function.convexFunctionIdentifier})",
+            );
           } else if (customNames.containsKey('responseType')) {
             objectBoxTypeName = customNames['responseType']!;
-            print("DEBUG: Creating ObjectBox for response type '$objectBoxTypeName' (function: ${function.convexFunctionIdentifier})");
+            print(
+              "DEBUG: Creating ObjectBox for response type '$objectBoxTypeName' (function: ${function.convexFunctionIdentifier})",
+            );
           } else {
             objectBoxTypeName = function.functionName;
-            print("DEBUG: Creating ObjectBox for default type '$objectBoxTypeName' (function: ${function.convexFunctionIdentifier})");
+            print(
+              "DEBUG: Creating ObjectBox for default type '$objectBoxTypeName' (function: ${function.convexFunctionIdentifier})",
+            );
           }
 
           // Generate ObjectBox models for the determined type
-          final objectBoxModel = _buildObjectBoxModel(function, context, objectBoxTypeName);
+          final objectBoxModel = _buildObjectBoxModel(
+            function,
+            context,
+            objectBoxTypeName,
+          );
           final objectBoxPath = path.join(
             "src",
             "models",
@@ -511,7 +563,11 @@ class FunctionsSpec with FunctionsSpecMappable {
           context.outputs[objectBoxPath] = objectBoxModel;
 
           // Generate ObjectBox repository
-          final objectBoxRepo = _buildObjectBoxRepository(function, context, objectBoxTypeName);
+          final objectBoxRepo = _buildObjectBoxRepository(
+            function,
+            context,
+            objectBoxTypeName,
+          );
           final objectBoxRepoPath = path.join(
             "src",
             "models",
@@ -642,13 +698,19 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
       // Extract stakeholder from file path
       final pathParts = filePath.split('/');
       if (pathParts.length >= 2) {
-        final stakeholder = pathParts[1].replaceAll('.js', ''); // e.g., "fieldAgents"
+        final stakeholder = pathParts[1].replaceAll(
+          '.js',
+          '',
+        ); // e.g., "fieldAgents"
 
         // Try to determine category from function name
         String category = 'default';
-        if (functionName.toLowerCase().contains('auth') || functionName.toLowerCase().contains('profile')) {
+        if (functionName.toLowerCase().contains('auth') ||
+            functionName.toLowerCase().contains('profile')) {
           category = 'auth';
-        } else if (functionName.toLowerCase().contains('cashcount') || functionName.toLowerCase().contains('field') || functionName.toLowerCase().contains('signup')) {
+        } else if (functionName.toLowerCase().contains('cashcount') ||
+            functionName.toLowerCase().contains('field') ||
+            functionName.toLowerCase().contains('signup')) {
           category = 'cashcount';
         }
 
@@ -658,9 +720,11 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
     return '';
   }
 
-
   /// Gets custom type names from configuration files
-  Map<String, String> _getCustomTypeNames(ClientBuildContext context, FunctionSpec function) {
+  Map<String, String> _getCustomTypeNames(
+    ClientBuildContext context,
+    FunctionSpec function,
+  ) {
     final result = <String, String>{};
 
     // Check mapping file for custom type names
@@ -685,15 +749,21 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
       if (functionMapping != null && matchedKey != null) {
         if (functionMapping.containsKey('request')) {
           result['requestType'] = functionMapping['request'] as String;
-          print("DEBUG: Using custom request type '${result['requestType']}' for ${function.convexFunctionIdentifier} (matched key: $matchedKey)");
+          print(
+            "DEBUG: Using custom request type '${result['requestType']}' for ${function.convexFunctionIdentifier} (matched key: $matchedKey)",
+          );
         }
         if (functionMapping.containsKey('response')) {
           result['responseType'] = functionMapping['response'] as String;
-          print("DEBUG: Using custom response type '${result['responseType']}' for ${function.convexFunctionIdentifier} (matched key: $matchedKey)");
+          print(
+            "DEBUG: Using custom response type '${result['responseType']}' for ${function.convexFunctionIdentifier} (matched key: $matchedKey)",
+          );
         }
         if (functionMapping.containsKey('responseList')) {
           result['responseList'] = functionMapping['responseList'] as String;
-          print("DEBUG: Using custom responseList type '${result['responseList']}' for ${function.convexFunctionIdentifier} (matched key: $matchedKey)");
+          print(
+            "DEBUG: Using custom responseList type '${result['responseList']}' for ${function.convexFunctionIdentifier} (matched key: $matchedKey)",
+          );
         }
       }
     }
@@ -701,35 +771,11 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
     return result;
   }
 
-  /// Gets custom function name from ObjectBox functions file
-  String _getCustomFunctionName(ClientBuildContext context, FunctionSpec function) {
-    if (context.objectBoxFunctionsData != null) {
-      final functions = context.objectBoxFunctionsData!['functions'] as List<dynamic>?;
-      if (functions != null) {
-        final possibleEndpoints = [
-          function.convexFunctionIdentifier,
-          _generateHttpEndpointKey(function),
-        ];
-
-        for (final func in functions) {
-          if (func is Map<String, dynamic>) {
-            final endpoint = func['endpoint'] as String?;
-            if (possibleEndpoints.contains(endpoint)) {
-              final customName = func['functionName'] as String?;
-              if (customName != null) {
-                print("DEBUG: Using custom function name '$customName' for ${function.convexFunctionIdentifier} (matched endpoint: $endpoint)");
-                return customName;
-              }
-            }
-          }
-        }
-      }
-    }
-    return function.functionName;
-  }
-
   /// Determines whether ObjectBox models should be generated for this function
-  bool _shouldCreateObjectBoxModel(ClientBuildContext context, FunctionSpec function) {
+  bool _shouldCreateObjectBoxModel(
+    ClientBuildContext context,
+    FunctionSpec function,
+  ) {
     // Check mapping file first for explicit createBox setting
     if (context.mappingData != null) {
       // Try multiple possible keys: convex identifier, HTTP endpoint, etc.
@@ -740,10 +786,14 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
 
       for (final key in possibleKeys) {
         if (key.isNotEmpty && context.mappingData!.containsKey(key)) {
-          final functionMapping = context.mappingData![key] as Map<String, dynamic>?;
-          if (functionMapping != null && functionMapping.containsKey('createBox')) {
+          final functionMapping =
+              context.mappingData![key] as Map<String, dynamic>?;
+          if (functionMapping != null &&
+              functionMapping.containsKey('createBox')) {
             final createBox = functionMapping['createBox'];
-            print("DEBUG: Function ${function.convexFunctionIdentifier} has explicit createBox: $createBox (matched key: $key)");
+            print(
+              "DEBUG: Function ${function.convexFunctionIdentifier} has explicit createBox: $createBox (matched key: $key)",
+            );
             return createBox == true;
           }
         }
@@ -752,7 +802,8 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
 
     // Check ObjectBox functions file for inclusion
     if (context.objectBoxFunctionsData != null) {
-      final functions = context.objectBoxFunctionsData!['functions'] as List<dynamic>?;
+      final functions =
+          context.objectBoxFunctionsData!['functions'] as List<dynamic>?;
       if (functions != null) {
         final possibleEndpoints = [
           function.convexFunctionIdentifier,
@@ -766,17 +817,24 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
           }
           return false;
         });
-        print("DEBUG: Function ${function.convexFunctionIdentifier} exists in ObjectBox functions: $functionExists");
+        print(
+          "DEBUG: Function ${function.convexFunctionIdentifier} exists in ObjectBox functions: $functionExists",
+        );
         return functionExists;
       }
     }
 
     // Default behavior: don't create ObjectBox models unless explicitly specified
-    print("DEBUG: No explicit configuration found for ${function.convexFunctionIdentifier}, defaulting to false");
+    print(
+      "DEBUG: No explicit configuration found for ${function.convexFunctionIdentifier}, defaulting to false",
+    );
     return false;
   }
 
-  String _buildJsonModel(FunctionBuildContext functionContext, FunctionSpec function) {
+  String _buildJsonModel(
+    FunctionBuildContext functionContext,
+    FunctionSpec function,
+  ) {
     // Build a standalone JSON model class (copy of the generated class from function context)
     final headerBuffer = StringBuffer("""
 // ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
@@ -792,8 +850,15 @@ import "../../literals.dart";
   }
 
   /// Build a JSON model from JsObject returns field by creating a temporary function
-  String _buildResponseJsonModel(FunctionSpec function, String typeName, Map<String, JsField> returnsSchema, ClientBuildContext? context) {
-    print("DEBUG: Processing $typeName with JsField keys: ${returnsSchema.keys}");
+  String _buildResponseJsonModel(
+    FunctionSpec function,
+    String typeName,
+    Map<String, JsField> returnsSchema,
+    ClientBuildContext? context,
+  ) {
+    print(
+      "DEBUG: Processing $typeName with JsField keys: ${returnsSchema.keys}",
+    );
 
     // Check if this function has a responseList mapping and modify the schema accordingly
     String? responseListTypeName;
@@ -806,8 +871,10 @@ import "../../literals.dart";
 
       for (final key in possibleKeys) {
         if (key.isNotEmpty && context!.mappingData!.containsKey(key)) {
-          final functionMapping = context.mappingData![key] as Map<String, dynamic>?;
-          if (functionMapping != null && functionMapping.containsKey('responseList')) {
+          final functionMapping =
+              context.mappingData![key] as Map<String, dynamic>?;
+          if (functionMapping != null &&
+              functionMapping.containsKey('responseList')) {
             responseListTypeName = functionMapping['responseList'] as String?;
             break;
           }
@@ -816,17 +883,21 @@ import "../../literals.dart";
     }
 
     if (responseListTypeName != null) {
-
       // Look for the 'list' field and replace its array type with the responseList class
       if (returnsSchema.containsKey('list')) {
         final listField = returnsSchema['list']!;
         if (listField.fieldType is JsArray) {
           // Replace the complex array with a simple string reference to the responseList class
           // This creates an artificial field that will generate IList<ResponseListClassName>
-          final modifiedReturnsSchema = Map<String, JsField>.from(returnsSchema);
+          final modifiedReturnsSchema = Map<String, JsField>.from(
+            returnsSchema,
+          );
           modifiedReturnsSchema['list'] = JsField(
-            JsArray(JsString('String'), 'array'), // Temporary placeholder - we'll override the dartType
-            listField.optional
+            JsArray(
+              JsString('String'),
+              'array',
+            ), // Temporary placeholder - we'll override the dartType
+            listField.optional,
           );
 
           // Create a temporary function with the modified schema
@@ -839,10 +910,12 @@ import "../../literals.dart";
             Visibility(VisibilityType.public),
           );
 
-          final functionContext = FunctionBuildContext(ClientBuildContext(
-            mappingData: context?.mappingData,
-            objectBoxFunctionsData: context?.objectBoxFunctionsData,
-          ));
+          final functionContext = FunctionBuildContext(
+            ClientBuildContext(
+              mappingData: context?.mappingData,
+              objectBoxFunctionsData: context?.objectBoxFunctionsData,
+            ),
+          );
 
           // Build the temporary function
           tempFunction.build(functionContext);
@@ -851,19 +924,19 @@ import "../../literals.dart";
           var generatedCode = functionContext.classBuffer.toString();
           generatedCode = generatedCode.replaceAll(
             'final IList<String> list;',
-            'final IList<$responseListTypeName> list;'
+            'final IList<$responseListTypeName> list;',
           );
           generatedCode = generatedCode.replaceAll(
             'list: (json[\'list\'] as List<dynamic>).cast<String>().toIList()',
-            'list: (json[\'list\'] as List<dynamic>).map((item) => $responseListTypeName.fromJson(item as Map<String, dynamic>)).toList().toIList()'
+            'list: (json[\'list\'] as List<dynamic>).map((item) => $responseListTypeName.fromJson(item as Map<String, dynamic>)).toList().toIList()',
           );
           generatedCode = generatedCode.replaceAll(
             '<String>[].toIList()',
-            '<$responseListTypeName>[].toIList()'
+            '<$responseListTypeName>[].toIList()',
           );
           generatedCode = generatedCode.replaceAll(
             'IList<String>? list,',
-            'IList<$responseListTypeName>? list,'
+            'IList<$responseListTypeName>? list,',
           );
 
           return """// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
@@ -890,10 +963,9 @@ $generatedCode""";
       Visibility(VisibilityType.public),
     );
 
-    final functionContext = FunctionBuildContext(ClientBuildContext(
-      mappingData: null,
-      objectBoxFunctionsData: null,
-    ));
+    final functionContext = FunctionBuildContext(
+      ClientBuildContext(mappingData: null, objectBoxFunctionsData: null),
+    );
 
     // Build the temporary function to generate the class
     tempFunction.build(functionContext);
@@ -910,8 +982,11 @@ import "../../literals.dart";
 ${functionContext.classBuffer.toString()}""";
   }
 
-
-  String _buildObjectBoxModel(FunctionSpec function, ClientBuildContext context, String typeName) {
+  String _buildObjectBoxModel(
+    FunctionSpec function,
+    ClientBuildContext context,
+    String typeName,
+  ) {
     final className = typeName;
     final boxClassName = "${className}Box";
     final obj = function.args as JsObject;
@@ -920,7 +995,9 @@ ${functionContext.classBuffer.toString()}""";
 import 'package:objectbox/objectbox.dart';""");
 
     // Check if we need dart:convert import
-    final needsJsonConvert = obj.value.entries.any((entry) => _isComplexType(entry.value.fieldType));
+    final needsJsonConvert = obj.value.entries.any(
+      (entry) => _isComplexType(entry.value.fieldType),
+    );
     if (needsJsonConvert) {
       buffer.writeln("import 'dart:convert';");
     }
@@ -967,7 +1044,9 @@ class $boxClassName {
     buffer.writeln();
 
     // Generate fromMap factory
-    buffer.writeln('  factory $boxClassName.fromMap(Map<String, dynamic> map) {');
+    buffer.writeln(
+      '  factory $boxClassName.fromMap(Map<String, dynamic> map) {',
+    );
     buffer.writeln('    return $boxClassName(');
     buffer.writeln('      id: 0,');
     for (final entry in obj.value.entries) {
@@ -979,12 +1058,18 @@ class $boxClassName {
         buffer.writeln('      $fieldName: jsonEncode(map[\'$mapKey\']),');
       } else if (fieldName.contains("At") || fieldName.contains("Date")) {
         if (entry.value.optional) {
-          buffer.writeln('      $fieldName: (map[\'$mapKey\'] as double?)?.round(),');
+          buffer.writeln(
+            '      $fieldName: (map[\'$mapKey\'] as double?)?.round(),',
+          );
         } else {
-          buffer.writeln('      $fieldName: (map[\'$mapKey\'] as double).round(),');
+          buffer.writeln(
+            '      $fieldName: (map[\'$mapKey\'] as double).round(),',
+          );
         }
       } else if (fieldType == "String" && !entry.value.optional) {
-        buffer.writeln('      $fieldName: map[\'$mapKey\']?.toString() ?? \'\',');
+        buffer.writeln(
+          '      $fieldName: map[\'$mapKey\']?.toString() ?? \'\',',
+        );
       } else {
         buffer.writeln('      $fieldName: map[\'$mapKey\'],');
       }
@@ -1003,7 +1088,9 @@ class $boxClassName {
 
       if (_isComplexType(entry.value.fieldType)) {
         if (entry.value.optional) {
-          buffer.writeln('      \'$mapKey\': $fieldName != null ? jsonDecode($fieldName!) : null,');
+          buffer.writeln(
+            '      \'$mapKey\': $fieldName != null ? jsonDecode($fieldName!) : null,',
+          );
         } else {
           buffer.writeln('      \'$mapKey\': jsonDecode($fieldName),');
         }
@@ -1024,7 +1111,11 @@ class $boxClassName {
     return buffer.toString();
   }
 
-  String _buildObjectBoxRepository(FunctionSpec function, ClientBuildContext context, String typeName) {
+  String _buildObjectBoxRepository(
+    FunctionSpec function,
+    ClientBuildContext context,
+    String typeName,
+  ) {
     final className = typeName;
     final boxClassName = "${className}Box";
     final repoClassName = "${className}BoxRepo";
@@ -1208,7 +1299,10 @@ class FunctionSpec with FunctionSpecMappable {
   }
 
   /// Static version of _getCustomTypeNames for use in FunctionSpec
-  static Map<String, String> _getCustomTypeNamesStatic(ClientBuildContext context, FunctionSpec function) {
+  static Map<String, String> _getCustomTypeNamesStatic(
+    ClientBuildContext context,
+    FunctionSpec function,
+  ) {
     final result = <String, String>{};
 
     // Check mapping file for custom type names
@@ -1219,23 +1313,31 @@ class FunctionSpec with FunctionSpecMappable {
       // Try both keys: first the HTTP endpoint key, then the convex identifier
       Map<String, dynamic>? functionMapping;
       if (context.mappingData!.containsKey(httpEndpointKey)) {
-        functionMapping = context.mappingData![httpEndpointKey] as Map<String, dynamic>?;
+        functionMapping =
+            context.mappingData![httpEndpointKey] as Map<String, dynamic>?;
       } else if (context.mappingData!.containsKey(functionKey)) {
-        functionMapping = context.mappingData![functionKey] as Map<String, dynamic>?;
+        functionMapping =
+            context.mappingData![functionKey] as Map<String, dynamic>?;
       }
 
       if (functionMapping != null) {
         if (functionMapping.containsKey('request')) {
           result['requestType'] = functionMapping['request'] as String;
-          print("DEBUG: Using custom request type '${result['requestType']}' for $functionKey");
+          print(
+            "DEBUG: Using custom request type '${result['requestType']}' for $functionKey",
+          );
         }
         if (functionMapping.containsKey('response')) {
           result['responseType'] = functionMapping['response'] as String;
-          print("DEBUG: Using custom response type '${result['responseType']}' for $functionKey");
+          print(
+            "DEBUG: Using custom response type '${result['responseType']}' for $functionKey",
+          );
         }
         if (functionMapping.containsKey('responseList')) {
           result['responseList'] = functionMapping['responseList'] as String;
-          print("DEBUG: Using custom responseList type '${result['responseList']}' for $functionKey");
+          print(
+            "DEBUG: Using custom responseList type '${result['responseList']}' for $functionKey",
+          );
         }
       }
     }
@@ -1262,15 +1364,22 @@ import "../../literals.dart";
         break;
       case JsObject obj when obj.value.isNotEmpty:
         // Get custom type names for import path
-        final customNames = _getCustomTypeNamesStatic(context.clientContext, this);
+        final customNames = _getCustomTypeNamesStatic(
+          context.clientContext,
+          this,
+        );
         final requestTypeName = customNames['requestType'] ?? functionName;
-        context.headerBuffer.writeln('import "../../models/json/${requestTypeName.snakeCase}.dart";');
+        context.headerBuffer.writeln(
+          'import "../../models/json/${requestTypeName.snakeCase}.dart";',
+        );
       default:
         break;
     }
 
     // Get the effective args type name from mapping configuration
-    final effectiveArgsTypeName = getEffectiveArgsTypeName(context.clientContext);
+    final effectiveArgsTypeName = getEffectiveArgsTypeName(
+      context.clientContext,
+    );
 
     switch (args) {
       case JsAny():
