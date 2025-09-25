@@ -1,0 +1,12 @@
+class ClientBuildContext {
+  final Map<String, String> outputs = {};
+  final Set<JsLiteral> literals = {};
+  final Set<String> tables = {};
+  final Map<String, dynamic>? mappingData;
+  final Map<String, dynamic>? objectBoxFunctionsData;
+  
+  ClientBuildContext({
+    this.mappingData,
+    this.objectBoxFunctionsData,
+  });
+}

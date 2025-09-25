@@ -8,6 +8,8 @@ dependencies:
   flutter:
     sdk: flutter
   convex_dart:
+  objectbox: ^4.3.1
+  objectbox_flutter_libs: any
 
 dev_dependencies:
   flutter_test:
@@ -18,5 +20,6 @@ dev_dependencies:
   convex_dart_builder:
   faker: ^2.2.0
   recase: ^4.1.0
+  objectbox_generator: any
 
 resolution: workspace

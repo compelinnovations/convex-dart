@@ -1,0 +1,24 @@
+          // Generate ObjectBox models only if createBox is true in mapping
+          final shouldCreateObjectBox = _shouldCreateObjectBox(context, function);
+          if (shouldCreateObjectBox) {
+            final objectBoxModel = _buildObjectBoxModel(function);
+            final objectBoxPath = path.join(
+              "src",
+              "models",
+              "objectbox",
+              "box",
+              "${function.functionName.snakeCase}_box.dart",
+            );
+            context.outputs[objectBoxPath] = objectBoxModel;
+
+            // Generate ObjectBox repository
+            final objectBoxRepo = _buildObjectBoxRepository(function);
+            final objectBoxRepoPath = path.join(
+              "src",
+              "models",
+              "objectbox",
+              "repos",
+              "${function.functionName.snakeCase}_repo.dart",
+            );
+            context.outputs[objectBoxRepoPath] = objectBoxRepo;
+          }

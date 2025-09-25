@@ -7,7 +7,7 @@ import 'package:convex_dart/src/convex_dart_for_generated_code.dart'
 class ConvexClient {
   static Future<void> init() async {
     await internal.ConvexClient.init(
-      deploymentUrl: "https://outgoing-akita-910.convex.cloud",
+      deploymentUrl: "https://bold-armadillo-832.convex.cloud",
       clientId: "flutter-rust-client",
     );
   }

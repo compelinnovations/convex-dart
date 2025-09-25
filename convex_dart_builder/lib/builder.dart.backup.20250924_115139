@@ -28,7 +28,6 @@ class ConvexDartBuilder extends Builder {
     if (buildStep.inputId.path != options.config['input_file']) {
       return;
     }
-    
     // Read the schema.json file
     final contents = await buildStep.readAsString(buildStep.inputId);
 
@@ -37,42 +36,9 @@ class ConvexDartBuilder extends Builder {
     final schemaPath = buildStepImpl.assetPathProvider.pathFor(
       buildStep.inputId,
     );
-    
     // Get a list of all the .dart files in the lib directory
     final libPath = path.dirname(schemaPath);
     final libDir = Directory(libPath);
-    
-    // Read mapping and ObjectBox functions files if specified
-    Map<String, dynamic>? mappingData;
-    Map<String, dynamic>? objectBoxFunctionsData;
-    
-    // Read mapping file
-    final mappingFile = options.config['mapping_file'] as String?;
-    if (mappingFile != null) {
-      try {
-        final mappingPath = path.join(libPath, mappingFile.startsWith('lib/') ? mappingFile.substring(4) : mappingFile);
-        final mappingContent = await File(mappingPath).readAsString();
-        mappingData = jsonDecode(mappingContent) as Map<String, dynamic>;
-        print("DEBUG: Loaded mapping file with ${mappingData.length} endpoints");
-      } catch (e) {
-        print("WARNING: Failed to load mapping file: $e");
-      }
-    }
-    
-    // Read ObjectBox functions file
-    final objectBoxFunctionsFile = options.config['objectbox_functions_file'] as String?;
-    if (objectBoxFunctionsFile != null) {
-      try {
-        final objectBoxPath = path.join(libPath, objectBoxFunctionsFile.startsWith('lib/') ? objectBoxFunctionsFile.substring(4) : objectBoxFunctionsFile);
-        final objectBoxContent = await File(objectBoxPath).readAsString();
-        objectBoxFunctionsData = jsonDecode(objectBoxContent) as Map<String, dynamic>;
-        final functions = objectBoxFunctionsData['functions'] as List?;
-        print("DEBUG: Loaded ObjectBox functions file with ${functions?.length ?? 0} functions");
-      } catch (e) {
-        print("WARNING: Failed to load ObjectBox functions file: $e");
-      }
-    }
-    
     // Wipe any existing dart files
     await wipeDartFiles(libDir);
 
@@ -169,12 +135,8 @@ class ConvexDartBuilder extends Builder {
       rethrow;
     }
 
-    final clientBuildContext = ClientBuildContext(
-      mappingData: mappingData,
-      objectBoxFunctionsData: objectBoxFunctionsData,
-    );
+    final clientBuildContext = ClientBuildContext();
     await functionsSpec.build(clientBuildContext);
-    
     for (final entry in clientBuildContext.outputs.entries) {
       final filePath = path.join(libPath, entry.key);
       final file = File(filePath);

@@ -1,0 +1,18 @@
+{
+  "POST:/api/run/app/fieldAgents/auth/getMyFieldAgentProfile": {
+    "request": "GetMe",
+    "response": "AppUser",
+    "createBox": true
+  },
+  "POST:/api/run/app/fieldAgents/cashcount/createFieldSignUp": {
+    "request": "CreateFieldSignUp",
+    "response": "MutationResult",
+    "createBox": false
+  },
+  "POST:/api/run/app/fieldAgents/cashcount/listPendingFieldSignUps": {
+    "request": "ListQuery",
+    "response": "CashCountFieldSignUps",
+    "responseList": "CashCountFieldSignUp",
+    "createBox": true
+  }
+}
