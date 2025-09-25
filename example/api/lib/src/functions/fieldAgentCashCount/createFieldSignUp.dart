@@ -5,15 +5,15 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
 import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
-import "../../models/json/create_field_sign_up.dart";
+import "../../models/json/create_cash_count_field_sign_up.dart";
 
 final createFieldSignUp =
-    MutationOperation<CreateFieldSignUp, CreateFieldSignUpResponse>(
-      'fieldAgents:createFieldSignUp',
+    MutationOperation<CreateCashCountFieldSignUp, CreateFieldSignUpResponse>(
+      'fieldAgentCashCount:createFieldSignUp',
       serialize,
       deserialize,
     );
-BTreeMapStringValue serialize(CreateFieldSignUp args) {
+BTreeMapStringValue serialize(CreateCashCountFieldSignUp args) {
   return hashmapToBtreemap(
     hashmap: {
       'deviceInfo': encodeValue({
@@ -29,7 +29,7 @@ BTreeMapStringValue serialize(CreateFieldSignUp args) {
 
 CreateFieldSignUpResponse deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on752478) => (message: (on752478['message'] as String)),
+    (on614484) => (message: (on614484['message'] as String)),
   );
 }
 

@@ -7,7 +7,7 @@
         "value": {}
       },
       "functionType": "Query",
-      "identifier": "app/fieldAgents.js:getMyFieldAgentProfile",
+      "identifier": "app/fieldAgentAuth.js:getMe",
       "returns": {
         "type": "object",
         "value": {
@@ -602,7 +602,7 @@
         }
       },
       "functionType": "Mutation",
-      "identifier": "app/fieldAgents.js:createFieldSignUp",
+      "identifier": "app/fieldAgentCashCount.js:createFieldSignUp",
       "returns": {
         "type": "object",
         "value": {
@@ -687,7 +687,7 @@
         }
       },
       "functionType": "Query",
-      "identifier": "app/fieldAgents.js:listPendingFieldSignUps",
+      "identifier": "app/fieldAgentCashCount.js:listPendingFieldSignUps",
       "returns": {
         "type": "object",
         "value": {

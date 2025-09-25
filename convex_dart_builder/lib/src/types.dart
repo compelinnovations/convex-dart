@@ -15,24 +15,14 @@ final random = math.Random();
 
 /// Generate HTTP endpoint key from convex identifier string
 String _generateHttpEndpointKeyFromString(String convexIdentifier) {
-  // Parse convex identifier like "fieldAgents:listPendingFieldSignUps"
+  // Parse convex identifier like "fieldAgentAuth:getMyFieldAgentProfile"
   final parts = convexIdentifier.split(':');
   if (parts.length == 2) {
-    final stakeholder = parts[0]; // e.g., "fieldAgents"
-    final functionName = parts[1]; // e.g., "listPendingFieldSignUps"
+    final moduleName = parts[0]; // e.g., "fieldAgentAuth" or "fieldAgentCashCount"
+    final functionName = parts[1]; // e.g., "getMyFieldAgentProfile"
 
-    // Try to determine category from function name
-    String category = 'default';
-    if (functionName.toLowerCase().contains('auth') ||
-        functionName.toLowerCase().contains('profile')) {
-      category = 'auth';
-    } else if (functionName.toLowerCase().contains('cashcount') ||
-        functionName.toLowerCase().contains('field') ||
-        functionName.toLowerCase().contains('signup')) {
-      category = 'cashcount';
-    }
-
-    return "POST:/api/run/app/$stakeholder/$category/$functionName";
+    // Direct mapping: module name is already the category in the new structure
+    return "POST:/api/run/app/$moduleName/$functionName";
   }
   return '';
 }
@@ -688,33 +678,23 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
 
   /// Generate possible HTTP endpoint key for a function
   String _generateHttpEndpointKey(FunctionSpec function) {
-    // Convert "app/stakeholder.js:functionName" to "POST:/api/run/app/stakeholder/category/functionName"
+    // Convert new flat structure: "app/fieldAgentAuth.js:functionName" to "POST:/api/run/app/fieldAgentAuth/functionName"
     final identifier = function.identifier;
     final parts = identifier.split(':');
     if (parts.length == 2) {
-      final filePath = parts[0]; // e.g., "app/fieldAgents.js"
+      final filePath = parts[0]; // e.g., "app/fieldAgentAuth.js"
       final functionName = parts[1]; // e.g., "getMyFieldAgentProfile"
 
-      // Extract stakeholder from file path
+      // Extract module name from file path
       final pathParts = filePath.split('/');
       if (pathParts.length >= 2) {
-        final stakeholder = pathParts[1].replaceAll(
+        final moduleName = pathParts[1].replaceAll(
           '.js',
           '',
-        ); // e.g., "fieldAgents"
+        ); // e.g., "fieldAgentAuth" or "fieldAgentCashCount"
 
-        // Try to determine category from function name
-        String category = 'default';
-        if (functionName.toLowerCase().contains('auth') ||
-            functionName.toLowerCase().contains('profile')) {
-          category = 'auth';
-        } else if (functionName.toLowerCase().contains('cashcount') ||
-            functionName.toLowerCase().contains('field') ||
-            functionName.toLowerCase().contains('signup')) {
-          category = 'cashcount';
-        }
-
-        return "POST:/api/run/app/$stakeholder/$category/$functionName";
+        // Direct mapping: module name is already the category in the new structure
+        return "POST:/api/run/app/$moduleName/$functionName";
       }
     }
     return '';
@@ -1310,14 +1290,22 @@ class FunctionSpec with FunctionSpecMappable {
       final functionKey = function.convexFunctionIdentifier;
       final httpEndpointKey = _generateHttpEndpointKeyFromString(functionKey);
 
-      // Try both keys: first the HTTP endpoint key, then the convex identifier
+      // Try multiple possible keys to handle both old and new formats
+      final possibleKeys = [
+        httpEndpointKey,           // New format: POST:/api/run/app/fieldAgentAuth/getMe
+        functionKey,               // Current format: fieldAgents:getMyFieldAgentProfile
+        function.convexFunctionIdentifier, // Alternative format
+      ];
+
       Map<String, dynamic>? functionMapping;
-      if (context.mappingData!.containsKey(httpEndpointKey)) {
-        functionMapping =
-            context.mappingData![httpEndpointKey] as Map<String, dynamic>?;
-      } else if (context.mappingData!.containsKey(functionKey)) {
-        functionMapping =
-            context.mappingData![functionKey] as Map<String, dynamic>?;
+      String? matchedKey;
+
+      for (final key in possibleKeys) {
+        if (key.isNotEmpty && context.mappingData!.containsKey(key)) {
+          functionMapping = context.mappingData![key] as Map<String, dynamic>?;
+          matchedKey = key;
+          break;
+        }
       }
 
       if (functionMapping != null) {

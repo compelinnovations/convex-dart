@@ -6,7 +6,7 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
-class CreateFieldSignUp {
+class CreateCashCountFieldSignUp {
   final ({
     String deviceId,
     String deviceModel,
@@ -16,20 +16,20 @@ class CreateFieldSignUp {
   deviceInfo;
   final String phoneNumber;
 
-  const CreateFieldSignUp({
+  const CreateCashCountFieldSignUp({
     required this.deviceInfo,
     required this.phoneNumber,
   });
 
-  factory CreateFieldSignUp.empty() {
-    return CreateFieldSignUp(
+  factory CreateCashCountFieldSignUp.empty() {
+    return CreateCashCountFieldSignUp(
       deviceInfo: (deviceId: '', deviceModel: '', deviceName: '', deviceOs: ''),
       phoneNumber: '',
     );
   }
 
-  factory CreateFieldSignUp.fromJson(Map<String, dynamic> json) {
-    return CreateFieldSignUp(
+  factory CreateCashCountFieldSignUp.fromJson(Map<String, dynamic> json) {
+    return CreateCashCountFieldSignUp(
       deviceInfo: json['deviceInfo'],
       phoneNumber: json['phoneNumber'] as String,
     );
@@ -39,12 +39,12 @@ class CreateFieldSignUp {
     return {'deviceInfo': deviceInfo, 'phoneNumber': phoneNumber};
   }
 
-  CreateFieldSignUp copyWith({
+  CreateCashCountFieldSignUp copyWith({
     ({String deviceId, String deviceModel, String deviceName, String deviceOs})?
     deviceInfo,
     String? phoneNumber,
   }) {
-    return CreateFieldSignUp(
+    return CreateCashCountFieldSignUp(
       deviceInfo: deviceInfo ?? this.deviceInfo,
       phoneNumber: phoneNumber ?? this.phoneNumber,
     );
@@ -53,7 +53,7 @@ class CreateFieldSignUp {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is CreateFieldSignUp &&
+    return other is CreateCashCountFieldSignUp &&
         other.deviceInfo == deviceInfo &&
         other.phoneNumber == phoneNumber;
   }

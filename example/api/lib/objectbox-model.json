@@ -4,12 +4,12 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "1:5022870615773346892",
-      "lastPropertyId": "1:3256565287644386649",
+      "id": "5:9091357545077996267",
+      "lastPropertyId": "1:5058715603306662646",
       "name": "AppUserBox",
       "properties": [
         {
-          "id": "1:3256565287644386649",
+          "id": "1:5058715603306662646",
           "name": "id",
           "type": 6,
           "flags": 1
@@ -18,38 +18,38 @@
       "relations": []
     },
     {
-      "id": "2:8975633203547562938",
-      "lastPropertyId": "6:7589914909337369379",
+      "id": "6:5236815421559271578",
+      "lastPropertyId": "6:4903768863996242175",
       "name": "CashCountFieldSignUpBox",
       "properties": [
         {
-          "id": "1:1458517379962432625",
+          "id": "1:4838046608486599737",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:6192686662487177426",
+          "id": "2:3873946455964808670",
           "name": "lastSyncDate",
           "type": 12
         },
         {
-          "id": "3:7419373505000487634",
+          "id": "3:6780047985987102865",
           "name": "paginationOpts",
           "type": 9
         },
         {
-          "id": "4:2099913133662749044",
+          "id": "4:3645887995863265352",
           "name": "searchText",
           "type": 9
         },
         {
-          "id": "5:5357143261249459454",
+          "id": "5:2990255451503922575",
           "name": "sortBy",
           "type": 9
         },
         {
-          "id": "6:7589914909337369379",
+          "id": "6:4903768863996242175",
           "name": "sortOrder",
           "type": 9
         }
@@ -57,15 +57,35 @@
       "relations": []
     }
   ],
-  "lastEntityId": "2:8975633203547562938",
+  "lastEntityId": "6:5236815421559271578",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
-  "retiredEntityUids": [],
+  "retiredEntityUids": [
+    5022870615773346892,
+    8975633203547562938,
+    9211290216321051773,
+    7831205287387523691
+  ],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    3256565287644386649,
+    1458517379962432625,
+    6192686662487177426,
+    7419373505000487634,
+    2099913133662749044,
+    5357143261249459454,
+    7589914909337369379,
+    6282874266279275361,
+    3852644800045284492,
+    99211308021360397,
+    318054940154523975,
+    3606902979306845820,
+    2713122348611282843,
+    2088901517833216825
+  ],
   "retiredRelationUids": [],
   "version": 1
 }
