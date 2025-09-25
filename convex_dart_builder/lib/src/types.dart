@@ -1298,12 +1298,10 @@ class FunctionSpec with FunctionSpecMappable {
       ];
 
       Map<String, dynamic>? functionMapping;
-      String? matchedKey;
 
       for (final key in possibleKeys) {
         if (key.isNotEmpty && context.mappingData!.containsKey(key)) {
           functionMapping = context.mappingData![key] as Map<String, dynamic>?;
-          matchedKey = key;
           break;
         }
       }
