@@ -1,18 +1,55 @@
 {
-  "POST:/api/run/app/fieldAgentAuth/getMe": {
+  "GET:/api/run/app/fieldAgentAuth/getMe": {
     "request": "GetMe",
     "response": "AppUser",
+    "createBox": true,
+    "objectFields": {
+      "args": {},
+      "returns": {
+        "currentLocation": "MapLocation",
+        "currentLocation.administrativeAreaLevel1": "MapAddress",
+        "currentLocation.administrativeAreaLevel2": "MapLatLng",
+        "currentLocation.country": "MapAddress",
+        "currentLocation.latLng": "MapLatLng",
+        "currentLocation.locality": "MapAddress",
+        "currentLocation.plusCode": "MapAddress",
+        "currentLocation.postalCode": "MapAddress",
+        "currentLocation.subLocalityLevel1": "MapAddress",
+        "currentLocation.subLocalityLevel2": "MapAddress"
+      }
+    }
+  },
+  "GET:/api/run/app/fieldAgentCashCount/listPendingFieldSignUps": {
+    "request": "ListQuery",
+    "response": "CashCountFieldSignUps",
+    "createBox": true,
+    "responseList": "CashCountFieldSignUp",
+    "objectFields": {
+      "args": {
+        "paginationOpts": "PaginationOpts"
+      },
+      "returns": {
+        "list.completedMeta": "AuditAction",
+        "list.deletedMeta": "AuditAction",
+        "list.rejectionMeta": "AuditAction",
+        "list.updateMeta": "AuditAction"
+      }
+    }
+  },
+  "GET:/api/run/app/fieldAgentStat/getMyStat": {
+    "request": "GetMyStat",
+    "response": "FieldAgentStat",
     "createBox": true
   },
   "POST:/api/run/app/fieldAgentCashCount/createFieldSignUp": {
     "request": "CreateCashCountFieldSignUp",
     "response": "MutationResult",
-    "createBox": false
-  },
-  "POST:/api/run/app/fieldAgentCashCount/listPendingFieldSignUps": {
-    "request": "ListQuery",
-    "response": "CashCountFieldSignUps",
-    "createBox": true,
-    "responseList": "CashCountFieldSignUp"
+    "createBox": false,
+    "objectFields": {
+      "args": {
+        "deviceInfo": "DeviceInfo"
+      },
+      "returns": {}
+    }
   }
 }

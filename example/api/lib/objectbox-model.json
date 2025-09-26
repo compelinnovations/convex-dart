@@ -4,88 +4,422 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "5:9091357545077996267",
-      "lastPropertyId": "1:5058715603306662646",
+      "id": "1:8426601332449466519",
+      "lastPropertyId": "44:3307274611437134380",
       "name": "AppUserBox",
       "properties": [
         {
-          "id": "1:5058715603306662646",
+          "id": "1:6401334737216061040",
           "name": "id",
           "type": 6,
           "flags": 1
+        },
+        {
+          "id": "2:6561348387586786599",
+          "name": "idRef",
+          "type": 9
+        },
+        {
+          "id": "3:6739612564903172683",
+          "name": "appCountryId",
+          "type": 9
+        },
+        {
+          "id": "4:7985650051442113285",
+          "name": "appCountryIso",
+          "type": 9
+        },
+        {
+          "id": "5:2502812316493201003",
+          "name": "appCountryName",
+          "type": 9
+        },
+        {
+          "id": "6:1863802220567280003",
+          "name": "auditAddedById",
+          "type": 9
+        },
+        {
+          "id": "7:7877408803378346566",
+          "name": "auditAddedByName",
+          "type": 9
+        },
+        {
+          "id": "8:7965190396295429546",
+          "name": "auditDeletedById",
+          "type": 9
+        },
+        {
+          "id": "9:7259682233098425349",
+          "name": "auditDeletedByName",
+          "type": 9
+        },
+        {
+          "id": "10:2209232653432750165",
+          "name": "auditUpdatedById",
+          "type": 9
+        },
+        {
+          "id": "11:4280209114189247",
+          "name": "auditUpdatedByName",
+          "type": 9
+        },
+        {
+          "id": "12:6045521656950643431",
+          "name": "contactEmail",
+          "type": 9
+        },
+        {
+          "id": "13:6406163056622048241",
+          "name": "contactPhone",
+          "type": 9
+        },
+        {
+          "id": "14:804691941870392155",
+          "name": "createdAt",
+          "type": 12
+        },
+        {
+          "id": "15:1632165470505267801",
+          "name": "currentLocation",
+          "type": 9
+        },
+        {
+          "id": "16:3705087250632280844",
+          "name": "dbId",
+          "type": 8
+        },
+        {
+          "id": "17:4738074042747867859",
+          "name": "deletedAt",
+          "type": 12
+        },
+        {
+          "id": "18:1622950304752462206",
+          "name": "deviceIds",
+          "type": 9
+        },
+        {
+          "id": "19:856902636271440105",
+          "name": "email",
+          "type": 9
+        },
+        {
+          "id": "20:3530823273090047179",
+          "name": "emailVerified",
+          "type": 1
+        },
+        {
+          "id": "21:5143811997006204202",
+          "name": "fbmToken",
+          "type": 9
+        },
+        {
+          "id": "22:6182673752323161428",
+          "name": "firstName",
+          "type": 9
+        },
+        {
+          "id": "23:3388303999422670560",
+          "name": "fullName",
+          "type": 9
+        },
+        {
+          "id": "24:8009341722354034313",
+          "name": "hash",
+          "type": 9
+        },
+        {
+          "id": "25:8047325933708258279",
+          "name": "lastName",
+          "type": 9
+        },
+        {
+          "id": "26:3302918024397776675",
+          "name": "organizationBranchAccessIds",
+          "type": 9
+        },
+        {
+          "id": "27:2265334196526240926",
+          "name": "organizationBranchId",
+          "type": 9
+        },
+        {
+          "id": "28:3015574479784775573",
+          "name": "organizationId",
+          "type": 9
+        },
+        {
+          "id": "29:1736678211969239585",
+          "name": "organizationType",
+          "type": 9
+        },
+        {
+          "id": "30:4474612736502202131",
+          "name": "phone",
+          "type": 9
+        },
+        {
+          "id": "31:1376108475007208261",
+          "name": "profileImage",
+          "type": 9
+        },
+        {
+          "id": "32:6419766571196387131",
+          "name": "profileImageBlurHash",
+          "type": 9
+        },
+        {
+          "id": "33:2720670988840855794",
+          "name": "profileImageSize",
+          "type": 8
+        },
+        {
+          "id": "34:3240833480306044759",
+          "name": "role",
+          "type": 9
+        },
+        {
+          "id": "35:3463695797932849435",
+          "name": "salt",
+          "type": 9
+        },
+        {
+          "id": "36:2707198449252762448",
+          "name": "statId",
+          "type": 9
+        },
+        {
+          "id": "37:1373853486803557827",
+          "name": "status",
+          "type": 9
+        },
+        {
+          "id": "38:4455774263006425714",
+          "name": "subRole",
+          "type": 9
+        },
+        {
+          "id": "39:2601289177057061292",
+          "name": "teamBranchAccessIds",
+          "type": 9
+        },
+        {
+          "id": "40:1049278090120610541",
+          "name": "teamBranchId",
+          "type": 9
+        },
+        {
+          "id": "41:9014946132455279917",
+          "name": "teamId",
+          "type": 9
+        },
+        {
+          "id": "42:34203379229542493",
+          "name": "teamType",
+          "type": 9
+        },
+        {
+          "id": "43:43378853722142469",
+          "name": "updatedAt",
+          "type": 12
+        },
+        {
+          "id": "44:3307274611437134380",
+          "name": "username",
+          "type": 9
         }
       ],
       "relations": []
     },
     {
-      "id": "6:5236815421559271578",
-      "lastPropertyId": "6:4903768863996242175",
+      "id": "2:6102403218656284864",
+      "lastPropertyId": "19:1481380957023085623",
       "name": "CashCountFieldSignUpBox",
       "properties": [
         {
-          "id": "1:4838046608486599737",
+          "id": "1:5708201583668810493",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:3873946455964808670",
-          "name": "lastSyncDate",
+          "id": "2:1526995542876119967",
+          "name": "dbId",
+          "type": 9
+        },
+        {
+          "id": "3:6739062041408732122",
+          "name": "completedAt",
           "type": 12
         },
         {
-          "id": "3:6780047985987102865",
-          "name": "paginationOpts",
+          "id": "4:5647125745337940197",
+          "name": "completedMeta",
           "type": 9
         },
         {
-          "id": "4:3645887995863265352",
-          "name": "searchText",
+          "id": "5:929280875354930941",
+          "name": "createdAt",
+          "type": 12
+        },
+        {
+          "id": "6:3398612675568784235",
+          "name": "creatorId",
           "type": 9
         },
         {
-          "id": "5:2990255451503922575",
-          "name": "sortBy",
+          "id": "7:3160352217905317239",
+          "name": "deletedAt",
+          "type": 12
+        },
+        {
+          "id": "8:5821186349553280702",
+          "name": "deletedMeta",
           "type": 9
         },
         {
-          "id": "6:4903768863996242175",
-          "name": "sortOrder",
+          "id": "9:8290442384545986031",
+          "name": "deviceInfo",
+          "type": 9
+        },
+        {
+          "id": "10:2235823184985675995",
+          "name": "expiredAt",
+          "type": 12
+        },
+        {
+          "id": "11:2434758139985096295",
+          "name": "mongoId",
+          "type": 9
+        },
+        {
+          "id": "12:5513028112040674232",
+          "name": "phoneNumber",
+          "type": 9
+        },
+        {
+          "id": "13:3835889445765566293",
+          "name": "rejectionAt",
+          "type": 12
+        },
+        {
+          "id": "14:2328324036167571958",
+          "name": "rejectionMeta",
+          "type": 9
+        },
+        {
+          "id": "15:6550045384243306324",
+          "name": "rejectionReason",
+          "type": 9
+        },
+        {
+          "id": "16:4364591147874133033",
+          "name": "statUpdatedAt",
+          "type": 12
+        },
+        {
+          "id": "17:3548930695993633866",
+          "name": "status",
+          "type": 9
+        },
+        {
+          "id": "18:8060812973867316823",
+          "name": "updateMeta",
+          "type": 9
+        },
+        {
+          "id": "19:1481380957023085623",
+          "name": "updatedAt",
+          "type": 12
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:3735040337502674930",
+      "lastPropertyId": "13:8104642657229610673",
+      "name": "FieldAgentStatBox",
+      "properties": [
+        {
+          "id": "1:6722242472849756820",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3623073353777514088",
+          "name": "dbId",
+          "type": 9
+        },
+        {
+          "id": "3:7491472698825926259",
+          "name": "createdAt",
+          "type": 12
+        },
+        {
+          "id": "4:2762953646574498628",
+          "name": "deletedAt",
+          "type": 12
+        },
+        {
+          "id": "5:2085906654422302206",
+          "name": "totalCashCountSignUps",
+          "type": 8
+        },
+        {
+          "id": "6:3603659723887142593",
+          "name": "totalCommissionsEarned",
+          "type": 8
+        },
+        {
+          "id": "7:3225450151921976962",
+          "name": "totalCommissionsInvalid",
+          "type": 8
+        },
+        {
+          "id": "8:2395686328905336216",
+          "name": "totalCommissionsPaid",
+          "type": 8
+        },
+        {
+          "id": "9:122698467817298140",
+          "name": "totalCompletedCashCountSignUps",
+          "type": 8
+        },
+        {
+          "id": "10:1429538232836104345",
+          "name": "totalExpiredCashCountSignUps",
+          "type": 8
+        },
+        {
+          "id": "11:5857042661818543125",
+          "name": "totalPendingCashCountSignUps",
+          "type": 8
+        },
+        {
+          "id": "12:855131269162051547",
+          "name": "updatedAt",
+          "type": 12
+        },
+        {
+          "id": "13:8104642657229610673",
+          "name": "userId",
           "type": 9
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "6:5236815421559271578",
+  "lastEntityId": "3:3735040337502674930",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
-  "retiredEntityUids": [
-    5022870615773346892,
-    8975633203547562938,
-    9211290216321051773,
-    7831205287387523691
-  ],
+  "retiredEntityUids": [],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [
-    3256565287644386649,
-    1458517379962432625,
-    6192686662487177426,
-    7419373505000487634,
-    2099913133662749044,
-    5357143261249459454,
-    7589914909337369379,
-    6282874266279275361,
-    3852644800045284492,
-    99211308021360397,
-    318054940154523975,
-    3606902979306845820,
-    2713122348611282843,
-    2088901517833216825
-  ],
+  "retiredPropertyUids": [],
   "retiredRelationUids": [],
   "version": 1
 }

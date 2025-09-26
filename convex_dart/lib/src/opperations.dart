@@ -21,6 +21,11 @@ class QueryOperation<Input, Output_> extends Operation<Input, Output_> {
     return decodeResult(await client.query(identifier, encodeArgs(args)));
   }
 
+  /// Makes the operation callable like a function
+  Future<Output_> call([Input? args]) async {
+    return execute(args as Input);
+  }
+
   Future<SubscriptionHandle> subscribe(
     Input args,
     void Function(SubscribeEvent<Output_> result) onUpdate,
@@ -48,6 +53,11 @@ class MutationOperation<Input, Output_> extends Operation<Input, Output_> {
       await client.mutation(name: identifier, args: encodeArgs(args)),
     );
   }
+
+  /// Makes the operation callable like a function
+  Future<Output_> call([Input? args]) async {
+    return execute(args as Input);
+  }
 }
 
 class ActionOperation<Input, Output_> extends Operation<Input, Output_> {
@@ -58,6 +68,11 @@ class ActionOperation<Input, Output_> extends Operation<Input, Output_> {
     return decodeResult(
       await client.action(name: identifier, args: encodeArgs(args)),
     );
+  }
+
+  /// Makes the operation callable like a function
+  Future<Output_> call([Input? args]) async {
+    return execute(args as Input);
   }
 }
 

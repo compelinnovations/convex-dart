@@ -1,31 +1,34 @@
 import 'package:flutter/foundation.dart';
-import 'package:api/src/retry_wrapper.dart';
 import 'package:api/src/functions/fieldAgentAuth/getMe.dart';
+
+import 'retry_wrapper.dart';
 
 /// Usage examples for retry functionality with your generated functions
 class ConvexRetryExamples {
   static Future<void> examples() async {
     // Basic retry using extension method on the actual function call
-    final profile = await getMe.execute(null).withRetry(
-      operationName: 'Get Field Agent Profile',
-    );
+    final profile = await getMe
+        .execute(null)
+        .withRetry(operationName: 'Get Field Agent Profile');
     debugPrint('Profile loaded: ${profile.toString()}');
 
     // Critical retry for essential operations
-    final criticalProfile = await getMe.execute(null).withCriticalRetry(
-      operationName: 'Critical Profile Fetch',
-    );
+    final criticalProfile = await getMe
+        .execute(null)
+        .withCriticalRetry(operationName: 'Critical Profile Fetch');
     debugPrint('Critical profile loaded: ${criticalProfile.toString()}');
 
     // Custom retry configuration
-    final customRetryProfile = await getMe.execute(null).withRetry(
-      config: const RetryConfig(
-        maxRetries: 5,
-        initialDelay: Duration(milliseconds: 100),
-        backoffMultiplier: 1.8,
-      ),
-      operationName: 'Custom Retry Profile',
-    );
+    final customRetryProfile = await getMe
+        .execute(null)
+        .withRetry(
+          config: const RetryConfig(
+            maxRetries: 5,
+            initialDelay: Duration(milliseconds: 100),
+            backoffMultiplier: 1.8,
+          ),
+          operationName: 'Custom Retry Profile',
+        );
     debugPrint('Custom retry profile loaded: ${customRetryProfile.toString()}');
 
     // Using ConvexRetry.execute directly
@@ -45,16 +48,14 @@ class ConvexRetryExamples {
 class ConvexRetryPatterns {
   /// Standard profile fetch with network retry
   static Future<GetMeResponse> getProfileWithRetry() {
-    return getMe.execute(null).withRetry(
-      operationName: 'Profile Fetch',
-    );
+    return getMe.execute(null).withRetry(operationName: 'Profile Fetch');
   }
 
   /// Critical profile fetch that must succeed
   static Future<GetMeResponse> getCriticalProfile() {
-    return getMe.execute(null).withCriticalRetry(
-      operationName: 'Critical Profile',
-    );
+    return getMe
+        .execute(null)
+        .withCriticalRetry(operationName: 'Critical Profile');
   }
 
   /// Custom retry for specific use cases
@@ -66,10 +67,7 @@ class ConvexRetryPatterns {
   }) {
     return ConvexRetry.execute(
       operation,
-      config: RetryConfig(
-        maxRetries: maxRetries,
-        initialDelay: initialDelay,
-      ),
+      config: RetryConfig(maxRetries: maxRetries, initialDelay: initialDelay),
       operationName: operationName,
     );
   }

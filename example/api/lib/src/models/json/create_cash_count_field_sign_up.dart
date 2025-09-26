@@ -5,15 +5,10 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
 import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
+import "device_info.dart";
 
 class CreateCashCountFieldSignUp {
-  final ({
-    String deviceId,
-    String deviceModel,
-    String deviceName,
-    String deviceOs,
-  })
-  deviceInfo;
+  final DeviceInfo deviceInfo;
   final String phoneNumber;
 
   const CreateCashCountFieldSignUp({
@@ -23,14 +18,16 @@ class CreateCashCountFieldSignUp {
 
   factory CreateCashCountFieldSignUp.empty() {
     return CreateCashCountFieldSignUp(
-      deviceInfo: (deviceId: '', deviceModel: '', deviceName: '', deviceOs: ''),
+      deviceInfo: DeviceInfo.empty(),
       phoneNumber: '',
     );
   }
 
   factory CreateCashCountFieldSignUp.fromJson(Map<String, dynamic> json) {
     return CreateCashCountFieldSignUp(
-      deviceInfo: json['deviceInfo'],
+      deviceInfo: DeviceInfo.fromJson(
+        json['deviceInfo'] as Map<String, dynamic>,
+      ),
       phoneNumber: json['phoneNumber'] as String,
     );
   }
@@ -40,8 +37,7 @@ class CreateCashCountFieldSignUp {
   }
 
   CreateCashCountFieldSignUp copyWith({
-    ({String deviceId, String deviceModel, String deviceName, String deviceOs})?
-    deviceInfo,
+    DeviceInfo? deviceInfo,
     String? phoneNumber,
   }) {
     return CreateCashCountFieldSignUp(

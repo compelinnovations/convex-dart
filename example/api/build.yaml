@@ -7,6 +7,5 @@ targets:
         options:
           input_file: lib/schema.json
           mapping_file: lib/schema-mapping-fieldAgent.json
-          objectbox_functions_file: lib/objectbox-functions-fieldAgent.json
       objectbox:objectbox_generator:
         enabled: true

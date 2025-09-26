@@ -5,10 +5,11 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
 import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
+import "pagination_opts.dart";
 
 class ListQuery {
   final Optional<double> lastSyncDate;
-  final Optional<({String? cursor, double numItems})> paginationOpts;
+  final Optional<PaginationOpts> paginationOpts;
   final Optional<String> searchText;
   final Optional<String> sortBy;
   final Optional<Union2<$AscLiteral, $DescLiteral>> sortOrder;
@@ -31,7 +32,11 @@ class ListQuery {
           ? Defined(json['lastSyncDate'] as double)
           : const Undefined(),
       paginationOpts: json['paginationOpts'] != null
-          ? Defined(json['paginationOpts'])
+          ? Defined(
+              PaginationOpts.fromJson(
+                json['paginationOpts'] as Map<String, dynamic>,
+              ),
+            )
           : const Undefined(),
       searchText: json['searchText'] != null
           ? Defined(json['searchText'] as String)
@@ -59,7 +64,7 @@ class ListQuery {
 
   ListQuery copyWith({
     Optional<double>? lastSyncDate,
-    Optional<({String? cursor, double numItems})>? paginationOpts,
+    Optional<PaginationOpts>? paginationOpts,
     Optional<String>? searchText,
     Optional<String>? sortBy,
     Optional<Union2<$AscLiteral, $DescLiteral>>? sortOrder,

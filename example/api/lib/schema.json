@@ -1047,6 +1047,96 @@
       "visibility": {
         "kind": "public"
       }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {}
+      },
+      "functionType": "Query",
+      "identifier": "app/fieldAgentStat.js:getMyStat",
+      "returns": {
+        "type": "object",
+        "value": {
+          "_id": {
+            "fieldType": {
+              "tableName": "fieldAgentStats",
+              "type": "id"
+            },
+            "optional": false
+          },
+          "createdAt": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": false
+          },
+          "deletedAt": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": true
+          },
+          "totalCashCountSignUps": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": true
+          },
+          "totalCommissionsEarned": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": true
+          },
+          "totalCommissionsInvalid": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": true
+          },
+          "totalCommissionsPaid": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": true
+          },
+          "totalCompletedCashCountSignUps": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": true
+          },
+          "totalExpiredCashCountSignUps": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": true
+          },
+          "totalPendingCashCountSignUps": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": true
+          },
+          "updatedAt": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": true
+          },
+          "userId": {
+            "fieldType": {
+              "tableName": "users",
+              "type": "id"
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
     }
   ]
 }

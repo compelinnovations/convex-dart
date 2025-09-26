@@ -5,6 +5,9 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
 import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
+import "map_address.dart";
+import "map_lat_lng.dart";
+import "map_location.dart";
 
 class AppUser {
   final UsersId $_id;
@@ -20,46 +23,7 @@ class AppUser {
   final Optional<String> contactEmail;
   final Optional<String> contactPhone;
   final Optional<double> createdAt;
-  final Optional<
-    ({
-      String $_id,
-      Optional<
-        ({String $_id, Optional<String> longName, Optional<String> shortName})
-      >
-      administrativeAreaLevel1,
-      Optional<({String $_id, double latitude, double longitude})>
-      administrativeAreaLevel2,
-      Optional<
-        ({String $_id, Optional<String> longName, Optional<String> shortName})
-      >
-      country,
-      Optional<String> formattedAddress,
-      ({String $_id, double latitude, double longitude}) latLng,
-      Optional<
-        ({String $_id, Optional<String> longName, Optional<String> shortName})
-      >
-      locality,
-      Optional<String> name,
-      Optional<String> placeId,
-      Optional<
-        ({String $_id, Optional<String> longName, Optional<String> shortName})
-      >
-      plusCode,
-      Optional<
-        ({String $_id, Optional<String> longName, Optional<String> shortName})
-      >
-      postalCode,
-      Optional<
-        ({String $_id, Optional<String> longName, Optional<String> shortName})
-      >
-      subLocalityLevel1,
-      Optional<
-        ({String $_id, Optional<String> longName, Optional<String> shortName})
-      >
-      subLocalityLevel2,
-    })
-  >
-  currentLocation;
+  final Optional<MapLocation> currentLocation;
   final Optional<double> dbId;
   final Optional<double> deletedAt;
   final Optional<IList<UserDevicesId>> deviceIds;
@@ -190,7 +154,11 @@ class AppUser {
           ? Defined(json['createdAt'] as double)
           : const Undefined(),
       currentLocation: json['currentLocation'] != null
-          ? Defined(json['currentLocation'])
+          ? Defined(
+              MapLocation.fromJson(
+                json['currentLocation'] as Map<String, dynamic>,
+              ),
+            )
           : const Undefined(),
       dbId: json['dbId'] != null
           ? Defined(json['dbId'] as double)
@@ -368,46 +336,7 @@ class AppUser {
     Optional<String>? contactEmail,
     Optional<String>? contactPhone,
     Optional<double>? createdAt,
-    Optional<
-      ({
-        String $_id,
-        Optional<
-          ({String $_id, Optional<String> longName, Optional<String> shortName})
-        >
-        administrativeAreaLevel1,
-        Optional<({String $_id, double latitude, double longitude})>
-        administrativeAreaLevel2,
-        Optional<
-          ({String $_id, Optional<String> longName, Optional<String> shortName})
-        >
-        country,
-        Optional<String> formattedAddress,
-        ({String $_id, double latitude, double longitude}) latLng,
-        Optional<
-          ({String $_id, Optional<String> longName, Optional<String> shortName})
-        >
-        locality,
-        Optional<String> name,
-        Optional<String> placeId,
-        Optional<
-          ({String $_id, Optional<String> longName, Optional<String> shortName})
-        >
-        plusCode,
-        Optional<
-          ({String $_id, Optional<String> longName, Optional<String> shortName})
-        >
-        postalCode,
-        Optional<
-          ({String $_id, Optional<String> longName, Optional<String> shortName})
-        >
-        subLocalityLevel1,
-        Optional<
-          ({String $_id, Optional<String> longName, Optional<String> shortName})
-        >
-        subLocalityLevel2,
-      })
-    >?
-    currentLocation,
+    Optional<MapLocation>? currentLocation,
     Optional<double>? dbId,
     Optional<double>? deletedAt,
     Optional<IList<UserDevicesId>>? deviceIds,

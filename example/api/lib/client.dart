@@ -6,3 +6,5 @@ export 'src/functions/fieldAgentCashCount/createFieldSignUp.dart'
     hide serialize, deserialize;
 export 'src/functions/fieldAgentCashCount/listPendingFieldSignUps.dart'
     hide serialize, deserialize;
+export 'src/functions/fieldAgentStat/getMyStat.dart'
+    hide serialize, deserialize;
