@@ -1567,11 +1567,25 @@ class JsLiteralMapper extends SubClassMapperBase<JsLiteral> {
   static const Field<JsLiteral, dynamic> _f$value = Field('value', _$value);
   static String _$type(JsLiteral v) => v.type;
   static const Field<JsLiteral, String> _f$type = Field('type', _$type);
+  static String _$literalTypeName(JsLiteral v) => v.literalTypeName;
+  static const Field<JsLiteral, String> _f$literalTypeName = Field(
+    'literalTypeName',
+    _$literalTypeName,
+    mode: FieldMode.member,
+  );
+  static dynamic _$literalValueCode(JsLiteral v) => v.literalValueCode;
+  static const Field<JsLiteral, dynamic> _f$literalValueCode = Field(
+    'literalValueCode',
+    _$literalValueCode,
+    mode: FieldMode.member,
+  );
 
   @override
   final MappableFields<JsLiteral> fields = const {
     #value: _f$value,
     #type: _f$type,
+    #literalTypeName: _f$literalTypeName,
+    #literalValueCode: _f$literalValueCode,
   };
 
   @override

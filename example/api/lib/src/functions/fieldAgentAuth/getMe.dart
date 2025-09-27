@@ -17,65 +17,65 @@ BTreeMapStringValue serialize(void args) {
 
 GetMeResponse deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on254138) => (
-      $_id: UsersId(on254138['_id'] as String),
-      appCountryId: on254138.containsKey('appCountryId')
-          ? Defined(AppCountriesId(on254138['appCountryId'] as String))
+    (on489520) => (
+      $_id: UsersId(on489520['_id'] as String),
+      appCountryId: on489520.containsKey('appCountryId')
+          ? Defined(AppCountriesId(on489520['appCountryId'] as String))
           : Undefined<AppCountriesId>(),
-      appCountryIso: on254138.containsKey('appCountryIso')
-          ? Defined((on254138['appCountryIso'] as String))
+      appCountryIso: on489520.containsKey('appCountryIso')
+          ? Defined((on489520['appCountryIso'] as String))
           : Undefined<String>(),
-      appCountryName: on254138.containsKey('appCountryName')
-          ? Defined((on254138['appCountryName'] as String))
+      appCountryName: on489520.containsKey('appCountryName')
+          ? Defined((on489520['appCountryName'] as String))
           : Undefined<String>(),
-      auditAddedById: on254138.containsKey('auditAddedById')
-          ? Defined(UsersId(on254138['auditAddedById'] as String))
+      auditAddedById: on489520.containsKey('auditAddedById')
+          ? Defined(UsersId(on489520['auditAddedById'] as String))
           : Undefined<UsersId>(),
-      auditAddedByName: on254138.containsKey('auditAddedByName')
-          ? Defined((on254138['auditAddedByName'] as String))
+      auditAddedByName: on489520.containsKey('auditAddedByName')
+          ? Defined((on489520['auditAddedByName'] as String))
           : Undefined<String>(),
-      auditDeletedById: on254138.containsKey('auditDeletedById')
-          ? Defined(UsersId(on254138['auditDeletedById'] as String))
+      auditDeletedById: on489520.containsKey('auditDeletedById')
+          ? Defined(UsersId(on489520['auditDeletedById'] as String))
           : Undefined<UsersId>(),
-      auditDeletedByName: on254138.containsKey('auditDeletedByName')
-          ? Defined((on254138['auditDeletedByName'] as String))
+      auditDeletedByName: on489520.containsKey('auditDeletedByName')
+          ? Defined((on489520['auditDeletedByName'] as String))
           : Undefined<String>(),
-      auditUpdatedById: on254138.containsKey('auditUpdatedById')
-          ? Defined(UsersId(on254138['auditUpdatedById'] as String))
+      auditUpdatedById: on489520.containsKey('auditUpdatedById')
+          ? Defined(UsersId(on489520['auditUpdatedById'] as String))
           : Undefined<UsersId>(),
-      auditUpdatedByName: on254138.containsKey('auditUpdatedByName')
-          ? Defined((on254138['auditUpdatedByName'] as String))
+      auditUpdatedByName: on489520.containsKey('auditUpdatedByName')
+          ? Defined((on489520['auditUpdatedByName'] as String))
           : Undefined<String>(),
-      contactEmail: on254138.containsKey('contactEmail')
-          ? Defined((on254138['contactEmail'] as String))
+      contactEmail: on489520.containsKey('contactEmail')
+          ? Defined((on489520['contactEmail'] as String))
           : Undefined<String>(),
-      contactPhone: on254138.containsKey('contactPhone')
-          ? Defined((on254138['contactPhone'] as String))
+      contactPhone: on489520.containsKey('contactPhone')
+          ? Defined((on489520['contactPhone'] as String))
           : Undefined<String>(),
-      createdAt: on254138.containsKey('createdAt')
-          ? Defined((on254138['createdAt'] as double))
+      createdAt: on489520.containsKey('createdAt')
+          ? Defined((on489520['createdAt'] as double))
           : Undefined<double>(),
-      currentLocation: on254138.containsKey('currentLocation')
+      currentLocation: on489520.containsKey('currentLocation')
           ? Defined(
-              (on254138['currentLocation'] as IMap<String, dynamic>).then(
-                (on231963) => (
-                  $_id: (on231963['_id'] as String),
+              (on489520['currentLocation'] as IMap<String, dynamic>).then(
+                (on115804) => (
+                  $_id: (on115804['_id'] as String),
                   administrativeAreaLevel1:
-                      on231963.containsKey('administrativeAreaLevel1')
+                      on115804.containsKey('administrativeAreaLevel1')
                       ? Defined(
-                          (on231963['administrativeAreaLevel1']
+                          (on115804['administrativeAreaLevel1']
                                   as IMap<String, dynamic>)
                               .then(
-                                (on598949) => (
-                                  $_id: (on598949['_id'] as String),
-                                  longName: on598949.containsKey('longName')
+                                (on887712) => (
+                                  $_id: (on887712['_id'] as String),
+                                  longName: on887712.containsKey('longName')
                                       ? Defined(
-                                          (on598949['longName'] as String),
+                                          (on887712['longName'] as String),
                                         )
                                       : Undefined<String>(),
-                                  shortName: on598949.containsKey('shortName')
+                                  shortName: on887712.containsKey('shortName')
                                       ? Defined(
-                                          (on598949['shortName'] as String),
+                                          (on887712['shortName'] as String),
                                         )
                                       : Undefined<String>(),
                                 ),
@@ -89,31 +89,43 @@ GetMeResponse deserialize(DartValue map) {
                           })
                         >(),
                   administrativeAreaLevel2:
-                      on231963.containsKey('administrativeAreaLevel2')
+                      on115804.containsKey('administrativeAreaLevel2')
                       ? Defined(
-                          (on231963['administrativeAreaLevel2']
+                          (on115804['administrativeAreaLevel2']
                                   as IMap<String, dynamic>)
                               .then(
-                                (on171327) => (
-                                  $_id: (on171327['_id'] as String),
-                                  latitude: (on171327['latitude'] as double),
-                                  longitude: (on171327['longitude'] as double),
+                                (on180054) => (
+                                  $_id: (on180054['_id'] as String),
+                                  longName: on180054.containsKey('longName')
+                                      ? Defined(
+                                          (on180054['longName'] as String),
+                                        )
+                                      : Undefined<String>(),
+                                  shortName: on180054.containsKey('shortName')
+                                      ? Defined(
+                                          (on180054['shortName'] as String),
+                                        )
+                                      : Undefined<String>(),
                                 ),
                               ),
                         )
                       : Undefined<
-                          ({String $_id, double latitude, double longitude})
+                          ({
+                            String $_id,
+                            Optional<String> longName,
+                            Optional<String> shortName,
+                          })
                         >(),
-                  country: on231963.containsKey('country')
+                  country: on115804.containsKey('country')
                       ? Defined(
-                          (on231963['country'] as IMap<String, dynamic>).then(
-                            (on496266) => (
-                              $_id: (on496266['_id'] as String),
-                              longName: on496266.containsKey('longName')
-                                  ? Defined((on496266['longName'] as String))
+                          (on115804['country'] as IMap<String, dynamic>).then(
+                            (on691541) => (
+                              $_id: (on691541['_id'] as String),
+                              longName: on691541.containsKey('longName')
+                                  ? Defined((on691541['longName'] as String))
                                   : Undefined<String>(),
-                              shortName: on496266.containsKey('shortName')
-                                  ? Defined((on496266['shortName'] as String))
+                              shortName: on691541.containsKey('shortName')
+                                  ? Defined((on691541['shortName'] as String))
                                   : Undefined<String>(),
                             ),
                           ),
@@ -125,26 +137,26 @@ GetMeResponse deserialize(DartValue map) {
                             Optional<String> shortName,
                           })
                         >(),
-                  formattedAddress: on231963.containsKey('formattedAddress')
-                      ? Defined((on231963['formattedAddress'] as String))
+                  formattedAddress: on115804.containsKey('formattedAddress')
+                      ? Defined((on115804['formattedAddress'] as String))
                       : Undefined<String>(),
-                  latLng: (on231963['latLng'] as IMap<String, dynamic>).then(
-                    (on708077) => (
-                      $_id: (on708077['_id'] as String),
-                      latitude: (on708077['latitude'] as double),
-                      longitude: (on708077['longitude'] as double),
+                  latLng: (on115804['latLng'] as IMap<String, dynamic>).then(
+                    (on432919) => (
+                      $_id: (on432919['_id'] as String),
+                      latitude: (on432919['latitude'] as double),
+                      longitude: (on432919['longitude'] as double),
                     ),
                   ),
-                  locality: on231963.containsKey('locality')
+                  locality: on115804.containsKey('locality')
                       ? Defined(
-                          (on231963['locality'] as IMap<String, dynamic>).then(
-                            (on399820) => (
-                              $_id: (on399820['_id'] as String),
-                              longName: on399820.containsKey('longName')
-                                  ? Defined((on399820['longName'] as String))
+                          (on115804['locality'] as IMap<String, dynamic>).then(
+                            (on761057) => (
+                              $_id: (on761057['_id'] as String),
+                              longName: on761057.containsKey('longName')
+                                  ? Defined((on761057['longName'] as String))
                                   : Undefined<String>(),
-                              shortName: on399820.containsKey('shortName')
-                                  ? Defined((on399820['shortName'] as String))
+                              shortName: on761057.containsKey('shortName')
+                                  ? Defined((on761057['shortName'] as String))
                                   : Undefined<String>(),
                             ),
                           ),
@@ -156,22 +168,22 @@ GetMeResponse deserialize(DartValue map) {
                             Optional<String> shortName,
                           })
                         >(),
-                  name: on231963.containsKey('name')
-                      ? Defined((on231963['name'] as String))
+                  name: on115804.containsKey('name')
+                      ? Defined((on115804['name'] as String))
                       : Undefined<String>(),
-                  placeId: on231963.containsKey('placeId')
-                      ? Defined((on231963['placeId'] as String))
+                  placeId: on115804.containsKey('placeId')
+                      ? Defined((on115804['placeId'] as String))
                       : Undefined<String>(),
-                  plusCode: on231963.containsKey('plusCode')
+                  plusCode: on115804.containsKey('plusCode')
                       ? Defined(
-                          (on231963['plusCode'] as IMap<String, dynamic>).then(
-                            (on106168) => (
-                              $_id: (on106168['_id'] as String),
-                              longName: on106168.containsKey('longName')
-                                  ? Defined((on106168['longName'] as String))
+                          (on115804['plusCode'] as IMap<String, dynamic>).then(
+                            (on117469) => (
+                              $_id: (on117469['_id'] as String),
+                              longName: on117469.containsKey('longName')
+                                  ? Defined((on117469['longName'] as String))
                                   : Undefined<String>(),
-                              shortName: on106168.containsKey('shortName')
-                                  ? Defined((on106168['shortName'] as String))
+                              shortName: on117469.containsKey('shortName')
+                                  ? Defined((on117469['shortName'] as String))
                                   : Undefined<String>(),
                             ),
                           ),
@@ -183,20 +195,20 @@ GetMeResponse deserialize(DartValue map) {
                             Optional<String> shortName,
                           })
                         >(),
-                  postalCode: on231963.containsKey('postalCode')
+                  postalCode: on115804.containsKey('postalCode')
                       ? Defined(
-                          (on231963['postalCode'] as IMap<String, dynamic>)
+                          (on115804['postalCode'] as IMap<String, dynamic>)
                               .then(
-                                (on876042) => (
-                                  $_id: (on876042['_id'] as String),
-                                  longName: on876042.containsKey('longName')
+                                (on554786) => (
+                                  $_id: (on554786['_id'] as String),
+                                  longName: on554786.containsKey('longName')
                                       ? Defined(
-                                          (on876042['longName'] as String),
+                                          (on554786['longName'] as String),
                                         )
                                       : Undefined<String>(),
-                                  shortName: on876042.containsKey('shortName')
+                                  shortName: on554786.containsKey('shortName')
                                       ? Defined(
-                                          (on876042['shortName'] as String),
+                                          (on554786['shortName'] as String),
                                         )
                                       : Undefined<String>(),
                                 ),
@@ -209,21 +221,21 @@ GetMeResponse deserialize(DartValue map) {
                             Optional<String> shortName,
                           })
                         >(),
-                  subLocalityLevel1: on231963.containsKey('subLocalityLevel1')
+                  subLocalityLevel1: on115804.containsKey('subLocalityLevel1')
                       ? Defined(
-                          (on231963['subLocalityLevel1']
+                          (on115804['subLocalityLevel1']
                                   as IMap<String, dynamic>)
                               .then(
-                                (on165195) => (
-                                  $_id: (on165195['_id'] as String),
-                                  longName: on165195.containsKey('longName')
+                                (on304119) => (
+                                  $_id: (on304119['_id'] as String),
+                                  longName: on304119.containsKey('longName')
                                       ? Defined(
-                                          (on165195['longName'] as String),
+                                          (on304119['longName'] as String),
                                         )
                                       : Undefined<String>(),
-                                  shortName: on165195.containsKey('shortName')
+                                  shortName: on304119.containsKey('shortName')
                                       ? Defined(
-                                          (on165195['shortName'] as String),
+                                          (on304119['shortName'] as String),
                                         )
                                       : Undefined<String>(),
                                 ),
@@ -236,19 +248,21 @@ GetMeResponse deserialize(DartValue map) {
                             Optional<String> shortName,
                           })
                         >(),
-                  subLocalityLevel2: on231963.containsKey('subLocalityLevel2')
+                  subLocalityLevel2: on115804.containsKey('subLocalityLevel2')
                       ? Defined(
-                          (on231963['subLocalityLevel2']
+                          (on115804['subLocalityLevel2']
                                   as IMap<String, dynamic>)
                               .then(
-                                (on69164) => (
-                                  $_id: (on69164['_id'] as String),
-                                  longName: on69164.containsKey('longName')
-                                      ? Defined((on69164['longName'] as String))
-                                      : Undefined<String>(),
-                                  shortName: on69164.containsKey('shortName')
+                                (on238314) => (
+                                  $_id: (on238314['_id'] as String),
+                                  longName: on238314.containsKey('longName')
                                       ? Defined(
-                                          (on69164['shortName'] as String),
+                                          (on238314['longName'] as String),
+                                        )
+                                      : Undefined<String>(),
+                                  shortName: on238314.containsKey('shortName')
+                                      ? Defined(
+                                          (on238314['shortName'] as String),
                                         )
                                       : Undefined<String>(),
                                 ),
@@ -275,7 +289,13 @@ GetMeResponse deserialize(DartValue map) {
                   })
                 >
                 administrativeAreaLevel1,
-                Optional<({String $_id, double latitude, double longitude})>
+                Optional<
+                  ({
+                    String $_id,
+                    Optional<String> longName,
+                    Optional<String> shortName,
+                  })
+                >
                 administrativeAreaLevel2,
                 Optional<
                   ({
@@ -331,93 +351,93 @@ GetMeResponse deserialize(DartValue map) {
                 subLocalityLevel2,
               })
             >(),
-      dbId: on254138.containsKey('dbId')
-          ? Defined((on254138['dbId'] as double))
+      dbId: on489520.containsKey('dbId')
+          ? Defined((on489520['dbId'] as double))
           : Undefined<double>(),
-      deletedAt: on254138.containsKey('deletedAt')
-          ? Defined((on254138['deletedAt'] as double))
+      deletedAt: on489520.containsKey('deletedAt')
+          ? Defined((on489520['deletedAt'] as double))
           : Undefined<double>(),
-      deviceIds: on254138.containsKey('deviceIds')
+      deviceIds: on489520.containsKey('deviceIds')
           ? Defined(
-              (on254138['deviceIds'] as IList<dynamic>)
-                  .map((on902055) => UserDevicesId(on902055 as String))
+              (on489520['deviceIds'] as IList<dynamic>)
+                  .map((on58008) => UserDevicesId(on58008 as String))
                   .toIList(),
             )
           : Undefined<IList<UserDevicesId>>(),
-      email: (on254138['email'] as String),
-      emailVerified: (on254138['emailVerified'] as bool),
-      fbmToken: on254138.containsKey('fbmToken')
-          ? Defined((on254138['fbmToken'] as String))
+      email: (on489520['email'] as String),
+      emailVerified: (on489520['emailVerified'] as bool),
+      fbmToken: on489520.containsKey('fbmToken')
+          ? Defined((on489520['fbmToken'] as String))
           : Undefined<String>(),
-      firstName: (on254138['firstName'] as String),
-      fullName: (on254138['fullName'] as String),
-      hash: on254138.containsKey('hash')
-          ? Defined((on254138['hash'] as String))
+      firstName: (on489520['firstName'] as String),
+      fullName: (on489520['fullName'] as String),
+      hash: on489520.containsKey('hash')
+          ? Defined((on489520['hash'] as String))
           : Undefined<String>(),
-      lastName: (on254138['lastName'] as String),
+      lastName: (on489520['lastName'] as String),
       organizationBranchAccessIds:
-          on254138.containsKey('organizationBranchAccessIds')
+          on489520.containsKey('organizationBranchAccessIds')
           ? Defined(
-              (on254138['organizationBranchAccessIds'] as IList<dynamic>)
-                  .map((on440415) => OrganizationBranchesId(on440415 as String))
+              (on489520['organizationBranchAccessIds'] as IList<dynamic>)
+                  .map((on980194) => OrganizationBranchesId(on980194 as String))
                   .toIList(),
             )
           : Undefined<IList<OrganizationBranchesId>>(),
-      organizationBranchId: on254138.containsKey('organizationBranchId')
+      organizationBranchId: on489520.containsKey('organizationBranchId')
           ? Defined(
               OrganizationBranchesId(
-                on254138['organizationBranchId'] as String,
+                on489520['organizationBranchId'] as String,
               ),
             )
           : Undefined<OrganizationBranchesId>(),
-      organizationId: on254138.containsKey('organizationId')
-          ? Defined(OrganizationId(on254138['organizationId'] as String))
+      organizationId: on489520.containsKey('organizationId')
+          ? Defined(OrganizationId(on489520['organizationId'] as String))
           : Undefined<OrganizationId>(),
-      organizationType: on254138.containsKey('organizationType')
-          ? Defined((on254138['organizationType'] as String))
+      organizationType: on489520.containsKey('organizationType')
+          ? Defined((on489520['organizationType'] as String))
           : Undefined<String>(),
-      phone: on254138.containsKey('phone')
-          ? Defined((on254138['phone'] as String))
+      phone: on489520.containsKey('phone')
+          ? Defined((on489520['phone'] as String))
           : Undefined<String>(),
-      profileImage: on254138.containsKey('profileImage')
-          ? Defined((on254138['profileImage'] as String))
+      profileImage: on489520.containsKey('profileImage')
+          ? Defined((on489520['profileImage'] as String))
           : Undefined<String>(),
-      profileImageBlurHash: on254138.containsKey('profileImageBlurHash')
-          ? Defined((on254138['profileImageBlurHash'] as String))
+      profileImageBlurHash: on489520.containsKey('profileImageBlurHash')
+          ? Defined((on489520['profileImageBlurHash'] as String))
           : Undefined<String>(),
-      profileImageSize: on254138.containsKey('profileImageSize')
-          ? Defined((on254138['profileImageSize'] as double))
+      profileImageSize: on489520.containsKey('profileImageSize')
+          ? Defined((on489520['profileImageSize'] as double))
           : Undefined<double>(),
-      role: (on254138['role'] as String),
-      salt: on254138.containsKey('salt')
-          ? Defined((on254138['salt'] as String))
+      role: (on489520['role'] as String),
+      salt: on489520.containsKey('salt')
+          ? Defined((on489520['salt'] as String))
           : Undefined<String>(),
-      statId: on254138.containsKey('statId')
-          ? Defined(FieldAgentStatsId(on254138['statId'] as String))
+      statId: on489520.containsKey('statId')
+          ? Defined(FieldAgentStatsId(on489520['statId'] as String))
           : Undefined<FieldAgentStatsId>(),
-      status: (on254138['status'] as String),
-      subRole: (on254138['subRole'] as String),
-      teamBranchAccessIds: on254138.containsKey('teamBranchAccessIds')
+      status: (on489520['status'] as String),
+      subRole: (on489520['subRole'] as String),
+      teamBranchAccessIds: on489520.containsKey('teamBranchAccessIds')
           ? Defined(
-              (on254138['teamBranchAccessIds'] as IList<dynamic>)
-                  .map((on598227) => TeamBranchesId(on598227 as String))
+              (on489520['teamBranchAccessIds'] as IList<dynamic>)
+                  .map((on130185) => TeamBranchesId(on130185 as String))
                   .toIList(),
             )
           : Undefined<IList<TeamBranchesId>>(),
-      teamBranchId: on254138.containsKey('teamBranchId')
-          ? Defined(TeamBranchesId(on254138['teamBranchId'] as String))
+      teamBranchId: on489520.containsKey('teamBranchId')
+          ? Defined(TeamBranchesId(on489520['teamBranchId'] as String))
           : Undefined<TeamBranchesId>(),
-      teamId: on254138.containsKey('teamId')
-          ? Defined(TeamId(on254138['teamId'] as String))
+      teamId: on489520.containsKey('teamId')
+          ? Defined(TeamId(on489520['teamId'] as String))
           : Undefined<TeamId>(),
-      teamType: on254138.containsKey('teamType')
-          ? Defined((on254138['teamType'] as String))
+      teamType: on489520.containsKey('teamType')
+          ? Defined((on489520['teamType'] as String))
           : Undefined<String>(),
-      updatedAt: on254138.containsKey('updatedAt')
-          ? Defined((on254138['updatedAt'] as double))
+      updatedAt: on489520.containsKey('updatedAt')
+          ? Defined((on489520['updatedAt'] as double))
           : Undefined<double>(),
-      username: on254138.containsKey('username')
-          ? Defined((on254138['username'] as String))
+      username: on489520.containsKey('username')
+          ? Defined((on489520['username'] as String))
           : Undefined<String>(),
     ),
   );
@@ -444,7 +464,9 @@ typedef GetMeResponse = ({
         ({String $_id, Optional<String> longName, Optional<String> shortName})
       >
       administrativeAreaLevel1,
-      Optional<({String $_id, double latitude, double longitude})>
+      Optional<
+        ({String $_id, Optional<String> longName, Optional<String> shortName})
+      >
       administrativeAreaLevel2,
       Optional<
         ({String $_id, Optional<String> longName, Optional<String> shortName})

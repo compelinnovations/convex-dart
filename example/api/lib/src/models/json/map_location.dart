@@ -11,7 +11,7 @@ import "map_lat_lng.dart";
 class MapLocation {
   final String $_id;
   final Optional<MapAddress> administrativeAreaLevel1;
-  final Optional<MapLatLng> administrativeAreaLevel2;
+  final Optional<MapAddress> administrativeAreaLevel2;
   final Optional<MapAddress> country;
   final Optional<String> formattedAddress;
   final MapLatLng latLng;
@@ -69,7 +69,7 @@ class MapLocation {
           : const Undefined(),
       administrativeAreaLevel2: json.containsKey('administrativeAreaLevel2')
           ? Defined(
-              MapLatLng.fromJson(
+              MapAddress.fromJson(
                 json['administrativeAreaLevel2'] as Map<String, dynamic>,
               ),
             )
@@ -149,12 +149,24 @@ class MapLocation {
       if (administrativeAreaLevel2.isDefined)
         'administrativeAreaLevel2': encodeValue({
           '_id': encodeValue(administrativeAreaLevel2.asDefined().value.$_id),
-          'latitude': encodeValue(
-            administrativeAreaLevel2.asDefined().value.latitude,
-          ),
-          'longitude': encodeValue(
-            administrativeAreaLevel2.asDefined().value.longitude,
-          ),
+          if (administrativeAreaLevel2.asDefined().value.longName.isDefined)
+            'longName': encodeValue(
+              administrativeAreaLevel2
+                  .asDefined()
+                  .value
+                  .longName
+                  .asDefined()
+                  .value,
+            ),
+          if (administrativeAreaLevel2.asDefined().value.shortName.isDefined)
+            'shortName': encodeValue(
+              administrativeAreaLevel2
+                  .asDefined()
+                  .value
+                  .shortName
+                  .asDefined()
+                  .value,
+            ),
         }),
       if (country.isDefined)
         'country': encodeValue({
@@ -243,7 +255,7 @@ class MapLocation {
   MapLocation copyWith({
     String? $_id,
     Optional<MapAddress>? administrativeAreaLevel1,
-    Optional<MapLatLng>? administrativeAreaLevel2,
+    Optional<MapAddress>? administrativeAreaLevel2,
     Optional<MapAddress>? country,
     Optional<String>? formattedAddress,
     MapLatLng? latLng,

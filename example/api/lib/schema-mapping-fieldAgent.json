@@ -6,16 +6,56 @@
     "objectFields": {
       "args": {},
       "returns": {
-        "currentLocation": "MapLocation",
-        "currentLocation.administrativeAreaLevel1": "MapAddress",
-        "currentLocation.administrativeAreaLevel2": "MapLatLng",
-        "currentLocation.country": "MapAddress",
-        "currentLocation.latLng": "MapLatLng",
-        "currentLocation.locality": "MapAddress",
-        "currentLocation.plusCode": "MapAddress",
-        "currentLocation.postalCode": "MapAddress",
-        "currentLocation.subLocalityLevel1": "MapAddress",
-        "currentLocation.subLocalityLevel2": "MapAddress"
+        "currentLocation": {
+          "name": "MapLocation",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "currentLocation.administrativeAreaLevel1": {
+          "name": "MapAddress",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "currentLocation.administrativeAreaLevel2": {
+          "name": "MapAddress",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "currentLocation.country": {
+          "name": "MapAddress",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "currentLocation.latLng": {
+          "name": "MapLatLng",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "currentLocation.locality": {
+          "name": "MapAddress",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "currentLocation.plusCode": {
+          "name": "MapAddress",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "currentLocation.postalCode": {
+          "name": "MapAddress",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "currentLocation.subLocalityLevel1": {
+          "name": "MapAddress",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "currentLocation.subLocalityLevel2": {
+          "name": "MapAddress",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        }
       }
     }
   },
@@ -29,15 +69,36 @@
         "paginationOpts": "PaginationOpts"
       },
       "returns": {
-        "list.completedMeta": "AuditAction",
-        "list.deletedMeta": "AuditAction",
-        "list.rejectionMeta": "AuditAction",
-        "list.updateMeta": "AuditAction"
+        "list.deviceInfo": {
+          "name": "DeviceInfo",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "list.completedMeta": {
+          "name": "AuditAction",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "list.deletedMeta": {
+          "name": "AuditAction",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "list.rejectionMeta": {
+          "name": "AuditAction",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "list.updateMeta": {
+          "name": "AuditAction",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        }
       }
     }
   },
   "GET:/api/run/app/fieldAgentStat/getMyStat": {
-    "request": "GetMyStat",
+    "request": "GetMyFieldAgentStat",
     "response": "FieldAgentStat",
     "createBox": true
   },

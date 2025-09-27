@@ -1,21 +1,22 @@
 import 'package:api/objectbox.g.dart';
 import '../box/cash_count_field_sign_up_box.dart';
+import '../../json/index.dart';
 
 class CashCountFieldSignUpBoxRepo {
   final Box<CashCountFieldSignUpBox> _box;
 
   CashCountFieldSignUpBoxRepo(this._box);
 
-  // Create from map
-  int createFromMap(Map<String, dynamic> map) {
-    final boxModel = CashCountFieldSignUpBox.fromMap(map);
+  // Create from API model
+  int createFromAPI(CashCountFieldSignUp model) {
+    final boxModel = CashCountFieldSignUpBox.fromAPI(model);
     return _box.put(boxModel);
   }
 
-  // Read as map
-  Map<String, dynamic>? getAsMap(int id) {
+  // Read as API model
+  CashCountFieldSignUp? getAsAPI(int id) {
     final boxModel = _box.get(id);
-    return boxModel?.toMap();
+    return boxModel?.toAPI();
   }
 
   // Read Box
@@ -26,10 +27,10 @@ class CashCountFieldSignUpBoxRepo {
   // Removes all records.
   void removeAll() => _box.removeAll();
 
-  // Bulk insert from maps
-  void putManyFromMaps(List<Map<String, dynamic>> maps) {
-    final entities = maps
-        .map((map) => CashCountFieldSignUpBox.fromMap(map))
+  // Bulk insert from API models
+  void putManyFromAPI(List<CashCountFieldSignUp> models) {
+    final entities = models
+        .map((model) => CashCountFieldSignUpBox.fromAPI(model))
         .toList();
     _box.putMany(entities);
   }
@@ -37,17 +38,17 @@ class CashCountFieldSignUpBoxRepo {
   // Bulk delete by a list of DB IDs.
   void removeMany(List<int> ids) => _box.removeMany(ids);
 
-  List<Map<String, dynamic>> getAllAsMaps() {
-    return _box.getAll().map((boxModel) => boxModel.toMap()).toList();
+  List<CashCountFieldSignUp> getAllAsAPI() {
+    return _box.getAll().map((boxModel) => boxModel.toAPI()).toList();
   }
 
   List<CashCountFieldSignUpBox> getAllBox() {
     return _box.getAll();
   }
 
-  // Update from map
-  void updateFromMap(Map<String, dynamic> map, int id) {
-    final boxModel = CashCountFieldSignUpBox.fromMap(map)..id = id;
+  // Update from API model
+  void updateFromAPI(CashCountFieldSignUp model, int id) {
+    final boxModel = CashCountFieldSignUpBox.fromAPI(model)..id = id;
     _box.put(boxModel);
   }
 

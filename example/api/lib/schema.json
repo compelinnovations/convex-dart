@@ -140,17 +140,17 @@
                         },
                         "optional": false
                       },
-                      "latitude": {
+                      "longName": {
                         "fieldType": {
-                          "type": "number"
+                          "type": "string"
                         },
-                        "optional": false
+                        "optional": true
                       },
-                      "longitude": {
+                      "shortName": {
                         "fieldType": {
-                          "type": "number"
+                          "type": "string"
                         },
-                        "optional": false
+                        "optional": true
                       }
                     }
                   },

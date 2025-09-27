@@ -5,54 +5,23 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
 import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
+import "audit_action.dart";
+import "device_info.dart";
 
 class CashCountFieldSignUp {
   final CashCountFieldSignUpsId $_id;
   final Optional<double> completedAt;
-  final Optional<
-    ({
-      String action,
-      Optional<IMap<String, dynamic>> details,
-      Optional<String> name,
-      Optional<String> role,
-      Optional<String> userId,
-    })
-  >
-  completedMeta;
+  final Optional<AuditAction> completedMeta;
   final double createdAt;
   final UsersId creatorId;
   final Optional<double> deletedAt;
-  final Optional<
-    ({
-      String action,
-      Optional<IMap<String, dynamic>> details,
-      Optional<String> name,
-      Optional<String> role,
-      Optional<String> userId,
-    })
-  >
-  deletedMeta;
-  final ({
-    String deviceId,
-    String deviceModel,
-    String deviceName,
-    String deviceOs,
-  })
-  deviceInfo;
+  final Optional<AuditAction> deletedMeta;
+  final DeviceInfo deviceInfo;
   final Optional<double> expiredAt;
   final Optional<String> mongoId;
   final String phoneNumber;
   final Optional<double> rejectionAt;
-  final Optional<
-    ({
-      String action,
-      Optional<IMap<String, dynamic>> details,
-      Optional<String> name,
-      Optional<String> role,
-      Optional<String> userId,
-    })
-  >
-  rejectionMeta;
+  final Optional<AuditAction> rejectionMeta;
   final Optional<String> rejectionReason;
   final Optional<double> statUpdatedAt;
   final Union4<
@@ -62,16 +31,7 @@ class CashCountFieldSignUp {
     $ExpiredLiteral
   >
   status;
-  final Optional<
-    ({
-      String action,
-      Optional<IMap<String, dynamic>> details,
-      Optional<String> name,
-      Optional<String> role,
-      Optional<String> userId,
-    })
-  >
-  updateMeta;
+  final Optional<AuditAction> updateMeta;
   final Optional<double> updatedAt;
 
   const CashCountFieldSignUp({
@@ -100,7 +60,7 @@ class CashCountFieldSignUp {
       $_id: CashCountFieldSignUpsId(''),
       createdAt: 0.0,
       creatorId: UsersId(''),
-      deviceInfo: (deviceId: '', deviceModel: '', deviceName: '', deviceOs: ''),
+      deviceInfo: DeviceInfo.empty(),
       phoneNumber: '',
       status: Union4(const $CompletedLiteral()),
     );
@@ -113,7 +73,11 @@ class CashCountFieldSignUp {
           ? Defined(json['completedAt'] as double)
           : const Undefined(),
       completedMeta: json['completedMeta'] != null
-          ? Defined(json['completedMeta'])
+          ? Defined(
+              AuditAction.fromJson(
+                json['completedMeta'] as Map<String, dynamic>,
+              ),
+            )
           : const Undefined(),
       createdAt: json['createdAt'] as double,
       creatorId: UsersId(json['creatorId'] as String),
@@ -121,9 +85,13 @@ class CashCountFieldSignUp {
           ? Defined(json['deletedAt'] as double)
           : const Undefined(),
       deletedMeta: json['deletedMeta'] != null
-          ? Defined(json['deletedMeta'])
+          ? Defined(
+              AuditAction.fromJson(json['deletedMeta'] as Map<String, dynamic>),
+            )
           : const Undefined(),
-      deviceInfo: json['deviceInfo'],
+      deviceInfo: DeviceInfo.fromJson(
+        json['deviceInfo'] as Map<String, dynamic>,
+      ),
       expiredAt: json['expiredAt'] != null
           ? Defined(json['expiredAt'] as double)
           : const Undefined(),
@@ -135,7 +103,11 @@ class CashCountFieldSignUp {
           ? Defined(json['rejectionAt'] as double)
           : const Undefined(),
       rejectionMeta: json['rejectionMeta'] != null
-          ? Defined(json['rejectionMeta'])
+          ? Defined(
+              AuditAction.fromJson(
+                json['rejectionMeta'] as Map<String, dynamic>,
+              ),
+            )
           : const Undefined(),
       rejectionReason: json['rejectionReason'] != null
           ? Defined(json['rejectionReason'] as String)
@@ -145,7 +117,9 @@ class CashCountFieldSignUp {
           : const Undefined(),
       status: json['status'],
       updateMeta: json['updateMeta'] != null
-          ? Defined(json['updateMeta'])
+          ? Defined(
+              AuditAction.fromJson(json['updateMeta'] as Map<String, dynamic>),
+            )
           : const Undefined(),
       updatedAt: json['updatedAt'] != null
           ? Defined(json['updatedAt'] as double)
@@ -183,45 +157,17 @@ class CashCountFieldSignUp {
   CashCountFieldSignUp copyWith({
     CashCountFieldSignUpsId? $_id,
     Optional<double>? completedAt,
-    Optional<
-      ({
-        String action,
-        Optional<IMap<String, dynamic>> details,
-        Optional<String> name,
-        Optional<String> role,
-        Optional<String> userId,
-      })
-    >?
-    completedMeta,
+    Optional<AuditAction>? completedMeta,
     double? createdAt,
     UsersId? creatorId,
     Optional<double>? deletedAt,
-    Optional<
-      ({
-        String action,
-        Optional<IMap<String, dynamic>> details,
-        Optional<String> name,
-        Optional<String> role,
-        Optional<String> userId,
-      })
-    >?
-    deletedMeta,
-    ({String deviceId, String deviceModel, String deviceName, String deviceOs})?
-    deviceInfo,
+    Optional<AuditAction>? deletedMeta,
+    DeviceInfo? deviceInfo,
     Optional<double>? expiredAt,
     Optional<String>? mongoId,
     String? phoneNumber,
     Optional<double>? rejectionAt,
-    Optional<
-      ({
-        String action,
-        Optional<IMap<String, dynamic>> details,
-        Optional<String> name,
-        Optional<String> role,
-        Optional<String> userId,
-      })
-    >?
-    rejectionMeta,
+    Optional<AuditAction>? rejectionMeta,
     Optional<String>? rejectionReason,
     Optional<double>? statUpdatedAt,
     Union4<
@@ -231,16 +177,7 @@ class CashCountFieldSignUp {
       $ExpiredLiteral
     >?
     status,
-    Optional<
-      ({
-        String action,
-        Optional<IMap<String, dynamic>> details,
-        Optional<String> name,
-        Optional<String> role,
-        Optional<String> userId,
-      })
-    >?
-    updateMeta,
+    Optional<AuditAction>? updateMeta,
     Optional<double>? updatedAt,
   }) {
     return CashCountFieldSignUp(

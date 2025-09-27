@@ -17,40 +17,40 @@ BTreeMapStringValue serialize(void args) {
 
 GetMyStatResponse deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on779737) => (
-      $_id: FieldAgentStatsId(on779737['_id'] as String),
-      createdAt: (on779737['createdAt'] as double),
-      deletedAt: on779737.containsKey('deletedAt')
-          ? Defined((on779737['deletedAt'] as double))
+    (on993771) => (
+      $_id: FieldAgentStatsId(on993771['_id'] as String),
+      createdAt: (on993771['createdAt'] as double),
+      deletedAt: on993771.containsKey('deletedAt')
+          ? Defined((on993771['deletedAt'] as double))
           : Undefined<double>(),
-      totalCashCountSignUps: on779737.containsKey('totalCashCountSignUps')
-          ? Defined((on779737['totalCashCountSignUps'] as double))
+      totalCashCountSignUps: on993771.containsKey('totalCashCountSignUps')
+          ? Defined((on993771['totalCashCountSignUps'] as double))
           : Undefined<double>(),
-      totalCommissionsEarned: on779737.containsKey('totalCommissionsEarned')
-          ? Defined((on779737['totalCommissionsEarned'] as double))
+      totalCommissionsEarned: on993771.containsKey('totalCommissionsEarned')
+          ? Defined((on993771['totalCommissionsEarned'] as double))
           : Undefined<double>(),
-      totalCommissionsInvalid: on779737.containsKey('totalCommissionsInvalid')
-          ? Defined((on779737['totalCommissionsInvalid'] as double))
+      totalCommissionsInvalid: on993771.containsKey('totalCommissionsInvalid')
+          ? Defined((on993771['totalCommissionsInvalid'] as double))
           : Undefined<double>(),
-      totalCommissionsPaid: on779737.containsKey('totalCommissionsPaid')
-          ? Defined((on779737['totalCommissionsPaid'] as double))
+      totalCommissionsPaid: on993771.containsKey('totalCommissionsPaid')
+          ? Defined((on993771['totalCommissionsPaid'] as double))
           : Undefined<double>(),
       totalCompletedCashCountSignUps:
-          on779737.containsKey('totalCompletedCashCountSignUps')
-          ? Defined((on779737['totalCompletedCashCountSignUps'] as double))
+          on993771.containsKey('totalCompletedCashCountSignUps')
+          ? Defined((on993771['totalCompletedCashCountSignUps'] as double))
           : Undefined<double>(),
       totalExpiredCashCountSignUps:
-          on779737.containsKey('totalExpiredCashCountSignUps')
-          ? Defined((on779737['totalExpiredCashCountSignUps'] as double))
+          on993771.containsKey('totalExpiredCashCountSignUps')
+          ? Defined((on993771['totalExpiredCashCountSignUps'] as double))
           : Undefined<double>(),
       totalPendingCashCountSignUps:
-          on779737.containsKey('totalPendingCashCountSignUps')
-          ? Defined((on779737['totalPendingCashCountSignUps'] as double))
+          on993771.containsKey('totalPendingCashCountSignUps')
+          ? Defined((on993771['totalPendingCashCountSignUps'] as double))
           : Undefined<double>(),
-      updatedAt: on779737.containsKey('updatedAt')
-          ? Defined((on779737['updatedAt'] as double))
+      updatedAt: on993771.containsKey('updatedAt')
+          ? Defined((on993771['updatedAt'] as double))
           : Undefined<double>(),
-      userId: UsersId(on779737['userId'] as String),
+      userId: UsersId(on993771['userId'] as String),
     ),
   );
 }

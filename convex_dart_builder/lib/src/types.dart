@@ -18,7 +18,8 @@ String _generateHttpEndpointKeyFromString(String convexIdentifier) {
   // Parse convex identifier like "fieldAgentAuth:getMyFieldAgentProfile"
   final parts = convexIdentifier.split(':');
   if (parts.length == 2) {
-    final moduleName = parts[0]; // e.g., "fieldAgentAuth" or "fieldAgentCashCount"
+    final moduleName =
+        parts[0]; // e.g., "fieldAgentAuth" or "fieldAgentCashCount"
     final functionName = parts[1]; // e.g., "getMyFieldAgentProfile"
 
     // Direct mapping: module name is already the category in the new structure
@@ -37,6 +38,25 @@ String _dartSafeName(String name) {
   return name;
 }
 
+String _httpEndpointKeyForFunction(FunctionSpec function) {
+  final identifier = function.identifier;
+  final parts = identifier.split(':');
+  if (parts.length == 2) {
+    final filePath = parts[0];
+    final functionName = parts[1];
+    final pathParts = filePath.split('/');
+    if (pathParts.length >= 2) {
+      final fileName = pathParts.last;
+      final moduleName = fileName.replaceAll('.js', '');
+      final httpMethod = function.functionType == FunctionType.query
+          ? 'GET'
+          : 'POST';
+      return "$httpMethod:/api/run/app/$moduleName/$functionName";
+    }
+  }
+  return '';
+}
+
 class ClientBuildContext {
   final Map<String, String> outputs = {};
   final Set<JsLiteral> literals = {};
@@ -45,6 +65,152 @@ class ClientBuildContext {
   final Map<String, dynamic>? objectBoxFunctionsData;
 
   ClientBuildContext({this.mappingData, this.objectBoxFunctionsData});
+}
+
+class ObjectFieldMapping {
+  final String name;
+  final String? type;
+  final String? relation;
+  final Map<String, dynamic>? metadata;
+
+  const ObjectFieldMapping({
+    required this.name,
+    this.type,
+    this.relation,
+    this.metadata,
+  });
+
+  bool get isEmbedded => (type ?? '').toLowerCase() == 'embedded';
+
+  bool get isRelation {
+    final normalized = (type ?? '').toLowerCase();
+    return normalized == 'relation' || normalized == 'entity';
+  }
+
+  String get relationKind => relation ?? 'ToOne';
+}
+
+String _objectBoxEmbeddedClassName(String baseName) {
+  final recased = ReCase(baseName).pascalCase;
+  if (recased.isEmpty) {
+    return 'EmbeddedObject';
+  }
+  return recased.endsWith('Embedded') ? recased : '${recased}Embedded';
+}
+
+String _resolveObjectBoxFieldName(String originalName, bool hasDbIdField) {
+  if (originalName == '_id' && !hasDbIdField) {
+    return 'dbId';
+  }
+  if (originalName == '_id' && hasDbIdField) {
+    return 'idRef';
+  }
+  return _dartSafeName(originalName);
+}
+
+class _ObjectBoxFieldContext {
+  final String originalName;
+  final String fieldName;
+  final JsField field;
+  final ObjectFieldMapping? mapping;
+  final bool isEmbedded;
+  final String? embeddedClassName;
+  final JsObject? embeddedSchema;
+  final bool isDateField;
+  final bool storeAsJson;
+  final String objectBoxType;
+
+  const _ObjectBoxFieldContext({
+    required this.originalName,
+    required this.fieldName,
+    required this.field,
+    required this.mapping,
+    required this.isEmbedded,
+    required this.embeddedClassName,
+    required this.embeddedSchema,
+    required this.isDateField,
+    required this.storeAsJson,
+    required this.objectBoxType,
+  });
+}
+
+class _EmbeddedClassDefinition {
+  final String name;
+  final List<_ObjectBoxFieldContext> fields;
+
+  const _EmbeddedClassDefinition(this.name, this.fields);
+}
+
+ObjectFieldMapping? _parseObjectFieldMapping(dynamic raw) {
+  if (raw is String) {
+    return raw.isEmpty ? null : ObjectFieldMapping(name: raw);
+  }
+
+  if (raw is Map<String, dynamic>) {
+    final name = raw['name'] as String?;
+    if (name == null || name.isEmpty) {
+      return null;
+    }
+    final type = raw['type'] as String?;
+    final relation = raw['relation'] as String?;
+    return ObjectFieldMapping(
+      name: name,
+      type: type,
+      relation: relation,
+      metadata: raw,
+    );
+  }
+
+  return null;
+}
+
+ObjectFieldMapping? _findObjectFieldMapping(
+  Map<String, dynamic>? mappingData,
+  Iterable<String> functionIdentifiers,
+  String fieldContext,
+  Iterable<String> fieldPathCandidates,
+) {
+  if (mappingData == null || mappingData.isEmpty) {
+    return null;
+  }
+
+  for (final identifier in functionIdentifiers) {
+    if (!mappingData.containsKey(identifier)) {
+      continue;
+    }
+
+    final functionMapping = mappingData[identifier] as Map<String, dynamic>?;
+    if (functionMapping == null) {
+      continue;
+    }
+
+    final objectFields =
+        functionMapping['objectFields'] as Map<String, dynamic>?;
+    if (objectFields == null) {
+      continue;
+    }
+
+    final contextFields = objectFields[fieldContext] as Map<String, dynamic>?;
+    if (contextFields == null) {
+      continue;
+    }
+
+    final normalizedFields = <String, dynamic>{}..addAll(contextFields);
+    for (final entry in contextFields.entries) {
+      if (entry.key.startsWith('list.')) {
+        normalizedFields[entry.key.substring(5)] = entry.value;
+      }
+    }
+
+    for (final candidate in fieldPathCandidates) {
+      final mapping = _parseObjectFieldMapping(normalizedFields[candidate]);
+      if (mapping != null) {
+        return mapping;
+      }
+    }
+  }
+
+  return null;
 }
 
 class FunctionBuildContext {
@@ -62,53 +228,49 @@ class FunctionBuildContext {
   FunctionBuildContext(this.clientContext, {this.currentFunction});
 
   /// Get object field mapping for current function context
-  String? getObjectFieldMapping(String fieldName, String fieldContext) {
+  ObjectFieldMapping? getObjectFieldMapping(
+    String fieldName,
+    String fieldContext,
+  ) {
     if (currentFunction == null || clientContext.mappingData == null) {
       return null;
     }
 
-    // Try multiple possible keys for the current function
-    final possibleKeys = [
+    final functionIdentifiers = <String>{
       currentFunction!.identifier,
       _generateHttpEndpointKey(currentFunction!),
-    ];
+    }..removeWhere((element) => element.isEmpty);
 
-    for (final key in possibleKeys) {
-      if (key.isNotEmpty && clientContext.mappingData!.containsKey(key)) {
-        final functionMapping = clientContext.mappingData![key] as Map<String, dynamic>?;
-        if (functionMapping != null && functionMapping.containsKey('objectFields')) {
-          final objectFields = functionMapping['objectFields'] as Map<String, dynamic>?;
-          if (objectFields != null && objectFields.containsKey(fieldContext)) {
-            final contextFields = objectFields[fieldContext] as Map<String, dynamic>?;
-            if (contextFields != null && contextFields.containsKey(fieldName)) {
-              return contextFields[fieldName] as String;
-            }
-          }
-        }
+    final fieldCandidates = <String>{};
+
+    void addCandidate(String? key) {
+      if (key == null || key.isEmpty) {
+        return;
+      }
+      fieldCandidates.add(key);
+      if (key.startsWith('list.')) {
+        fieldCandidates.add(key.substring(5));
+      } else {
+        fieldCandidates.add('list.$key');
       }
     }
 
-    return null;
+    addCandidate(fieldName);
+    final fullFieldPath = getFullFieldPath(fieldName);
+    if (fullFieldPath.isNotEmpty && fullFieldPath != fieldName) {
+      addCandidate(fullFieldPath);
+    }
+
+    return _findObjectFieldMapping(
+      clientContext.mappingData,
+      functionIdentifiers,
+      fieldContext,
+      fieldCandidates,
+    );
   }
 
   String _generateHttpEndpointKey(FunctionSpec function) {
-    // Convert new flat structure: "app/fieldAgentAuth.js:functionName" to "GET/POST:/api/run/app/fieldAgentAuth/functionName"
-    final identifier = function.identifier;
-    final parts = identifier.split(':');
-    if (parts.length == 2) {
-      final filePath = parts[0]; // e.g., "app/fieldAgentAuth.js"
-      final functionName = parts[1]; // e.g., "getMyFieldAgentProfile"
-      // Extract module name from file path
-      final pathParts = filePath.split('/');
-      if (pathParts.length >= 2) {
-        final fileName = pathParts.last; // e.g., "fieldAgentAuth.js"
-        final moduleName = fileName.replaceAll('.js', ''); // e.g., "fieldAgentAuth"
-        // Use correct HTTP method based on function type
-        final httpMethod = (function.functionType == FunctionType.query) ? 'GET' : 'POST';
-        return "$httpMethod:/api/run/app/$moduleName/$functionName";
-      }
-    }
-    return '';
+    return _httpEndpointKeyForFunction(function);
   }
 
   /// Set current field context for object extraction
@@ -172,14 +334,32 @@ class FunctionBuildContext {
   /// Check if a type name is a built-in Dart or package type
   bool _isBuiltInType(String typeName) {
     const builtInTypes = {
-      'String', 'double', 'int', 'bool', 'List', 'Map', 'Object', 'Type',
-      'Optional', 'Defined', 'Undefined', 'IMap', 'IList', 'Union4',
-      'DartValue', 'BTreeMapStringValue', 'Uint8List'
+      'String',
+      'double',
+      'int',
+      'bool',
+      'List',
+      'Map',
+      'Object',
+      'Type',
+      'Optional',
+      'Defined',
+      'Undefined',
+      'IMap',
+      'IList',
+      'Union4',
+      'DartValue',
+      'BTreeMapStringValue',
+      'Uint8List',
     };
     return builtInTypes.contains(typeName) || typeName.startsWith('\$');
   }
 
-  void generateClassDefinition(String className, JsObject obj, [String? fieldContext]) {
+  void generateClassDefinition(
+    String className,
+    JsObject obj, [
+    String? fieldContext,
+  ]) {
     if (obj.value.isEmpty) {
       return; // Skip empty objects
     }
@@ -226,7 +406,11 @@ class FunctionBuildContext {
         setFieldContext(fieldName, fieldContext ?? "args");
 
         // Check if this field should use an extracted class
-        final extractedClassName = getObjectFieldMapping(fieldName, getCurrentFieldContext());
+        final mapping = getObjectFieldMapping(
+          fieldName,
+          getCurrentFieldContext(),
+        );
+        final extractedClassName = mapping?.name;
         String defaultValue;
         if (extractedClassName != null && entry.value.fieldType is JsObject) {
           defaultValue = '$extractedClassName.empty()';
@@ -257,12 +441,21 @@ class FunctionBuildContext {
       setFieldContext(fieldName, fieldContext ?? "args");
 
       // Check if this field should use an extracted class
-      final extractedClassName = getObjectFieldMapping(fieldName, getCurrentFieldContext());
+      final mapping = getObjectFieldMapping(
+        fieldName,
+        getCurrentFieldContext(),
+      );
+      final extractedClassName = mapping?.name;
       String fromJsonValue;
       if (extractedClassName != null && fieldType is JsObject) {
-        fromJsonValue = '$extractedClassName.fromJson(json[\'$jsonKey\'] as Map<String, dynamic>)';
+        fromJsonValue =
+            '$extractedClassName.fromJson(json[\'$jsonKey\'] as Map<String, dynamic>)';
       } else {
-        fromJsonValue = _generateFromJsonValue(fieldType, "json['$jsonKey']", fieldName: fieldName);
+        fromJsonValue = _generateFromJsonValue(
+          fieldType,
+          "json['$jsonKey']",
+          fieldName: fieldName,
+        );
       }
 
       // Clear field context
@@ -273,9 +466,7 @@ class FunctionBuildContext {
           '      $fieldName: json[\'$jsonKey\'] != null ? Defined($fromJsonValue) : const Undefined(),',
         );
       } else {
-        classBuffer.writeln(
-          '      $fieldName: $fromJsonValue,',
-        );
+        classBuffer.writeln('      $fieldName: $fromJsonValue,');
       }
     }
     classBuffer.writeln('    );');
@@ -393,14 +584,22 @@ class FunctionBuildContext {
     return name;
   }
 
-  String _generateFromJsonValue(JsType fieldType, String jsonValue, {String fieldName = ''}) {
+  String _generateFromJsonValue(
+    JsType fieldType,
+    String jsonValue, {
+    String fieldName = '',
+  }) {
     return switch (fieldType) {
       JsString _ => '$jsonValue as String',
       JsNumber _ => '$jsonValue as double',
       JsBigInt _ => '$jsonValue as int',
       JsBoolean _ => '$jsonValue as bool',
       JsArray array => _generateArrayFromJson(array, jsonValue),
-      JsObject obj => _generateObjectFromJson(obj, jsonValue, fieldName: fieldName),
+      JsObject obj => _generateObjectFromJson(
+        obj,
+        jsonValue,
+        fieldName: fieldName,
+      ),
       JsUnion union => _generateUnionFromJson(union, jsonValue),
       ConvexId convexId => "${convexId.typeName}($jsonValue as String)",
       JsLiteral literal => _generateLiteralFromJson(literal, jsonValue),
@@ -408,7 +607,11 @@ class FunctionBuildContext {
     };
   }
 
-  String _generateObjectFromJson(JsObject obj, String jsonValue, {String fieldName = ''}) {
+  String _generateObjectFromJson(
+    JsObject obj,
+    String jsonValue, {
+    String fieldName = '',
+  }) {
     // For record types, we need to reconstruct them properly
     if (obj.value.isEmpty) {
       return "null";
@@ -546,7 +749,10 @@ class FunctionsSpec with FunctionsSpecMappable {
         if (function.visibility.kind == VisibilityType.internal) {
           continue;
         }
-        final functionContext = FunctionBuildContext(context, currentFunction: function);
+        final functionContext = FunctionBuildContext(
+          context,
+          currentFunction: function,
+        );
         function.build(functionContext);
         final code =
             "${functionContext.headerBuffer}"
@@ -748,6 +954,8 @@ class FunctionsSpec with FunctionsSpecMappable {
     _buildLiterals(context);
     // Create the entrypoint file
     _buildEntrypoint(context, successFunctions);
+    // Generate index files for models
+    _generateIndexFiles(context);
     // Format the code
     for (final entry in context.outputs.entries) {
       try {
@@ -842,6 +1050,64 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
         .toString();
   }
 
+  void _generateIndexFiles(ClientBuildContext context) {
+    // Collect all JSON model files
+    final jsonModels = <String>[];
+    final objectBoxModels = <String>[];
+    final objectBoxRepos = <String>[];
+
+    for (final outputPath in context.outputs.keys) {
+      if (outputPath.contains('src/models/json/') && outputPath.endsWith('.dart')) {
+        final fileName = path.basenameWithoutExtension(outputPath);
+        jsonModels.add(fileName);
+      } else if (outputPath.contains('src/models/objectbox/box/') && outputPath.endsWith('.dart')) {
+        final fileName = path.basenameWithoutExtension(outputPath);
+        objectBoxModels.add(fileName);
+      } else if (outputPath.contains('src/models/objectbox/repos/') && outputPath.endsWith('.dart')) {
+        final fileName = path.basenameWithoutExtension(outputPath);
+        objectBoxRepos.add(fileName);
+      }
+    }
+
+    // Generate JSON models index
+    if (jsonModels.isNotEmpty) {
+      final jsonIndexBuffer = StringBuffer('''
+// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
+// ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
+
+// Auto-generated JSON models index
+''');
+
+      for (final model in jsonModels) {
+        jsonIndexBuffer.writeln("export '$model.dart';");
+      }
+
+      context.outputs[path.join("src", "models", "json", "index.dart")] = jsonIndexBuffer.toString();
+    }
+
+    // Generate ObjectBox models index
+    if (objectBoxModels.isNotEmpty) {
+      final objectBoxIndexBuffer = StringBuffer('''
+// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
+// ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
+
+// Auto-generated ObjectBox models index
+''');
+
+      for (final model in objectBoxModels) {
+        objectBoxIndexBuffer.writeln("export 'box/$model.dart';");
+      }
+
+      for (final repo in objectBoxRepos) {
+        objectBoxIndexBuffer.writeln("export 'repos/$repo.dart';");
+      }
+
+      context.outputs[path.join("src", "models", "objectbox", "index.dart")] = objectBoxIndexBuffer.toString();
+    }
+  }
+
   /// Generate possible HTTP endpoint key for a function
   String _generateHttpEndpointKey(FunctionSpec function) {
     // Convert new flat structure: "app/fieldAgentAuth.js:functionName" to "GET/POST:/api/run/app/fieldAgentAuth/functionName"
@@ -860,7 +1126,9 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
         ); // e.g., "fieldAgentAuth" or "fieldAgentCashCount"
 
         // Use correct HTTP method based on function type
-        final httpMethod = (function.functionType == FunctionType.query) ? 'GET' : 'POST';
+        final httpMethod = (function.functionType == FunctionType.query)
+            ? 'GET'
+            : 'POST';
         return "$httpMethod:/api/run/app/$moduleName/$functionName";
       }
     }
@@ -1165,8 +1433,9 @@ ${functionContext.classBuffer.toString()}""";
     // Determine the correct schema to use for ObjectBox generation
     JsObject obj;
     final customNames = _getCustomTypeNames(context, function);
+    final isResponseList = customNames.containsKey('responseList');
 
-    if (customNames.containsKey('responseList')) {
+    if (isResponseList) {
       // For responseList types, use the individual item schema from the list field
       final parentSchema = function.returns as JsObject;
       final listField = parentSchema.value['list'];
@@ -1178,108 +1447,361 @@ ${functionContext.classBuffer.toString()}""";
           throw Exception('ResponseList array element is not an object type');
         }
       } else {
-        throw Exception('ResponseList parent schema does not contain a list field');
+        throw Exception(
+          'ResponseList parent schema does not contain a list field',
+        );
       }
     } else {
       // For regular response types, use the main response schema
       obj = function.returns as JsObject;
     }
 
-    // Get object field mappings for relationship extraction
-    final objectFieldMappings = _getObjectFieldMappings(context, function);
+    final baseSegments = isResponseList ? ['list'] : <String>[];
 
-    final buffer = StringBuffer("""
-import 'package:objectbox/objectbox.dart';""");
+    final functionIdentifiers = <String>{
+      function.convexFunctionIdentifier,
+      _generateHttpEndpointKey(function),
+      function.identifier,
+    }..removeWhere((value) => value.isEmpty);
 
-    // Check if we need dart:convert import
-    final needsJsonConvert = obj.value.entries.any(
-      (entry) => _isComplexType(entry.value.fieldType),
-    );
-    if (needsJsonConvert) {
-      buffer.writeln("import 'dart:convert';");
+    ObjectFieldMapping? resolveMapping(List<String> segments) {
+      if (segments.isEmpty) {
+        return null;
+      }
+
+      final candidates = <String>{segments.join('.')};
+      if (segments.first == 'list' && segments.length > 1) {
+        candidates.add(segments.skip(1).join('.'));
+      }
+
+      return _findObjectFieldMapping(
+        context.mappingData,
+        functionIdentifiers,
+        'returns',
+        candidates.where((value) => value.isNotEmpty),
+      );
     }
 
-    buffer.write("""
+    final embeddedDefinitions = <String, _EmbeddedClassDefinition>{};
 
-@Entity()
-class $boxClassName {
-  @Id()
-  int id = 0;
+    List<_ObjectBoxFieldContext> collectFields(
+      JsObject schema,
+      List<String> pathSegments,
+    ) {
+      final hasDbIdField = schema.value.containsKey('dbId');
+      final results = <_ObjectBoxFieldContext>[];
 
-""");
+      for (final entry in schema.value.entries) {
+        final fieldPathSegments = [...pathSegments, entry.key];
+        final mapping = resolveMapping(fieldPathSegments);
+        final isEmbedded =
+            (mapping?.isEmbedded ?? false) && entry.value.fieldType is JsObject;
+        final isDateField =
+            entry.key.contains('At') || entry.key.contains('Date');
 
-    // Generate fields
-    final hasDbIdField = obj.value.containsKey('dbId');
-    for (final entry in obj.value.entries) {
-      final originalFieldName = entry.key;
-      // If there's already a dbId field, use 'idRef' as field name to avoid conflicts
-      final fieldName = (originalFieldName == '_id' && !hasDbIdField) ? 'dbId' :
-                        (originalFieldName == '_id' && hasDbIdField) ? 'idRef' :
-                        _dartSafeName(originalFieldName);
-      final fieldType = _convertToObjectBoxType(entry.value.fieldType);
-      final isOptional = entry.value.optional;
+        JsObject? embeddedSchema;
+        String? embeddedClassName;
+        if (isEmbedded) {
+          embeddedSchema = entry.value.fieldType as JsObject;
+          final mappedName = mapping?.name;
+          embeddedClassName = mappedName != null && mappedName.isNotEmpty
+              ? mappedName
+              : _objectBoxEmbeddedClassName(entry.key);
 
-      if (fieldName.contains("At") || fieldName.contains("Date")) {
+          if (!embeddedDefinitions.containsKey(embeddedClassName)) {
+            final nestedFields = collectFields(
+              embeddedSchema,
+              fieldPathSegments,
+            );
+            embeddedDefinitions[embeddedClassName] = _EmbeddedClassDefinition(
+              embeddedClassName,
+              nestedFields,
+            );
+          }
+        }
+
+        final fieldName = _resolveObjectBoxFieldName(entry.key, hasDbIdField);
+        final storeAsJson =
+            !isEmbedded && _isComplexType(entry.value.fieldType);
+        final objectBoxType = isEmbedded
+            ? embeddedClassName!
+            : isDateField
+            ? 'int'
+            : _convertToObjectBoxType(entry.value.fieldType);
+
+        results.add(
+          _ObjectBoxFieldContext(
+            originalName: entry.key,
+            fieldName: fieldName,
+            field: entry.value,
+            mapping: mapping,
+            isEmbedded: isEmbedded,
+            embeddedClassName: embeddedClassName,
+            embeddedSchema: embeddedSchema,
+            isDateField: isDateField,
+            storeAsJson: storeAsJson,
+            objectBoxType: objectBoxType,
+          ),
+        );
+      }
+
+      return results;
+    }
+
+    final fieldContexts = collectFields(obj, baseSegments);
+
+    final needsJsonConvert =
+        fieldContexts.any((field) => field.storeAsJson) ||
+        embeddedDefinitions.values.any(
+          (definition) => definition.fields.any((field) => field.storeAsJson),
+        );
+
+    final buffer = StringBuffer("import 'package:objectbox/objectbox.dart';");
+    if (needsJsonConvert) {
+      buffer.writeln("\nimport 'dart:convert';");
+    } else {
+      buffer.writeln();
+    }
+    // Add import for the JSON models and required dependencies
+    buffer.writeln("import 'package:convex_dart/convex_dart.dart';");
+    buffer.writeln("import '../../../schema.dart';");
+    buffer.writeln("import '../../json/index.dart';");
+    buffer.writeln();
+
+    void writeEmbeddedClass(_EmbeddedClassDefinition definition) {
+      buffer.writeln('@Embedded()');
+      buffer.writeln('class ${definition.name} {');
+
+      for (final field in definition.fields) {
+        final optionalSuffix = field.field.optional ? '?' : '';
+        if (field.isDateField) {
+          buffer.writeln('  @Property(type: PropertyType.dateNano)');
+          buffer.writeln('  int$optionalSuffix ${field.fieldName};');
+        } else if (field.isEmbedded) {
+          buffer.writeln('  @Embedded()');
+          buffer.writeln(
+            '  ${field.embeddedClassName}$optionalSuffix ${field.fieldName};',
+          );
+        } else {
+          buffer.writeln(
+            '  ${field.objectBoxType}$optionalSuffix ${field.fieldName};',
+          );
+        }
+      }
+
+      buffer.writeln();
+
+      buffer.writeln('  ${definition.name}({');
+      for (final field in definition.fields) {
+        if (field.field.optional) {
+          buffer.writeln('    this.${field.fieldName},');
+        } else {
+          buffer.writeln('    required this.${field.fieldName},');
+        }
+      }
+      buffer.writeln('  });');
+
+      buffer.writeln();
+
+      buffer.writeln(
+        '  factory ${definition.name}.fromMap(Map<String, dynamic> map) {',
+      );
+      buffer.writeln('    return ${definition.name}(');
+      for (final field in definition.fields) {
+        final key = field.originalName;
+        if (field.isEmbedded) {
+          if (field.field.optional) {
+            buffer.writeln(
+              "      ${field.fieldName}: map['$key'] != null ? ${field.embeddedClassName}.fromMap(map['$key'] as Map<String, dynamic>) : null,",
+            );
+          } else {
+            buffer.writeln(
+              "      ${field.fieldName}: ${field.embeddedClassName}.fromMap(map['$key'] as Map<String, dynamic>),",
+            );
+          }
+        } else if (field.storeAsJson) {
+          if (field.field.optional) {
+            buffer.writeln(
+              "      ${field.fieldName}: map['$key'] != null ? jsonEncode(map['$key']) : null,",
+            );
+          } else {
+            buffer.writeln(
+              "      ${field.fieldName}: jsonEncode(map['$key']),",
+            );
+          }
+        } else if (field.isDateField) {
+          if (field.field.optional) {
+            buffer.writeln(
+              "      ${field.fieldName}: (map['$key'] as num?)?.round(),",
+            );
+          } else {
+            buffer.writeln(
+              "      ${field.fieldName}: (map['$key'] as num).round(),",
+            );
+          }
+        } else if (field.objectBoxType == 'String' && !field.field.optional) {
+          buffer.writeln(
+            "      ${field.fieldName}: map['$key']?.toString() ?? '',",
+          );
+        } else if (field.objectBoxType == 'String' && field.field.optional) {
+          buffer.writeln("      ${field.fieldName}: map['$key']?.toString(),");
+        } else if (field.field.optional) {
+          buffer.writeln(
+            "      ${field.fieldName}: map['$key'] as ${field.objectBoxType}?,",
+          );
+        } else {
+          buffer.writeln(
+            "      ${field.fieldName}: map['$key'] as ${field.objectBoxType},",
+          );
+        }
+      }
+      buffer.writeln('    );');
+      buffer.writeln('  }');
+
+      buffer.writeln();
+
+      buffer.writeln('  Map<String, dynamic> toMap() {');
+      buffer.writeln('    return {');
+      for (final field in definition.fields) {
+        final key = field.originalName;
+        if (field.isEmbedded) {
+          if (field.field.optional) {
+            buffer.writeln("      '$key': ${field.fieldName}?.toMap(),");
+          } else {
+            buffer.writeln("      '$key': ${field.fieldName}.toMap(),");
+          }
+        } else if (field.storeAsJson) {
+          if (field.field.optional) {
+            buffer.writeln(
+              "      '$key': ${field.fieldName} != null ? jsonDecode(${field.fieldName}!) : null,",
+            );
+          } else {
+            buffer.writeln("      '$key': jsonDecode(${field.fieldName}),");
+          }
+        } else if (field.isDateField) {
+          if (field.field.optional) {
+            buffer.writeln("      '$key': ${field.fieldName}?.toDouble(),");
+          } else {
+            buffer.writeln("      '$key': ${field.fieldName}.toDouble(),");
+          }
+        } else {
+          buffer.writeln("      '$key': ${field.fieldName},");
+        }
+      }
+      buffer.writeln('    };');
+      buffer.writeln('  }');
+      buffer.writeln('}');
+      buffer.writeln();
+    }
+
+    for (final definition in embeddedDefinitions.values) {
+      writeEmbeddedClass(definition);
+    }
+
+    buffer.writeln('@Entity()');
+    buffer.writeln('class $boxClassName {');
+    buffer.writeln('  @Id()');
+    buffer.writeln('  int id = 0;');
+    buffer.writeln();
+
+    for (final field in fieldContexts) {
+      final optionalSuffix = field.field.optional ? '?' : '';
+      if (field.isDateField) {
         buffer.writeln('  @Property(type: PropertyType.dateNano)');
-        // For date fields, use int for nanoseconds storage
-        buffer.writeln('  int${isOptional ? "?" : ""} $fieldName;');
+        buffer.writeln('  int$optionalSuffix ${field.fieldName};');
+      } else if (field.isEmbedded) {
+        buffer.writeln('  @Embedded()');
+        buffer.writeln(
+          '  ${field.embeddedClassName}$optionalSuffix ${field.fieldName};',
+        );
       } else {
-        buffer.writeln('  $fieldType${isOptional ? "?" : ""} $fieldName;');
+        buffer.writeln(
+          '  ${field.objectBoxType}$optionalSuffix ${field.fieldName};',
+        );
       }
     }
 
     buffer.writeln();
 
-    // Generate constructor
     buffer.writeln('  $boxClassName({');
     buffer.writeln('    this.id = 0,');
-    for (final entry in obj.value.entries) {
-      final originalFieldName = entry.key;
-      final fieldName = (originalFieldName == '_id' && !hasDbIdField) ? 'dbId' :
-                        (originalFieldName == '_id' && hasDbIdField) ? 'idRef' :
-                        _dartSafeName(originalFieldName);
-      if (entry.value.optional) {
-        buffer.writeln('    this.$fieldName,');
+    for (final field in fieldContexts) {
+      if (field.field.optional) {
+        buffer.writeln('    this.${field.fieldName},');
       } else {
-        buffer.writeln('    required this.$fieldName,');
+        buffer.writeln('    required this.${field.fieldName},');
       }
     }
     buffer.writeln('  });');
 
     buffer.writeln();
 
-    // Generate fromMap factory
-    buffer.writeln(
-      '  factory $boxClassName.fromMap(Map<String, dynamic> map) {',
-    );
+    // Convert from API model
+    buffer.writeln('  factory $boxClassName.fromAPI($className model) {');
     buffer.writeln('    return $boxClassName(');
     buffer.writeln('      id: 0,');
-    for (final entry in obj.value.entries) {
-      final originalFieldName = entry.key;
-      final fieldName = (originalFieldName == '_id' && !hasDbIdField) ? 'dbId' :
-                        (originalFieldName == '_id' && hasDbIdField) ? 'idRef' :
-                        _dartSafeName(originalFieldName);
-      final mapKey = entry.key;
-      final fieldType = _convertToObjectBoxType(entry.value.fieldType);
+    for (final field in fieldContexts) {
+      final originalName = field.originalName;
+      final fieldName = field.fieldName;
 
-      if (_isComplexType(entry.value.fieldType)) {
-        buffer.writeln('      $fieldName: jsonEncode(map[\'$mapKey\']),');
-      } else if (fieldName.contains("At") || fieldName.contains("Date")) {
-        if (entry.value.optional) {
+      if (field.storeAsJson) {
+        if (field.field.optional) {
+          // Check if this is a list of ID types that need special handling
+          if (originalName.contains('Ids') || originalName.endsWith('Ids')) {
+            buffer.writeln(
+              "      $fieldName: model.$originalName.isDefined ? jsonEncode(model.$originalName.asDefined().value.map((e) => e.value).toList()) : null,",
+            );
+          } else {
+            buffer.writeln(
+              "      $fieldName: model.$originalName.isDefined ? jsonEncode(model.$originalName.asDefined().value.toJson()) : null,",
+            );
+          }
+        } else {
+          // Check if this is a list of ID types that need special handling
+          if (originalName.contains('Ids') || originalName.endsWith('Ids')) {
+            buffer.writeln(
+              "      $fieldName: jsonEncode(model.$originalName.map((e) => e.value).toList()),",
+            );
+          } else if (originalName == 'status') {
+            // Special handling for Union types like status
+            buffer.writeln("      $fieldName: jsonEncode(model.$originalName.value),");
+          } else {
+            buffer.writeln("      $fieldName: jsonEncode(model.$originalName.toJson()),");
+          }
+        }
+      } else if (field.isDateField) {
+        if (field.field.optional) {
           buffer.writeln(
-            '      $fieldName: (map[\'$mapKey\'] as double?)?.round(),',
+            "      $fieldName: model.$originalName.isDefined ? model.$originalName.asDefined().value.round() : null,",
           );
         } else {
           buffer.writeln(
-            '      $fieldName: (map[\'$mapKey\'] as double).round(),',
+            "      $fieldName: model.$originalName.round(),",
           );
         }
-      } else if (fieldType == "String" && !entry.value.optional) {
-        buffer.writeln(
-          '      $fieldName: map[\'$mapKey\']?.toString() ?? \'\',',
-        );
+      } else if (originalName == '_id') {
+        // Handle ID field mapping
+        buffer.writeln("      $fieldName: model.\$_id.value,");
+      } else if (field.field.optional) {
+        // Check if this is an ID type that needs .value extraction by field name pattern
+        // Exclude dbId which is actually a double, and mongoId which is a string
+        if ((originalName.endsWith('Id') || originalName.contains('Id')) && originalName != 'dbId' && originalName != 'mongoId') {
+          buffer.writeln(
+            "      $fieldName: model.$originalName.isDefined ? model.$originalName.asDefined().value.value : null,",
+          );
+        } else {
+          buffer.writeln(
+            "      $fieldName: model.$originalName.isDefined ? model.$originalName.asDefined().value : null,",
+          );
+        }
       } else {
-        buffer.writeln('      $fieldName: map[\'$mapKey\'],');
+        // Check if this is an ID type that needs .value extraction by field name pattern
+        // Exclude dbId which is actually a double, and mongoId which is a string
+        if ((originalName.endsWith('Id') || originalName.contains('Id')) && originalName != 'dbId' && originalName != 'mongoId') {
+          buffer.writeln("      $fieldName: model.$originalName.value,");
+        } else {
+          buffer.writeln("      $fieldName: model.$originalName,");
+        }
       }
     }
     buffer.writeln('    );');
@@ -1287,39 +1809,156 @@ class $boxClassName {
 
     buffer.writeln();
 
-    // Generate toMap method
-    buffer.writeln('  Map<String, dynamic> toMap() {');
-    buffer.writeln('    return {');
-    for (final entry in obj.value.entries) {
-      final originalFieldName = entry.key;
-      final fieldName = (originalFieldName == '_id' && !hasDbIdField) ? 'dbId' :
-                        (originalFieldName == '_id' && hasDbIdField) ? 'idRef' :
-                        _dartSafeName(originalFieldName);
-      final mapKey = entry.key;
+    // Convert to API model
+    buffer.writeln('  $className toAPI() {');
+    buffer.writeln('    return $className(');
+    for (final field in fieldContexts) {
+      final originalName = field.originalName;
+      final fieldName = field.fieldName;
 
-      if (_isComplexType(entry.value.fieldType)) {
-        if (entry.value.optional) {
+      if (field.storeAsJson) {
+        // For JSON fields, we need to get the correct type name from the mapping
+        final jsonTypeName = _getJsonTypeForField(originalName, fieldContexts, context, function);
+        if (field.field.optional) {
+          // Check if this is a list of ID types that need special handling
+          final idTypeName = _getIdClassNameFromField(field);
+          if (idTypeName != null && (originalName.contains('Ids') || originalName.endsWith('Ids'))) {
+            buffer.writeln(
+              "      $originalName: $fieldName != null ? Defined((jsonDecode($fieldName!) as List<dynamic>).map((e) => $idTypeName(e as String)).toList().toIList()) : const Undefined(),",
+            );
+          } else {
+            buffer.writeln(
+              "      $originalName: $fieldName != null ? Defined($jsonTypeName.fromJson(jsonDecode($fieldName!) as Map<String, dynamic>)) : const Undefined(),",
+            );
+          }
+        } else {
+          // Check if this is a list of ID types that need special handling
+          final idTypeName = _getIdClassNameFromField(field);
+          if (idTypeName != null && (originalName.contains('Ids') || originalName.endsWith('Ids'))) {
+            buffer.writeln(
+              "      $originalName: (jsonDecode($fieldName) as List<dynamic>).map((e) => $idTypeName(e as String)).toList().toIList(),",
+            );
+          } else if (originalName == 'status') {
+            // Special handling for Union types like status - deserialize from value directly
+            buffer.writeln("      $originalName: jsonDecode($fieldName),");
+          } else {
+            buffer.writeln("      $originalName: $jsonTypeName.fromJson(jsonDecode($fieldName) as Map<String, dynamic>),");
+          }
+        }
+      } else if (field.isDateField) {
+        if (field.field.optional) {
           buffer.writeln(
-            '      \'$mapKey\': $fieldName != null ? jsonDecode($fieldName!) : null,',
+            "      $originalName: $fieldName != null ? Defined($fieldName!.toDouble()) : const Undefined(),",
           );
         } else {
-          buffer.writeln('      \'$mapKey\': jsonDecode($fieldName),');
+          buffer.writeln("      $originalName: $fieldName.toDouble(),");
         }
-      } else if (fieldName.contains("At") || fieldName.contains("Date")) {
-        if (entry.value.optional) {
-          buffer.writeln('      \'$mapKey\': $fieldName?.toDouble(),');
+      } else if (originalName == '_id') {
+        // Handle ID field mapping - convert back to ID class
+        final idTypeName = _getIdClassNameFromField(field);
+        if (idTypeName != null) {
+          buffer.writeln("      \$_id: $idTypeName($fieldName),");
         } else {
-          buffer.writeln('      \'$mapKey\': $fieldName.toDouble(),');
+          // Fallback for cases where we can't determine from schema
+          final fallbackTypeName = '${className}sId';
+          buffer.writeln("      \$_id: $fallbackTypeName($fieldName),");
+        }
+      } else if (field.field.optional) {
+        // Check if this is an ID type that needs ID class reconstruction
+        final idClassName = _getIdClassNameFromField(field);
+        if (idClassName != null) {
+          buffer.writeln(
+            "      $originalName: $fieldName != null ? Defined($idClassName($fieldName!)) : const Undefined(),",
+          );
+        } else {
+          buffer.writeln(
+            "      $originalName: $fieldName != null ? Defined($fieldName!) : const Undefined(),",
+          );
         }
       } else {
-        buffer.writeln('      \'$mapKey\': $fieldName,');
+        // Check if this is an ID type that needs ID class reconstruction
+        final idClassName = _getIdClassNameFromField(field);
+        if (idClassName != null) {
+          buffer.writeln("      $originalName: $idClassName($fieldName),");
+        } else {
+          buffer.writeln("      $originalName: $fieldName,");
+        }
       }
     }
-    buffer.writeln('    };');
+    buffer.writeln('    );');
     buffer.writeln('  }');
     buffer.writeln('}');
 
     return buffer.toString();
+  }
+
+  /// Get the ID class name from a field's JsType
+  String? _getIdClassNameFromField(_ObjectBoxFieldContext field) {
+    final fieldType = field.field.fieldType;
+    if (fieldType is ConvexId) {
+      return fieldType.typeName;
+    } else if (fieldType is JsArray) {
+      // Handle arrays of IDs
+      final itemType = fieldType.value;
+      if (itemType is ConvexId) {
+        return itemType.typeName;
+      }
+    }
+    return null;
+  }
+
+  String _getJsonTypeForField(
+    String fieldName,
+    List<_ObjectBoxFieldContext> fieldContexts,
+    ClientBuildContext context,
+    FunctionSpec function,
+  ) {
+    // For JSON stored fields, look up the mapped type name from the schema mapping
+    final endpointKey = _generateHttpEndpointKey(function);
+    final endpointMapping = context.mappingData?[endpointKey];
+
+    // Check both args and returns mappings
+    final objectFields = endpointMapping?['objectFields'] as Map<String, dynamic>?;
+    if (objectFields != null) {
+      // Check args mapping first (for request fields)
+      final args = objectFields['args'] as Map<String, dynamic>?;
+      if (args != null && args.containsKey(fieldName)) {
+        final mapping = args[fieldName];
+        if (mapping is String) {
+          return mapping;
+        } else if (mapping is Map && mapping['name'] != null) {
+          return mapping['name'] as String;
+        }
+      }
+
+      // Check returns mapping (for response fields)
+      final returns = objectFields['returns'] as Map<String, dynamic>?;
+      if (returns != null) {
+        // Check for direct field mapping
+        if (returns.containsKey(fieldName)) {
+          final mapping = returns[fieldName];
+          if (mapping is String) {
+            return mapping;
+          } else if (mapping is Map && mapping['name'] != null) {
+            return mapping['name'] as String;
+          }
+        }
+
+        // Check for list.fieldName mapping
+        final listFieldKey = 'list.$fieldName';
+        if (returns.containsKey(listFieldKey)) {
+          final mapping = returns[listFieldKey];
+          if (mapping is String) {
+            return mapping;
+          } else if (mapping is Map && mapping['name'] != null) {
+            return mapping['name'] as String;
+          }
+        }
+      }
+    }
+
+    // Fallback to a default type name if no mapping found
+    return 'dynamic';
   }
 
   String _buildObjectBoxRepository(
@@ -1334,22 +1973,23 @@ class $boxClassName {
     return """
 import 'package:api/objectbox.g.dart';
 import '../box/${typeName.snakeCase}_box.dart';
+import '../../json/index.dart';
 
 class $repoClassName {
   final Box<$boxClassName> _box;
 
   $repoClassName(this._box);
 
-  // Create from map
-  int createFromMap(Map<String, dynamic> map) {
-    final boxModel = $boxClassName.fromMap(map);
+  // Create from API model
+  int createFromAPI($className model) {
+    final boxModel = $boxClassName.fromAPI(model);
     return _box.put(boxModel);
   }
 
-  // Read as map
-  Map<String, dynamic>? getAsMap(int id) {
+  // Read as API model
+  $className? getAsAPI(int id) {
     final boxModel = _box.get(id);
-    return boxModel?.toMap();
+    return boxModel?.toAPI();
   }
 
   // Read Box
@@ -1360,26 +2000,26 @@ class $repoClassName {
   // Removes all records.
   void removeAll() => _box.removeAll();
 
-  // Bulk insert from maps
-  void putManyFromMaps(List<Map<String, dynamic>> maps) {
-    final entities = maps.map((map) => $boxClassName.fromMap(map)).toList();
+  // Bulk insert from API models
+  void putManyFromAPI(List<$className> models) {
+    final entities = models.map((model) => $boxClassName.fromAPI(model)).toList();
     _box.putMany(entities);
   }
 
   // Bulk delete by a list of DB IDs.
   void removeMany(List<int> ids) => _box.removeMany(ids);
 
-  List<Map<String, dynamic>> getAllAsMaps() {
-    return _box.getAll().map((boxModel) => boxModel.toMap()).toList();
+  List<$className> getAllAsAPI() {
+    return _box.getAll().map((boxModel) => boxModel.toAPI()).toList();
   }
 
   List<$boxClassName> getAllBox() {
     return _box.getAll();
   }
 
-  // Update from map
-  void updateFromMap(Map<String, dynamic> map, int id) {
-    final boxModel = $boxClassName.fromMap(map)..id = id;
+  // Update from API model
+  void updateFromAPI($className model, int id) {
+    final boxModel = $boxClassName.fromAPI(model)..id = id;
     _box.put(boxModel);
   }
 
@@ -1414,35 +2054,6 @@ class $repoClassName {
       _ => false,
     };
   }
-
-  Map<String, String> _getObjectFieldMappings(ClientBuildContext context, FunctionSpec function) {
-    if (context.mappingData == null) return {};
-
-    // Try multiple possible keys, same as _getCustomTypeNames
-    final possibleKeys = [
-      function.convexFunctionIdentifier,
-      _generateHttpEndpointKey(function),
-    ];
-
-    Map<String, dynamic>? functionMapping;
-
-    for (final key in possibleKeys) {
-      if (key.isNotEmpty && context.mappingData!.containsKey(key)) {
-        functionMapping = context.mappingData![key] as Map<String, dynamic>?;
-        break;
-      }
-    }
-
-    if (functionMapping?['objectFields'] != null) {
-      final objectFields = functionMapping!['objectFields'] as Map<String, dynamic>;
-      final returnsFields = objectFields['returns'] as Map<String, dynamic>? ?? {};
-      return returnsFields.cast<String, String>();
-    }
-
-    return {};
-  }
-
-
 }
 
 @MappableEnum(mode: ValuesMode.named)
@@ -1553,9 +2164,9 @@ class FunctionSpec with FunctionSpecMappable {
 
       // Try multiple possible keys to handle both old and new formats
       final possibleKeys = [
-        getEndpointKey,            // GET format: GET:/api/run/app/fieldAgentAuth/getMe
-        postEndpointKey,           // POST format: POST:/api/run/app/fieldAgentAuth/getMe
-        functionKey,               // Current format: fieldAgents:getMyFieldAgentProfile
+        getEndpointKey, // GET format: GET:/api/run/app/fieldAgentAuth/getMe
+        postEndpointKey, // POST format: POST:/api/run/app/fieldAgentAuth/getMe
+        functionKey, // Current format: fieldAgents:getMyFieldAgentProfile
         function.convexFunctionIdentifier, // Alternative format
       ];
 
@@ -1633,7 +2244,11 @@ import "../../literals.dart";
       case JsAny():
         break;
       case JsObject obj:
-        context.generateClassDefinition(effectiveArgsTypeName, obj, context._currentFieldContext);
+        context.generateClassDefinition(
+          effectiveArgsTypeName,
+          obj,
+          context._currentFieldContext,
+        );
       default:
         throw ArgumentError(
           'Function arguments must be either JsAny (for dynamic/any type) or JsObject (for structured object types). '
@@ -1649,9 +2264,7 @@ import "../../literals.dart";
     context.setFieldContext("returns", "returns");
     final returnsTypeDef = returnsObject.dartType(context);
     context.clearFieldContext();
-    context.typedefBuffer.write(
-      "typedef $returnsTypeName = $returnsTypeDef;",
-    );
+    context.typedefBuffer.write("typedef $returnsTypeName = $returnsTypeDef;");
 
     final operationType = switch (functionType) {
       FunctionType.query => "QueryOperation",
@@ -2224,7 +2837,8 @@ class JsObject extends JsType with JsObjectMappable {
 
     // Check if this should be extracted as a separate model class
     // Extract if it has multiple fields or nested objects
-    if (value.length > 1 || value.values.any((field) => field.fieldType is JsObject)) {
+    if (value.length > 1 ||
+        value.values.any((field) => field.fieldType is JsObject)) {
       return _extractAsModelClass(context);
     }
 
@@ -2236,7 +2850,8 @@ class JsObject extends JsType with JsObjectMappable {
       final originalFieldContext = context._currentFieldContext;
 
       // Build nested field path for mapping lookup
-      final fieldPath = originalFieldName != null && originalFieldName.isNotEmpty
+      final fieldPath =
+          originalFieldName != null && originalFieldName.isNotEmpty
           ? "$originalFieldName.${entry.key}"
           : entry.key;
 
@@ -2250,7 +2865,11 @@ class JsObject extends JsType with JsObjectMappable {
   }
 
   /// Extract this object as a separate model class
-  String _extractAsModelClass(FunctionBuildContext context, [String? fieldName, String? fieldContext]) {
+  String _extractAsModelClass(
+    FunctionBuildContext context, [
+    String? fieldName,
+    String? fieldContext,
+  ]) {
     // Check if we have a specific mapping for this field
     String className;
 
@@ -2261,8 +2880,14 @@ class JsObject extends JsType with JsObjectMappable {
     if (effectiveFieldName != null && effectiveFieldContext != null) {
       // Try both the full path and just the field name for mapping lookup
       final fullPath = context.getFullFieldPath(effectiveFieldName);
-      final mappedClassName = context.getObjectFieldMapping(fullPath, effectiveFieldContext)
-                           ?? context.getObjectFieldMapping(effectiveFieldName, effectiveFieldContext);
+      final mapping =
+          context.getObjectFieldMapping(fullPath, effectiveFieldContext) ??
+          context.getObjectFieldMapping(
+            effectiveFieldName,
+            effectiveFieldContext,
+          );
+
+      final mappedClassName = mapping?.name;
 
       if (mappedClassName != null) {
         className = mappedClassName;
@@ -2285,17 +2910,29 @@ class JsObject extends JsType with JsObjectMappable {
   }
 
   /// Generate a separate model file for the extracted class
-  void _generateSeparateModelFile(FunctionBuildContext context, String className, String? fieldContext) {
+  void _generateSeparateModelFile(
+    FunctionBuildContext context,
+    String className,
+    String? fieldContext,
+  ) {
     final buffer = StringBuffer();
 
     // Track extracted classes used by this class for import generation
     final Set<String> usedExtractedClasses = <String>{};
 
     // Add file header
-    buffer.writeln('// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code');
-    buffer.writeln('// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member');
-    buffer.writeln('// ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter');
-    buffer.writeln('import "package:convex_dart/src/convex_dart_for_generated_code.dart";');
+    buffer.writeln(
+      '// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code',
+    );
+    buffer.writeln(
+      '// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member',
+    );
+    buffer.writeln(
+      '// ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter',
+    );
+    buffer.writeln(
+      'import "package:convex_dart/src/convex_dart_for_generated_code.dart";',
+    );
     buffer.writeln('import "dart:typed_data";');
     buffer.writeln('import "../../schema.dart";');
     buffer.writeln('import "../../literals.dart";');
@@ -2344,7 +2981,10 @@ class JsObject extends JsType with JsObjectMappable {
       } else {
         // Provide default empty values based on field type
         context.setFieldContext(entry.key, fieldContext ?? "nested");
-        final defaultValue = _getContextAwareDefaultValue(context, entry.value.fieldType);
+        final defaultValue = _getContextAwareDefaultValue(
+          context,
+          entry.value.fieldType,
+        );
         context.clearFieldContext();
         buffer.writeln('      $fieldName: $defaultValue,');
       }
@@ -2355,7 +2995,9 @@ class JsObject extends JsType with JsObjectMappable {
     buffer.writeln();
 
     // Add fromJson factory
-    buffer.writeln('  factory $className.fromJson(Map<String, dynamic> json) {');
+    buffer.writeln(
+      '  factory $className.fromJson(Map<String, dynamic> json) {',
+    );
     buffer.writeln('    return $className(');
     for (final entry in value.entries) {
       final fieldName = _dartSafeName(entry.key);
@@ -2367,14 +3009,20 @@ class JsObject extends JsType with JsObjectMappable {
 
       // Check if this field should use an extracted class
       final fullPath = context.getFullFieldPath(fieldName);
-      final extractedClassName = context.getObjectFieldMapping(fullPath, fieldContext ?? "nested")
-                               ?? context.getObjectFieldMapping(fieldName, fieldContext ?? "nested");
+      final mapping =
+          context.getObjectFieldMapping(fullPath, fieldContext ?? "nested") ??
+          context.getObjectFieldMapping(fieldName, fieldContext ?? "nested");
+      final extractedClassName = mapping?.name;
 
       String fromJsonValue;
       if (extractedClassName != null && entry.value.fieldType is JsObject) {
-        fromJsonValue = "$extractedClassName.fromJson(json['$jsonKey'] as Map<String, dynamic>)";
+        fromJsonValue =
+            "$extractedClassName.fromJson(json['$jsonKey'] as Map<String, dynamic>)";
       } else {
-        fromJsonValue = _getSeparateFileFromJsonValue(entry.value.fieldType, "json['$jsonKey']");
+        fromJsonValue = _getSeparateFileFromJsonValue(
+          entry.value.fieldType,
+          "json['$jsonKey']",
+        );
       }
 
       if (entry.value.optional) {
@@ -2399,11 +3047,17 @@ class JsObject extends JsType with JsObjectMappable {
 
       // Use proper serialization based on field type
       context.setFieldContext(entry.key, fieldContext ?? "nested");
-      final serializeValue = entry.value.fieldType.serialize(context, fieldName, nullable: entry.value.optional);
+      final serializeValue = entry.value.fieldType.serialize(
+        context,
+        fieldName,
+        nullable: entry.value.optional,
+      );
       context.clearFieldContext();
 
       if (entry.value.optional) {
-        buffer.writeln('      if ($fieldName.isDefined) \'$jsonKey\': ${entry.value.fieldType.serialize(context, "$fieldName.asDefined().value", nullable: false)},');
+        buffer.writeln(
+          '      if ($fieldName.isDefined) \'$jsonKey\': ${entry.value.fieldType.serialize(context, "$fieldName.asDefined().value", nullable: false)},',
+        );
       } else {
         buffer.writeln('      \'$jsonKey\': $serializeValue,');
       }
@@ -2423,7 +3077,9 @@ class JsObject extends JsType with JsObjectMappable {
       context.clearFieldContext();
 
       // For copyWith, add ? only if the type is not already nullable
-      final copyWithType = fieldTypeName.endsWith('?') ? fieldTypeName : '$fieldTypeName?';
+      final copyWithType = fieldTypeName.endsWith('?')
+          ? fieldTypeName
+          : '$fieldTypeName?';
       buffer.writeln('    $copyWithType $fieldName,');
     }
     buffer.writeln('  }) {');
@@ -2493,10 +3149,13 @@ class JsObject extends JsType with JsObjectMappable {
       }
 
       // Insert imports after the existing imports
-      final importInsertPoint = finalContent.indexOf('import "../../literals.dart";\n') + 'import "../../literals.dart";\n'.length;
-      finalContent = finalContent.substring(0, importInsertPoint) +
-                    imports.toString() +
-                    finalContent.substring(importInsertPoint);
+      final importInsertPoint =
+          finalContent.indexOf('import "../../literals.dart";\n') +
+          'import "../../literals.dart";\n'.length;
+      finalContent =
+          finalContent.substring(0, importInsertPoint) +
+          imports.toString() +
+          finalContent.substring(importInsertPoint);
     }
 
     // Save the file to outputs
@@ -2507,7 +3166,10 @@ class JsObject extends JsType with JsObjectMappable {
 
   /// Helper methods for generating separate model files
 
-  String _getContextAwareDefaultValue(FunctionBuildContext context, JsType fieldType) {
+  String _getContextAwareDefaultValue(
+    FunctionBuildContext context,
+    JsType fieldType,
+  ) {
     return switch (fieldType) {
       JsString _ => "''",
       JsNumber _ => "0.0",
@@ -2525,7 +3187,11 @@ class JsObject extends JsType with JsObjectMappable {
     final currentFieldName = context.getCurrentFieldName();
     final currentFieldContext = context.getCurrentFieldContext();
     if (currentFieldName.isNotEmpty && currentFieldContext.isNotEmpty) {
-      final extractedClassName = context.getObjectFieldMapping(currentFieldName, currentFieldContext);
+      final mapping = context.getObjectFieldMapping(
+        currentFieldName,
+        currentFieldContext,
+      );
+      final extractedClassName = mapping?.name;
       if (extractedClassName != null) {
         return "$extractedClassName.empty()";
       }
@@ -2535,10 +3201,14 @@ class JsObject extends JsType with JsObjectMappable {
     final dartType = obj.dartType(context);
     if (dartType.contains('(') && dartType.contains(')')) {
       // It's a record type, create an empty record
-      return dartType.replaceFirst('({', '(').replaceFirst('})', ')').replaceAllMapped(
-        RegExp(r'(\w+)\s+(\w+)'),
-        (match) => '${match.group(2)}: ${_getDefaultForSimpleType(match.group(1)!)}'
-      );
+      return dartType
+          .replaceFirst('({', '(')
+          .replaceFirst('})', ')')
+          .replaceAllMapped(
+            RegExp(r'(\w+)\s+(\w+)'),
+            (match) =>
+                '${match.group(2)}: ${_getDefaultForSimpleType(match.group(1)!)}',
+          );
     } else {
       // It's a class name, use empty constructor
       return "$dartType.empty()";
@@ -2568,7 +3238,6 @@ class JsObject extends JsType with JsObjectMappable {
     };
   }
 
-
   String _getArrayFromJsonValue(JsArray array, String jsonValue) {
     return "($jsonValue as List<dynamic>).map((e) => ${_getFromJsonValue(array.value, 'e')}).toIList()";
   }
@@ -2587,7 +3256,6 @@ class JsObject extends JsType with JsObjectMappable {
     }
     return name;
   }
-
 
   @override
   String serialize(
@@ -2639,7 +3307,6 @@ class JsObject extends JsType with JsObjectMappable {
     return buffer.toString();
   }
 
-
   String _getSeparateFileFromJsonValue(JsType fieldType, String jsonValue) {
     return switch (fieldType) {
       JsString _ => "$jsonValue as String",
@@ -2653,7 +3320,6 @@ class JsObject extends JsType with JsObjectMappable {
       _ => jsonValue,
     };
   }
-
 }
 
 @MappableClass(discriminatorValue: 'array')

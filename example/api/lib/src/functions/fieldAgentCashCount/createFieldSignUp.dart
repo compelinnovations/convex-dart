@@ -29,7 +29,7 @@ BTreeMapStringValue serialize(CreateCashCountFieldSignUp args) {
 
 CreateFieldSignUpResponse deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on239479) => (message: (on239479['message'] as String)),
+    (on594891) => (message: (on594891['message'] as String)),
   );
 }
 

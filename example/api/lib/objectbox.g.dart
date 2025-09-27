@@ -22,404 +22,6 @@ export 'package:objectbox/objectbox.dart'; // so that callers only have to impor
 
 final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
-    id: const obx_int.IdUid(1, 8426601332449466519),
-    name: 'AppUserBox',
-    lastPropertyId: const obx_int.IdUid(44, 3307274611437134380),
-    flags: 0,
-    properties: <obx_int.ModelProperty>[
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(1, 6401334737216061040),
-        name: 'id',
-        type: 6,
-        flags: 1,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(2, 6561348387586786599),
-        name: 'idRef',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(3, 6739612564903172683),
-        name: 'appCountryId',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(4, 7985650051442113285),
-        name: 'appCountryIso',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(5, 2502812316493201003),
-        name: 'appCountryName',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(6, 1863802220567280003),
-        name: 'auditAddedById',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(7, 7877408803378346566),
-        name: 'auditAddedByName',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(8, 7965190396295429546),
-        name: 'auditDeletedById',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(9, 7259682233098425349),
-        name: 'auditDeletedByName',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(10, 2209232653432750165),
-        name: 'auditUpdatedById',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(11, 4280209114189247),
-        name: 'auditUpdatedByName',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(12, 6045521656950643431),
-        name: 'contactEmail',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(13, 6406163056622048241),
-        name: 'contactPhone',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(14, 804691941870392155),
-        name: 'createdAt',
-        type: 12,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(15, 1632165470505267801),
-        name: 'currentLocation',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(16, 3705087250632280844),
-        name: 'dbId',
-        type: 8,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(17, 4738074042747867859),
-        name: 'deletedAt',
-        type: 12,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(18, 1622950304752462206),
-        name: 'deviceIds',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(19, 856902636271440105),
-        name: 'email',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(20, 3530823273090047179),
-        name: 'emailVerified',
-        type: 1,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(21, 5143811997006204202),
-        name: 'fbmToken',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(22, 6182673752323161428),
-        name: 'firstName',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(23, 3388303999422670560),
-        name: 'fullName',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(24, 8009341722354034313),
-        name: 'hash',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(25, 8047325933708258279),
-        name: 'lastName',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(26, 3302918024397776675),
-        name: 'organizationBranchAccessIds',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(27, 2265334196526240926),
-        name: 'organizationBranchId',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(28, 3015574479784775573),
-        name: 'organizationId',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(29, 1736678211969239585),
-        name: 'organizationType',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(30, 4474612736502202131),
-        name: 'phone',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(31, 1376108475007208261),
-        name: 'profileImage',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(32, 6419766571196387131),
-        name: 'profileImageBlurHash',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(33, 2720670988840855794),
-        name: 'profileImageSize',
-        type: 8,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(34, 3240833480306044759),
-        name: 'role',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(35, 3463695797932849435),
-        name: 'salt',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(36, 2707198449252762448),
-        name: 'statId',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(37, 1373853486803557827),
-        name: 'status',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(38, 4455774263006425714),
-        name: 'subRole',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(39, 2601289177057061292),
-        name: 'teamBranchAccessIds',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(40, 1049278090120610541),
-        name: 'teamBranchId',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(41, 9014946132455279917),
-        name: 'teamId',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(42, 34203379229542493),
-        name: 'teamType',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(43, 43378853722142469),
-        name: 'updatedAt',
-        type: 12,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(44, 3307274611437134380),
-        name: 'username',
-        type: 9,
-        flags: 0,
-      ),
-    ],
-    relations: <obx_int.ModelRelation>[],
-    backlinks: <obx_int.ModelBacklink>[],
-  ),
-  obx_int.ModelEntity(
-    id: const obx_int.IdUid(2, 6102403218656284864),
-    name: 'CashCountFieldSignUpBox',
-    lastPropertyId: const obx_int.IdUid(19, 1481380957023085623),
-    flags: 0,
-    properties: <obx_int.ModelProperty>[
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(1, 5708201583668810493),
-        name: 'id',
-        type: 6,
-        flags: 1,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(2, 1526995542876119967),
-        name: 'dbId',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(3, 6739062041408732122),
-        name: 'completedAt',
-        type: 12,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(4, 5647125745337940197),
-        name: 'completedMeta',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(5, 929280875354930941),
-        name: 'createdAt',
-        type: 12,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(6, 3398612675568784235),
-        name: 'creatorId',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(7, 3160352217905317239),
-        name: 'deletedAt',
-        type: 12,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(8, 5821186349553280702),
-        name: 'deletedMeta',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(9, 8290442384545986031),
-        name: 'deviceInfo',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(10, 2235823184985675995),
-        name: 'expiredAt',
-        type: 12,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(11, 2434758139985096295),
-        name: 'mongoId',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(12, 5513028112040674232),
-        name: 'phoneNumber',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(13, 3835889445765566293),
-        name: 'rejectionAt',
-        type: 12,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(14, 2328324036167571958),
-        name: 'rejectionMeta',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(15, 6550045384243306324),
-        name: 'rejectionReason',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(16, 4364591147874133033),
-        name: 'statUpdatedAt',
-        type: 12,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(17, 3548930695993633866),
-        name: 'status',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(18, 8060812973867316823),
-        name: 'updateMeta',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(19, 1481380957023085623),
-        name: 'updatedAt',
-        type: 12,
-        flags: 0,
-      ),
-    ],
-    relations: <obx_int.ModelRelation>[],
-    backlinks: <obx_int.ModelBacklink>[],
-  ),
-  obx_int.ModelEntity(
     id: const obx_int.IdUid(3, 3735040337502674930),
     name: 'FieldAgentStatBox',
     lastPropertyId: const obx_int.IdUid(13, 8104642657229610673),
@@ -507,6 +109,404 @@ final _entities = <obx_int.ModelEntity>[
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
   ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(16, 8119889653396101914),
+    name: 'AppUserBox',
+    lastPropertyId: const obx_int.IdUid(44, 2206615563917010635),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 7667849819814383631),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 8036242988577889104),
+        name: 'idRef',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 8100750497115570880),
+        name: 'appCountryId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 7959771810425629396),
+        name: 'appCountryIso',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 9157265873067533205),
+        name: 'appCountryName',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 3966269655690776932),
+        name: 'auditAddedById',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 5568302247471081832),
+        name: 'auditAddedByName',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(8, 6588891468948507630),
+        name: 'auditDeletedById',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(9, 2536512615869147233),
+        name: 'auditDeletedByName',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(10, 5959813325673215578),
+        name: 'auditUpdatedById',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(11, 8206108931025330321),
+        name: 'auditUpdatedByName',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(12, 3101070776721042809),
+        name: 'contactEmail',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(13, 7212703395865897082),
+        name: 'contactPhone',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(14, 5495896162740793054),
+        name: 'createdAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(15, 3222297542318488485),
+        name: 'currentLocation',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(16, 1162713046338128886),
+        name: 'dbId',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(17, 3998642058543085010),
+        name: 'deletedAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(18, 2440446574472513997),
+        name: 'deviceIds',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(19, 7747839834093065252),
+        name: 'email',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(20, 6746982743656960000),
+        name: 'emailVerified',
+        type: 1,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(21, 4597645905906726903),
+        name: 'fbmToken',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(22, 8047273857679327288),
+        name: 'firstName',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(23, 8674546100312562747),
+        name: 'fullName',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(24, 1211601112798134628),
+        name: 'hash',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(25, 4431891686402229062),
+        name: 'lastName',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(26, 3684648228348149354),
+        name: 'organizationBranchAccessIds',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(27, 522940324038741771),
+        name: 'organizationBranchId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(28, 3110817709515988791),
+        name: 'organizationId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(29, 7589922040433641584),
+        name: 'organizationType',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(30, 3146265356407074504),
+        name: 'phone',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(31, 1826244948671937299),
+        name: 'profileImage',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(32, 5339174947561443581),
+        name: 'profileImageBlurHash',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(33, 1777431293733487594),
+        name: 'profileImageSize',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(34, 6293453903667774836),
+        name: 'role',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(35, 5371405288089054590),
+        name: 'salt',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(36, 645918254487716336),
+        name: 'statId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(37, 4821148403102494418),
+        name: 'status',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(38, 5264387587491669449),
+        name: 'subRole',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(39, 6760065726321473498),
+        name: 'teamBranchAccessIds',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(40, 552324814145820550),
+        name: 'teamBranchId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(41, 7659443312901963307),
+        name: 'teamId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(42, 8061012612900981061),
+        name: 'teamType',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(43, 869660245196698082),
+        name: 'updatedAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(44, 2206615563917010635),
+        name: 'username',
+        type: 9,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(17, 3346228968144275508),
+    name: 'CashCountFieldSignUpBox',
+    lastPropertyId: const obx_int.IdUid(19, 6507723006476066300),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 4483919203730805475),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 4554111177273842314),
+        name: 'dbId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 5851787821437407350),
+        name: 'completedAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 2187907809122570083),
+        name: 'completedMeta',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 7721268821505238218),
+        name: 'createdAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 1238130780959198850),
+        name: 'creatorId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 2162544954143190375),
+        name: 'deletedAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(8, 4988922951995001210),
+        name: 'deletedMeta',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(9, 6469931716368302912),
+        name: 'deviceInfo',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(10, 713437876660284059),
+        name: 'expiredAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(11, 6438558046191488647),
+        name: 'mongoId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(12, 2825207181399818409),
+        name: 'phoneNumber',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(13, 6094157546182452283),
+        name: 'rejectionAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(14, 8534776516514472742),
+        name: 'rejectionMeta',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(15, 320016892517889007),
+        name: 'rejectionReason',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(16, 6788992956103718226),
+        name: 'statUpdatedAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(17, 2517247772779206853),
+        name: 'status',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(18, 5782776582006756433),
+        name: 'updateMeta',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(19, 6507723006476066300),
+        name: 'updatedAt',
+        type: 12,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
 ];
 
 /// Shortcut for [obx.Store.new] that passes [getObjectBoxModel] and for Flutter
@@ -547,13 +547,237 @@ Future<obx.Store> openStore({
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
     entities: _entities,
-    lastEntityId: const obx_int.IdUid(3, 3735040337502674930),
-    lastIndexId: const obx_int.IdUid(0, 0),
+    lastEntityId: const obx_int.IdUid(17, 3346228968144275508),
+    lastIndexId: const obx_int.IdUid(5, 8360414782938869669),
     lastRelationId: const obx_int.IdUid(0, 0),
     lastSequenceId: const obx_int.IdUid(0, 0),
-    retiredEntityUids: const [],
+    retiredEntityUids: const [
+      8426601332449466519,
+      6102403218656284864,
+      5463358618376401076,
+      5518663612209337860,
+      4451430439130659714,
+      3840633930944070584,
+      1455174329239774947,
+      5736716015202032020,
+      4310531908307924507,
+      8549871824217144150,
+      7548198433979774703,
+      2497308579503506636,
+      3141706765561376234,
+      3818690167004839259,
+    ],
     retiredIndexUids: const [],
-    retiredPropertyUids: const [],
+    retiredPropertyUids: const [
+      6401334737216061040,
+      6561348387586786599,
+      6739612564903172683,
+      7985650051442113285,
+      2502812316493201003,
+      1863802220567280003,
+      7877408803378346566,
+      7965190396295429546,
+      7259682233098425349,
+      2209232653432750165,
+      4280209114189247,
+      6045521656950643431,
+      6406163056622048241,
+      804691941870392155,
+      1632165470505267801,
+      3705087250632280844,
+      4738074042747867859,
+      1622950304752462206,
+      856902636271440105,
+      3530823273090047179,
+      5143811997006204202,
+      6182673752323161428,
+      3388303999422670560,
+      8009341722354034313,
+      8047325933708258279,
+      3302918024397776675,
+      2265334196526240926,
+      3015574479784775573,
+      1736678211969239585,
+      4474612736502202131,
+      1376108475007208261,
+      6419766571196387131,
+      2720670988840855794,
+      3240833480306044759,
+      3463695797932849435,
+      2707198449252762448,
+      1373853486803557827,
+      4455774263006425714,
+      2601289177057061292,
+      1049278090120610541,
+      9014946132455279917,
+      34203379229542493,
+      43378853722142469,
+      3307274611437134380,
+      5708201583668810493,
+      1526995542876119967,
+      6739062041408732122,
+      5647125745337940197,
+      929280875354930941,
+      3398612675568784235,
+      3160352217905317239,
+      5821186349553280702,
+      8290442384545986031,
+      2235823184985675995,
+      2434758139985096295,
+      5513028112040674232,
+      3835889445765566293,
+      2328324036167571958,
+      6550045384243306324,
+      4364591147874133033,
+      3548930695993633866,
+      8060812973867316823,
+      1481380957023085623,
+      6763584437652593212,
+      9031634067262465390,
+      3269066073646421898,
+      8919721525091743476,
+      8157041250003841208,
+      6833593738438296576,
+      8913570027627260272,
+      570230108026144383,
+      2538563438682197062,
+      7086949215392033518,
+      1456602426176310875,
+      894464367569745871,
+      2856668861538689437,
+      9112784579859220500,
+      7580505649907055996,
+      8583245473691819547,
+      552250043283013351,
+      2811345868491976484,
+      4448855785805576131,
+      1020332144538747758,
+      5844861499441679290,
+      4022226702742417646,
+      7502014884279800433,
+      6192031523794451430,
+      3076845502830723366,
+      3012373288820409671,
+      2763825534569027641,
+      5195183295625533034,
+      1301030286546726187,
+      1839732899518310023,
+      4721903452607781048,
+      6124411981399177358,
+      8809255265527498806,
+      7921247185743319147,
+      4197320586164195802,
+      146061456680273828,
+      15593786286860478,
+      3330532571725925721,
+      8750680462311318731,
+      9196652937149427295,
+      4996189388934508667,
+      6280169288779839163,
+      1273271263128285390,
+      1024405701859886775,
+      411816490280193310,
+      7354332333732288386,
+      7411833734091028465,
+      7082552770615430073,
+      4255153016367587918,
+      8442297129387991619,
+      6107706349700444704,
+      4627446827292978900,
+      2237276241005251132,
+      6473385969127525557,
+      3419921649219414909,
+      3821911304113055734,
+      3572464749980441022,
+      685880188905829855,
+      1337127123682739451,
+      4937117801384569831,
+      4376872456616518616,
+      6393381372047189970,
+      2447476014541919813,
+      2286942432107326135,
+      8684636849016899208,
+      5474372925686183185,
+      4222814786579350125,
+      372346277697832549,
+      5781563676991622271,
+      2698923632906003014,
+      2535678841575404611,
+      1979895106151803056,
+      2826214507165019252,
+      4117478594649171869,
+      8517414992932445532,
+      7826829925778822184,
+      2597785590703333760,
+      9175470274305185835,
+      5560361630953209678,
+      4552599370214026491,
+      7577997431527108547,
+      4838990755219547439,
+      715918139031811045,
+      2908038014787913362,
+      2166453895436466959,
+      2861990271150710315,
+      4573774799549806956,
+      3281068855727328198,
+      4391388881955345315,
+      2104788775036867128,
+      7467332875233702219,
+      6573953328427288239,
+      763496708847670702,
+      8388338896967444359,
+      1765492762464829888,
+      330439992004018684,
+      3407292377786645633,
+      8554002390312698293,
+      1914260791263609951,
+      8836592153574239470,
+      6185847182926587451,
+      8368668721973035881,
+      751013883975686641,
+      4996885685248435770,
+      5923887637579689232,
+      7041596038034994187,
+      814714353241564994,
+      6273871495682932344,
+      964787150762916647,
+      6205157713493189522,
+      3767217459653892762,
+      8005491559021682310,
+      686945354517710399,
+      2560731770860647683,
+      4433836583451581697,
+      3798540993328220088,
+      8519239365659279402,
+      2265039870713534124,
+      1116578527046049132,
+      1054216353044131628,
+      5773798193205458702,
+      8157358690516429247,
+      9210493994844012307,
+      5433866329841127144,
+      5448773590054151963,
+      3369396441086623937,
+      2573289392163949507,
+      8374888841811492404,
+      4754199807276866037,
+      1153745945506047260,
+      1855918214831326,
+      7247354326128444156,
+      3263450655057395017,
+      3258088459853711129,
+      8175338648515011309,
+      3152678794850887700,
+      8610146052823820351,
+      5691134456070265959,
+      5540375622012938381,
+      8411924792121412440,
+      7612589958277055767,
+      5216319556480644887,
+      6458691149484318301,
+      797073155941060408,
+      7227442515951137859,
+    ],
     retiredRelationUids: const [],
     modelVersion: 5,
     modelVersionParserMinimum: 5,
@@ -561,8 +785,100 @@ obx_int.ModelDefinition getObjectBoxModel() {
   );
 
   final bindings = <Type, obx_int.EntityDefinition>{
-    AppUserBox: obx_int.EntityDefinition<AppUserBox>(
+    FieldAgentStatBox: obx_int.EntityDefinition<FieldAgentStatBox>(
       model: _entities[0],
+      toOneRelations: (FieldAgentStatBox object) => [],
+      toManyRelations: (FieldAgentStatBox object) => {},
+      getId: (FieldAgentStatBox object) => object.id,
+      setId: (FieldAgentStatBox object, int id) {
+        object.id = id;
+      },
+      objectToFB: (FieldAgentStatBox object, fb.Builder fbb) {
+        final dbIdOffset = fbb.writeString(object.dbId);
+        final userIdOffset = fbb.writeString(object.userId);
+        fbb.startTable(14);
+        fbb.addInt64(0, object.id);
+        fbb.addOffset(1, dbIdOffset);
+        fbb.addInt64(2, object.createdAt);
+        fbb.addInt64(3, object.deletedAt);
+        fbb.addFloat64(4, object.totalCashCountSignUps);
+        fbb.addFloat64(5, object.totalCommissionsEarned);
+        fbb.addFloat64(6, object.totalCommissionsInvalid);
+        fbb.addFloat64(7, object.totalCommissionsPaid);
+        fbb.addFloat64(8, object.totalCompletedCashCountSignUps);
+        fbb.addFloat64(9, object.totalExpiredCashCountSignUps);
+        fbb.addFloat64(10, object.totalPendingCashCountSignUps);
+        fbb.addInt64(11, object.updatedAt);
+        fbb.addOffset(12, userIdOffset);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+        final idParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          4,
+          0,
+        );
+        final dbIdParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 6, '');
+        final createdAtParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          8,
+          0,
+        );
+        final deletedAtParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          10,
+        );
+        final totalCashCountSignUpsParam = const fb.Float64Reader()
+            .vTableGetNullable(buffer, rootOffset, 12);
+        final totalCommissionsEarnedParam = const fb.Float64Reader()
+            .vTableGetNullable(buffer, rootOffset, 14);
+        final totalCommissionsInvalidParam = const fb.Float64Reader()
+            .vTableGetNullable(buffer, rootOffset, 16);
+        final totalCommissionsPaidParam = const fb.Float64Reader()
+            .vTableGetNullable(buffer, rootOffset, 18);
+        final totalCompletedCashCountSignUpsParam = const fb.Float64Reader()
+            .vTableGetNullable(buffer, rootOffset, 20);
+        final totalExpiredCashCountSignUpsParam = const fb.Float64Reader()
+            .vTableGetNullable(buffer, rootOffset, 22);
+        final totalPendingCashCountSignUpsParam = const fb.Float64Reader()
+            .vTableGetNullable(buffer, rootOffset, 24);
+        final updatedAtParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          26,
+        );
+        final userIdParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 28, '');
+        final object = FieldAgentStatBox(
+          id: idParam,
+          dbId: dbIdParam,
+          createdAt: createdAtParam,
+          deletedAt: deletedAtParam,
+          totalCashCountSignUps: totalCashCountSignUpsParam,
+          totalCommissionsEarned: totalCommissionsEarnedParam,
+          totalCommissionsInvalid: totalCommissionsInvalidParam,
+          totalCommissionsPaid: totalCommissionsPaidParam,
+          totalCompletedCashCountSignUps: totalCompletedCashCountSignUpsParam,
+          totalExpiredCashCountSignUps: totalExpiredCashCountSignUpsParam,
+          totalPendingCashCountSignUps: totalPendingCashCountSignUpsParam,
+          updatedAt: updatedAtParam,
+          userId: userIdParam,
+        );
+
+        return object;
+      },
+    ),
+    AppUserBox: obx_int.EntityDefinition<AppUserBox>(
+      model: _entities[1],
       toOneRelations: (AppUserBox object) => [],
       toManyRelations: (AppUserBox object) => {},
       getId: (AppUserBox object) => object.id,
@@ -913,7 +1229,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
       },
     ),
     CashCountFieldSignUpBox: obx_int.EntityDefinition<CashCountFieldSignUpBox>(
-      model: _entities[1],
+      model: _entities[2],
       toOneRelations: (CashCountFieldSignUpBox object) => [],
       toManyRelations: (CashCountFieldSignUpBox object) => {},
       getId: (CashCountFieldSignUpBox object) => object.id,
@@ -1070,322 +1386,291 @@ obx_int.ModelDefinition getObjectBoxModel() {
         return object;
       },
     ),
-    FieldAgentStatBox: obx_int.EntityDefinition<FieldAgentStatBox>(
-      model: _entities[2],
-      toOneRelations: (FieldAgentStatBox object) => [],
-      toManyRelations: (FieldAgentStatBox object) => {},
-      getId: (FieldAgentStatBox object) => object.id,
-      setId: (FieldAgentStatBox object, int id) {
-        object.id = id;
-      },
-      objectToFB: (FieldAgentStatBox object, fb.Builder fbb) {
-        final dbIdOffset = fbb.writeString(object.dbId);
-        final userIdOffset = fbb.writeString(object.userId);
-        fbb.startTable(14);
-        fbb.addInt64(0, object.id);
-        fbb.addOffset(1, dbIdOffset);
-        fbb.addInt64(2, object.createdAt);
-        fbb.addInt64(3, object.deletedAt);
-        fbb.addFloat64(4, object.totalCashCountSignUps);
-        fbb.addFloat64(5, object.totalCommissionsEarned);
-        fbb.addFloat64(6, object.totalCommissionsInvalid);
-        fbb.addFloat64(7, object.totalCommissionsPaid);
-        fbb.addFloat64(8, object.totalCompletedCashCountSignUps);
-        fbb.addFloat64(9, object.totalExpiredCashCountSignUps);
-        fbb.addFloat64(10, object.totalPendingCashCountSignUps);
-        fbb.addInt64(11, object.updatedAt);
-        fbb.addOffset(12, userIdOffset);
-        fbb.finish(fbb.endTable());
-        return object.id;
-      },
-      objectFromFB: (obx.Store store, ByteData fbData) {
-        final buffer = fb.BufferContext(fbData);
-        final rootOffset = buffer.derefObject(0);
-        final idParam = const fb.Int64Reader().vTableGet(
-          buffer,
-          rootOffset,
-          4,
-          0,
-        );
-        final dbIdParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGet(buffer, rootOffset, 6, '');
-        final createdAtParam = const fb.Int64Reader().vTableGet(
-          buffer,
-          rootOffset,
-          8,
-          0,
-        );
-        final deletedAtParam = const fb.Int64Reader().vTableGetNullable(
-          buffer,
-          rootOffset,
-          10,
-        );
-        final totalCashCountSignUpsParam = const fb.Float64Reader()
-            .vTableGetNullable(buffer, rootOffset, 12);
-        final totalCommissionsEarnedParam = const fb.Float64Reader()
-            .vTableGetNullable(buffer, rootOffset, 14);
-        final totalCommissionsInvalidParam = const fb.Float64Reader()
-            .vTableGetNullable(buffer, rootOffset, 16);
-        final totalCommissionsPaidParam = const fb.Float64Reader()
-            .vTableGetNullable(buffer, rootOffset, 18);
-        final totalCompletedCashCountSignUpsParam = const fb.Float64Reader()
-            .vTableGetNullable(buffer, rootOffset, 20);
-        final totalExpiredCashCountSignUpsParam = const fb.Float64Reader()
-            .vTableGetNullable(buffer, rootOffset, 22);
-        final totalPendingCashCountSignUpsParam = const fb.Float64Reader()
-            .vTableGetNullable(buffer, rootOffset, 24);
-        final updatedAtParam = const fb.Int64Reader().vTableGetNullable(
-          buffer,
-          rootOffset,
-          26,
-        );
-        final userIdParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGet(buffer, rootOffset, 28, '');
-        final object = FieldAgentStatBox(
-          id: idParam,
-          dbId: dbIdParam,
-          createdAt: createdAtParam,
-          deletedAt: deletedAtParam,
-          totalCashCountSignUps: totalCashCountSignUpsParam,
-          totalCommissionsEarned: totalCommissionsEarnedParam,
-          totalCommissionsInvalid: totalCommissionsInvalidParam,
-          totalCommissionsPaid: totalCommissionsPaidParam,
-          totalCompletedCashCountSignUps: totalCompletedCashCountSignUpsParam,
-          totalExpiredCashCountSignUps: totalExpiredCashCountSignUpsParam,
-          totalPendingCashCountSignUps: totalPendingCashCountSignUpsParam,
-          updatedAt: updatedAtParam,
-          userId: userIdParam,
-        );
-
-        return object;
-      },
-    ),
   };
 
   return obx_int.ModelDefinition(model, bindings);
+}
+
+/// [FieldAgentStatBox] entity fields to define ObjectBox queries.
+class FieldAgentStatBox_ {
+  /// See [FieldAgentStatBox.id].
+  static final id = obx.QueryIntegerProperty<FieldAgentStatBox>(
+    _entities[0].properties[0],
+  );
+
+  /// See [FieldAgentStatBox.dbId].
+  static final dbId = obx.QueryStringProperty<FieldAgentStatBox>(
+    _entities[0].properties[1],
+  );
+
+  /// See [FieldAgentStatBox.createdAt].
+  static final createdAt = obx.QueryDateNanoProperty<FieldAgentStatBox>(
+    _entities[0].properties[2],
+  );
+
+  /// See [FieldAgentStatBox.deletedAt].
+  static final deletedAt = obx.QueryDateNanoProperty<FieldAgentStatBox>(
+    _entities[0].properties[3],
+  );
+
+  /// See [FieldAgentStatBox.totalCashCountSignUps].
+  static final totalCashCountSignUps =
+      obx.QueryDoubleProperty<FieldAgentStatBox>(_entities[0].properties[4]);
+
+  /// See [FieldAgentStatBox.totalCommissionsEarned].
+  static final totalCommissionsEarned =
+      obx.QueryDoubleProperty<FieldAgentStatBox>(_entities[0].properties[5]);
+
+  /// See [FieldAgentStatBox.totalCommissionsInvalid].
+  static final totalCommissionsInvalid =
+      obx.QueryDoubleProperty<FieldAgentStatBox>(_entities[0].properties[6]);
+
+  /// See [FieldAgentStatBox.totalCommissionsPaid].
+  static final totalCommissionsPaid =
+      obx.QueryDoubleProperty<FieldAgentStatBox>(_entities[0].properties[7]);
+
+  /// See [FieldAgentStatBox.totalCompletedCashCountSignUps].
+  static final totalCompletedCashCountSignUps =
+      obx.QueryDoubleProperty<FieldAgentStatBox>(_entities[0].properties[8]);
+
+  /// See [FieldAgentStatBox.totalExpiredCashCountSignUps].
+  static final totalExpiredCashCountSignUps =
+      obx.QueryDoubleProperty<FieldAgentStatBox>(_entities[0].properties[9]);
+
+  /// See [FieldAgentStatBox.totalPendingCashCountSignUps].
+  static final totalPendingCashCountSignUps =
+      obx.QueryDoubleProperty<FieldAgentStatBox>(_entities[0].properties[10]);
+
+  /// See [FieldAgentStatBox.updatedAt].
+  static final updatedAt = obx.QueryDateNanoProperty<FieldAgentStatBox>(
+    _entities[0].properties[11],
+  );
+
+  /// See [FieldAgentStatBox.userId].
+  static final userId = obx.QueryStringProperty<FieldAgentStatBox>(
+    _entities[0].properties[12],
+  );
 }
 
 /// [AppUserBox] entity fields to define ObjectBox queries.
 class AppUserBox_ {
   /// See [AppUserBox.id].
   static final id = obx.QueryIntegerProperty<AppUserBox>(
-    _entities[0].properties[0],
+    _entities[1].properties[0],
   );
 
   /// See [AppUserBox.idRef].
   static final idRef = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[1],
+    _entities[1].properties[1],
   );
 
   /// See [AppUserBox.appCountryId].
   static final appCountryId = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[2],
+    _entities[1].properties[2],
   );
 
   /// See [AppUserBox.appCountryIso].
   static final appCountryIso = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[3],
+    _entities[1].properties[3],
   );
 
   /// See [AppUserBox.appCountryName].
   static final appCountryName = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[4],
+    _entities[1].properties[4],
   );
 
   /// See [AppUserBox.auditAddedById].
   static final auditAddedById = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[5],
+    _entities[1].properties[5],
   );
 
   /// See [AppUserBox.auditAddedByName].
   static final auditAddedByName = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[6],
+    _entities[1].properties[6],
   );
 
   /// See [AppUserBox.auditDeletedById].
   static final auditDeletedById = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[7],
+    _entities[1].properties[7],
   );
 
   /// See [AppUserBox.auditDeletedByName].
   static final auditDeletedByName = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[8],
+    _entities[1].properties[8],
   );
 
   /// See [AppUserBox.auditUpdatedById].
   static final auditUpdatedById = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[9],
+    _entities[1].properties[9],
   );
 
   /// See [AppUserBox.auditUpdatedByName].
   static final auditUpdatedByName = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[10],
+    _entities[1].properties[10],
   );
 
   /// See [AppUserBox.contactEmail].
   static final contactEmail = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[11],
+    _entities[1].properties[11],
   );
 
   /// See [AppUserBox.contactPhone].
   static final contactPhone = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[12],
+    _entities[1].properties[12],
   );
 
   /// See [AppUserBox.createdAt].
   static final createdAt = obx.QueryDateNanoProperty<AppUserBox>(
-    _entities[0].properties[13],
+    _entities[1].properties[13],
   );
 
   /// See [AppUserBox.currentLocation].
   static final currentLocation = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[14],
+    _entities[1].properties[14],
   );
 
   /// See [AppUserBox.dbId].
   static final dbId = obx.QueryDoubleProperty<AppUserBox>(
-    _entities[0].properties[15],
+    _entities[1].properties[15],
   );
 
   /// See [AppUserBox.deletedAt].
   static final deletedAt = obx.QueryDateNanoProperty<AppUserBox>(
-    _entities[0].properties[16],
+    _entities[1].properties[16],
   );
 
   /// See [AppUserBox.deviceIds].
   static final deviceIds = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[17],
+    _entities[1].properties[17],
   );
 
   /// See [AppUserBox.email].
   static final email = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[18],
+    _entities[1].properties[18],
   );
 
   /// See [AppUserBox.emailVerified].
   static final emailVerified = obx.QueryBooleanProperty<AppUserBox>(
-    _entities[0].properties[19],
+    _entities[1].properties[19],
   );
 
   /// See [AppUserBox.fbmToken].
   static final fbmToken = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[20],
+    _entities[1].properties[20],
   );
 
   /// See [AppUserBox.firstName].
   static final firstName = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[21],
+    _entities[1].properties[21],
   );
 
   /// See [AppUserBox.fullName].
   static final fullName = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[22],
+    _entities[1].properties[22],
   );
 
   /// See [AppUserBox.hash].
   static final hash = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[23],
+    _entities[1].properties[23],
   );
 
   /// See [AppUserBox.lastName].
   static final lastName = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[24],
+    _entities[1].properties[24],
   );
 
   /// See [AppUserBox.organizationBranchAccessIds].
   static final organizationBranchAccessIds =
-      obx.QueryStringProperty<AppUserBox>(_entities[0].properties[25]);
+      obx.QueryStringProperty<AppUserBox>(_entities[1].properties[25]);
 
   /// See [AppUserBox.organizationBranchId].
   static final organizationBranchId = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[26],
+    _entities[1].properties[26],
   );
 
   /// See [AppUserBox.organizationId].
   static final organizationId = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[27],
+    _entities[1].properties[27],
   );
 
   /// See [AppUserBox.organizationType].
   static final organizationType = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[28],
+    _entities[1].properties[28],
   );
 
   /// See [AppUserBox.phone].
   static final phone = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[29],
+    _entities[1].properties[29],
   );
 
   /// See [AppUserBox.profileImage].
   static final profileImage = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[30],
+    _entities[1].properties[30],
   );
 
   /// See [AppUserBox.profileImageBlurHash].
   static final profileImageBlurHash = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[31],
+    _entities[1].properties[31],
   );
 
   /// See [AppUserBox.profileImageSize].
   static final profileImageSize = obx.QueryDoubleProperty<AppUserBox>(
-    _entities[0].properties[32],
+    _entities[1].properties[32],
   );
 
   /// See [AppUserBox.role].
   static final role = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[33],
+    _entities[1].properties[33],
   );
 
   /// See [AppUserBox.salt].
   static final salt = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[34],
+    _entities[1].properties[34],
   );
 
   /// See [AppUserBox.statId].
   static final statId = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[35],
+    _entities[1].properties[35],
   );
 
   /// See [AppUserBox.status].
   static final status = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[36],
+    _entities[1].properties[36],
   );
 
   /// See [AppUserBox.subRole].
   static final subRole = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[37],
+    _entities[1].properties[37],
   );
 
   /// See [AppUserBox.teamBranchAccessIds].
   static final teamBranchAccessIds = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[38],
+    _entities[1].properties[38],
   );
 
   /// See [AppUserBox.teamBranchId].
   static final teamBranchId = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[39],
+    _entities[1].properties[39],
   );
 
   /// See [AppUserBox.teamId].
   static final teamId = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[40],
+    _entities[1].properties[40],
   );
 
   /// See [AppUserBox.teamType].
   static final teamType = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[41],
+    _entities[1].properties[41],
   );
 
   /// See [AppUserBox.updatedAt].
   static final updatedAt = obx.QueryDateNanoProperty<AppUserBox>(
-    _entities[0].properties[42],
+    _entities[1].properties[42],
   );
 
   /// See [AppUserBox.username].
   static final username = obx.QueryStringProperty<AppUserBox>(
-    _entities[0].properties[43],
+    _entities[1].properties[43],
   );
 }
 
@@ -1393,159 +1678,98 @@ class AppUserBox_ {
 class CashCountFieldSignUpBox_ {
   /// See [CashCountFieldSignUpBox.id].
   static final id = obx.QueryIntegerProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[0],
+    _entities[2].properties[0],
   );
 
   /// See [CashCountFieldSignUpBox.dbId].
   static final dbId = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[1],
+    _entities[2].properties[1],
   );
 
   /// See [CashCountFieldSignUpBox.completedAt].
   static final completedAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[2],
+    _entities[2].properties[2],
   );
 
   /// See [CashCountFieldSignUpBox.completedMeta].
   static final completedMeta = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[3],
+    _entities[2].properties[3],
   );
 
   /// See [CashCountFieldSignUpBox.createdAt].
   static final createdAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[4],
+    _entities[2].properties[4],
   );
 
   /// See [CashCountFieldSignUpBox.creatorId].
   static final creatorId = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[5],
+    _entities[2].properties[5],
   );
 
   /// See [CashCountFieldSignUpBox.deletedAt].
   static final deletedAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[6],
+    _entities[2].properties[6],
   );
 
   /// See [CashCountFieldSignUpBox.deletedMeta].
   static final deletedMeta = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[7],
+    _entities[2].properties[7],
   );
 
   /// See [CashCountFieldSignUpBox.deviceInfo].
   static final deviceInfo = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[8],
+    _entities[2].properties[8],
   );
 
   /// See [CashCountFieldSignUpBox.expiredAt].
   static final expiredAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[9],
+    _entities[2].properties[9],
   );
 
   /// See [CashCountFieldSignUpBox.mongoId].
   static final mongoId = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[10],
+    _entities[2].properties[10],
   );
 
   /// See [CashCountFieldSignUpBox.phoneNumber].
   static final phoneNumber = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[11],
+    _entities[2].properties[11],
   );
 
   /// See [CashCountFieldSignUpBox.rejectionAt].
   static final rejectionAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[12],
+    _entities[2].properties[12],
   );
 
   /// See [CashCountFieldSignUpBox.rejectionMeta].
   static final rejectionMeta = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[13],
+    _entities[2].properties[13],
   );
 
   /// See [CashCountFieldSignUpBox.rejectionReason].
   static final rejectionReason =
       obx.QueryStringProperty<CashCountFieldSignUpBox>(
-        _entities[1].properties[14],
+        _entities[2].properties[14],
       );
 
   /// See [CashCountFieldSignUpBox.statUpdatedAt].
   static final statUpdatedAt =
       obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
-        _entities[1].properties[15],
+        _entities[2].properties[15],
       );
 
   /// See [CashCountFieldSignUpBox.status].
   static final status = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[16],
+    _entities[2].properties[16],
   );
 
   /// See [CashCountFieldSignUpBox.updateMeta].
   static final updateMeta = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[17],
+    _entities[2].properties[17],
   );
 
   /// See [CashCountFieldSignUpBox.updatedAt].
   static final updatedAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[18],
-  );
-}
-
-/// [FieldAgentStatBox] entity fields to define ObjectBox queries.
-class FieldAgentStatBox_ {
-  /// See [FieldAgentStatBox.id].
-  static final id = obx.QueryIntegerProperty<FieldAgentStatBox>(
-    _entities[2].properties[0],
-  );
-
-  /// See [FieldAgentStatBox.dbId].
-  static final dbId = obx.QueryStringProperty<FieldAgentStatBox>(
-    _entities[2].properties[1],
-  );
-
-  /// See [FieldAgentStatBox.createdAt].
-  static final createdAt = obx.QueryDateNanoProperty<FieldAgentStatBox>(
-    _entities[2].properties[2],
-  );
-
-  /// See [FieldAgentStatBox.deletedAt].
-  static final deletedAt = obx.QueryDateNanoProperty<FieldAgentStatBox>(
-    _entities[2].properties[3],
-  );
-
-  /// See [FieldAgentStatBox.totalCashCountSignUps].
-  static final totalCashCountSignUps =
-      obx.QueryDoubleProperty<FieldAgentStatBox>(_entities[2].properties[4]);
-
-  /// See [FieldAgentStatBox.totalCommissionsEarned].
-  static final totalCommissionsEarned =
-      obx.QueryDoubleProperty<FieldAgentStatBox>(_entities[2].properties[5]);
-
-  /// See [FieldAgentStatBox.totalCommissionsInvalid].
-  static final totalCommissionsInvalid =
-      obx.QueryDoubleProperty<FieldAgentStatBox>(_entities[2].properties[6]);
-
-  /// See [FieldAgentStatBox.totalCommissionsPaid].
-  static final totalCommissionsPaid =
-      obx.QueryDoubleProperty<FieldAgentStatBox>(_entities[2].properties[7]);
-
-  /// See [FieldAgentStatBox.totalCompletedCashCountSignUps].
-  static final totalCompletedCashCountSignUps =
-      obx.QueryDoubleProperty<FieldAgentStatBox>(_entities[2].properties[8]);
-
-  /// See [FieldAgentStatBox.totalExpiredCashCountSignUps].
-  static final totalExpiredCashCountSignUps =
-      obx.QueryDoubleProperty<FieldAgentStatBox>(_entities[2].properties[9]);
-
-  /// See [FieldAgentStatBox.totalPendingCashCountSignUps].
-  static final totalPendingCashCountSignUps =
-      obx.QueryDoubleProperty<FieldAgentStatBox>(_entities[2].properties[10]);
-
-  /// See [FieldAgentStatBox.updatedAt].
-  static final updatedAt = obx.QueryDateNanoProperty<FieldAgentStatBox>(
-    _entities[2].properties[11],
-  );
-
-  /// See [FieldAgentStatBox.userId].
-  static final userId = obx.QueryStringProperty<FieldAgentStatBox>(
-    _entities[2].properties[12],
+    _entities[2].properties[18],
   );
 }
