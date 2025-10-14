@@ -1,7 +1,7 @@
 {
   "GET:/api/run/app/fieldAgentAuth/getMe": {
     "request": "GetMe",
-    "response": "AppUser",
+    "response": "AuthUser",
     "createBox": true,
     "objectFields": {
       "args": {},
@@ -69,11 +69,6 @@
         "paginationOpts": "PaginationOpts"
       },
       "returns": {
-        "list.deviceInfo": {
-          "name": "DeviceInfo",
-          "jsonType": "separate",
-          "objectBoxType": "String"
-        },
         "list.completedMeta": {
           "name": "AuditAction",
           "jsonType": "separate",
@@ -93,14 +88,19 @@
           "name": "AuditAction",
           "jsonType": "separate",
           "objectBoxType": "String"
+        },
+        "list.deviceInfo": {
+          "name": "DeviceInfo",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "list.createMeta": {
+          "name": "CreateMeta",
+          "jsonType": "separate",
+          "objectBoxType": "String"
         }
       }
     }
-  },
-  "GET:/api/run/app/fieldAgentStat/getMyStat": {
-    "request": "GetMyFieldAgentStat",
-    "response": "FieldAgentStat",
-    "createBox": true
   },
   "POST:/api/run/app/fieldAgentCashCount/createFieldSignUp": {
     "request": "CreateCashCountFieldSignUp",

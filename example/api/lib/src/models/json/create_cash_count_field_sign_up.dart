@@ -9,17 +9,20 @@ import "device_info.dart";
 
 class CreateCashCountFieldSignUp {
   final DeviceInfo deviceInfo;
-  final String phoneNumber;
+  final String ownerUserId;
+  final String referralCode;
 
   const CreateCashCountFieldSignUp({
     required this.deviceInfo,
-    required this.phoneNumber,
+    required this.ownerUserId,
+    required this.referralCode,
   });
 
   factory CreateCashCountFieldSignUp.empty() {
     return CreateCashCountFieldSignUp(
       deviceInfo: DeviceInfo.empty(),
-      phoneNumber: '',
+      ownerUserId: '',
+      referralCode: '',
     );
   }
 
@@ -28,21 +31,28 @@ class CreateCashCountFieldSignUp {
       deviceInfo: DeviceInfo.fromJson(
         json['deviceInfo'] as Map<String, dynamic>,
       ),
-      phoneNumber: json['phoneNumber'] as String,
+      ownerUserId: json['ownerUserId'] as String,
+      referralCode: json['referralCode'] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {'deviceInfo': deviceInfo, 'phoneNumber': phoneNumber};
+    return {
+      'deviceInfo': deviceInfo,
+      'ownerUserId': ownerUserId,
+      'referralCode': referralCode,
+    };
   }
 
   CreateCashCountFieldSignUp copyWith({
     DeviceInfo? deviceInfo,
-    String? phoneNumber,
+    String? ownerUserId,
+    String? referralCode,
   }) {
     return CreateCashCountFieldSignUp(
       deviceInfo: deviceInfo ?? this.deviceInfo,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
+      ownerUserId: ownerUserId ?? this.ownerUserId,
+      referralCode: referralCode ?? this.referralCode,
     );
   }
 
@@ -51,12 +61,13 @@ class CreateCashCountFieldSignUp {
     if (identical(this, other)) return true;
     return other is CreateCashCountFieldSignUp &&
         other.deviceInfo == deviceInfo &&
-        other.phoneNumber == phoneNumber;
+        other.ownerUserId == ownerUserId &&
+        other.referralCode == referralCode;
   }
 
   @override
   int get hashCode {
-    return deviceInfo.hashCode ^ phoneNumber.hashCode;
+    return deviceInfo.hashCode ^ ownerUserId.hashCode ^ referralCode.hashCode;
   }
 
   @override

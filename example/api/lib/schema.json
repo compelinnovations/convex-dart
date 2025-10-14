@@ -9,549 +9,535 @@
       "functionType": "Query",
       "identifier": "app/fieldAgentAuth.js:getMe",
       "returns": {
-        "type": "object",
-        "value": {
-          "_id": {
-            "fieldType": {
-              "tableName": "users",
-              "type": "id"
-            },
-            "optional": false
-          },
-          "appCountryId": {
-            "fieldType": {
-              "tableName": "appCountries",
-              "type": "id"
-            },
-            "optional": true
-          },
-          "appCountryIso": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": true
-          },
-          "appCountryName": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": true
-          },
-          "auditAddedById": {
-            "fieldType": {
-              "tableName": "users",
-              "type": "id"
-            },
-            "optional": true
-          },
-          "auditAddedByName": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": true
-          },
-          "auditDeletedById": {
-            "fieldType": {
-              "tableName": "users",
-              "type": "id"
-            },
-            "optional": true
-          },
-          "auditDeletedByName": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": true
-          },
-          "auditUpdatedById": {
-            "fieldType": {
-              "tableName": "users",
-              "type": "id"
-            },
-            "optional": true
-          },
-          "auditUpdatedByName": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": true
-          },
-          "contactEmail": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": true
-          },
-          "contactPhone": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": true
-          },
-          "createdAt": {
-            "fieldType": {
-              "type": "number"
-            },
-            "optional": true
-          },
-          "currentLocation": {
-            "fieldType": {
-              "type": "object",
-              "value": {
-                "_id": {
-                  "fieldType": {
-                    "type": "string"
-                  },
-                  "optional": false
+        "type": "union",
+        "value": [
+          {
+            "type": "object",
+            "value": {
+              "_creationTime": {
+                "fieldType": {
+                  "type": "number"
                 },
-                "administrativeAreaLevel1": {
-                  "fieldType": {
-                    "type": "object",
-                    "value": {
-                      "_id": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": false
-                      },
-                      "longName": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": true
-                      },
-                      "shortName": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": true
-                      }
+                "optional": false
+              },
+              "_id": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": true
+              },
+              "appCountryId": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
                     }
-                  },
-                  "optional": true
+                  ]
                 },
-                "administrativeAreaLevel2": {
-                  "fieldType": {
-                    "type": "object",
-                    "value": {
-                      "_id": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": false
-                      },
-                      "longName": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": true
-                      },
-                      "shortName": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": true
-                      }
+                "optional": true
+              },
+              "appCountryIso": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
                     }
-                  },
-                  "optional": true
+                  ]
                 },
-                "country": {
-                  "fieldType": {
-                    "type": "object",
-                    "value": {
-                      "_id": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": false
-                      },
-                      "longName": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": true
-                      },
-                      "shortName": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": true
-                      }
+                "optional": true
+              },
+              "appCountryName": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
                     }
-                  },
-                  "optional": true
+                  ]
                 },
-                "formattedAddress": {
-                  "fieldType": {
-                    "type": "string"
-                  },
-                  "optional": true
-                },
-                "latLng": {
-                  "fieldType": {
-                    "type": "object",
-                    "value": {
-                      "_id": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": false
-                      },
-                      "latitude": {
-                        "fieldType": {
-                          "type": "number"
-                        },
-                        "optional": false
-                      },
-                      "longitude": {
-                        "fieldType": {
-                          "type": "number"
-                        },
-                        "optional": false
-                      }
+                "optional": true
+              },
+              "banExpires": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "number"
                     }
-                  },
-                  "optional": false
+                  ]
                 },
-                "locality": {
-                  "fieldType": {
-                    "type": "object",
-                    "value": {
-                      "_id": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": false
-                      },
-                      "longName": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": true
-                      },
-                      "shortName": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": true
-                      }
+                "optional": true
+              },
+              "banReason": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
                     }
-                  },
-                  "optional": true
+                  ]
                 },
-                "name": {
-                  "fieldType": {
-                    "type": "string"
-                  },
-                  "optional": true
-                },
-                "placeId": {
-                  "fieldType": {
-                    "type": "string"
-                  },
-                  "optional": true
-                },
-                "plusCode": {
-                  "fieldType": {
-                    "type": "object",
-                    "value": {
-                      "_id": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": false
-                      },
-                      "longName": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": true
-                      },
-                      "shortName": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": true
-                      }
+                "optional": true
+              },
+              "banned": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "boolean"
                     }
-                  },
-                  "optional": true
+                  ]
                 },
-                "postalCode": {
-                  "fieldType": {
-                    "type": "object",
-                    "value": {
-                      "_id": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": false
-                      },
-                      "longName": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": true
-                      },
-                      "shortName": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": true
-                      }
+                "optional": true
+              },
+              "createMeta": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
                     }
-                  },
-                  "optional": true
+                  ]
                 },
-                "subLocalityLevel1": {
-                  "fieldType": {
-                    "type": "object",
-                    "value": {
-                      "_id": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": false
-                      },
-                      "longName": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": true
-                      },
-                      "shortName": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": true
-                      }
-                    }
-                  },
-                  "optional": true
+                "optional": true
+              },
+              "createdAt": {
+                "fieldType": {
+                  "type": "number"
                 },
-                "subLocalityLevel2": {
-                  "fieldType": {
-                    "type": "object",
-                    "value": {
-                      "_id": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": false
-                      },
-                      "longName": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": true
-                      },
-                      "shortName": {
-                        "fieldType": {
-                          "type": "string"
-                        },
-                        "optional": true
-                      }
+                "optional": false
+              },
+              "dbId": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "number"
                     }
-                  },
-                  "optional": true
-                }
+                  ]
+                },
+                "optional": true
+              },
+              "deletedAt": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "deletedMeta": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "displayUsername": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "email": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": false
+              },
+              "emailVerified": {
+                "fieldType": {
+                  "type": "boolean"
+                },
+                "optional": false
+              },
+              "fbmToken": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "fieldAgentId": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "firstName": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "fullName": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "image": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "lastName": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "memberId": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "name": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": false
+              },
+              "organizationId": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "phoneNumber": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "phoneNumberVerified": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "profileImageBlurHash": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "profileImageSize": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "role": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "shippingClientId": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "status": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "subRole": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "teamId": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "teamMemberId": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "teamType": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "twoFactorEnabled": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "updateMeta": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "updatedAt": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": false
+              },
+              "userId": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "username": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
               }
-            },
-            "optional": true
+            }
           },
-          "dbId": {
-            "fieldType": {
-              "type": "number"
-            },
-            "optional": true
-          },
-          "deletedAt": {
-            "fieldType": {
-              "type": "number"
-            },
-            "optional": true
-          },
-          "deviceIds": {
-            "fieldType": {
-              "type": "array",
-              "value": {
-                "tableName": "userDevices",
-                "type": "id"
-              }
-            },
-            "optional": true
-          },
-          "email": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": false
-          },
-          "emailVerified": {
-            "fieldType": {
-              "type": "boolean"
-            },
-            "optional": false
-          },
-          "fbmToken": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": true
-          },
-          "firstName": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": false
-          },
-          "fullName": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": false
-          },
-          "hash": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": true
-          },
-          "lastName": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": false
-          },
-          "organizationBranchAccessIds": {
-            "fieldType": {
-              "type": "array",
-              "value": {
-                "tableName": "organizationBranches",
-                "type": "id"
-              }
-            },
-            "optional": true
-          },
-          "organizationBranchId": {
-            "fieldType": {
-              "tableName": "organizationBranches",
-              "type": "id"
-            },
-            "optional": true
-          },
-          "organizationId": {
-            "fieldType": {
-              "tableName": "organization",
-              "type": "id"
-            },
-            "optional": true
-          },
-          "organizationType": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": true
-          },
-          "phone": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": true
-          },
-          "profileImage": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": true
-          },
-          "profileImageBlurHash": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": true
-          },
-          "profileImageSize": {
-            "fieldType": {
-              "type": "number"
-            },
-            "optional": true
-          },
-          "role": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": false
-          },
-          "salt": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": true
-          },
-          "statId": {
-            "fieldType": {
-              "tableName": "fieldAgentStats",
-              "type": "id"
-            },
-            "optional": true
-          },
-          "status": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": false
-          },
-          "subRole": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": false
-          },
-          "teamBranchAccessIds": {
-            "fieldType": {
-              "type": "array",
-              "value": {
-                "tableName": "teamBranches",
-                "type": "id"
-              }
-            },
-            "optional": true
-          },
-          "teamBranchId": {
-            "fieldType": {
-              "tableName": "teamBranches",
-              "type": "id"
-            },
-            "optional": true
-          },
-          "teamId": {
-            "fieldType": {
-              "tableName": "team",
-              "type": "id"
-            },
-            "optional": true
-          },
-          "teamType": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": true
-          },
-          "updatedAt": {
-            "fieldType": {
-              "type": "number"
-            },
-            "optional": true
-          },
-          "username": {
-            "fieldType": {
-              "type": "string"
-            },
-            "optional": true
+          {
+            "type": "null"
           }
-        }
+        ]
       },
       "visibility": {
         "kind": "public"
@@ -593,7 +579,13 @@
             },
             "optional": false
           },
-          "phoneNumber": {
+          "ownerUserId": {
+            "fieldType": {
+              "type": "string"
+            },
+            "optional": false
+          },
+          "referralCode": {
             "fieldType": {
               "type": "string"
             },
@@ -606,6 +598,13 @@
       "returns": {
         "type": "object",
         "value": {
+          "_id": {
+            "fieldType": {
+              "tableName": "cashCountFieldSignUps",
+              "type": "id"
+            },
+            "optional": true
+          },
           "message": {
             "fieldType": {
               "type": "string"
@@ -779,16 +778,56 @@
                     },
                     "optional": true
                   },
+                  "createMeta": {
+                    "fieldType": {
+                      "type": "object",
+                      "value": {
+                        "action": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": false
+                        },
+                        "details": {
+                          "fieldType": {
+                            "keys": {
+                              "type": "string"
+                            },
+                            "type": "record",
+                            "values": {
+                              "fieldType": {
+                                "type": "any"
+                              },
+                              "optional": false
+                            }
+                          },
+                          "optional": true
+                        },
+                        "name": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        },
+                        "role": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        },
+                        "userId": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        }
+                      }
+                    },
+                    "optional": true
+                  },
                   "createdAt": {
                     "fieldType": {
                       "type": "number"
-                    },
-                    "optional": false
-                  },
-                  "creatorId": {
-                    "fieldType": {
-                      "tableName": "users",
-                      "type": "id"
                     },
                     "optional": false
                   },
@@ -845,6 +884,12 @@
                     },
                     "optional": true
                   },
+                  "deviceId": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": false
+                  },
                   "deviceInfo": {
                     "fieldType": {
                       "type": "object",
@@ -883,13 +928,26 @@
                     },
                     "optional": true
                   },
+                  "fieldAgentId": {
+                    "fieldType": {
+                      "tableName": "fieldAgents",
+                      "type": "id"
+                    },
+                    "optional": false
+                  },
                   "mongoId": {
                     "fieldType": {
                       "type": "string"
                     },
-                    "optional": true
+                    "optional": false
                   },
                   "phoneNumber": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": false
+                  },
+                  "referralCode": {
                     "fieldType": {
                       "type": "string"
                     },
@@ -1039,96 +1097,6 @@
                   }
                 }
               }
-            },
-            "optional": false
-          }
-        }
-      },
-      "visibility": {
-        "kind": "public"
-      }
-    },
-    {
-      "args": {
-        "type": "object",
-        "value": {}
-      },
-      "functionType": "Query",
-      "identifier": "app/fieldAgentStat.js:getMyStat",
-      "returns": {
-        "type": "object",
-        "value": {
-          "_id": {
-            "fieldType": {
-              "tableName": "fieldAgentStats",
-              "type": "id"
-            },
-            "optional": false
-          },
-          "createdAt": {
-            "fieldType": {
-              "type": "number"
-            },
-            "optional": false
-          },
-          "deletedAt": {
-            "fieldType": {
-              "type": "number"
-            },
-            "optional": true
-          },
-          "totalCashCountSignUps": {
-            "fieldType": {
-              "type": "number"
-            },
-            "optional": true
-          },
-          "totalCommissionsEarned": {
-            "fieldType": {
-              "type": "number"
-            },
-            "optional": true
-          },
-          "totalCommissionsInvalid": {
-            "fieldType": {
-              "type": "number"
-            },
-            "optional": true
-          },
-          "totalCommissionsPaid": {
-            "fieldType": {
-              "type": "number"
-            },
-            "optional": true
-          },
-          "totalCompletedCashCountSignUps": {
-            "fieldType": {
-              "type": "number"
-            },
-            "optional": true
-          },
-          "totalExpiredCashCountSignUps": {
-            "fieldType": {
-              "type": "number"
-            },
-            "optional": true
-          },
-          "totalPendingCashCountSignUps": {
-            "fieldType": {
-              "type": "number"
-            },
-            "optional": true
-          },
-          "updatedAt": {
-            "fieldType": {
-              "type": "number"
-            },
-            "optional": true
-          },
-          "userId": {
-            "fieldType": {
-              "tableName": "users",
-              "type": "id"
             },
             "optional": false
           }

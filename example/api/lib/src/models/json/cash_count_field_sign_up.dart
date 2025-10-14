@@ -6,20 +6,24 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 import "audit_action.dart";
+import "create_meta.dart";
 import "device_info.dart";
 
 class CashCountFieldSignUp {
   final CashCountFieldSignUpsId $_id;
   final Optional<double> completedAt;
   final Optional<AuditAction> completedMeta;
+  final Optional<CreateMeta> createMeta;
   final double createdAt;
-  final UsersId creatorId;
   final Optional<double> deletedAt;
   final Optional<AuditAction> deletedMeta;
+  final String deviceId;
   final DeviceInfo deviceInfo;
   final Optional<double> expiredAt;
-  final Optional<String> mongoId;
+  final FieldAgentsId fieldAgentId;
+  final String mongoId;
   final String phoneNumber;
+  final String referralCode;
   final Optional<double> rejectionAt;
   final Optional<AuditAction> rejectionMeta;
   final Optional<String> rejectionReason;
@@ -38,14 +42,17 @@ class CashCountFieldSignUp {
     required this.$_id,
     this.completedAt = const Undefined(),
     this.completedMeta = const Undefined(),
+    this.createMeta = const Undefined(),
     required this.createdAt,
-    required this.creatorId,
     this.deletedAt = const Undefined(),
     this.deletedMeta = const Undefined(),
+    required this.deviceId,
     required this.deviceInfo,
     this.expiredAt = const Undefined(),
-    this.mongoId = const Undefined(),
+    required this.fieldAgentId,
+    required this.mongoId,
     required this.phoneNumber,
+    required this.referralCode,
     this.rejectionAt = const Undefined(),
     this.rejectionMeta = const Undefined(),
     this.rejectionReason = const Undefined(),
@@ -59,9 +66,12 @@ class CashCountFieldSignUp {
     return CashCountFieldSignUp(
       $_id: CashCountFieldSignUpsId(''),
       createdAt: 0.0,
-      creatorId: UsersId(''),
+      deviceId: '',
       deviceInfo: DeviceInfo.empty(),
+      fieldAgentId: FieldAgentsId(''),
+      mongoId: '',
       phoneNumber: '',
+      referralCode: '',
       status: Union4(const $CompletedLiteral()),
     );
   }
@@ -79,8 +89,12 @@ class CashCountFieldSignUp {
               ),
             )
           : const Undefined(),
+      createMeta: json['createMeta'] != null
+          ? Defined(
+              CreateMeta.fromJson(json['createMeta'] as Map<String, dynamic>),
+            )
+          : const Undefined(),
       createdAt: json['createdAt'] as double,
-      creatorId: UsersId(json['creatorId'] as String),
       deletedAt: json['deletedAt'] != null
           ? Defined(json['deletedAt'] as double)
           : const Undefined(),
@@ -89,16 +103,17 @@ class CashCountFieldSignUp {
               AuditAction.fromJson(json['deletedMeta'] as Map<String, dynamic>),
             )
           : const Undefined(),
+      deviceId: json['deviceId'] as String,
       deviceInfo: DeviceInfo.fromJson(
         json['deviceInfo'] as Map<String, dynamic>,
       ),
       expiredAt: json['expiredAt'] != null
           ? Defined(json['expiredAt'] as double)
           : const Undefined(),
-      mongoId: json['mongoId'] != null
-          ? Defined(json['mongoId'] as String)
-          : const Undefined(),
+      fieldAgentId: FieldAgentsId(json['fieldAgentId'] as String),
+      mongoId: json['mongoId'] as String,
       phoneNumber: json['phoneNumber'] as String,
+      referralCode: json['referralCode'] as String,
       rejectionAt: json['rejectionAt'] != null
           ? Defined(json['rejectionAt'] as double)
           : const Undefined(),
@@ -133,14 +148,17 @@ class CashCountFieldSignUp {
       if (completedAt.isDefined) 'completedAt': completedAt.asDefined().value,
       if (completedMeta.isDefined)
         'completedMeta': completedMeta.asDefined().value,
+      if (createMeta.isDefined) 'createMeta': createMeta.asDefined().value,
       'createdAt': createdAt,
-      'creatorId': creatorId,
       if (deletedAt.isDefined) 'deletedAt': deletedAt.asDefined().value,
       if (deletedMeta.isDefined) 'deletedMeta': deletedMeta.asDefined().value,
+      'deviceId': deviceId,
       'deviceInfo': deviceInfo,
       if (expiredAt.isDefined) 'expiredAt': expiredAt.asDefined().value,
-      if (mongoId.isDefined) 'mongoId': mongoId.asDefined().value,
+      'fieldAgentId': fieldAgentId,
+      'mongoId': mongoId,
       'phoneNumber': phoneNumber,
+      'referralCode': referralCode,
       if (rejectionAt.isDefined) 'rejectionAt': rejectionAt.asDefined().value,
       if (rejectionMeta.isDefined)
         'rejectionMeta': rejectionMeta.asDefined().value,
@@ -158,14 +176,17 @@ class CashCountFieldSignUp {
     CashCountFieldSignUpsId? $_id,
     Optional<double>? completedAt,
     Optional<AuditAction>? completedMeta,
+    Optional<CreateMeta>? createMeta,
     double? createdAt,
-    UsersId? creatorId,
     Optional<double>? deletedAt,
     Optional<AuditAction>? deletedMeta,
+    String? deviceId,
     DeviceInfo? deviceInfo,
     Optional<double>? expiredAt,
-    Optional<String>? mongoId,
+    FieldAgentsId? fieldAgentId,
+    String? mongoId,
     String? phoneNumber,
+    String? referralCode,
     Optional<double>? rejectionAt,
     Optional<AuditAction>? rejectionMeta,
     Optional<String>? rejectionReason,
@@ -184,14 +205,17 @@ class CashCountFieldSignUp {
       $_id: $_id ?? this.$_id,
       completedAt: completedAt ?? this.completedAt,
       completedMeta: completedMeta ?? this.completedMeta,
+      createMeta: createMeta ?? this.createMeta,
       createdAt: createdAt ?? this.createdAt,
-      creatorId: creatorId ?? this.creatorId,
       deletedAt: deletedAt ?? this.deletedAt,
       deletedMeta: deletedMeta ?? this.deletedMeta,
+      deviceId: deviceId ?? this.deviceId,
       deviceInfo: deviceInfo ?? this.deviceInfo,
       expiredAt: expiredAt ?? this.expiredAt,
+      fieldAgentId: fieldAgentId ?? this.fieldAgentId,
       mongoId: mongoId ?? this.mongoId,
       phoneNumber: phoneNumber ?? this.phoneNumber,
+      referralCode: referralCode ?? this.referralCode,
       rejectionAt: rejectionAt ?? this.rejectionAt,
       rejectionMeta: rejectionMeta ?? this.rejectionMeta,
       rejectionReason: rejectionReason ?? this.rejectionReason,
@@ -209,14 +233,17 @@ class CashCountFieldSignUp {
         other.$_id == $_id &&
         other.completedAt == completedAt &&
         other.completedMeta == completedMeta &&
+        other.createMeta == createMeta &&
         other.createdAt == createdAt &&
-        other.creatorId == creatorId &&
         other.deletedAt == deletedAt &&
         other.deletedMeta == deletedMeta &&
+        other.deviceId == deviceId &&
         other.deviceInfo == deviceInfo &&
         other.expiredAt == expiredAt &&
+        other.fieldAgentId == fieldAgentId &&
         other.mongoId == mongoId &&
         other.phoneNumber == phoneNumber &&
+        other.referralCode == referralCode &&
         other.rejectionAt == rejectionAt &&
         other.rejectionMeta == rejectionMeta &&
         other.rejectionReason == rejectionReason &&
@@ -231,14 +258,17 @@ class CashCountFieldSignUp {
     return $_id.hashCode ^
         completedAt.hashCode ^
         completedMeta.hashCode ^
+        createMeta.hashCode ^
         createdAt.hashCode ^
-        creatorId.hashCode ^
         deletedAt.hashCode ^
         deletedMeta.hashCode ^
+        deviceId.hashCode ^
         deviceInfo.hashCode ^
         expiredAt.hashCode ^
+        fieldAgentId.hashCode ^
         mongoId.hashCode ^
         phoneNumber.hashCode ^
+        referralCode.hashCode ^
         rejectionAt.hashCode ^
         rejectionMeta.hashCode ^
         rejectionReason.hashCode ^

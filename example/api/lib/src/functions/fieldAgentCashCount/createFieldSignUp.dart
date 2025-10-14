@@ -22,15 +22,24 @@ BTreeMapStringValue serialize(CreateCashCountFieldSignUp args) {
         'deviceName': encodeValue(args.deviceInfo.deviceName),
         'deviceOs': encodeValue(args.deviceInfo.deviceOs),
       }),
-      'phoneNumber': encodeValue(args.phoneNumber),
+      'ownerUserId': encodeValue(args.ownerUserId),
+      'referralCode': encodeValue(args.referralCode),
     },
   );
 }
 
 CreateFieldSignUpResponse deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on594891) => (message: (on594891['message'] as String)),
+    (on180937) => (
+      $_id: on180937.containsKey('_id')
+          ? Defined(CashCountFieldSignUpsId(on180937['_id'] as String))
+          : Undefined<CashCountFieldSignUpsId>(),
+      message: (on180937['message'] as String),
+    ),
   );
 }
 
-typedef CreateFieldSignUpResponse = ({String message});
+typedef CreateFieldSignUpResponse = ({
+  Optional<CashCountFieldSignUpsId> $_id,
+  String message,
+});

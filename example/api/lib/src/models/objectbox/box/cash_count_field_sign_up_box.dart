@@ -13,17 +13,20 @@ class CashCountFieldSignUpBox {
   @Property(type: PropertyType.dateNano)
   int? completedAt;
   String? completedMeta;
+  String? createMeta;
   @Property(type: PropertyType.dateNano)
   int createdAt;
-  String creatorId;
   @Property(type: PropertyType.dateNano)
   int? deletedAt;
   String? deletedMeta;
+  String deviceId;
   String deviceInfo;
   @Property(type: PropertyType.dateNano)
   int? expiredAt;
-  String? mongoId;
+  String fieldAgentId;
+  String mongoId;
   String phoneNumber;
+  String referralCode;
   @Property(type: PropertyType.dateNano)
   int? rejectionAt;
   String? rejectionMeta;
@@ -40,14 +43,17 @@ class CashCountFieldSignUpBox {
     required this.dbId,
     this.completedAt,
     this.completedMeta,
+    this.createMeta,
     required this.createdAt,
-    required this.creatorId,
     this.deletedAt,
     this.deletedMeta,
+    required this.deviceId,
     required this.deviceInfo,
     this.expiredAt,
-    this.mongoId,
+    required this.fieldAgentId,
+    required this.mongoId,
     required this.phoneNumber,
+    required this.referralCode,
     this.rejectionAt,
     this.rejectionMeta,
     this.rejectionReason,
@@ -67,20 +73,25 @@ class CashCountFieldSignUpBox {
       completedMeta: model.completedMeta.isDefined
           ? jsonEncode(model.completedMeta.asDefined().value.toJson())
           : null,
+      createMeta: model.createMeta.isDefined
+          ? jsonEncode(model.createMeta.asDefined().value.toJson())
+          : null,
       createdAt: model.createdAt.round(),
-      creatorId: model.creatorId.value,
       deletedAt: model.deletedAt.isDefined
           ? model.deletedAt.asDefined().value.round()
           : null,
       deletedMeta: model.deletedMeta.isDefined
           ? jsonEncode(model.deletedMeta.asDefined().value.toJson())
           : null,
+      deviceId: model.deviceId,
       deviceInfo: jsonEncode(model.deviceInfo.toJson()),
       expiredAt: model.expiredAt.isDefined
           ? model.expiredAt.asDefined().value.round()
           : null,
-      mongoId: model.mongoId.isDefined ? model.mongoId.asDefined().value : null,
+      fieldAgentId: model.fieldAgentId.value,
+      mongoId: model.mongoId,
       phoneNumber: model.phoneNumber,
+      referralCode: model.referralCode,
       rejectionAt: model.rejectionAt.isDefined
           ? model.rejectionAt.asDefined().value.round()
           : null,
@@ -116,8 +127,14 @@ class CashCountFieldSignUpBox {
               ),
             )
           : const Undefined(),
+      createMeta: createMeta != null
+          ? Defined(
+              CreateMeta.fromJson(
+                jsonDecode(createMeta!) as Map<String, dynamic>,
+              ),
+            )
+          : const Undefined(),
       createdAt: createdAt.toDouble(),
-      creatorId: UsersId(creatorId),
       deletedAt: deletedAt != null
           ? Defined(deletedAt!.toDouble())
           : const Undefined(),
@@ -128,14 +145,17 @@ class CashCountFieldSignUpBox {
               ),
             )
           : const Undefined(),
+      deviceId: deviceId,
       deviceInfo: DeviceInfo.fromJson(
         jsonDecode(deviceInfo) as Map<String, dynamic>,
       ),
       expiredAt: expiredAt != null
           ? Defined(expiredAt!.toDouble())
           : const Undefined(),
-      mongoId: mongoId != null ? Defined(mongoId!) : const Undefined(),
+      fieldAgentId: FieldAgentsId(fieldAgentId),
+      mongoId: mongoId,
       phoneNumber: phoneNumber,
+      referralCode: referralCode,
       rejectionAt: rejectionAt != null
           ? Defined(rejectionAt!.toDouble())
           : const Undefined(),

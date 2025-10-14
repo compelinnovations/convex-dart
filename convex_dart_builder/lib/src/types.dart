@@ -1784,8 +1784,8 @@ ${functionContext.classBuffer.toString()}""";
         buffer.writeln("      $fieldName: model.\$_id.value,");
       } else if (field.field.optional) {
         // Check if this is an ID type that needs .value extraction by field name pattern
-        // Exclude dbId which is actually a double, and mongoId which is a string
-        if ((originalName.endsWith('Id') || originalName.contains('Id')) && originalName != 'dbId' && originalName != 'mongoId') {
+        // Exclude dbId which is actually a double, and mongoId and deviceId which are strings
+        if ((originalName.endsWith('Id') || originalName.contains('Id')) && originalName != 'dbId' && originalName != 'mongoId' && originalName != 'deviceId') {
           buffer.writeln(
             "      $fieldName: model.$originalName.isDefined ? model.$originalName.asDefined().value.value : null,",
           );
@@ -1796,8 +1796,8 @@ ${functionContext.classBuffer.toString()}""";
         }
       } else {
         // Check if this is an ID type that needs .value extraction by field name pattern
-        // Exclude dbId which is actually a double, and mongoId which is a string
-        if ((originalName.endsWith('Id') || originalName.contains('Id')) && originalName != 'dbId' && originalName != 'mongoId') {
+        // Exclude dbId which is actually a double, and mongoId and deviceId which are strings
+        if ((originalName.endsWith('Id') || originalName.contains('Id')) && originalName != 'dbId' && originalName != 'mongoId' && originalName != 'deviceId') {
           buffer.writeln("      $fieldName: model.$originalName.value,");
         } else {
           buffer.writeln("      $fieldName: model.$originalName,");

@@ -6,14 +6,14 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 
-class AuditAction {
+class CreateMeta {
   final String action;
   final Optional<IMap<String, dynamic>> details;
   final Optional<String> name;
   final Optional<String> role;
   final Optional<String> userId;
 
-  const AuditAction({
+  const CreateMeta({
     required this.action,
     this.details = const Undefined(),
     this.name = const Undefined(),
@@ -21,8 +21,8 @@ class AuditAction {
     this.userId = const Undefined(),
   });
 
-  factory AuditAction.empty() {
-    return AuditAction(
+  factory CreateMeta.empty() {
+    return CreateMeta(
       action: '',
       details: const Undefined(),
       name: const Undefined(),
@@ -31,8 +31,8 @@ class AuditAction {
     );
   }
 
-  factory AuditAction.fromJson(Map<String, dynamic> json) {
-    return AuditAction(
+  factory CreateMeta.fromJson(Map<String, dynamic> json) {
+    return CreateMeta(
       action: json['action'] as String,
       details: json.containsKey('details')
           ? Defined((json['details'] as Map<String, dynamic>).toIMap())
@@ -54,8 +54,8 @@ class AuditAction {
       'action': encodeValue(action),
       if (details.isDefined)
         'details': encodeValue({
-          for (final on956508 in details.asDefined().value.entries)
-            on956508.key: encodeValue(encodeValue(on956508.value)),
+          for (final on807074 in details.asDefined().value.entries)
+            on807074.key: encodeValue(encodeValue(on807074.value)),
         }),
       if (name.isDefined) 'name': encodeValue(name.asDefined().value),
       if (role.isDefined) 'role': encodeValue(role.asDefined().value),
@@ -63,14 +63,14 @@ class AuditAction {
     };
   }
 
-  AuditAction copyWith({
+  CreateMeta copyWith({
     String? action,
     Optional<IMap<String, dynamic>>? details,
     Optional<String>? name,
     Optional<String>? role,
     Optional<String>? userId,
   }) {
-    return AuditAction(
+    return CreateMeta(
       action: action ?? this.action,
       details: details ?? this.details,
       name: name ?? this.name,
@@ -82,7 +82,7 @@ class AuditAction {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is AuditAction &&
+    return other is CreateMeta &&
         other.action == action &&
         other.details == details &&
         other.name == name &&
