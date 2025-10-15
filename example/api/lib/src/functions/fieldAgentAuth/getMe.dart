@@ -18,120 +18,120 @@ BTreeMapStringValue serialize(void args) {
 GetMeResponse deserialize(DartValue map) {
   return (
     body: (decodeValue(map) as IMap<String, dynamic>?)?.then(
-      (on496985) => (
-        $_creationTime: (on496985['_creationTime'] as double),
-        $_id: on496985.containsKey('_id')
-            ? Defined((on496985['_id'] as String))
+      (on792686) => (
+        $_creationTime: (on792686['_creationTime'] as double),
+        $_id: on792686.containsKey('_id')
+            ? Defined<String>((on792686['_id'] as String))
             : Undefined<String>(),
-        appCountryId: on496985.containsKey('appCountryId')
-            ? Defined((on496985['appCountryId'] as String?))
+        appCountryId: on792686.containsKey('appCountryId')
+            ? Defined<String?>((on792686['appCountryId'] as String?))
             : Undefined<String?>(),
-        appCountryIso: on496985.containsKey('appCountryIso')
-            ? Defined((on496985['appCountryIso'] as String?))
+        appCountryIso: on792686.containsKey('appCountryIso')
+            ? Defined<String?>((on792686['appCountryIso'] as String?))
             : Undefined<String?>(),
-        appCountryName: on496985.containsKey('appCountryName')
-            ? Defined((on496985['appCountryName'] as String?))
+        appCountryName: on792686.containsKey('appCountryName')
+            ? Defined<String?>((on792686['appCountryName'] as String?))
             : Undefined<String?>(),
-        banExpires: on496985.containsKey('banExpires')
-            ? Defined((on496985['banExpires'] as double?))
+        banExpires: on792686.containsKey('banExpires')
+            ? Defined<double?>((on792686['banExpires'] as double?))
             : Undefined<double?>(),
-        banReason: on496985.containsKey('banReason')
-            ? Defined((on496985['banReason'] as String?))
+        banReason: on792686.containsKey('banReason')
+            ? Defined<String?>((on792686['banReason'] as String?))
             : Undefined<String?>(),
-        banned: on496985.containsKey('banned')
-            ? Defined((on496985['banned'] as bool?))
+        banned: on792686.containsKey('banned')
+            ? Defined<bool?>((on792686['banned'] as bool?))
             : Undefined<bool?>(),
-        createMeta: on496985.containsKey('createMeta')
-            ? Defined((on496985['createMeta'] as String?))
+        createMeta: on792686.containsKey('createMeta')
+            ? Defined<String?>((on792686['createMeta'] as String?))
             : Undefined<String?>(),
-        createdAt: (on496985['createdAt'] as double),
-        currentLocation: on496985.containsKey('currentLocation')
-            ? Defined((on496985['currentLocation'] as String?))
+        createdAt: (on792686['createdAt'] as double),
+        currentLocation: on792686.containsKey('currentLocation')
+            ? Defined<String?>((on792686['currentLocation'] as String?))
             : Undefined<String?>(),
-        dbId: on496985.containsKey('dbId')
-            ? Defined((on496985['dbId'] as double?))
+        dbId: on792686.containsKey('dbId')
+            ? Defined<double?>((on792686['dbId'] as double?))
             : Undefined<double?>(),
-        deletedAt: on496985.containsKey('deletedAt')
-            ? Defined((on496985['deletedAt'] as double?))
+        deletedAt: on792686.containsKey('deletedAt')
+            ? Defined<double?>((on792686['deletedAt'] as double?))
             : Undefined<double?>(),
-        deletedMeta: on496985.containsKey('deletedMeta')
-            ? Defined((on496985['deletedMeta'] as String?))
+        deletedMeta: on792686.containsKey('deletedMeta')
+            ? Defined<String?>((on792686['deletedMeta'] as String?))
             : Undefined<String?>(),
-        displayUsername: on496985.containsKey('displayUsername')
-            ? Defined((on496985['displayUsername'] as String?))
+        displayUsername: on792686.containsKey('displayUsername')
+            ? Defined<String?>((on792686['displayUsername'] as String?))
             : Undefined<String?>(),
-        email: (on496985['email'] as String),
-        emailVerified: (on496985['emailVerified'] as bool),
-        fbmToken: on496985.containsKey('fbmToken')
-            ? Defined((on496985['fbmToken'] as String?))
+        email: (on792686['email'] as String),
+        emailVerified: (on792686['emailVerified'] as bool),
+        fbmToken: on792686.containsKey('fbmToken')
+            ? Defined<String?>((on792686['fbmToken'] as String?))
             : Undefined<String?>(),
-        fieldAgentId: on496985.containsKey('fieldAgentId')
-            ? Defined((on496985['fieldAgentId'] as String?))
+        fieldAgentId: on792686.containsKey('fieldAgentId')
+            ? Defined<String?>((on792686['fieldAgentId'] as String?))
             : Undefined<String?>(),
-        firstName: on496985.containsKey('firstName')
-            ? Defined((on496985['firstName'] as String?))
+        firstName: on792686.containsKey('firstName')
+            ? Defined<String?>((on792686['firstName'] as String?))
             : Undefined<String?>(),
-        fullName: on496985.containsKey('fullName')
-            ? Defined((on496985['fullName'] as String?))
+        fullName: on792686.containsKey('fullName')
+            ? Defined<String?>((on792686['fullName'] as String?))
             : Undefined<String?>(),
-        image: on496985.containsKey('image')
-            ? Defined((on496985['image'] as String?))
+        image: on792686.containsKey('image')
+            ? Defined<String?>((on792686['image'] as String?))
             : Undefined<String?>(),
-        lastName: on496985.containsKey('lastName')
-            ? Defined((on496985['lastName'] as String?))
+        lastName: on792686.containsKey('lastName')
+            ? Defined<String?>((on792686['lastName'] as String?))
             : Undefined<String?>(),
-        memberId: on496985.containsKey('memberId')
-            ? Defined((on496985['memberId'] as String?))
+        memberId: on792686.containsKey('memberId')
+            ? Defined<String?>((on792686['memberId'] as String?))
             : Undefined<String?>(),
-        name: (on496985['name'] as String),
-        organizationId: on496985.containsKey('organizationId')
-            ? Defined((on496985['organizationId'] as String?))
+        name: (on792686['name'] as String),
+        organizationId: on792686.containsKey('organizationId')
+            ? Defined<String?>((on792686['organizationId'] as String?))
             : Undefined<String?>(),
-        phoneNumber: on496985.containsKey('phoneNumber')
-            ? Defined((on496985['phoneNumber'] as String?))
+        phoneNumber: on792686.containsKey('phoneNumber')
+            ? Defined<String?>((on792686['phoneNumber'] as String?))
             : Undefined<String?>(),
-        phoneNumberVerified: on496985.containsKey('phoneNumberVerified')
-            ? Defined((on496985['phoneNumberVerified'] as bool?))
+        phoneNumberVerified: on792686.containsKey('phoneNumberVerified')
+            ? Defined<bool?>((on792686['phoneNumberVerified'] as bool?))
             : Undefined<bool?>(),
-        profileImageBlurHash: on496985.containsKey('profileImageBlurHash')
-            ? Defined((on496985['profileImageBlurHash'] as String?))
+        profileImageBlurHash: on792686.containsKey('profileImageBlurHash')
+            ? Defined<String?>((on792686['profileImageBlurHash'] as String?))
             : Undefined<String?>(),
-        profileImageSize: on496985.containsKey('profileImageSize')
-            ? Defined((on496985['profileImageSize'] as double?))
+        profileImageSize: on792686.containsKey('profileImageSize')
+            ? Defined<double?>((on792686['profileImageSize'] as double?))
             : Undefined<double?>(),
-        role: on496985.containsKey('role')
-            ? Defined((on496985['role'] as String?))
+        role: on792686.containsKey('role')
+            ? Defined<String?>((on792686['role'] as String?))
             : Undefined<String?>(),
-        shippingClientId: on496985.containsKey('shippingClientId')
-            ? Defined((on496985['shippingClientId'] as String?))
+        shippingClientId: on792686.containsKey('shippingClientId')
+            ? Defined<String?>((on792686['shippingClientId'] as String?))
             : Undefined<String?>(),
-        status: on496985.containsKey('status')
-            ? Defined((on496985['status'] as String?))
+        status: on792686.containsKey('status')
+            ? Defined<String?>((on792686['status'] as String?))
             : Undefined<String?>(),
-        subRole: on496985.containsKey('subRole')
-            ? Defined((on496985['subRole'] as String?))
+        subRole: on792686.containsKey('subRole')
+            ? Defined<String?>((on792686['subRole'] as String?))
             : Undefined<String?>(),
-        teamId: on496985.containsKey('teamId')
-            ? Defined((on496985['teamId'] as String?))
+        teamId: on792686.containsKey('teamId')
+            ? Defined<String?>((on792686['teamId'] as String?))
             : Undefined<String?>(),
-        teamMemberId: on496985.containsKey('teamMemberId')
-            ? Defined((on496985['teamMemberId'] as String?))
+        teamMemberId: on792686.containsKey('teamMemberId')
+            ? Defined<String?>((on792686['teamMemberId'] as String?))
             : Undefined<String?>(),
-        teamType: on496985.containsKey('teamType')
-            ? Defined((on496985['teamType'] as String?))
+        teamType: on792686.containsKey('teamType')
+            ? Defined<String?>((on792686['teamType'] as String?))
             : Undefined<String?>(),
-        twoFactorEnabled: on496985.containsKey('twoFactorEnabled')
-            ? Defined((on496985['twoFactorEnabled'] as bool?))
+        twoFactorEnabled: on792686.containsKey('twoFactorEnabled')
+            ? Defined<bool?>((on792686['twoFactorEnabled'] as bool?))
             : Undefined<bool?>(),
-        updateMeta: on496985.containsKey('updateMeta')
-            ? Defined((on496985['updateMeta'] as String?))
+        updateMeta: on792686.containsKey('updateMeta')
+            ? Defined<String?>((on792686['updateMeta'] as String?))
             : Undefined<String?>(),
-        updatedAt: (on496985['updatedAt'] as double),
-        userId: on496985.containsKey('userId')
-            ? Defined((on496985['userId'] as String?))
+        updatedAt: (on792686['updatedAt'] as double),
+        userId: on792686.containsKey('userId')
+            ? Defined<String?>((on792686['userId'] as String?))
             : Undefined<String?>(),
-        username: on496985.containsKey('username')
-            ? Defined((on496985['username'] as String?))
+        username: on792686.containsKey('username')
+            ? Defined<String?>((on792686['username'] as String?))
             : Undefined<String?>(),
       ),
     ),

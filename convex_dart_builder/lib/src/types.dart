@@ -1044,12 +1044,23 @@ class ${tableName.pascalCase}Id  implements TableId {
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 import 'package:convex_dart/src/convex_dart_for_generated_code.dart'
     as internal;
+
+/// Wrapper class for ConvexClient that exposes the underlying client instance
 class ConvexClient {
+  /// Initialize the ConvexClient singleton
   static Future<void> init() async {
     await internal.ConvexClient.init(
       deploymentUrl: "$url",
       clientId: "flutter-rust-client",
     );
+  }
+
+  /// Get the singleton instance of the internal ConvexClient
+  static internal.ConvexClient get instance => internal.ConvexClient.instance;
+
+  /// Set the authentication token for the client
+  static Future<void> setAuth({required String? token}) async {
+    await internal.ConvexClient.instance.setAuth(token: token);
   }
 }
     """;
@@ -3584,7 +3595,7 @@ class JsObject extends JsType with JsObjectMappable {
     for (final entry in value.entries) {
       if (entry.value.optional) {
         buffer.write(
-          "${dartSafeName(entry.key)}: $argName.containsKey('${entry.key}') ? Defined(${entry.value.fieldType.deserialize(context, "$argName['${entry.key}']", nullable: false)}) : Undefined<${entry.value.fieldType.dartType(context)}>(),",
+          "${dartSafeName(entry.key)}: $argName.containsKey('${entry.key}') ? Defined<${entry.value.fieldType.dartType(context)}>(${entry.value.fieldType.deserialize(context, "$argName['${entry.key}']", nullable: false)}) : Undefined<${entry.value.fieldType.dartType(context)}>(),",
         );
       } else {
         buffer.write(
