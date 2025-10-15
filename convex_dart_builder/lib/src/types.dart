@@ -63,8 +63,13 @@ class ClientBuildContext {
   final Set<String> tables = {};
   final Map<String, dynamic>? mappingData;
   final Map<String, dynamic>? objectBoxFunctionsData;
+  final String packageName;
 
-  ClientBuildContext({this.mappingData, this.objectBoxFunctionsData});
+  ClientBuildContext({
+    this.mappingData,
+    this.objectBoxFunctionsData,
+    required this.packageName,
+  });
 }
 
 class ObjectFieldMapping {
@@ -2192,7 +2197,7 @@ ${functionContext.classBuffer.toString()}""";
     final repoClassName = "${className}BoxRepo";
 
     return """
-import 'package:api/objectbox.g.dart';
+import 'package:${context.packageName}/objectbox.g.dart';
 import '../box/${typeName.snakeCase}_box.dart';
 import '../../json/index.dart';
 

@@ -172,6 +172,7 @@ class ConvexDartBuilder extends Builder {
     final clientBuildContext = ClientBuildContext(
       mappingData: mappingData,
       objectBoxFunctionsData: objectBoxFunctionsData,
+      packageName: buildStep.inputId.package,
     );
     await functionsSpec.build(clientBuildContext);
     
