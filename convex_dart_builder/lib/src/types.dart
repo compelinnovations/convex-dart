@@ -15,15 +15,18 @@ final random = math.Random();
 
 /// Generate HTTP endpoint key from convex identifier string
 String _generateHttpEndpointKeyFromString(String convexIdentifier) {
-  // Parse convex identifier like "fieldAgentAuth:getMyFieldAgentProfile"
+  // Parse convex identifier like "fieldAgentAuth:getMyFieldAgentProfile" or "app/fieldAgentAuth:getMyFieldAgentProfile"
   final parts = convexIdentifier.split(':');
   if (parts.length == 2) {
     final moduleName =
-        parts[0]; // e.g., "fieldAgentAuth" or "fieldAgentCashCount"
+        parts[0]; // e.g., "fieldAgentAuth" or "app/fieldAgentCashCount"
     final functionName = parts[1]; // e.g., "getMyFieldAgentProfile"
 
-    // Direct mapping: module name is already the category in the new structure
-    return "POST:/api/run/app/$moduleName/$functionName";
+    // If module name already starts with "app/", use it as is, otherwise add the "app/" prefix
+    final fullPath = moduleName.startsWith('app/')
+        ? moduleName
+        : 'app/$moduleName';
+    return "POST:/api/run/$fullPath/$functionName";
   }
   return '';
 }
@@ -2407,7 +2410,12 @@ class FunctionSpec with FunctionSpecMappable {
   // The name of the folder where the function will be created
   String get folderName {
     final jsFileName = identifier.split(":").first;
-    final baseName = path.basenameWithoutExtension(jsFileName);
+    // Remove only the .js extension, preserve directory structure (e.g., "app/fieldAgentAuth")
+    final pathWithoutExtension = jsFileName.endsWith('.js')
+        ? jsFileName.substring(0, jsFileName.length - 3)
+        : jsFileName;
+    // Extract just the filename for folder name (e.g., "fieldAgentAuth" from "app/fieldAgentAuth")
+    final baseName = path.basename(pathWithoutExtension);
     return baseName;
   }
 
@@ -2420,7 +2428,13 @@ class FunctionSpec with FunctionSpecMappable {
   }
 
   String get convexFunctionIdentifier {
-    return "$folderName:$functionName";
+    // Preserve the full path from identifier (e.g., "app/fieldAgentAuth:getMyInvitation")
+    final jsFileName = identifier.split(":").first;
+    // Remove only the .js extension, preserve directory structure
+    final pathWithoutExtension = jsFileName.endsWith('.js')
+        ? jsFileName.substring(0, jsFileName.length - 3)
+        : jsFileName;
+    return "$pathWithoutExtension:$functionName";
   }
 
   // The name of the class for the arguments

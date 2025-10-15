@@ -9,7 +9,7 @@ import "../../models/json/create_cash_count_field_sign_up.dart";
 
 final createFieldSignUp =
     MutationOperation<CreateCashCountFieldSignUp, CreateFieldSignUpResponse>(
-      'fieldAgentCashCount:createFieldSignUp',
+      'app/fieldAgentCashCount:createFieldSignUp',
       serialize,
       deserialize,
     );
@@ -30,13 +30,13 @@ BTreeMapStringValue serialize(CreateCashCountFieldSignUp args) {
 
 CreateFieldSignUpResponse deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on864691) => (
-      $_id: on864691.containsKey('_id')
+    (on685400) => (
+      $_id: on685400.containsKey('_id')
           ? Defined<CashCountFieldSignUpsId>(
-              CashCountFieldSignUpsId(on864691['_id'] as String),
+              CashCountFieldSignUpsId(on685400['_id'] as String),
             )
           : Undefined<CashCountFieldSignUpsId>(),
-      message: (on864691['message'] as String),
+      message: (on685400['message'] as String),
     ),
   );
 }

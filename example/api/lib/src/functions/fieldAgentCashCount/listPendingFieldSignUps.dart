@@ -9,7 +9,7 @@ import "../../models/json/list_query.dart";
 
 final listPendingFieldSignUps =
     QueryOperation<ListQuery, ListPendingFieldSignUpsResponse>(
-      'fieldAgentCashCount:listPendingFieldSignUps',
+      'app/fieldAgentCashCount:listPendingFieldSignUps',
       serialize,
       deserialize,
     );
@@ -32,8 +32,8 @@ BTreeMapStringValue serialize(ListQuery args) {
       if (args.sortOrder.isDefined)
         'sortOrder': encodeValue(
           args.sortOrder.asDefined().value.split(
-            (on834367) => encodeValue(on834367),
-            (on62907) => encodeValue(on62907),
+            (on730057) => encodeValue(on730057),
+            (on187409) => encodeValue(on187409),
           ),
         ),
     },
@@ -42,22 +42,22 @@ BTreeMapStringValue serialize(ListQuery args) {
 
 ListPendingFieldSignUpsResponse deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on957120) => (
-      continueCursor: (on957120['continueCursor'] as String),
-      deletedIds: (on957120['deletedIds'] as IList<dynamic>)
-          .map((on861713) => CashCountFieldSignUpsId(on861713 as String))
+    (on54369) => (
+      continueCursor: (on54369['continueCursor'] as String),
+      deletedIds: (on54369['deletedIds'] as IList<dynamic>)
+          .map((on168782) => CashCountFieldSignUpsId(on168782 as String))
           .toIList(),
-      isDone: (on957120['isDone'] as bool),
-      list: (on957120['list'] as IList<dynamic>)
+      isDone: (on54369['isDone'] as bool),
+      list: (on54369['list'] as IList<dynamic>)
           .map(
-            (on173890) => (on173890 as IMap<String, dynamic>).then(
-              (on219526) => (
-                $_creationTime: (on219526['_creationTime'] as double),
-                $_id: CashCountFieldSignUpsId(on219526['_id'] as String),
-                completedAt: on219526.containsKey('completedAt')
-                    ? Defined<double>((on219526['completedAt'] as double))
+            (on439909) => (on439909 as IMap<String, dynamic>).then(
+              (on434787) => (
+                $_creationTime: (on434787['_creationTime'] as double),
+                $_id: CashCountFieldSignUpsId(on434787['_id'] as String),
+                completedAt: on434787.containsKey('completedAt')
+                    ? Defined<double>((on434787['completedAt'] as double))
                     : Undefined<double>(),
-                completedMeta: on219526.containsKey('completedMeta')
+                completedMeta: on434787.containsKey('completedMeta')
                     ? Defined<
                         ({
                           String action,
@@ -67,33 +67,33 @@ ListPendingFieldSignUpsResponse deserialize(DartValue map) {
                           Optional<String> userId,
                         })
                       >(
-                        (on219526['completedMeta'] as IMap<String, dynamic>)
+                        (on434787['completedMeta'] as IMap<String, dynamic>)
                             .then(
-                              (on283879) => (
-                                action: (on283879['action'] as String),
-                                details: on283879.containsKey('details')
+                              (on298728) => (
+                                action: (on298728['action'] as String),
+                                details: on298728.containsKey('details')
                                     ? Defined<IMap<String, dynamic>>(
-                                        (on283879['details']
+                                        (on298728['details']
                                                 as IMap<String, dynamic>)
                                             .map(
-                                              (on67914, on621523) =>
-                                                  MapEntry(on67914, on621523),
+                                              (on928148, on306470) =>
+                                                  MapEntry(on928148, on306470),
                                             ),
                                       )
                                     : Undefined<IMap<String, dynamic>>(),
-                                name: on283879.containsKey('name')
+                                name: on298728.containsKey('name')
                                     ? Defined<String>(
-                                        (on283879['name'] as String),
+                                        (on298728['name'] as String),
                                       )
                                     : Undefined<String>(),
-                                role: on283879.containsKey('role')
+                                role: on298728.containsKey('role')
                                     ? Defined<String>(
-                                        (on283879['role'] as String),
+                                        (on298728['role'] as String),
                                       )
                                     : Undefined<String>(),
-                                userId: on283879.containsKey('userId')
+                                userId: on298728.containsKey('userId')
                                     ? Defined<String>(
-                                        (on283879['userId'] as String),
+                                        (on298728['userId'] as String),
                                       )
                                     : Undefined<String>(),
                               ),
@@ -108,7 +108,7 @@ ListPendingFieldSignUpsResponse deserialize(DartValue map) {
                           Optional<String> userId,
                         })
                       >(),
-                createMeta: on219526.containsKey('createMeta')
+                createMeta: on434787.containsKey('createMeta')
                     ? Defined<
                         ({
                           String action,
@@ -118,28 +118,28 @@ ListPendingFieldSignUpsResponse deserialize(DartValue map) {
                           Optional<String> userId,
                         })
                       >(
-                        (on219526['createMeta'] as IMap<String, dynamic>).then(
-                          (on963020) => (
-                            action: (on963020['action'] as String),
-                            details: on963020.containsKey('details')
+                        (on434787['createMeta'] as IMap<String, dynamic>).then(
+                          (on592506) => (
+                            action: (on592506['action'] as String),
+                            details: on592506.containsKey('details')
                                 ? Defined<IMap<String, dynamic>>(
-                                    (on963020['details']
+                                    (on592506['details']
                                             as IMap<String, dynamic>)
                                         .map(
-                                          (on345640, on495622) =>
-                                              MapEntry(on345640, on495622),
+                                          (on466447, on420220) =>
+                                              MapEntry(on466447, on420220),
                                         ),
                                   )
                                 : Undefined<IMap<String, dynamic>>(),
-                            name: on963020.containsKey('name')
-                                ? Defined<String>((on963020['name'] as String))
+                            name: on592506.containsKey('name')
+                                ? Defined<String>((on592506['name'] as String))
                                 : Undefined<String>(),
-                            role: on963020.containsKey('role')
-                                ? Defined<String>((on963020['role'] as String))
+                            role: on592506.containsKey('role')
+                                ? Defined<String>((on592506['role'] as String))
                                 : Undefined<String>(),
-                            userId: on963020.containsKey('userId')
+                            userId: on592506.containsKey('userId')
                                 ? Defined<String>(
-                                    (on963020['userId'] as String),
+                                    (on592506['userId'] as String),
                                   )
                                 : Undefined<String>(),
                           ),
@@ -154,29 +154,29 @@ ListPendingFieldSignUpsResponse deserialize(DartValue map) {
                           Optional<String> userId,
                         })
                       >(),
-                createdAt: (on219526['createdAt'] as double),
+                createdAt: (on434787['createdAt'] as double),
                 creatorId: Union3<FieldAgentsId, ShippingClientsId, String>(() {
                   try {
-                    return FieldAgentsId(on219526['creatorId'] as String);
+                    return FieldAgentsId(on434787['creatorId'] as String);
                   } catch (e) {}
 
                   try {
-                    return ShippingClientsId(on219526['creatorId'] as String);
+                    return ShippingClientsId(on434787['creatorId'] as String);
                   } catch (e) {}
 
                   try {
-                    return (on219526['creatorId'] as String);
+                    return (on434787['creatorId'] as String);
                   } catch (e) {}
 
                   throw Exception(
-                    (on219526['creatorId'].toString() ?? "null") +
+                    (on434787['creatorId'].toString() ?? "null") +
                         r" cannot be deserialized into a Union3<FieldAgentsId, ShippingClientsId, String>",
                   );
                 }()),
-                deletedAt: on219526.containsKey('deletedAt')
-                    ? Defined<double>((on219526['deletedAt'] as double))
+                deletedAt: on434787.containsKey('deletedAt')
+                    ? Defined<double>((on434787['deletedAt'] as double))
                     : Undefined<double>(),
-                deletedMeta: on219526.containsKey('deletedMeta')
+                deletedMeta: on434787.containsKey('deletedMeta')
                     ? Defined<
                         ({
                           String action,
@@ -186,28 +186,28 @@ ListPendingFieldSignUpsResponse deserialize(DartValue map) {
                           Optional<String> userId,
                         })
                       >(
-                        (on219526['deletedMeta'] as IMap<String, dynamic>).then(
-                          (on209705) => (
-                            action: (on209705['action'] as String),
-                            details: on209705.containsKey('details')
+                        (on434787['deletedMeta'] as IMap<String, dynamic>).then(
+                          (on699919) => (
+                            action: (on699919['action'] as String),
+                            details: on699919.containsKey('details')
                                 ? Defined<IMap<String, dynamic>>(
-                                    (on209705['details']
+                                    (on699919['details']
                                             as IMap<String, dynamic>)
                                         .map(
-                                          (on759135, on701555) =>
-                                              MapEntry(on759135, on701555),
+                                          (on140058, on156426) =>
+                                              MapEntry(on140058, on156426),
                                         ),
                                   )
                                 : Undefined<IMap<String, dynamic>>(),
-                            name: on209705.containsKey('name')
-                                ? Defined<String>((on209705['name'] as String))
+                            name: on699919.containsKey('name')
+                                ? Defined<String>((on699919['name'] as String))
                                 : Undefined<String>(),
-                            role: on209705.containsKey('role')
-                                ? Defined<String>((on209705['role'] as String))
+                            role: on699919.containsKey('role')
+                                ? Defined<String>((on699919['role'] as String))
                                 : Undefined<String>(),
-                            userId: on209705.containsKey('userId')
+                            userId: on699919.containsKey('userId')
                                 ? Defined<String>(
-                                    (on209705['userId'] as String),
+                                    (on699919['userId'] as String),
                                   )
                                 : Undefined<String>(),
                           ),
@@ -222,27 +222,27 @@ ListPendingFieldSignUpsResponse deserialize(DartValue map) {
                           Optional<String> userId,
                         })
                       >(),
-                deviceId: (on219526['deviceId'] as String),
-                deviceInfo: (on219526['deviceInfo'] as IMap<String, dynamic>)
+                deviceId: (on434787['deviceId'] as String),
+                deviceInfo: (on434787['deviceInfo'] as IMap<String, dynamic>)
                     .then(
-                      (on45638) => (
-                        deviceId: (on45638['deviceId'] as String),
-                        deviceModel: (on45638['deviceModel'] as String),
-                        deviceName: (on45638['deviceName'] as String),
-                        deviceOs: (on45638['deviceOs'] as String),
+                      (on773866) => (
+                        deviceId: (on773866['deviceId'] as String),
+                        deviceModel: (on773866['deviceModel'] as String),
+                        deviceName: (on773866['deviceName'] as String),
+                        deviceOs: (on773866['deviceOs'] as String),
                       ),
                     ),
-                expiredAt: on219526.containsKey('expiredAt')
-                    ? Defined<double>((on219526['expiredAt'] as double))
+                expiredAt: on434787.containsKey('expiredAt')
+                    ? Defined<double>((on434787['expiredAt'] as double))
                     : Undefined<double>(),
-                fieldAgentId: FieldAgentsId(on219526['fieldAgentId'] as String),
-                mongoId: (on219526['mongoId'] as String),
-                phoneNumber: (on219526['phoneNumber'] as String),
-                referralCode: (on219526['referralCode'] as String),
-                rejectionAt: on219526.containsKey('rejectionAt')
-                    ? Defined<double>((on219526['rejectionAt'] as double))
+                fieldAgentId: FieldAgentsId(on434787['fieldAgentId'] as String),
+                mongoId: (on434787['mongoId'] as String),
+                phoneNumber: (on434787['phoneNumber'] as String),
+                referralCode: (on434787['referralCode'] as String),
+                rejectionAt: on434787.containsKey('rejectionAt')
+                    ? Defined<double>((on434787['rejectionAt'] as double))
                     : Undefined<double>(),
-                rejectionMeta: on219526.containsKey('rejectionMeta')
+                rejectionMeta: on434787.containsKey('rejectionMeta')
                     ? Defined<
                         ({
                           String action,
@@ -252,33 +252,33 @@ ListPendingFieldSignUpsResponse deserialize(DartValue map) {
                           Optional<String> userId,
                         })
                       >(
-                        (on219526['rejectionMeta'] as IMap<String, dynamic>)
+                        (on434787['rejectionMeta'] as IMap<String, dynamic>)
                             .then(
-                              (on122876) => (
-                                action: (on122876['action'] as String),
-                                details: on122876.containsKey('details')
+                              (on110451) => (
+                                action: (on110451['action'] as String),
+                                details: on110451.containsKey('details')
                                     ? Defined<IMap<String, dynamic>>(
-                                        (on122876['details']
+                                        (on110451['details']
                                                 as IMap<String, dynamic>)
                                             .map(
-                                              (on55327, on230153) =>
-                                                  MapEntry(on55327, on230153),
+                                              (on525241, on38152) =>
+                                                  MapEntry(on525241, on38152),
                                             ),
                                       )
                                     : Undefined<IMap<String, dynamic>>(),
-                                name: on122876.containsKey('name')
+                                name: on110451.containsKey('name')
                                     ? Defined<String>(
-                                        (on122876['name'] as String),
+                                        (on110451['name'] as String),
                                       )
                                     : Undefined<String>(),
-                                role: on122876.containsKey('role')
+                                role: on110451.containsKey('role')
                                     ? Defined<String>(
-                                        (on122876['role'] as String),
+                                        (on110451['role'] as String),
                                       )
                                     : Undefined<String>(),
-                                userId: on122876.containsKey('userId')
+                                userId: on110451.containsKey('userId')
                                     ? Defined<String>(
-                                        (on122876['userId'] as String),
+                                        (on110451['userId'] as String),
                                       )
                                     : Undefined<String>(),
                               ),
@@ -293,11 +293,11 @@ ListPendingFieldSignUpsResponse deserialize(DartValue map) {
                           Optional<String> userId,
                         })
                       >(),
-                rejectionReason: on219526.containsKey('rejectionReason')
-                    ? Defined<String>((on219526['rejectionReason'] as String))
+                rejectionReason: on434787.containsKey('rejectionReason')
+                    ? Defined<String>((on434787['rejectionReason'] as String))
                     : Undefined<String>(),
-                statUpdatedAt: on219526.containsKey('statUpdatedAt')
-                    ? Defined<double>((on219526['statUpdatedAt'] as double))
+                statUpdatedAt: on434787.containsKey('statUpdatedAt')
+                    ? Defined<double>((on434787['statUpdatedAt'] as double))
                     : Undefined<double>(),
                 status:
                     Union4<
@@ -312,18 +312,18 @@ ListPendingFieldSignUpsResponse deserialize(DartValue map) {
                         'Rejected': $RejectedLiteral(),
                         'Expired': $ExpiredLiteral(),
                       };
-                      if (map.containsKey(on219526['status'])) {
-                        return map[on219526['status']];
+                      if (map.containsKey(on434787['status'])) {
+                        return map[on434787['status']];
                       }
                       throw Exception(
-                        (on219526['status'].toString() ?? "null") +
+                        (on434787['status'].toString() ?? "null") +
                             r" cannot be deserialized into a Union4<$CompletedLiteral, $PendingLiteral, $RejectedLiteral, $ExpiredLiteral>",
                       );
                     }()),
-                teamId: on219526.containsKey('teamId')
-                    ? Defined<String>((on219526['teamId'] as String))
+                teamId: on434787.containsKey('teamId')
+                    ? Defined<String>((on434787['teamId'] as String))
                     : Undefined<String>(),
-                updateMeta: on219526.containsKey('updateMeta')
+                updateMeta: on434787.containsKey('updateMeta')
                     ? Defined<
                         ({
                           String action,
@@ -333,28 +333,28 @@ ListPendingFieldSignUpsResponse deserialize(DartValue map) {
                           Optional<String> userId,
                         })
                       >(
-                        (on219526['updateMeta'] as IMap<String, dynamic>).then(
-                          (on828333) => (
-                            action: (on828333['action'] as String),
-                            details: on828333.containsKey('details')
+                        (on434787['updateMeta'] as IMap<String, dynamic>).then(
+                          (on788402) => (
+                            action: (on788402['action'] as String),
+                            details: on788402.containsKey('details')
                                 ? Defined<IMap<String, dynamic>>(
-                                    (on828333['details']
+                                    (on788402['details']
                                             as IMap<String, dynamic>)
                                         .map(
-                                          (on125460, on298622) =>
-                                              MapEntry(on125460, on298622),
+                                          (on996719, on446831) =>
+                                              MapEntry(on996719, on446831),
                                         ),
                                   )
                                 : Undefined<IMap<String, dynamic>>(),
-                            name: on828333.containsKey('name')
-                                ? Defined<String>((on828333['name'] as String))
+                            name: on788402.containsKey('name')
+                                ? Defined<String>((on788402['name'] as String))
                                 : Undefined<String>(),
-                            role: on828333.containsKey('role')
-                                ? Defined<String>((on828333['role'] as String))
+                            role: on788402.containsKey('role')
+                                ? Defined<String>((on788402['role'] as String))
                                 : Undefined<String>(),
-                            userId: on828333.containsKey('userId')
+                            userId: on788402.containsKey('userId')
                                 ? Defined<String>(
-                                    (on828333['userId'] as String),
+                                    (on788402['userId'] as String),
                                   )
                                 : Undefined<String>(),
                           ),
@@ -369,8 +369,8 @@ ListPendingFieldSignUpsResponse deserialize(DartValue map) {
                           Optional<String> userId,
                         })
                       >(),
-                updatedAt: on219526.containsKey('updatedAt')
-                    ? Defined<double>((on219526['updatedAt'] as double))
+                updatedAt: on434787.containsKey('updatedAt')
+                    ? Defined<double>((on434787['updatedAt'] as double))
                     : Undefined<double>(),
               ),
             ),
