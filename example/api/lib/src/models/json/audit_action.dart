@@ -54,8 +54,8 @@ class AuditAction {
       'action': encodeValue(action),
       if (details.isDefined)
         'details': encodeValue({
-          for (final on956508 in details.asDefined().value.entries)
-            on956508.key: encodeValue(encodeValue(on956508.value)),
+          for (final on387598 in details.asDefined().value.entries)
+            on387598.key: encodeValue(encodeValue(on387598.value)),
         }),
       if (name.isDefined) 'name': encodeValue(name.asDefined().value),
       if (role.isDefined) 'role': encodeValue(role.asDefined().value),

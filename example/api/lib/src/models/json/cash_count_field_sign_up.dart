@@ -6,15 +6,16 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 import "audit_action.dart";
-import "create_meta.dart";
 import "device_info.dart";
 
 class CashCountFieldSignUp {
+  final double $_creationTime;
   final CashCountFieldSignUpsId $_id;
   final Optional<double> completedAt;
   final Optional<AuditAction> completedMeta;
-  final Optional<CreateMeta> createMeta;
+  final Optional<AuditAction> createMeta;
   final double createdAt;
+  final Union3<FieldAgentsId, ShippingClientsId, String> creatorId;
   final Optional<double> deletedAt;
   final Optional<AuditAction> deletedMeta;
   final String deviceId;
@@ -35,15 +36,18 @@ class CashCountFieldSignUp {
     $ExpiredLiteral
   >
   status;
+  final Optional<String> teamId;
   final Optional<AuditAction> updateMeta;
   final Optional<double> updatedAt;
 
   const CashCountFieldSignUp({
+    required this.$_creationTime,
     required this.$_id,
     this.completedAt = const Undefined(),
     this.completedMeta = const Undefined(),
     this.createMeta = const Undefined(),
     required this.createdAt,
+    required this.creatorId,
     this.deletedAt = const Undefined(),
     this.deletedMeta = const Undefined(),
     required this.deviceId,
@@ -58,14 +62,17 @@ class CashCountFieldSignUp {
     this.rejectionReason = const Undefined(),
     this.statUpdatedAt = const Undefined(),
     required this.status,
+    this.teamId = const Undefined(),
     this.updateMeta = const Undefined(),
     this.updatedAt = const Undefined(),
   });
 
   factory CashCountFieldSignUp.empty() {
     return CashCountFieldSignUp(
+      $_creationTime: 0.0,
       $_id: CashCountFieldSignUpsId(''),
       createdAt: 0.0,
+      creatorId: Union3(FieldAgentsId('')),
       deviceId: '',
       deviceInfo: DeviceInfo.empty(),
       fieldAgentId: FieldAgentsId(''),
@@ -78,6 +85,7 @@ class CashCountFieldSignUp {
 
   factory CashCountFieldSignUp.fromJson(Map<String, dynamic> json) {
     return CashCountFieldSignUp(
+      $_creationTime: json['_creationTime'] as double,
       $_id: CashCountFieldSignUpsId(json['_id'] as String),
       completedAt: json['completedAt'] != null
           ? Defined(json['completedAt'] as double)
@@ -91,10 +99,11 @@ class CashCountFieldSignUp {
           : const Undefined(),
       createMeta: json['createMeta'] != null
           ? Defined(
-              CreateMeta.fromJson(json['createMeta'] as Map<String, dynamic>),
+              AuditAction.fromJson(json['createMeta'] as Map<String, dynamic>),
             )
           : const Undefined(),
       createdAt: json['createdAt'] as double,
+      creatorId: json['creatorId'],
       deletedAt: json['deletedAt'] != null
           ? Defined(json['deletedAt'] as double)
           : const Undefined(),
@@ -131,6 +140,9 @@ class CashCountFieldSignUp {
           ? Defined(json['statUpdatedAt'] as double)
           : const Undefined(),
       status: json['status'],
+      teamId: json['teamId'] != null
+          ? Defined(json['teamId'] as String)
+          : const Undefined(),
       updateMeta: json['updateMeta'] != null
           ? Defined(
               AuditAction.fromJson(json['updateMeta'] as Map<String, dynamic>),
@@ -144,12 +156,14 @@ class CashCountFieldSignUp {
 
   Map<String, dynamic> toJson() {
     return {
+      '_creationTime': $_creationTime,
       '_id': $_id,
       if (completedAt.isDefined) 'completedAt': completedAt.asDefined().value,
       if (completedMeta.isDefined)
         'completedMeta': completedMeta.asDefined().value,
       if (createMeta.isDefined) 'createMeta': createMeta.asDefined().value,
       'createdAt': createdAt,
+      'creatorId': creatorId,
       if (deletedAt.isDefined) 'deletedAt': deletedAt.asDefined().value,
       if (deletedMeta.isDefined) 'deletedMeta': deletedMeta.asDefined().value,
       'deviceId': deviceId,
@@ -167,17 +181,20 @@ class CashCountFieldSignUp {
       if (statUpdatedAt.isDefined)
         'statUpdatedAt': statUpdatedAt.asDefined().value,
       'status': status,
+      if (teamId.isDefined) 'teamId': teamId.asDefined().value,
       if (updateMeta.isDefined) 'updateMeta': updateMeta.asDefined().value,
       if (updatedAt.isDefined) 'updatedAt': updatedAt.asDefined().value,
     };
   }
 
   CashCountFieldSignUp copyWith({
+    double? $_creationTime,
     CashCountFieldSignUpsId? $_id,
     Optional<double>? completedAt,
     Optional<AuditAction>? completedMeta,
-    Optional<CreateMeta>? createMeta,
+    Optional<AuditAction>? createMeta,
     double? createdAt,
+    Union3<FieldAgentsId, ShippingClientsId, String>? creatorId,
     Optional<double>? deletedAt,
     Optional<AuditAction>? deletedMeta,
     String? deviceId,
@@ -198,15 +215,18 @@ class CashCountFieldSignUp {
       $ExpiredLiteral
     >?
     status,
+    Optional<String>? teamId,
     Optional<AuditAction>? updateMeta,
     Optional<double>? updatedAt,
   }) {
     return CashCountFieldSignUp(
+      $_creationTime: $_creationTime ?? this.$_creationTime,
       $_id: $_id ?? this.$_id,
       completedAt: completedAt ?? this.completedAt,
       completedMeta: completedMeta ?? this.completedMeta,
       createMeta: createMeta ?? this.createMeta,
       createdAt: createdAt ?? this.createdAt,
+      creatorId: creatorId ?? this.creatorId,
       deletedAt: deletedAt ?? this.deletedAt,
       deletedMeta: deletedMeta ?? this.deletedMeta,
       deviceId: deviceId ?? this.deviceId,
@@ -221,6 +241,7 @@ class CashCountFieldSignUp {
       rejectionReason: rejectionReason ?? this.rejectionReason,
       statUpdatedAt: statUpdatedAt ?? this.statUpdatedAt,
       status: status ?? this.status,
+      teamId: teamId ?? this.teamId,
       updateMeta: updateMeta ?? this.updateMeta,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -230,11 +251,13 @@ class CashCountFieldSignUp {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     return other is CashCountFieldSignUp &&
+        other.$_creationTime == $_creationTime &&
         other.$_id == $_id &&
         other.completedAt == completedAt &&
         other.completedMeta == completedMeta &&
         other.createMeta == createMeta &&
         other.createdAt == createdAt &&
+        other.creatorId == creatorId &&
         other.deletedAt == deletedAt &&
         other.deletedMeta == deletedMeta &&
         other.deviceId == deviceId &&
@@ -249,17 +272,20 @@ class CashCountFieldSignUp {
         other.rejectionReason == rejectionReason &&
         other.statUpdatedAt == statUpdatedAt &&
         other.status == status &&
+        other.teamId == teamId &&
         other.updateMeta == updateMeta &&
         other.updatedAt == updatedAt;
   }
 
   @override
   int get hashCode {
-    return $_id.hashCode ^
+    return $_creationTime.hashCode ^
+        $_id.hashCode ^
         completedAt.hashCode ^
         completedMeta.hashCode ^
         createMeta.hashCode ^
         createdAt.hashCode ^
+        creatorId.hashCode ^
         deletedAt.hashCode ^
         deletedMeta.hashCode ^
         deviceId.hashCode ^
@@ -274,6 +300,7 @@ class CashCountFieldSignUp {
         rejectionReason.hashCode ^
         statUpdatedAt.hashCode ^
         status.hashCode ^
+        teamId.hashCode ^
         updateMeta.hashCode ^
         updatedAt.hashCode;
   }

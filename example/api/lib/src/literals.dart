@@ -3,6 +3,106 @@
 // ignore_for_file: strict_raw_type, inference_raw_type, inference_failure_on_untyped_parameter
 import "package:convex_dart/src/convex_dart_for_generated_code.dart";
 
+class $MaleLiteral implements Literal {
+  const $MaleLiteral();
+  const $MaleLiteral.validate(dynamic value)
+    : assert(value == 'Male', r"Value mismatch for $MaleLiteral");
+
+  @override
+  final value = 'Male';
+
+  @override
+  bool operator ==(Object other) {
+    if (other is $MaleLiteral) {
+      return value == other.value;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return r"$MaleLiteral(Male)";
+  }
+}
+
+class $FemaleLiteral implements Literal {
+  const $FemaleLiteral();
+  const $FemaleLiteral.validate(dynamic value)
+    : assert(value == 'Female', r"Value mismatch for $FemaleLiteral");
+
+  @override
+  final value = 'Female';
+
+  @override
+  bool operator ==(Object other) {
+    if (other is $FemaleLiteral) {
+      return value == other.value;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return r"$FemaleLiteral(Female)";
+  }
+}
+
+class $CashCountLiteral implements Literal {
+  const $CashCountLiteral();
+  const $CashCountLiteral.validate(dynamic value)
+    : assert(value == 'CashCount', r"Value mismatch for $CashCountLiteral");
+
+  @override
+  final value = 'CashCount';
+
+  @override
+  bool operator ==(Object other) {
+    if (other is $CashCountLiteral) {
+      return value == other.value;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return r"$CashCountLiteral(CashCount)";
+  }
+}
+
+class $AyekooLiteral implements Literal {
+  const $AyekooLiteral();
+  const $AyekooLiteral.validate(dynamic value)
+    : assert(value == 'Ayekoo', r"Value mismatch for $AyekooLiteral");
+
+  @override
+  final value = 'Ayekoo';
+
+  @override
+  bool operator ==(Object other) {
+    if (other is $AyekooLiteral) {
+      return value == other.value;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return r"$AyekooLiteral(Ayekoo)";
+  }
+}
+
 class $AscLiteral implements Literal {
   const $AscLiteral();
   const $AscLiteral.validate(dynamic value)

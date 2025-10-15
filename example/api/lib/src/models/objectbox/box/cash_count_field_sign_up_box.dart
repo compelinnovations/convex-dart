@@ -9,6 +9,8 @@ class CashCountFieldSignUpBox {
   @Id()
   int id = 0;
 
+  @Property(type: PropertyType.dateNano)
+  int creationTime;
   String dbId;
   @Property(type: PropertyType.dateNano)
   int? completedAt;
@@ -16,6 +18,7 @@ class CashCountFieldSignUpBox {
   String? createMeta;
   @Property(type: PropertyType.dateNano)
   int createdAt;
+  String creatorId;
   @Property(type: PropertyType.dateNano)
   int? deletedAt;
   String? deletedMeta;
@@ -34,17 +37,20 @@ class CashCountFieldSignUpBox {
   @Property(type: PropertyType.dateNano)
   int? statUpdatedAt;
   String status;
+  String? teamId;
   String? updateMeta;
   @Property(type: PropertyType.dateNano)
   int? updatedAt;
 
   CashCountFieldSignUpBox({
     this.id = 0,
+    required this.creationTime,
     required this.dbId,
     this.completedAt,
     this.completedMeta,
     this.createMeta,
     required this.createdAt,
+    required this.creatorId,
     this.deletedAt,
     this.deletedMeta,
     required this.deviceId,
@@ -59,6 +65,7 @@ class CashCountFieldSignUpBox {
     this.rejectionReason,
     this.statUpdatedAt,
     required this.status,
+    this.teamId,
     this.updateMeta,
     this.updatedAt,
   });
@@ -66,6 +73,7 @@ class CashCountFieldSignUpBox {
   factory CashCountFieldSignUpBox.fromAPI(CashCountFieldSignUp model) {
     return CashCountFieldSignUpBox(
       id: 0,
+      creationTime: model.$_creationTime.round(),
       dbId: model.$_id.value,
       completedAt: model.completedAt.isDefined
           ? model.completedAt.asDefined().value.round()
@@ -77,6 +85,7 @@ class CashCountFieldSignUpBox {
           ? jsonEncode(model.createMeta.asDefined().value.toJson())
           : null,
       createdAt: model.createdAt.round(),
+      creatorId: jsonEncode(model.creatorId),
       deletedAt: model.deletedAt.isDefined
           ? model.deletedAt.asDefined().value.round()
           : null,
@@ -104,7 +113,8 @@ class CashCountFieldSignUpBox {
       statUpdatedAt: model.statUpdatedAt.isDefined
           ? model.statUpdatedAt.asDefined().value.round()
           : null,
-      status: jsonEncode(model.status.value),
+      status: jsonEncode(model.status),
+      teamId: model.teamId.isDefined ? model.teamId.asDefined().value : null,
       updateMeta: model.updateMeta.isDefined
           ? jsonEncode(model.updateMeta.asDefined().value.toJson())
           : null,
@@ -116,6 +126,7 @@ class CashCountFieldSignUpBox {
 
   CashCountFieldSignUp toAPI() {
     return CashCountFieldSignUp(
+      $_creationTime: creationTime.toDouble(),
       $_id: CashCountFieldSignUpsId(dbId),
       completedAt: completedAt != null
           ? Defined(completedAt!.toDouble())
@@ -129,12 +140,13 @@ class CashCountFieldSignUpBox {
           : const Undefined(),
       createMeta: createMeta != null
           ? Defined(
-              CreateMeta.fromJson(
+              AuditAction.fromJson(
                 jsonDecode(createMeta!) as Map<String, dynamic>,
               ),
             )
           : const Undefined(),
       createdAt: createdAt.toDouble(),
+      creatorId: jsonDecode(creatorId),
       deletedAt: deletedAt != null
           ? Defined(deletedAt!.toDouble())
           : const Undefined(),
@@ -173,6 +185,7 @@ class CashCountFieldSignUpBox {
           ? Defined(statUpdatedAt!.toDouble())
           : const Undefined(),
       status: jsonDecode(status),
+      teamId: teamId != null ? Defined(teamId!) : const Undefined(),
       updateMeta: updateMeta != null
           ? Defined(
               AuditAction.fromJson(

@@ -5,58 +5,7 @@
     "createBox": true,
     "objectFields": {
       "args": {},
-      "returns": {
-        "currentLocation": {
-          "name": "MapLocation",
-          "jsonType": "separate",
-          "objectBoxType": "String"
-        },
-        "currentLocation.administrativeAreaLevel1": {
-          "name": "MapAddress",
-          "jsonType": "separate",
-          "objectBoxType": "String"
-        },
-        "currentLocation.administrativeAreaLevel2": {
-          "name": "MapAddress",
-          "jsonType": "separate",
-          "objectBoxType": "String"
-        },
-        "currentLocation.country": {
-          "name": "MapAddress",
-          "jsonType": "separate",
-          "objectBoxType": "String"
-        },
-        "currentLocation.latLng": {
-          "name": "MapLatLng",
-          "jsonType": "separate",
-          "objectBoxType": "String"
-        },
-        "currentLocation.locality": {
-          "name": "MapAddress",
-          "jsonType": "separate",
-          "objectBoxType": "String"
-        },
-        "currentLocation.plusCode": {
-          "name": "MapAddress",
-          "jsonType": "separate",
-          "objectBoxType": "String"
-        },
-        "currentLocation.postalCode": {
-          "name": "MapAddress",
-          "jsonType": "separate",
-          "objectBoxType": "String"
-        },
-        "currentLocation.subLocalityLevel1": {
-          "name": "MapAddress",
-          "jsonType": "separate",
-          "objectBoxType": "String"
-        },
-        "currentLocation.subLocalityLevel2": {
-          "name": "MapAddress",
-          "jsonType": "separate",
-          "objectBoxType": "String"
-        }
-      }
+      "returns": {}
     }
   },
   "GET:/api/run/app/fieldAgentCashCount/listPendingFieldSignUps": {
@@ -69,12 +18,12 @@
         "paginationOpts": "PaginationOpts"
       },
       "returns": {
-        "list.completedMeta": {
-          "name": "AuditAction",
+        "list.deviceInfo": {
+          "name": "DeviceInfo",
           "jsonType": "separate",
           "objectBoxType": "String"
         },
-        "list.deletedMeta": {
+        "list.completedMeta": {
           "name": "AuditAction",
           "jsonType": "separate",
           "objectBoxType": "String"
@@ -84,18 +33,18 @@
           "jsonType": "separate",
           "objectBoxType": "String"
         },
+        "list.deletedMeta": {
+          "name": "AuditAction",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
         "list.updateMeta": {
           "name": "AuditAction",
           "jsonType": "separate",
           "objectBoxType": "String"
         },
-        "list.deviceInfo": {
-          "name": "DeviceInfo",
-          "jsonType": "separate",
-          "objectBoxType": "String"
-        },
         "list.createMeta": {
-          "name": "CreateMeta",
+          "name": "AuditAction",
           "jsonType": "separate",
           "objectBoxType": "String"
         }
@@ -111,6 +60,36 @@
         "deviceInfo": "DeviceInfo"
       },
       "returns": {}
+    }
+  },
+  "GET:/api/run/app/fieldAgentAuth/getMyProfile": {
+    "request": "GetMyProfile",
+    "response": "FieldAgent",
+    "createBox": true,
+    "objectFields": {
+      "args": {},
+      "returns": {
+        "deletedMeta": {
+          "name": "AuditAction",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "updateMeta": {
+          "name": "AuditAction",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "createMeta": {
+          "name": "AuditAction",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "profileImage": {
+          "name": "MediaData",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        }
+      }
     }
   }
 }

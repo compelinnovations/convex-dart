@@ -130,6 +130,20 @@
                 },
                 "optional": false
               },
+              "currentLocation": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
               "dbId": {
                 "fieldType": {
                   "type": "union",
@@ -546,6 +560,440 @@
     {
       "args": {
         "type": "object",
+        "value": {}
+      },
+      "functionType": "Query",
+      "identifier": "app/fieldAgentAuth.js:getMyProfile",
+      "returns": {
+        "type": "union",
+        "value": [
+          {
+            "type": "object",
+            "value": {
+              "_creationTime": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": false
+              },
+              "_id": {
+                "fieldType": {
+                  "tableName": "fieldAgents",
+                  "type": "id"
+                },
+                "optional": false
+              },
+              "countryCityId": {
+                "fieldType": {
+                  "tableName": "countryCities",
+                  "type": "id"
+                },
+                "optional": true
+              },
+              "countryCityName": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": true
+              },
+              "countryCode": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": true
+              },
+              "countryISO": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": false
+              },
+              "countryName": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": false
+              },
+              "countryStateId": {
+                "fieldType": {
+                  "tableName": "countryStates",
+                  "type": "id"
+                },
+                "optional": true
+              },
+              "countryStateName": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": true
+              },
+              "createMeta": {
+                "fieldType": {
+                  "type": "object",
+                  "value": {
+                    "action": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": false
+                    },
+                    "details": {
+                      "fieldType": {
+                        "keys": {
+                          "type": "string"
+                        },
+                        "type": "record",
+                        "values": {
+                          "fieldType": {
+                            "type": "any"
+                          },
+                          "optional": false
+                        }
+                      },
+                      "optional": true
+                    },
+                    "name": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": true
+                    },
+                    "role": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": true
+                    },
+                    "userId": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": true
+                    }
+                  }
+                },
+                "optional": true
+              },
+              "createdAt": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": false
+              },
+              "creatorId": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "tableName": "fieldAgents",
+                      "type": "id"
+                    },
+                    {
+                      "tableName": "shippingClients",
+                      "type": "id"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": false
+              },
+              "dateBirth": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
+              },
+              "deletedAt": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
+              },
+              "deletedMeta": {
+                "fieldType": {
+                  "type": "object",
+                  "value": {
+                    "action": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": false
+                    },
+                    "details": {
+                      "fieldType": {
+                        "keys": {
+                          "type": "string"
+                        },
+                        "type": "record",
+                        "values": {
+                          "fieldType": {
+                            "type": "any"
+                          },
+                          "optional": false
+                        }
+                      },
+                      "optional": true
+                    },
+                    "name": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": true
+                    },
+                    "role": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": true
+                    },
+                    "userId": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": true
+                    }
+                  }
+                },
+                "optional": true
+              },
+              "email": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": false
+              },
+              "firstName": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": false
+              },
+              "fullName": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": true
+              },
+              "gender": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "literal",
+                      "value": "Male"
+                    },
+                    {
+                      "type": "literal",
+                      "value": "Female"
+                    }
+                  ]
+                },
+                "optional": false
+              },
+              "invitationId": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": true
+              },
+              "lastName": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": false
+              },
+              "middleName": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": true
+              },
+              "phoneNumber": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": false
+              },
+              "profileImage": {
+                "fieldType": {
+                  "type": "object",
+                  "value": {
+                    "blurHash": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": true
+                    },
+                    "mime": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": true
+                    },
+                    "name": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": true
+                    },
+                    "size": {
+                      "fieldType": {
+                        "type": "number"
+                      },
+                      "optional": true
+                    },
+                    "storageId": {
+                      "fieldType": {
+                        "type": "union",
+                        "value": [
+                          {
+                            "tableName": "_storage",
+                            "type": "id"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "optional": false
+                    }
+                  }
+                },
+                "optional": true
+              },
+              "project": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "literal",
+                      "value": "CashCount"
+                    },
+                    {
+                      "type": "literal",
+                      "value": "Ayekoo"
+                    }
+                  ]
+                },
+                "optional": false
+              },
+              "referralCode": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": false
+              },
+              "status": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": false
+              },
+              "teamId": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": true
+              },
+              "totalAyekooAllocationsCount": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
+              },
+              "totalAyekooCollectionsCount": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
+              },
+              "totalCashCountAllocationsCount": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
+              },
+              "totalCashCountFieldSignUpsCount": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
+              },
+              "updateMeta": {
+                "fieldType": {
+                  "type": "object",
+                  "value": {
+                    "action": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": false
+                    },
+                    "details": {
+                      "fieldType": {
+                        "keys": {
+                          "type": "string"
+                        },
+                        "type": "record",
+                        "values": {
+                          "fieldType": {
+                            "type": "any"
+                          },
+                          "optional": false
+                        }
+                      },
+                      "optional": true
+                    },
+                    "name": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": true
+                    },
+                    "role": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": true
+                    },
+                    "userId": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": true
+                    }
+                  }
+                },
+                "optional": true
+              },
+              "updatedAt": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
+              },
+              "userId": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": true
+              }
+            }
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
         "value": {
           "deviceInfo": {
             "fieldType": {
@@ -718,6 +1166,12 @@
               "value": {
                 "type": "object",
                 "value": {
+                  "_creationTime": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": false
+                  },
                   "_id": {
                     "fieldType": {
                       "tableName": "cashCountFieldSignUps",
@@ -828,6 +1282,25 @@
                   "createdAt": {
                     "fieldType": {
                       "type": "number"
+                    },
+                    "optional": false
+                  },
+                  "creatorId": {
+                    "fieldType": {
+                      "type": "union",
+                      "value": [
+                        {
+                          "tableName": "fieldAgents",
+                          "type": "id"
+                        },
+                        {
+                          "tableName": "shippingClients",
+                          "type": "id"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
                     },
                     "optional": false
                   },
@@ -1041,6 +1514,12 @@
                       ]
                     },
                     "optional": false
+                  },
+                  "teamId": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": true
                   },
                   "updateMeta": {
                     "fieldType": {

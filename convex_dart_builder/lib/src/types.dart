@@ -98,7 +98,18 @@ String _objectBoxEmbeddedClassName(String baseName) {
   return recased.endsWith('Embedded') ? recased : '${recased}Embedded';
 }
 
+/// Resolves ObjectBox field names for special fields.
+///
+/// ObjectBox doesn't support field names with `$` prefix, so we need to rename:
+/// - `_creationTime` -> `creationTime` (remove underscore)
+/// - `_id` -> `dbId` or `idRef` (depending on schema)
+///
+/// For other fields, we use `_dartSafeName()` which adds `$` for underscore-prefixed names.
+/// However, since ObjectBox can't handle `$`, we strip it for ObjectBox-only fields.
 String _resolveObjectBoxFieldName(String originalName, bool hasDbIdField) {
+  if (originalName == '_creationTime') {
+    return 'creationTime';
+  }
   if (originalName == '_id' && !hasDbIdField) {
     return 'dbId';
   }
@@ -352,7 +363,9 @@ class FunctionBuildContext {
       'BTreeMapStringValue',
       'Uint8List',
     };
-    return builtInTypes.contains(typeName) || typeName.startsWith('\$');
+    // Table IDs (like StorageId, FieldAgentsId, etc.) are defined in schema.dart
+    // so they should not be imported as separate model files
+    return builtInTypes.contains(typeName) || typeName.startsWith('\$') || typeName.endsWith('Id');
   }
 
   void generateClassDefinition(
@@ -791,16 +804,18 @@ class FunctionsSpec with FunctionsSpecMappable {
         // Generate RESPONSE JSON models based on configuration
         if (customNames.containsKey('responseType')) {
           final responseTypeName = customNames['responseType']!;
-          final returnsSchema = function.returns;
 
-          if (returnsSchema is JsObject) {
+          // Extract the object type from union if needed
+          final responseSchema = _extractTypeFromUnion(function.returns);
+
+          if (responseSchema != null) {
             print(
-              "DEBUG: Response schema structure for $responseTypeName: ${returnsSchema.value.keys}",
+              "DEBUG: Response schema structure for $responseTypeName: ${responseSchema.value.keys}",
             );
             final responseModelCode = _buildResponseJsonModel(
               function,
               responseTypeName,
-              returnsSchema.value,
+              responseSchema.value,
               context,
             );
             final responseModelPath = path.join(
@@ -815,7 +830,7 @@ class FunctionsSpec with FunctionsSpecMappable {
             );
           } else {
             print(
-              "DEBUG: Cannot generate response JSON model: ${responseTypeName.snakeCase}.dart (returns is not a JsObject)",
+              "DEBUG: Cannot generate response JSON model: ${responseTypeName.snakeCase}.dart (returns is not an object or valid union)",
             );
           }
         }
@@ -1135,6 +1150,21 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
     return '';
   }
 
+  /// Extract JsObject from union if it's a union with one real type + null
+  /// Returns null if not a union or if union has multiple non-null types
+  JsObject? _extractTypeFromUnion(JsType type) {
+    if (type is JsUnion) {
+      final realTypes = type.value.where((e) => e is! JsNull).toList();
+      if (realTypes.length == 1 && realTypes.first is JsObject) {
+        return realTypes.first as JsObject;
+      }
+    } else if (type is JsObject) {
+      // Already an object, return it
+      return type;
+    }
+    return null;
+  }
+
   /// Gets custom type names from configuration files
   Map<String, String> _getCustomTypeNames(
     ClientBuildContext context,
@@ -1422,6 +1452,30 @@ ${imports.toString()}
 ${functionContext.classBuffer.toString()}""";
   }
 
+  /// Builds an ObjectBox entity model for local persistence.
+  ///
+  /// ObjectBox Documentation:
+  /// - Getting Started: https://docs.objectbox.io/getting-started#flutter
+  /// - API Reference: https://pub.dev/documentation/objectbox/latest/objectbox/
+  /// - Internal API: https://pub.dev/documentation/objectbox/latest/objectbox_internal/
+  ///
+  /// ObjectBox Requirements:
+  /// - Must have exactly one 64-bit integer ID property annotated with @Id()
+  /// - ID must be non-private with default value 0
+  /// - Properties can be primitive types or custom types with converters
+  /// - Use @Property(type: PropertyType.date) for DateTime fields (stored as milliseconds)
+  /// - Use @Property(type: PropertyType.dateNano) for nanosecond precision (int)
+  /// - Complex objects (unions, objects, arrays) are stored as JSON strings
+  ///
+  /// Mapping Logic:
+  /// - If responseList exists: create box for list item type (e.g., CashCountFieldSignUp)
+  /// - If no responseList: create box for main response type (e.g., AuthUser)
+  /// - Field mappings use "list." prefix for responseList fields in schema-mapping.json
+  ///
+  /// Union Type Handling:
+  /// - Union types are serialized directly with jsonEncode(value), NOT value.toJson()
+  /// - Union deserialization passes raw decoded value to constructor
+  /// - JSON model constructor handles wrapping raw values in appropriate Union type
   String _buildObjectBoxModel(
     FunctionSpec function,
     ClientBuildContext context,
@@ -1437,7 +1491,10 @@ ${functionContext.classBuffer.toString()}""";
 
     if (isResponseList) {
       // For responseList types, use the individual item schema from the list field
-      final parentSchema = function.returns as JsObject;
+      final parentSchema = _extractTypeFromUnion(function.returns);
+      if (parentSchema == null) {
+        throw Exception('ResponseList parent schema is not an object type or valid union');
+      }
       final listField = parentSchema.value['list'];
       if (listField?.fieldType is JsArray) {
         final arrayType = listField!.fieldType as JsArray;
@@ -1452,8 +1509,12 @@ ${functionContext.classBuffer.toString()}""";
         );
       }
     } else {
-      // For regular response types, use the main response schema
-      obj = function.returns as JsObject;
+      // For regular response types, extract from union if needed
+      final extracted = _extractTypeFromUnion(function.returns);
+      if (extracted == null) {
+        throw Exception('Response schema is not an object type or valid union');
+      }
+      obj = extracted;
     }
 
     final baseSegments = isResponseList ? ['list'] : <String>[];
@@ -1464,6 +1525,12 @@ ${functionContext.classBuffer.toString()}""";
       function.identifier,
     }..removeWhere((value) => value.isEmpty);
 
+    /// Resolves the custom type mapping for a field path from schema-mapping.json.
+    ///
+    /// For responseList fields, the mapping uses "list." prefix (e.g., "list.completedMeta").
+    /// This method checks both the prefixed and non-prefixed versions to find the mapping.
+    ///
+    /// Returns null if no mapping is found for the given field path.
     ObjectFieldMapping? resolveMapping(List<String> segments) {
       if (segments.isEmpty) {
         return null;
@@ -1484,6 +1551,18 @@ ${functionContext.classBuffer.toString()}""";
 
     final embeddedDefinitions = <String, _EmbeddedClassDefinition>{};
 
+    /// Recursively collects all fields from a schema object for ObjectBox entity generation.
+    ///
+    /// This method:
+    /// - Processes each field in the schema
+    /// - Resolves custom type mappings from schema-mapping.json
+    /// - Detects embedded objects vs JSON string fields
+    /// - Identifies date fields (fields containing 'At' or 'Date')
+    /// - Creates embedded class definitions for nested objects
+    /// - Determines the appropriate ObjectBox property type for each field
+    ///
+    /// Embedded objects are stored as @Embedded() nested objects in ObjectBox.
+    /// Complex types (objects, arrays, unions) are stored as JSON strings.
     List<_ObjectBoxFieldContext> collectFields(
       JsObject schema,
       List<String> pathSegments,
@@ -1496,8 +1575,12 @@ ${functionContext.classBuffer.toString()}""";
         final mapping = resolveMapping(fieldPathSegments);
         final isEmbedded =
             (mapping?.isEmbedded ?? false) && entry.value.fieldType is JsObject;
+        // Detect date/timestamp fields by common naming patterns
         final isDateField =
-            entry.key.contains('At') || entry.key.contains('Date');
+            entry.key.contains('At') ||
+            entry.key.contains('Date') ||
+            entry.key.contains('Expire') ||
+            entry.key.endsWith('Time');
 
         JsObject? embeddedSchema;
         String? embeddedClassName;
@@ -1556,6 +1639,13 @@ ${functionContext.classBuffer.toString()}""";
           (definition) => definition.fields.any((field) => field.storeAsJson),
         );
 
+    // Check if we need schema.dart import (only needed when using typed IDs)
+    final needsSchemaImport = fieldContexts.any((field) {
+      final fieldType = field.field.fieldType;
+      return fieldType is ConvexId ||
+          (fieldType is JsUnion && fieldType.value.any((t) => t is ConvexId));
+    });
+
     final buffer = StringBuffer("import 'package:objectbox/objectbox.dart';");
     if (needsJsonConvert) {
       buffer.writeln("\nimport 'dart:convert';");
@@ -1564,7 +1654,9 @@ ${functionContext.classBuffer.toString()}""";
     }
     // Add import for the JSON models and required dependencies
     buffer.writeln("import 'package:convex_dart/convex_dart.dart';");
-    buffer.writeln("import '../../../schema.dart';");
+    if (needsSchemaImport) {
+      buffer.writeln("import '../../../schema.dart';");
+    }
     buffer.writeln("import '../../json/index.dart';");
     buffer.writeln();
 
@@ -1745,13 +1837,30 @@ ${functionContext.classBuffer.toString()}""";
       final fieldName = field.fieldName;
 
       if (field.storeAsJson) {
+        // Determine if this field is a union type that needs special serialization
+        final isUnionType = field.field.fieldType is JsUnion;
+
+        // Check if there's a custom mapping for this field
+        final hasCustomMapping = field.mapping != null;
+
         if (field.field.optional) {
           // Check if this is a list of ID types that need special handling
           if (originalName.contains('Ids') || originalName.endsWith('Ids')) {
             buffer.writeln(
               "      $fieldName: model.$originalName.isDefined ? jsonEncode(model.$originalName.asDefined().value.map((e) => e.value).toList()) : null,",
             );
+          } else if (hasCustomMapping) {
+            // Fields with custom mappings use toJson() on the mapped type
+            buffer.writeln(
+              "      $fieldName: model.$originalName.isDefined ? jsonEncode(model.$originalName.asDefined().value.toJson()) : null,",
+            );
+          } else if (isUnionType || field.field.fieldType is JsRecord) {
+            // Union types and records (without mapping) serialize directly without calling toJson()
+            buffer.writeln(
+              "      $fieldName: model.$originalName.isDefined ? jsonEncode(model.$originalName.asDefined().value) : null,",
+            );
           } else {
+            // Regular objects call toJson()
             buffer.writeln(
               "      $fieldName: model.$originalName.isDefined ? jsonEncode(model.$originalName.asDefined().value.toJson()) : null,",
             );
@@ -1762,30 +1871,41 @@ ${functionContext.classBuffer.toString()}""";
             buffer.writeln(
               "      $fieldName: jsonEncode(model.$originalName.map((e) => e.value).toList()),",
             );
-          } else if (originalName == 'status') {
-            // Special handling for Union types like status
-            buffer.writeln("      $fieldName: jsonEncode(model.$originalName.value),");
+          } else if (hasCustomMapping) {
+            // Fields with custom mappings use toJson() on the mapped type
+            buffer.writeln("      $fieldName: jsonEncode(model.$originalName.toJson()),");
+          } else if (isUnionType || field.field.fieldType is JsRecord) {
+            // Union types and records (without mapping) serialize directly without calling toJson()
+            buffer.writeln("      $fieldName: jsonEncode(model.$originalName),");
           } else {
+            // Regular objects call toJson()
             buffer.writeln("      $fieldName: jsonEncode(model.$originalName.toJson()),");
           }
         }
       } else if (field.isDateField) {
         if (field.field.optional) {
+          // Check if the field type is Optional<double> or Optional<double?>
+          // If it's a union with null, use ?. operator, otherwise use .
+          final fieldType = field.field.fieldType;
+          final isNullableInner = fieldType is JsUnion &&
+                                  fieldType.value.any((t) => t is JsNull);
+          final roundOperator = isNullableInner ? '?.' : '.';
+
           buffer.writeln(
-            "      $fieldName: model.$originalName.isDefined ? model.$originalName.asDefined().value.round() : null,",
+            "      $fieldName: model.${_dartSafeName(originalName)}.isDefined ? model.${_dartSafeName(originalName)}.asDefined().value${roundOperator}round() : null,",
           );
         } else {
           buffer.writeln(
-            "      $fieldName: model.$originalName.round(),",
+            "      $fieldName: model.${_dartSafeName(originalName)}.round(),",
           );
         }
       } else if (originalName == '_id') {
         // Handle ID field mapping
         buffer.writeln("      $fieldName: model.\$_id.value,");
       } else if (field.field.optional) {
-        // Check if this is an ID type that needs .value extraction by field name pattern
-        // Exclude dbId which is actually a double, and mongoId and deviceId which are strings
-        if ((originalName.endsWith('Id') || originalName.contains('Id')) && originalName != 'dbId' && originalName != 'mongoId' && originalName != 'deviceId') {
+        // Check if this is an ID type that needs .value extraction
+        final isConvexId = field.field.fieldType is ConvexId;
+        if (isConvexId) {
           buffer.writeln(
             "      $fieldName: model.$originalName.isDefined ? model.$originalName.asDefined().value.value : null,",
           );
@@ -1795,12 +1915,16 @@ ${functionContext.classBuffer.toString()}""";
           );
         }
       } else {
-        // Check if this is an ID type that needs .value extraction by field name pattern
-        // Exclude dbId which is actually a double, and mongoId and deviceId which are strings
-        if ((originalName.endsWith('Id') || originalName.contains('Id')) && originalName != 'dbId' && originalName != 'mongoId' && originalName != 'deviceId') {
-          buffer.writeln("      $fieldName: model.$originalName.value,");
+        // Check field type to determine if special handling is needed
+        final fieldType = field.field.fieldType;
+        final isConvexId = fieldType is ConvexId;
+        final isLiteralUnion = fieldType is JsUnion &&
+                               fieldType.value.every((t) => t is JsLiteral || t is JsNull);
+
+        if (isConvexId || isLiteralUnion) {
+          buffer.writeln("      $fieldName: model.${_dartSafeName(originalName)}.value,");
         } else {
-          buffer.writeln("      $fieldName: model.$originalName,");
+          buffer.writeln("      $fieldName: model.${_dartSafeName(originalName)},");
         }
       }
     }
@@ -1816,9 +1940,35 @@ ${functionContext.classBuffer.toString()}""";
       final originalName = field.originalName;
       final fieldName = field.fieldName;
 
-      if (field.storeAsJson) {
+      // Handle special fields first before general type-based logic
+      if (originalName == '_id') {
+        // Handle ID field mapping - convert back to ID class if it's a ConvexId type
+        final idTypeName = _getIdClassNameFromField(field);
+        if (idTypeName != null) {
+          buffer.writeln("      \$_id: $idTypeName($fieldName),");
+        } else {
+          // If no ID class type found, wrap string value in Defined/Undefined
+          // This handles cases where $_id is Optional<String> not a typed ID
+          if (field.field.optional) {
+            buffer.writeln("      \$_id: $fieldName != null ? Defined($fieldName!) : const Undefined(),");
+          } else {
+            buffer.writeln("      \$_id: $fieldName,");
+          }
+        }
+      } else if (originalName == '_creationTime') {
+        // Handle _creationTime field - use $ prefix for constructor parameter
+        // Note: fieldName is 'creationTime' in ObjectBox (without $)
+        buffer.writeln("      \$_creationTime: $fieldName.toDouble(),");
+      } else if (field.storeAsJson) {
+        // Determine if this field is a union type that needs special deserialization
+        final isUnionType = field.field.fieldType is JsUnion;
+
         // For JSON fields, we need to get the correct type name from the mapping
         final jsonTypeName = _getJsonTypeForField(originalName, fieldContexts, context, function);
+
+        // Check if there's a custom mapping for this field
+        final hasCustomMapping = field.mapping != null;
+
         if (field.field.optional) {
           // Check if this is a list of ID types that need special handling
           final idTypeName = _getIdClassNameFromField(field);
@@ -1826,7 +1976,18 @@ ${functionContext.classBuffer.toString()}""";
             buffer.writeln(
               "      $originalName: $fieldName != null ? Defined((jsonDecode($fieldName!) as List<dynamic>).map((e) => $idTypeName(e as String)).toList().toIList()) : const Undefined(),",
             );
+          } else if (hasCustomMapping) {
+            // Fields with custom mappings use fromJson() with the mapped type
+            buffer.writeln(
+              "      $originalName: $fieldName != null ? Defined($jsonTypeName.fromJson(jsonDecode($fieldName!) as Map<String, dynamic>)) : const Undefined(),",
+            );
+          } else if (isUnionType || field.field.fieldType is JsRecord) {
+            // Union types and records (without mapping) deserialize directly - constructor handles wrapping
+            buffer.writeln(
+              "      $originalName: $fieldName != null ? Defined(jsonDecode($fieldName!)) : const Undefined(),",
+            );
           } else {
+            // Regular objects call fromJson()
             buffer.writeln(
               "      $originalName: $fieldName != null ? Defined($jsonTypeName.fromJson(jsonDecode($fieldName!) as Map<String, dynamic>)) : const Undefined(),",
             );
@@ -1838,10 +1999,14 @@ ${functionContext.classBuffer.toString()}""";
             buffer.writeln(
               "      $originalName: (jsonDecode($fieldName) as List<dynamic>).map((e) => $idTypeName(e as String)).toList().toIList(),",
             );
-          } else if (originalName == 'status') {
-            // Special handling for Union types like status - deserialize from value directly
+          } else if (hasCustomMapping) {
+            // Fields with custom mappings use fromJson() with the mapped type
+            buffer.writeln("      $originalName: $jsonTypeName.fromJson(jsonDecode($fieldName) as Map<String, dynamic>),");
+          } else if (isUnionType || field.field.fieldType is JsRecord) {
+            // Union types and records (without mapping) deserialize directly - constructor handles wrapping
             buffer.writeln("      $originalName: jsonDecode($fieldName),");
           } else {
+            // Regular objects call fromJson()
             buffer.writeln("      $originalName: $jsonTypeName.fromJson(jsonDecode($fieldName) as Map<String, dynamic>),");
           }
         }
@@ -1852,16 +2017,6 @@ ${functionContext.classBuffer.toString()}""";
           );
         } else {
           buffer.writeln("      $originalName: $fieldName.toDouble(),");
-        }
-      } else if (originalName == '_id') {
-        // Handle ID field mapping - convert back to ID class
-        final idTypeName = _getIdClassNameFromField(field);
-        if (idTypeName != null) {
-          buffer.writeln("      \$_id: $idTypeName($fieldName),");
-        } else {
-          // Fallback for cases where we can't determine from schema
-          final fallbackTypeName = '${className}sId';
-          buffer.writeln("      \$_id: $fallbackTypeName($fieldName),");
         }
       } else if (field.field.optional) {
         // Check if this is an ID type that needs ID class reconstruction
@@ -1907,6 +2062,25 @@ ${functionContext.classBuffer.toString()}""";
     return null;
   }
 
+  /// Gets the JSON model type name for a field stored as JSON in ObjectBox.
+  ///
+  /// This method looks up the custom type mapping from schema-mapping.json.
+  /// For responseList fields, it checks both "list.fieldName" and "fieldName" patterns.
+  ///
+  /// Returns 'dynamic' as fallback if no mapping is found.
+  ///
+  /// Example mapping in schema-mapping.json:
+  /// ```json
+  /// "objectFields": {
+  ///   "returns": {
+  ///     "list.completedMeta": {
+  ///       "name": "AuditAction",
+  ///       "jsonType": "separate",
+  ///       "objectBoxType": "String"
+  ///     }
+  ///   }
+  /// }
+  /// ```
   String _getJsonTypeForField(
     String fieldName,
     List<_ObjectBoxFieldContext> fieldContexts,
@@ -1917,13 +2091,49 @@ ${functionContext.classBuffer.toString()}""";
     final endpointKey = _generateHttpEndpointKey(function);
     final endpointMapping = context.mappingData?[endpointKey];
 
-    // Check both args and returns mappings
+    // Check returns mapping (for response fields) - these are at the top level
+    final returns = endpointMapping?['returns'] as Map<String, dynamic>?;
+    if (returns != null) {
+      // Check for direct field mapping
+      if (returns.containsKey(fieldName)) {
+        final mapping = returns[fieldName];
+        if (mapping is String) {
+          return mapping;
+        } else if (mapping is Map && mapping['name'] != null) {
+          return mapping['name'] as String;
+        }
+      }
+
+      // Check for list.fieldName mapping
+      final listFieldKey = 'list.$fieldName';
+      if (returns.containsKey(listFieldKey)) {
+        final mapping = returns[listFieldKey];
+        if (mapping is String) {
+          return mapping;
+        } else if (mapping is Map && mapping['name'] != null) {
+          return mapping['name'] as String;
+        }
+      }
+    }
+
+    // Check args mapping (for request fields) - also at the top level
+    final args = endpointMapping?['args'] as Map<String, dynamic>?;
+    if (args != null && args.containsKey(fieldName)) {
+      final mapping = args[fieldName];
+      if (mapping is String) {
+        return mapping;
+      } else if (mapping is Map && mapping['name'] != null) {
+        return mapping['name'] as String;
+      }
+    }
+
+    // Legacy: Check both args and returns mappings under objectFields
     final objectFields = endpointMapping?['objectFields'] as Map<String, dynamic>?;
     if (objectFields != null) {
       // Check args mapping first (for request fields)
-      final args = objectFields['args'] as Map<String, dynamic>?;
-      if (args != null && args.containsKey(fieldName)) {
-        final mapping = args[fieldName];
+      final objectFieldsArgs = objectFields['args'] as Map<String, dynamic>?;
+      if (objectFieldsArgs != null && objectFieldsArgs.containsKey(fieldName)) {
+        final mapping = objectFieldsArgs[fieldName];
         if (mapping is String) {
           return mapping;
         } else if (mapping is Map && mapping['name'] != null) {
@@ -1932,11 +2142,11 @@ ${functionContext.classBuffer.toString()}""";
       }
 
       // Check returns mapping (for response fields)
-      final returns = objectFields['returns'] as Map<String, dynamic>?;
-      if (returns != null) {
+      final objectFieldsReturns = objectFields['returns'] as Map<String, dynamic>?;
+      if (objectFieldsReturns != null) {
         // Check for direct field mapping
-        if (returns.containsKey(fieldName)) {
-          final mapping = returns[fieldName];
+        if (objectFieldsReturns.containsKey(fieldName)) {
+          final mapping = objectFieldsReturns[fieldName];
           if (mapping is String) {
             return mapping;
           } else if (mapping is Map && mapping['name'] != null) {
@@ -1946,8 +2156,8 @@ ${functionContext.classBuffer.toString()}""";
 
         // Check for list.fieldName mapping
         final listFieldKey = 'list.$fieldName';
-        if (returns.containsKey(listFieldKey)) {
-          final mapping = returns[listFieldKey];
+        if (objectFieldsReturns.containsKey(listFieldKey)) {
+          final mapping = objectFieldsReturns[listFieldKey];
           if (mapping is String) {
             return mapping;
           } else if (mapping is Map && mapping['name'] != null) {
@@ -1961,6 +2171,17 @@ ${functionContext.classBuffer.toString()}""";
     return 'dynamic';
   }
 
+  /// Builds an ObjectBox repository class for CRUD operations.
+  ///
+  /// The repository provides methods for:
+  /// - Creating/inserting records from API models
+  /// - Reading records as API models or Box entities
+  /// - Updating records from API models
+  /// - Deleting individual or multiple records
+  /// - Bulk operations (putManyFromAPI, removeMany)
+  ///
+  /// The repository wraps ObjectBox's Box class and handles conversion
+  /// between API models and ObjectBox entities automatically.
   String _buildObjectBoxRepository(
     FunctionSpec function,
     ClientBuildContext context,
@@ -2031,6 +2252,17 @@ class $repoClassName {
 """;
   }
 
+  /// Converts a JsType to the appropriate ObjectBox storage type.
+  ///
+  /// For optional nullable primitives (e.g., `Optional<bool?>`), the schema represents
+  /// them as unions like `[boolean, null]`. This method unwraps such unions to get
+  /// the underlying primitive type.
+  ///
+  /// Mapping rules:
+  /// - Primitives: String, double, int, bool map directly
+  /// - Arrays/Objects: Stored as JSON strings
+  /// - Unions: If simple primitive + null, use primitive type; otherwise use String
+  /// - ConvexId/Literal: Stored as strings
   String _convertToObjectBoxType(JsType dartType) {
     return switch (dartType) {
       JsString _ => "String",
@@ -2039,20 +2271,82 @@ class $repoClassName {
       JsBoolean _ => "bool",
       JsArray _ => "String", // Store arrays as JSON strings
       JsObject _ => "String", // Store objects as JSON strings
-      JsUnion _ => "String", // Store unions as strings
+      JsUnion union => _getObjectBoxTypeFromUnion(union),
       ConvexId _ => "String", // Store IDs as strings
       JsLiteral _ => "String", // Store literals as strings
       _ => "String", // Fallback to String
     };
   }
 
+  /// Gets the ObjectBox type for a union.
+  ///
+  /// If the union is a simple primitive + null (e.g., [boolean, null]),
+  /// returns the primitive type. Otherwise returns "String" for JSON storage.
+  String _getObjectBoxTypeFromUnion(JsUnion union) {
+    // Filter out null types
+    final nonNullTypes = union.value.where((t) => t is! JsNull).toList();
+
+    // If there's exactly one non-null type and it's a simple primitive, use it
+    if (nonNullTypes.length == 1) {
+      final type = nonNullTypes.first;
+      if (type is JsBoolean) return "bool";
+      if (type is JsNumber) return "double";
+      if (type is JsBigInt) return "int";
+      if (type is JsString) return "String";
+    }
+
+    // For complex unions (multiple types, objects, arrays, etc.), store as JSON
+    return "String";
+  }
+
   bool _isComplexType(JsType dartType) {
     return switch (dartType) {
       JsObject _ => true,
       JsArray _ => true,
-      JsUnion _ => true,
+      JsRecord _ => true,
+      JsUnion union => _unionContainsComplexType(union),
       _ => false,
     };
+  }
+
+  /// Determines if a union type needs JSON serialization in ObjectBox.
+  ///
+  /// A union is considered complex (needs JSON serialization) if it:
+  /// 1. Contains objects or arrays
+  /// 2. Contains multiple different ConvexId types (e.g., `Union3<FieldAgentsId, ShippingClientsId, String>`)
+  /// 3. Is a union of literal types (e.g., `Union4<$CompletedLiteral, $PendingLiteral, ...>`)
+  ///
+  /// Simple primitive unions (e.g., `Union2<String, int>` without null) can be stored as strings.
+  bool _unionContainsComplexType(JsUnion union) {
+    // Check if union contains any complex types or multiple ID types
+    int idCount = 0;
+    bool hasLiteral = false;
+
+    for (final type in union.value) {
+      if (type is! JsNull) {
+        if (_isComplexType(type)) {
+          return true;
+        }
+        if (type is ConvexId) {
+          idCount++;
+        }
+        if (type is JsLiteral) {
+          hasLiteral = true;
+        }
+      }
+    }
+
+    // If union has multiple different ID types, treat as complex (needs JSON serialization)
+    if (idCount > 1) {
+      return true;
+    }
+
+    // If union contains literals, treat as complex (needs JSON serialization for proper wrapping)
+    if (hasLiteral) {
+      return true;
+    }
+
+    return false;
   }
 }
 
@@ -2641,16 +2935,9 @@ class JsUnion extends JsType with JsUnionMappable {
 
   @override
   String dartType(FunctionBuildContext context) {
-    // A union may not contain a String type and a ConvexId type
-    // We have no way to differentiate between the two
-    // So we need to throw an error
-    if (value.any((e) => e is JsString) && value.any((e) => e is ConvexId)) {
-      throw UnimplementedError(
-        "A union may not contain a String type and a ConvexId type. If you are seeing this, please file an issue on GitHub.",
-      );
-    }
-
     final realTypes = value.where((e) => e is! JsNull).toList();
+    final containsNull = value.any((e) => e is JsNull);
+
     // Ensure we don't have a union between literal and a non-literal type
     if (realTypes.any((e) => e is JsLiteral) &&
         realTypes.any((e) => e is! JsLiteral)) {
@@ -2658,7 +2945,6 @@ class JsUnion extends JsType with JsUnionMappable {
         "A union may not contain a literal type and a non-literal type. If you are seeing this, please file an issue on GitHub.",
       );
     }
-    final containsNull = value.any((e) => e is JsNull);
 
     if (realTypes.isEmpty) {
       throw UnimplementedError(
@@ -2686,8 +2972,6 @@ class JsUnion extends JsType with JsUnionMappable {
     String name, {
     required bool nullable,
   }) {
-    // Do we need to cast?
-
     final realTypes = value.where((e) => e is! JsNull).toList();
     if (realTypes.length == 1) {
       return realTypes[0].serialize(context, name, nullable: true);

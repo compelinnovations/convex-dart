@@ -1,6 +1,6 @@
 {
   "stakeholder": "fieldAgent",
-  "timestamp": "2025-10-14T12:00:52.244Z",
+  "timestamp": "2025-10-14T22:52:00.630Z",
   "functions": [
     {
       "functionName": "getMe",
@@ -11,6 +11,11 @@
       "functionName": "listPendingFieldSignUps",
       "responseType": "CashCountFieldSignUps",
       "endpoint": "GET:/api/run/app/fieldAgentCashCount/listPendingFieldSignUps"
+    },
+    {
+      "functionName": "getMyProfile",
+      "responseType": "FieldAgent",
+      "endpoint": "GET:/api/run/app/fieldAgentAuth/getMyProfile"
     }
   ]
 }
