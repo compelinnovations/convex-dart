@@ -8,7 +8,7 @@ import "../../literals.dart";
 import "../../models/json/create_cash_count_field_sign_up.dart";
 
 final createFieldSignUp =
-    MutationOperation<CreateCashCountFieldSignUp, CreateFieldSignUpResponse>(
+    MutationOperation<CreateCashCountFieldSignUp, MutationResultDoc>(
       'app/fieldAgentCashCount:createFieldSignUp',
       serialize,
       deserialize,
@@ -28,20 +28,20 @@ BTreeMapStringValue serialize(CreateCashCountFieldSignUp args) {
   );
 }
 
-CreateFieldSignUpResponse deserialize(DartValue map) {
+MutationResultDoc deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on685400) => (
-      $_id: on685400.containsKey('_id')
+    (on192679) => (
+      $_id: on192679.containsKey('_id')
           ? Defined<CashCountFieldSignUpsId>(
-              CashCountFieldSignUpsId(on685400['_id'] as String),
+              CashCountFieldSignUpsId(on192679['_id'] as String),
             )
           : Undefined<CashCountFieldSignUpsId>(),
-      message: (on685400['message'] as String),
+      message: (on192679['message'] as String),
     ),
   );
 }
 
-typedef CreateFieldSignUpResponse = ({
+typedef MutationResultDoc = ({
   Optional<CashCountFieldSignUpsId> $_id,
   String message,
 });

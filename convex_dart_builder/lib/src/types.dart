@@ -975,10 +975,10 @@ class FunctionsSpec with FunctionsSpecMappable {
     _buildSchema(context);
     // Create the literals.dart file
     _buildLiterals(context);
+    // Generate index files for models (must be before _buildEntrypoint)
+    _generateIndexFiles(context);
     // Create the entrypoint file
     _buildEntrypoint(context, successFunctions);
-    // Generate index files for models
-    _generateIndexFiles(context);
     // Format the code
     for (final entry in context.outputs.entries) {
       try {
@@ -993,12 +993,35 @@ class FunctionsSpec with FunctionsSpecMappable {
     ClientBuildContext context,
     List<FunctionSpec> successFunctions,
   ) {
+    // Check if we have JSON or ObjectBox models to export
+    // Look for index files in both lib/models and lib/src/models locations
+    final hasJsonModels = context.outputs.keys.any((key) =>
+      key.contains('models/json/index.dart'));
+    final hasObjectBoxModels = context.outputs.keys.any((key) =>
+      key.contains('models/objectbox/index.dart'));
+
+    final modelExports = StringBuffer();
+    if (hasJsonModels) {
+      // Check if models are in lib/models or lib/src/models
+      final isInSrc = context.outputs.keys.any((key) =>
+        key.contains('src/models/json/'));
+      final path = isInSrc ? 'src/models/json/index.dart' : 'models/json/index.dart';
+      modelExports.writeln("export '$path';");
+    }
+    if (hasObjectBoxModels) {
+      // Check if models are in lib/models or lib/src/models
+      final isInSrc = context.outputs.keys.any((key) =>
+        key.contains('src/models/objectbox/'));
+      final path = isInSrc ? 'src/models/objectbox/index.dart' : 'models/objectbox/index.dart';
+      modelExports.writeln("export '$path';");
+    }
+
     context.outputs["client.dart"] =
         """
 export 'src/client.dart';
 export 'src/schema.dart';
 export 'src/literals.dart';
-${successFunctions.map((entry) => "export 'src/functions/${entry.folderName}/${entry.fileName}' hide serialize, deserialize;").join("\n")}
+$modelExports${successFunctions.map((entry) => "export 'src/functions/${entry.folderName}/${entry.fileName}' hide serialize, deserialize;").join("\n")}
     """;
   }
 
@@ -2528,7 +2551,37 @@ class FunctionSpec with FunctionSpecMappable {
     return result;
   }
 
+  // Default typedef name based on function name (used by mapper)
   String get returnsTypeName => "${functionName.pascalCase}Response";
+
+  /// Gets the typedef name for the return type
+  /// Uses custom response type name from mapping if available, otherwise uses function name
+  /// Adds "Doc" suffix to avoid conflicts with JSON model classes
+  String getReturnsTypeName(ClientBuildContext clientContext) {
+    final customNames = _getCustomTypeNamesStatic(clientContext, this);
+
+    // If there's a custom response type, use that as the typedef name with "Doc" suffix
+    if (customNames.containsKey('responseType')) {
+      return '${customNames['responseType']!}Doc';
+    }
+
+    // Otherwise use the default function-based name with "Doc" suffix
+    return '${returnsTypeName}Doc';
+  }
+
+  /// Gets the effective return type name considering custom mapping
+  String getEffectiveReturnsTypeName(ClientBuildContext clientContext) {
+    // Check for custom response type name
+    final customNames = _getCustomTypeNamesStatic(clientContext, this);
+
+    // If there's a custom response type, use it with optional wrapper
+    if (customNames.containsKey('responseType')) {
+      return "${customNames['responseType']}?";
+    }
+
+    // Otherwise use the typedef name
+    return getReturnsTypeName(clientContext);
+  }
 
   void build(FunctionBuildContext context) {
     context.headerBuffer.write("""
@@ -2541,16 +2594,17 @@ import "../../schema.dart";
 import "../../literals.dart";
 """);
 
+    // Get custom type names once for reuse
+    final customNames = _getCustomTypeNamesStatic(
+      context.clientContext,
+      this,
+    );
+
     // Add import for args class if it exists
     switch (args) {
       case JsAny():
         break;
       case JsObject obj when obj.value.isNotEmpty:
-        // Get custom type names for import path
-        final customNames = _getCustomTypeNamesStatic(
-          context.clientContext,
-          this,
-        );
         final requestTypeName = customNames['requestType'] ?? functionName;
         context.headerBuffer.writeln(
           'import "../../models/json/${requestTypeName.snakeCase}.dart";',
@@ -2580,6 +2634,10 @@ import "../../literals.dart";
         );
     }
 
+    // Get the typedef name (uses custom response type name from mapping if available)
+    final typedefName = getReturnsTypeName(context.clientContext);
+
+    // Generate the typedef with the record type structure
     final JsObject returnsObject = switch (returns) {
       JsObject obj => obj,
       _ => JsObject({"body": JsField(returns, false)}, "object"),
@@ -2588,7 +2646,7 @@ import "../../literals.dart";
     context.setFieldContext("returns", "returns");
     final returnsTypeDef = returnsObject.dartType(context);
     context.clearFieldContext();
-    context.typedefBuffer.write("typedef $returnsTypeName = $returnsTypeDef;");
+    context.typedefBuffer.write("typedef $typedefName = $returnsTypeDef;");
 
     final operationType = switch (functionType) {
       FunctionType.query => "QueryOperation",
@@ -2597,7 +2655,7 @@ import "../../literals.dart";
     };
 
     context.functionBuffer.writeln(
-      "final $functionName = $operationType<$effectiveArgsTypeName,$returnsTypeName>('$convexFunctionIdentifier',serialize,deserialize);",
+      "final $functionName = $operationType<$effectiveArgsTypeName,$typedefName>('$convexFunctionIdentifier',serialize,deserialize);",
     );
 
     String serializeCode;
@@ -2657,7 +2715,7 @@ $serializeFunctionSignature {
 
 """);
     context.functionBuffer.writeln("""
-$returnsTypeName deserialize(DartValue map) {
+$typedefName deserialize(DartValue map) {
   return $deserializeCode;
 }
 """);

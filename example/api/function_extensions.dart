@@ -47,12 +47,12 @@ class ConvexRetryExamples {
 /// Common retry patterns for your Convex functions
 class ConvexRetryPatterns {
   /// Standard profile fetch with network retry
-  static Future<GetMeResponse> getProfileWithRetry() {
+  static Future<AuthUserDoc> getProfileWithRetry() {
     return getMe.execute(null).withRetry(operationName: 'Profile Fetch');
   }
 
   /// Critical profile fetch that must succeed
-  static Future<GetMeResponse> getCriticalProfile() {
+  static Future<AuthUserDoc> getCriticalProfile() {
     return getMe
         .execute(null)
         .withCriticalRetry(operationName: 'Critical Profile');
@@ -73,7 +73,7 @@ class ConvexRetryPatterns {
   }
 
   /// Example of wrapping any generated function with retry
-  static Future<GetMeResponse> safeGetMe() {
+  static Future<AuthUserDoc> safeGetMe() {
     return ConvexRetry.execute(
       () => getMe.execute(null),
       config: const RetryConfig(
