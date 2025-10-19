@@ -5,6 +5,8 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
 import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
+import "../../functions/fieldAgentCashCount/createFieldSignUp.dart"
+    show MutationResultDoc;
 
 class MutationResult {
   final Optional<CashCountFieldSignUpsId> $_id;
@@ -30,6 +32,21 @@ class MutationResult {
       if ($_id.isDefined) '_id': $_id.asDefined().value,
       'message': message,
     };
+  }
+
+  /// Create from Convex typedef record
+  factory MutationResult.fromDoc(MutationResultDoc doc) {
+    return MutationResult(
+      $_id: doc.$_id.isDefined
+          ? Defined(doc.$_id.asDefined().value)
+          : const Undefined(),
+      message: doc.message,
+    );
+  }
+
+  /// Convert to Convex typedef record
+  dynamic toDoc() {
+    return ($_id: $_id, message: message);
   }
 
   MutationResult copyWith({

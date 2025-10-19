@@ -5,6 +5,7 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
 import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
+import "../../functions/fieldAgentAuth/getMe.dart" show AuthUserDoc;
 
 class AuthUser {
   final double $_creationTime;
@@ -277,6 +278,178 @@ class AuthUser {
       if (userId.isDefined) 'userId': userId.asDefined().value,
       if (username.isDefined) 'username': username.asDefined().value,
     };
+  }
+
+  /// Create from Convex typedef record
+  factory AuthUser.fromDoc(AuthUserDoc doc) {
+    final body = doc.body;
+    if (body == null) {
+      throw ArgumentError('Cannot create AuthUser from null doc.body');
+    }
+    return AuthUser(
+      $_creationTime: body.$_creationTime,
+      $_id: body.$_id.isDefined
+          ? Defined(body.$_id.asDefined().value)
+          : const Undefined(),
+      appCountryId: body.appCountryId.isDefined
+          ? Defined(body.appCountryId.asDefined().value)
+          : const Undefined(),
+      appCountryIso: body.appCountryIso.isDefined
+          ? Defined(body.appCountryIso.asDefined().value)
+          : const Undefined(),
+      appCountryName: body.appCountryName.isDefined
+          ? Defined(body.appCountryName.asDefined().value)
+          : const Undefined(),
+      banExpires: body.banExpires.isDefined
+          ? Defined(body.banExpires.asDefined().value)
+          : const Undefined(),
+      banReason: body.banReason.isDefined
+          ? Defined(body.banReason.asDefined().value)
+          : const Undefined(),
+      banned: body.banned.isDefined
+          ? Defined(body.banned.asDefined().value)
+          : const Undefined(),
+      createMeta: body.createMeta.isDefined
+          ? Defined(body.createMeta.asDefined().value)
+          : const Undefined(),
+      createdAt: body.createdAt,
+      currentLocation: body.currentLocation.isDefined
+          ? Defined(body.currentLocation.asDefined().value)
+          : const Undefined(),
+      dbId: body.dbId.isDefined
+          ? Defined(body.dbId.asDefined().value)
+          : const Undefined(),
+      deletedAt: body.deletedAt.isDefined
+          ? Defined(body.deletedAt.asDefined().value)
+          : const Undefined(),
+      deletedMeta: body.deletedMeta.isDefined
+          ? Defined(body.deletedMeta.asDefined().value)
+          : const Undefined(),
+      displayUsername: body.displayUsername.isDefined
+          ? Defined(body.displayUsername.asDefined().value)
+          : const Undefined(),
+      email: body.email,
+      emailVerified: body.emailVerified,
+      fbmToken: body.fbmToken.isDefined
+          ? Defined(body.fbmToken.asDefined().value)
+          : const Undefined(),
+      fieldAgentId: body.fieldAgentId.isDefined
+          ? Defined(body.fieldAgentId.asDefined().value)
+          : const Undefined(),
+      firstName: body.firstName.isDefined
+          ? Defined(body.firstName.asDefined().value)
+          : const Undefined(),
+      fullName: body.fullName.isDefined
+          ? Defined(body.fullName.asDefined().value)
+          : const Undefined(),
+      image: body.image.isDefined
+          ? Defined(body.image.asDefined().value)
+          : const Undefined(),
+      lastName: body.lastName.isDefined
+          ? Defined(body.lastName.asDefined().value)
+          : const Undefined(),
+      memberId: body.memberId.isDefined
+          ? Defined(body.memberId.asDefined().value)
+          : const Undefined(),
+      name: body.name,
+      organizationId: body.organizationId.isDefined
+          ? Defined(body.organizationId.asDefined().value)
+          : const Undefined(),
+      phoneNumber: body.phoneNumber.isDefined
+          ? Defined(body.phoneNumber.asDefined().value)
+          : const Undefined(),
+      phoneNumberVerified: body.phoneNumberVerified.isDefined
+          ? Defined(body.phoneNumberVerified.asDefined().value)
+          : const Undefined(),
+      profileImageBlurHash: body.profileImageBlurHash.isDefined
+          ? Defined(body.profileImageBlurHash.asDefined().value)
+          : const Undefined(),
+      profileImageSize: body.profileImageSize.isDefined
+          ? Defined(body.profileImageSize.asDefined().value)
+          : const Undefined(),
+      role: body.role.isDefined
+          ? Defined(body.role.asDefined().value)
+          : const Undefined(),
+      shippingClientId: body.shippingClientId.isDefined
+          ? Defined(body.shippingClientId.asDefined().value)
+          : const Undefined(),
+      status: body.status.isDefined
+          ? Defined(body.status.asDefined().value)
+          : const Undefined(),
+      subRole: body.subRole.isDefined
+          ? Defined(body.subRole.asDefined().value)
+          : const Undefined(),
+      teamId: body.teamId.isDefined
+          ? Defined(body.teamId.asDefined().value)
+          : const Undefined(),
+      teamMemberId: body.teamMemberId.isDefined
+          ? Defined(body.teamMemberId.asDefined().value)
+          : const Undefined(),
+      teamType: body.teamType.isDefined
+          ? Defined(body.teamType.asDefined().value)
+          : const Undefined(),
+      twoFactorEnabled: body.twoFactorEnabled.isDefined
+          ? Defined(body.twoFactorEnabled.asDefined().value)
+          : const Undefined(),
+      updateMeta: body.updateMeta.isDefined
+          ? Defined(body.updateMeta.asDefined().value)
+          : const Undefined(),
+      updatedAt: body.updatedAt,
+      userId: body.userId.isDefined
+          ? Defined(body.userId.asDefined().value)
+          : const Undefined(),
+      username: body.username.isDefined
+          ? Defined(body.username.asDefined().value)
+          : const Undefined(),
+    );
+  }
+
+  /// Convert to Convex typedef record
+  dynamic toDoc() {
+    return (
+      $_creationTime: $_creationTime,
+      $_id: $_id,
+      appCountryId: appCountryId,
+      appCountryIso: appCountryIso,
+      appCountryName: appCountryName,
+      banExpires: banExpires,
+      banReason: banReason,
+      banned: banned,
+      createMeta: createMeta,
+      createdAt: createdAt,
+      currentLocation: currentLocation,
+      dbId: dbId,
+      deletedAt: deletedAt,
+      deletedMeta: deletedMeta,
+      displayUsername: displayUsername,
+      email: email,
+      emailVerified: emailVerified,
+      fbmToken: fbmToken,
+      fieldAgentId: fieldAgentId,
+      firstName: firstName,
+      fullName: fullName,
+      image: image,
+      lastName: lastName,
+      memberId: memberId,
+      name: name,
+      organizationId: organizationId,
+      phoneNumber: phoneNumber,
+      phoneNumberVerified: phoneNumberVerified,
+      profileImageBlurHash: profileImageBlurHash,
+      profileImageSize: profileImageSize,
+      role: role,
+      shippingClientId: shippingClientId,
+      status: status,
+      subRole: subRole,
+      teamId: teamId,
+      teamMemberId: teamMemberId,
+      teamType: teamType,
+      twoFactorEnabled: twoFactorEnabled,
+      updateMeta: updateMeta,
+      updatedAt: updatedAt,
+      userId: userId,
+      username: username,
+    );
   }
 
   AuthUser copyWith({

@@ -54,13 +54,33 @@ class AuditAction {
       'action': encodeValue(action),
       if (details.isDefined)
         'details': encodeValue({
-          for (final on924799 in details.asDefined().value.entries)
-            on924799.key: encodeValue(encodeValue(on924799.value)),
+          for (final on993275 in details.asDefined().value.entries)
+            on993275.key: encodeValue(encodeValue(on993275.value)),
         }),
       if (name.isDefined) 'name': encodeValue(name.asDefined().value),
       if (role.isDefined) 'role': encodeValue(role.asDefined().value),
       if (userId.isDefined) 'userId': encodeValue(userId.asDefined().value),
     };
+  }
+
+  /// Create from inline record (used in typedef conversions)
+  factory AuditAction.fromRecord(
+    ({
+      String action,
+      Optional<IMap<String, dynamic>> details,
+      Optional<String> name,
+      Optional<String> role,
+      Optional<String> userId,
+    })
+    record,
+  ) {
+    return AuditAction(
+      action: record.action,
+      details: record.details,
+      name: record.name,
+      role: record.role,
+      userId: record.userId,
+    );
   }
 
   AuditAction copyWith({

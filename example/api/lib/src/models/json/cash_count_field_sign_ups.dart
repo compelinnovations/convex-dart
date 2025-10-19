@@ -6,6 +6,8 @@ import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
 import "cash_count_field_sign_up.dart";
+import "../../functions/fieldAgentCashCount/listPendingFieldSignUps.dart"
+    show CashCountFieldSignUpsDoc;
 
 class CashCountFieldSignUps {
   final String continueCursor;
@@ -54,6 +56,28 @@ class CashCountFieldSignUps {
       'isDone': isDone,
       'list': list,
     };
+  }
+
+  /// Create from Convex typedef record
+  factory CashCountFieldSignUps.fromDoc(CashCountFieldSignUpsDoc doc) {
+    return CashCountFieldSignUps(
+      continueCursor: doc.continueCursor,
+      deletedIds: doc.deletedIds,
+      isDone: doc.isDone,
+      list: doc.list
+          .map((item) => CashCountFieldSignUp.fromRecord(item))
+          .toIList(),
+    );
+  }
+
+  /// Convert to Convex typedef record
+  dynamic toDoc() {
+    return (
+      continueCursor: continueCursor,
+      deletedIds: deletedIds,
+      isDone: isDone,
+      list: list,
+    );
   }
 
   CashCountFieldSignUps copyWith({

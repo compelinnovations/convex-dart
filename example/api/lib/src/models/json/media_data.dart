@@ -60,6 +60,26 @@ class MediaData {
     };
   }
 
+  /// Create from inline record (used in typedef conversions)
+  factory MediaData.fromRecord(
+    ({
+      Optional<String> blurHash,
+      Optional<String> mime,
+      Optional<String> name,
+      Optional<double> size,
+      StorageId? storageId,
+    })
+    record,
+  ) {
+    return MediaData(
+      blurHash: record.blurHash,
+      mime: record.mime,
+      name: record.name,
+      size: record.size,
+      storageId: record.storageId,
+    );
+  }
+
   MediaData copyWith({
     Optional<String>? blurHash,
     Optional<String>? mime,

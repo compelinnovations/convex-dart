@@ -187,6 +187,137 @@ class CashCountFieldSignUp {
     };
   }
 
+  /// Create from inline record (used in typedef conversions)
+  factory CashCountFieldSignUp.fromRecord(
+    ({
+      double $_creationTime,
+      CashCountFieldSignUpsId $_id,
+      Optional<double> completedAt,
+      Optional<
+        ({
+          String action,
+          Optional<IMap<String, dynamic>> details,
+          Optional<String> name,
+          Optional<String> role,
+          Optional<String> userId,
+        })
+      >
+      completedMeta,
+      Optional<
+        ({
+          String action,
+          Optional<IMap<String, dynamic>> details,
+          Optional<String> name,
+          Optional<String> role,
+          Optional<String> userId,
+        })
+      >
+      createMeta,
+      double createdAt,
+      Union3<FieldAgentsId, ShippingClientsId, String> creatorId,
+      Optional<double> deletedAt,
+      Optional<
+        ({
+          String action,
+          Optional<IMap<String, dynamic>> details,
+          Optional<String> name,
+          Optional<String> role,
+          Optional<String> userId,
+        })
+      >
+      deletedMeta,
+      String deviceId,
+      ({
+        String deviceId,
+        String deviceModel,
+        String deviceName,
+        String deviceOs,
+      })
+      deviceInfo,
+      Optional<double> expiredAt,
+      FieldAgentsId fieldAgentId,
+      String mongoId,
+      String phoneNumber,
+      String referralCode,
+      Optional<double> rejectionAt,
+      Optional<
+        ({
+          String action,
+          Optional<IMap<String, dynamic>> details,
+          Optional<String> name,
+          Optional<String> role,
+          Optional<String> userId,
+        })
+      >
+      rejectionMeta,
+      Optional<String> rejectionReason,
+      Optional<double> statUpdatedAt,
+      Union4<
+        $CompletedLiteral,
+        $PendingLiteral,
+        $RejectedLiteral,
+        $ExpiredLiteral
+      >
+      status,
+      Optional<String> teamId,
+      Optional<
+        ({
+          String action,
+          Optional<IMap<String, dynamic>> details,
+          Optional<String> name,
+          Optional<String> role,
+          Optional<String> userId,
+        })
+      >
+      updateMeta,
+      Optional<double> updatedAt,
+    })
+    record,
+  ) {
+    return CashCountFieldSignUp(
+      $_creationTime: record.$_creationTime,
+      $_id: record.$_id,
+      completedAt: record.completedAt,
+      completedMeta: record.completedMeta.isDefined
+          ? Defined(
+              AuditAction.fromRecord(record.completedMeta.asDefined().value),
+            )
+          : const Undefined(),
+      createMeta: record.createMeta.isDefined
+          ? Defined(AuditAction.fromRecord(record.createMeta.asDefined().value))
+          : const Undefined(),
+      createdAt: record.createdAt,
+      creatorId: record.creatorId,
+      deletedAt: record.deletedAt,
+      deletedMeta: record.deletedMeta.isDefined
+          ? Defined(
+              AuditAction.fromRecord(record.deletedMeta.asDefined().value),
+            )
+          : const Undefined(),
+      deviceId: record.deviceId,
+      deviceInfo: DeviceInfo.fromRecord(record.deviceInfo),
+      expiredAt: record.expiredAt,
+      fieldAgentId: record.fieldAgentId,
+      mongoId: record.mongoId,
+      phoneNumber: record.phoneNumber,
+      referralCode: record.referralCode,
+      rejectionAt: record.rejectionAt,
+      rejectionMeta: record.rejectionMeta.isDefined
+          ? Defined(
+              AuditAction.fromRecord(record.rejectionMeta.asDefined().value),
+            )
+          : const Undefined(),
+      rejectionReason: record.rejectionReason,
+      statUpdatedAt: record.statUpdatedAt,
+      status: record.status,
+      teamId: record.teamId,
+      updateMeta: record.updateMeta.isDefined
+          ? Defined(AuditAction.fromRecord(record.updateMeta.asDefined().value))
+          : const Undefined(),
+      updatedAt: record.updatedAt,
+    );
+  }
+
   CashCountFieldSignUp copyWith({
     double? $_creationTime,
     CashCountFieldSignUpsId? $_id,

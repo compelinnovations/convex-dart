@@ -27,6 +27,13 @@ class PaginationOpts {
     return {'cursor': encodeValue(cursor), 'numItems': encodeValue(numItems)};
   }
 
+  /// Create from inline record (used in typedef conversions)
+  factory PaginationOpts.fromRecord(
+    ({String? cursor, double numItems}) record,
+  ) {
+    return PaginationOpts(cursor: record.cursor, numItems: record.numItems);
+  }
+
   PaginationOpts copyWith({String? cursor, double? numItems}) {
     return PaginationOpts(
       cursor: cursor ?? this.cursor,

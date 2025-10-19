@@ -256,4 +256,16 @@ class FieldAgentBox {
       userId: userId != null ? Defined(userId!) : const Undefined(),
     );
   }
+
+  /// Convert directly from Convex typedef record to ObjectBox
+  /// Bypasses the JSON model intermediate step for better performance
+  factory FieldAgentBox.fromDoc(dynamic doc) {
+    return FieldAgentBox.fromAPI(FieldAgent.fromDoc(doc));
+  }
+
+  /// Convert directly from ObjectBox to Convex typedef record
+  /// Returns a record that matches the Convex typedef structure
+  dynamic toDoc() {
+    return toAPI().toDoc();
+  }
 }

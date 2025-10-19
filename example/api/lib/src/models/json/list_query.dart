@@ -62,6 +62,32 @@ class ListQuery {
     };
   }
 
+  /// Create from inline record (used in typedef conversions)
+  factory ListQuery.fromRecord(
+    ({
+      Optional<double> lastSyncDate,
+      Optional<({String? cursor, double numItems})> paginationOpts,
+      Optional<String> searchText,
+      Optional<String> sortBy,
+      Optional<Union2<$AscLiteral, $DescLiteral>> sortOrder,
+    })
+    record,
+  ) {
+    return ListQuery(
+      lastSyncDate: record.lastSyncDate,
+      paginationOpts: record.paginationOpts.isDefined
+          ? Defined(
+              PaginationOpts.fromRecord(
+                record.paginationOpts.asDefined().value,
+              ),
+            )
+          : const Undefined(),
+      searchText: record.searchText,
+      sortBy: record.sortBy,
+      sortOrder: record.sortOrder,
+    );
+  }
+
   ListQuery copyWith({
     Optional<double>? lastSyncDate,
     Optional<PaginationOpts>? paginationOpts,

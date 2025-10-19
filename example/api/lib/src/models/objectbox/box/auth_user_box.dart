@@ -283,4 +283,16 @@ class AuthUserBox {
       username: username != null ? Defined(username!) : const Undefined(),
     );
   }
+
+  /// Convert directly from Convex typedef record to ObjectBox
+  /// Bypasses the JSON model intermediate step for better performance
+  factory AuthUserBox.fromDoc(dynamic doc) {
+    return AuthUserBox.fromAPI(AuthUser.fromDoc(doc));
+  }
+
+  /// Convert directly from ObjectBox to Convex typedef record
+  /// Returns a record that matches the Convex typedef structure
+  dynamic toDoc() {
+    return toAPI().toDoc();
+  }
 }

@@ -44,6 +44,28 @@ class CreateCashCountFieldSignUp {
     };
   }
 
+  /// Create from inline record (used in typedef conversions)
+  factory CreateCashCountFieldSignUp.fromRecord(
+    ({
+      ({
+        String deviceId,
+        String deviceModel,
+        String deviceName,
+        String deviceOs,
+      })
+      deviceInfo,
+      String ownerUserId,
+      String referralCode,
+    })
+    record,
+  ) {
+    return CreateCashCountFieldSignUp(
+      deviceInfo: DeviceInfo.fromRecord(record.deviceInfo),
+      ownerUserId: record.ownerUserId,
+      referralCode: record.referralCode,
+    );
+  }
+
   CreateCashCountFieldSignUp copyWith({
     DeviceInfo? deviceInfo,
     String? ownerUserId,

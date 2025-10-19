@@ -7,6 +7,7 @@ import "../../schema.dart";
 import "../../literals.dart";
 import "audit_action.dart";
 import "media_data.dart";
+import "../../functions/fieldAgentAuth/getMyProfile.dart" show FieldAgentDoc;
 
 class FieldAgent {
   final double $_creationTime;
@@ -250,6 +251,136 @@ class FieldAgent {
       if (updatedAt.isDefined) 'updatedAt': updatedAt.asDefined().value,
       if (userId.isDefined) 'userId': userId.asDefined().value,
     };
+  }
+
+  /// Create from Convex typedef record
+  factory FieldAgent.fromDoc(FieldAgentDoc doc) {
+    final body = doc.body;
+    if (body == null) {
+      throw ArgumentError('Cannot create FieldAgent from null doc.body');
+    }
+    return FieldAgent(
+      $_creationTime: body.$_creationTime,
+      $_id: body.$_id,
+      countryCityId: body.countryCityId.isDefined
+          ? Defined(body.countryCityId.asDefined().value)
+          : const Undefined(),
+      countryCityName: body.countryCityName.isDefined
+          ? Defined(body.countryCityName.asDefined().value)
+          : const Undefined(),
+      countryCode: body.countryCode.isDefined
+          ? Defined(body.countryCode.asDefined().value)
+          : const Undefined(),
+      countryISO: body.countryISO,
+      countryName: body.countryName,
+      countryStateId: body.countryStateId.isDefined
+          ? Defined(body.countryStateId.asDefined().value)
+          : const Undefined(),
+      countryStateName: body.countryStateName.isDefined
+          ? Defined(body.countryStateName.asDefined().value)
+          : const Undefined(),
+      createMeta: body.createMeta.isDefined
+          ? Defined(AuditAction.fromRecord(body.createMeta.asDefined().value))
+          : const Undefined(),
+      createdAt: body.createdAt,
+      creatorId: body.creatorId,
+      dateBirth: body.dateBirth.isDefined
+          ? Defined(body.dateBirth.asDefined().value)
+          : const Undefined(),
+      deletedAt: body.deletedAt.isDefined
+          ? Defined(body.deletedAt.asDefined().value)
+          : const Undefined(),
+      deletedMeta: body.deletedMeta.isDefined
+          ? Defined(AuditAction.fromRecord(body.deletedMeta.asDefined().value))
+          : const Undefined(),
+      email: body.email,
+      firstName: body.firstName,
+      fullName: body.fullName.isDefined
+          ? Defined(body.fullName.asDefined().value)
+          : const Undefined(),
+      gender: body.gender,
+      invitationId: body.invitationId.isDefined
+          ? Defined(body.invitationId.asDefined().value)
+          : const Undefined(),
+      lastName: body.lastName,
+      middleName: body.middleName.isDefined
+          ? Defined(body.middleName.asDefined().value)
+          : const Undefined(),
+      phoneNumber: body.phoneNumber,
+      profileImage: body.profileImage.isDefined
+          ? Defined(MediaData.fromRecord(body.profileImage.asDefined().value))
+          : const Undefined(),
+      project: body.project,
+      referralCode: body.referralCode,
+      status: body.status,
+      teamId: body.teamId.isDefined
+          ? Defined(body.teamId.asDefined().value)
+          : const Undefined(),
+      totalAyekooAllocationsCount: body.totalAyekooAllocationsCount.isDefined
+          ? Defined(body.totalAyekooAllocationsCount.asDefined().value)
+          : const Undefined(),
+      totalAyekooCollectionsCount: body.totalAyekooCollectionsCount.isDefined
+          ? Defined(body.totalAyekooCollectionsCount.asDefined().value)
+          : const Undefined(),
+      totalCashCountAllocationsCount:
+          body.totalCashCountAllocationsCount.isDefined
+          ? Defined(body.totalCashCountAllocationsCount.asDefined().value)
+          : const Undefined(),
+      totalCashCountFieldSignUpsCount:
+          body.totalCashCountFieldSignUpsCount.isDefined
+          ? Defined(body.totalCashCountFieldSignUpsCount.asDefined().value)
+          : const Undefined(),
+      updateMeta: body.updateMeta.isDefined
+          ? Defined(AuditAction.fromRecord(body.updateMeta.asDefined().value))
+          : const Undefined(),
+      updatedAt: body.updatedAt.isDefined
+          ? Defined(body.updatedAt.asDefined().value)
+          : const Undefined(),
+      userId: body.userId.isDefined
+          ? Defined(body.userId.asDefined().value)
+          : const Undefined(),
+    );
+  }
+
+  /// Convert to Convex typedef record
+  dynamic toDoc() {
+    return (
+      $_creationTime: $_creationTime,
+      $_id: $_id,
+      countryCityId: countryCityId,
+      countryCityName: countryCityName,
+      countryCode: countryCode,
+      countryISO: countryISO,
+      countryName: countryName,
+      countryStateId: countryStateId,
+      countryStateName: countryStateName,
+      createMeta: createMeta,
+      createdAt: createdAt,
+      creatorId: creatorId,
+      dateBirth: dateBirth,
+      deletedAt: deletedAt,
+      deletedMeta: deletedMeta,
+      email: email,
+      firstName: firstName,
+      fullName: fullName,
+      gender: gender,
+      invitationId: invitationId,
+      lastName: lastName,
+      middleName: middleName,
+      phoneNumber: phoneNumber,
+      profileImage: profileImage,
+      project: project,
+      referralCode: referralCode,
+      status: status,
+      teamId: teamId,
+      totalAyekooAllocationsCount: totalAyekooAllocationsCount,
+      totalAyekooCollectionsCount: totalAyekooCollectionsCount,
+      totalCashCountAllocationsCount: totalCashCountAllocationsCount,
+      totalCashCountFieldSignUpsCount: totalCashCountFieldSignUpsCount,
+      updateMeta: updateMeta,
+      updatedAt: updatedAt,
+      userId: userId,
+    );
   }
 
   FieldAgent copyWith({

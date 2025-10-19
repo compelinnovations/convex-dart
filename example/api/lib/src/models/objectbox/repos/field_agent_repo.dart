@@ -1,6 +1,7 @@
 import 'package:api/objectbox.g.dart';
 import '../box/field_agent_box.dart';
 import '../../json/index.dart';
+import '../../../functions/fieldAgentAuth/getMyProfile.dart' show FieldAgentDoc;
 
 class FieldAgentBoxRepo {
   final Box<FieldAgentBox> _box;
@@ -11,6 +12,12 @@ class FieldAgentBoxRepo {
   int createFromAPI(FieldAgent model) {
     final boxModel = FieldAgentBox.fromAPI(model);
     return _box.put(boxModel);
+  }
+
+  // Create from typedef record (Convex Doc)
+  int saveFromDoc(FieldAgentDoc doc) {
+    final model = FieldAgent.fromDoc(doc);
+    return createFromAPI(model);
   }
 
   // Read as API model

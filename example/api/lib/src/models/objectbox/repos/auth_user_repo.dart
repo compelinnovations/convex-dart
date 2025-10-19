@@ -1,6 +1,7 @@
 import 'package:api/objectbox.g.dart';
 import '../box/auth_user_box.dart';
 import '../../json/index.dart';
+import '../../../functions/fieldAgentAuth/getMe.dart' show AuthUserDoc;
 
 class AuthUserBoxRepo {
   final Box<AuthUserBox> _box;
@@ -11,6 +12,12 @@ class AuthUserBoxRepo {
   int createFromAPI(AuthUser model) {
     final boxModel = AuthUserBox.fromAPI(model);
     return _box.put(boxModel);
+  }
+
+  // Create from typedef record (Convex Doc)
+  int saveFromDoc(AuthUserDoc doc) {
+    final model = AuthUser.fromDoc(doc);
+    return createFromAPI(model);
   }
 
   // Read as API model

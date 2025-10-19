@@ -67,6 +67,12 @@ class ClientBuildContext {
   final Map<String, dynamic>? mappingData;
   final Map<String, dynamic>? objectBoxFunctionsData;
   final String packageName;
+  // Maps response type names to their typedef function file paths (relative to models/json/)
+  final Map<String, String> typedefToFunctionPath = {};
+  // Maps response type names to whether their typedef has a .body wrapper
+  final Map<String, bool> typedefHasBodyWrapper = {};
+  // Maps response type names to their responseList class name (for list fields)
+  final Map<String, String> responseListClassName = {};
 
   ClientBuildContext({
     this.mappingData,
@@ -518,6 +524,177 @@ class FunctionBuildContext {
 
     classBuffer.writeln();
 
+    // Only generate fromDoc and toDocBody if this class has a typedef
+    // (i.e., it's a function response type, not just a nested model)
+    if (clientContext.typedefToFunctionPath.containsKey(className)) {
+      // Add fromDoc factory constructor for converting from typedef record
+      final typedefName = '${className}Doc';
+      classBuffer.writeln('  /// Create from Convex typedef record');
+      classBuffer.writeln('  factory $className.fromDoc($typedefName doc) {');
+
+      // Check if this typedef has a body wrapper
+      final hasBodyWrapper = clientContext.typedefHasBodyWrapper[className] ?? true; // default to true for safety
+
+      if (hasBodyWrapper) {
+        // Typedef has .body wrapper - unwrap it
+        classBuffer.writeln('    final body = doc.body;');
+        classBuffer.writeln('    if (body == null) {');
+        classBuffer.writeln('      throw ArgumentError(\'Cannot create $className from null doc.body\');');
+        classBuffer.writeln('    }');
+        classBuffer.writeln('    return $className(');
+        for (final entry in obj.value.entries) {
+          final fieldName = _dartSafeName(entry.key);
+          final specialPrefix = entry.key.startsWith('_') ? '\$' : '';
+          final docField = '$specialPrefix${fieldName.replaceFirst('\$', '')}';
+
+          // Check if this field has been extracted as a separate class using mapping data
+          setFieldContext(fieldName, fieldContext ?? "returns");
+          final mapping = getObjectFieldMapping(
+            fieldName,
+            getCurrentFieldContext(),
+          );
+          var extractedClassName = mapping?.name;
+          clearFieldContext();
+
+          // Special case: if field is "list" and this class has a responseList configuration, use that
+          if (fieldName == 'list' && clientContext.responseListClassName.containsKey(className)) {
+            extractedClassName = clientContext.responseListClassName[className];
+            print("DEBUG: Using responseList class for list field in $className: $extractedClassName");
+          }
+
+          if (entry.value.optional) {
+            if (extractedClassName != null && entry.value.fieldType is JsObject) {
+              classBuffer.writeln('      $fieldName: body.$docField.isDefined ? Defined($extractedClassName.fromRecord(body.$docField.asDefined().value)) : const Undefined(),');
+            } else {
+              classBuffer.writeln('      $fieldName: body.$docField.isDefined ? Defined(body.$docField.asDefined().value) : const Undefined(),');
+            }
+          } else {
+            if (extractedClassName != null && entry.value.fieldType is JsObject) {
+              classBuffer.writeln('      $fieldName: $extractedClassName.fromRecord(body.$docField),');
+            } else if (extractedClassName != null && entry.value.fieldType is JsArray) {
+              // Handle arrays of custom classes
+              classBuffer.writeln('      $fieldName: body.$docField.map((item) => $extractedClassName.fromRecord(item)).toIList(),');
+            } else {
+              classBuffer.writeln('      $fieldName: body.$docField,');
+            }
+          }
+        }
+        classBuffer.writeln('    );');
+      } else {
+        // Typedef is direct record - use fields directly from doc
+        classBuffer.writeln('    return $className(');
+        for (final entry in obj.value.entries) {
+          final fieldName = _dartSafeName(entry.key);
+          final specialPrefix = entry.key.startsWith('_') ? '\$' : '';
+          final docField = '$specialPrefix${fieldName.replaceFirst('\$', '')}';
+
+          // Check if this field has been extracted as a separate class using mapping data
+          setFieldContext(fieldName, fieldContext ?? "returns");
+          final mapping = getObjectFieldMapping(
+            fieldName,
+            getCurrentFieldContext(),
+          );
+          var extractedClassName = mapping?.name;
+          clearFieldContext();
+
+          // Special case: if field is "list" and this class has a responseList configuration, use that
+          if (fieldName == 'list' && clientContext.responseListClassName.containsKey(className)) {
+            extractedClassName = clientContext.responseListClassName[className];
+            print("DEBUG: Using responseList class for list field in $className: $extractedClassName");
+          }
+
+          if (entry.value.optional) {
+            if (extractedClassName != null && entry.value.fieldType is JsObject) {
+              classBuffer.writeln('      $fieldName: doc.$docField.isDefined ? Defined($extractedClassName.fromRecord(doc.$docField.asDefined().value)) : const Undefined(),');
+            } else {
+              classBuffer.writeln('      $fieldName: doc.$docField.isDefined ? Defined(doc.$docField.asDefined().value) : const Undefined(),');
+            }
+          } else {
+            if (extractedClassName != null && entry.value.fieldType is JsObject) {
+              classBuffer.writeln('      $fieldName: $extractedClassName.fromRecord(doc.$docField),');
+            } else if (extractedClassName != null && entry.value.fieldType is JsArray) {
+              // Handle arrays of custom classes
+              classBuffer.writeln('      $fieldName: doc.$docField.map((item) => $extractedClassName.fromRecord(item)).toIList(),');
+            } else {
+              classBuffer.writeln('      $fieldName: doc.$docField,');
+            }
+          }
+        }
+        classBuffer.writeln('    );');
+      }
+      classBuffer.writeln('  }');
+
+      classBuffer.writeln();
+
+      // Add toDoc method for converting to typedef record
+      classBuffer.writeln('  /// Convert to Convex typedef record');
+      classBuffer.writeln('  dynamic toDoc() {');
+      classBuffer.writeln('    return (');
+      for (final entry in obj.value.entries) {
+        final fieldName = _dartSafeName(entry.key);
+        final specialPrefix = entry.key.startsWith('_') ? '\$' : '';
+        final docField = '$specialPrefix${fieldName.replaceFirst('\$', '')}';
+
+        if (entry.value.optional) {
+          classBuffer.writeln('      $docField: $fieldName,');
+        } else {
+          classBuffer.writeln('      $docField: $fieldName,');
+        }
+      }
+      classBuffer.writeln('    );');
+      classBuffer.writeln('  }');
+
+      classBuffer.writeln();
+    } else {
+      // For nested models without typedefs, generate fromRecord to convert from inline record types
+      // Build the record type signature
+      classBuffer.writeln('  /// Create from inline record (used in typedef conversions)');
+      classBuffer.writeln('  factory $className.fromRecord(({');
+      for (final entry in obj.value.entries) {
+        final fieldName = _dartSafeName(entry.key);
+        final specialPrefix = entry.key.startsWith('_') ? '\$' : '';
+        final docField = '$specialPrefix${fieldName.replaceFirst('\$', '')}';
+        final fieldType = entry.value.dartType(this);
+        classBuffer.writeln('    $fieldType $docField,');
+      }
+      classBuffer.writeln('  }) record) {');
+      classBuffer.writeln('    return $className(');
+      for (final entry in obj.value.entries) {
+        final fieldName = _dartSafeName(entry.key);
+        final specialPrefix = entry.key.startsWith('_') ? '\$' : '';
+        final docField = '$specialPrefix${fieldName.replaceFirst('\$', '')}';
+
+        // Check if this field has been extracted as a separate class using mapping data
+        setFieldContext(fieldName, fieldContext ?? "args");
+        final mapping = getObjectFieldMapping(
+          fieldName,
+          getCurrentFieldContext(),
+        );
+        final extractedClassName = mapping?.name;
+        clearFieldContext();
+
+        if (entry.value.optional) {
+          if (extractedClassName != null && entry.value.fieldType is JsObject) {
+            classBuffer.writeln('      $fieldName: record.$docField.isDefined ? Defined($extractedClassName.fromRecord(record.$docField.asDefined().value)) : const Undefined(),');
+          } else {
+            classBuffer.writeln('      $fieldName: record.$docField,');
+          }
+        } else {
+          if (extractedClassName != null && entry.value.fieldType is JsObject) {
+            classBuffer.writeln('      $fieldName: $extractedClassName.fromRecord(record.$docField),');
+          } else {
+            classBuffer.writeln('      $fieldName: record.$docField,');
+          }
+        }
+      }
+      classBuffer.writeln('    );');
+      classBuffer.writeln('  }');
+
+      classBuffer.writeln();
+    }
+
+    classBuffer.writeln();
+
     // Add copyWith method
     classBuffer.writeln('  $className copyWith({');
     for (final entry in obj.value.entries) {
@@ -813,6 +990,15 @@ class FunctionsSpec with FunctionsSpecMappable {
         if (customNames.containsKey('responseType')) {
           final responseTypeName = customNames['responseType']!;
 
+          // Track the typedef to function path mapping for imports
+          final functionPath = "../../functions/${function.folderName}/${function.fileName}";
+          context.typedefToFunctionPath[responseTypeName] = functionPath;
+          // Track whether this typedef has a .body wrapper
+          // Typedefs have .body wrapper only if returns is NOT a JsObject
+          final hasBodyWrapper = function.returns is! JsObject;
+          context.typedefHasBodyWrapper[responseTypeName] = hasBodyWrapper;
+          print("DEBUG: Stored typedef mapping: $responseTypeName -> $functionPath (hasBodyWrapper: $hasBodyWrapper)");
+
           // Extract the object type from union if needed
           final responseSchema = _extractTypeFromUnion(function.returns);
 
@@ -846,6 +1032,14 @@ class FunctionsSpec with FunctionsSpecMappable {
         // Generate RESPONSE LIST JSON models if specified
         if (customNames.containsKey('responseList')) {
           final responseListTypeName = customNames['responseList']!;
+
+          // Store the responseList class name for use in fromDoc generation
+          if (customNames.containsKey('responseType')) {
+            final responseTypeName = customNames['responseType']!;
+            context.responseListClassName[responseTypeName] = responseListTypeName;
+            print("DEBUG: Stored responseList mapping: $responseTypeName -> $responseListTypeName");
+          }
+
           final returnsSchema = function.returns;
 
           if (returnsSchema is JsObject) {
@@ -1421,6 +1615,17 @@ import "../../literals.dart";
             extractedImports.writeln('import "$fileName.dart";');
           }
 
+          // Add typedef import if this type has one
+          print("DEBUG: Checking typedef import for $typeName in _buildResponseJsonModel (responseList path). Available mappings: ${context.typedefToFunctionPath.keys}");
+          if (context.typedefToFunctionPath.containsKey(typeName)) {
+            final functionPath = context.typedefToFunctionPath[typeName]!;
+            final typedefName = '${typeName}Doc';
+            print("DEBUG: Adding typedef import for $typeName: $functionPath");
+            extractedImports.writeln('import "$functionPath" show $typedefName;');
+          } else {
+            print("DEBUG: No typedef mapping found for $typeName in _buildResponseJsonModel (responseList path)");
+          }
+
           // Now manually replace the list field type in the generated code
           var generatedCode = functionContext.classBuffer.toString();
           generatedCode = generatedCode.replaceAll(
@@ -1438,6 +1643,11 @@ import "../../literals.dart";
           generatedCode = generatedCode.replaceAll(
             'IList<String>? list,',
             'IList<$responseListTypeName>? list,',
+          );
+          // Fix the fromDoc method to convert the list items
+          generatedCode = generatedCode.replaceAll(
+            'list: doc.list,',
+            'list: doc.list.map((item) => $responseListTypeName.fromRecord(item)).toIList(),',
           );
 
           return """// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
@@ -1480,6 +1690,17 @@ $generatedCode""";
     for (final className in functionContext._extractedClasses) {
       final fileName = className.snakeCase;
       imports.writeln('import "$fileName.dart";');
+    }
+
+    // Add typedef import if this type has one
+    print("DEBUG: Checking typedef import for $typeName in _buildResponseJsonModel. Available mappings: ${context.typedefToFunctionPath.keys}");
+    if (context.typedefToFunctionPath.containsKey(typeName)) {
+      final functionPath = context.typedefToFunctionPath[typeName]!;
+      final typedefName = '${typeName}Doc';
+      print("DEBUG: Adding typedef import for $typeName: $functionPath");
+      imports.writeln('import "$functionPath" show $typedefName;');
+    } else {
+      print("DEBUG: No typedef mapping found for $typeName in _buildResponseJsonModel");
     }
 
     // Return just the JSON model with correct headers
@@ -2084,6 +2305,31 @@ ${functionContext.classBuffer.toString()}""";
     }
     buffer.writeln('    );');
     buffer.writeln('  }');
+
+    buffer.writeln();
+
+    // Add fromDoc/toDoc methods only for non-responseList types
+    // ResponseList items use fromRecord instead of fromDoc
+    if (!isResponseList) {
+      // Add fromDoc method for direct typedef → ObjectBox conversion
+      buffer.writeln('  /// Convert directly from Convex typedef record to ObjectBox');
+      buffer.writeln('  /// Bypasses the JSON model intermediate step for better performance');
+      buffer.writeln('  factory $boxClassName.fromDoc(dynamic doc) {');
+      buffer.writeln('    return $boxClassName.fromAPI($className.fromDoc(doc));');
+      buffer.writeln('  }');
+
+      buffer.writeln();
+
+      // Add toDoc method for direct ObjectBox → typedef conversion
+      buffer.writeln('  /// Convert directly from ObjectBox to Convex typedef record');
+      buffer.writeln('  /// Returns a record that matches the Convex typedef structure');
+      buffer.writeln('  dynamic toDoc() {');
+      buffer.writeln('    return toAPI().toDoc();');
+      buffer.writeln('  }');
+
+      buffer.writeln();
+    }
+
     buffer.writeln('}');
 
     return buffer.toString();
@@ -2233,11 +2479,34 @@ ${functionContext.classBuffer.toString()}""";
     final boxClassName = "${className}Box";
     final repoClassName = "${className}BoxRepo";
 
+    // Get typedef function path if available (relative to repos/ directory)
+    String typedefImport = '';
+    String saveFromDocMethod = '';
+    if (context.typedefToFunctionPath.containsKey(className)) {
+      final functionPathFromJson = context.typedefToFunctionPath[className]!;
+      // Convert from models/json/ relative path to models/objectbox/repos/ relative path
+      // models/json/ uses ../../functions/...
+      // models/objectbox/repos/ needs ../../../functions/...
+      final functionPathFromRepos = functionPathFromJson.replaceFirst('../../', '../../../');
+      final typedefName = '${className}Doc';
+      typedefImport = "import '$functionPathFromRepos' show $typedefName;\n";
+
+      // Only generate saveFromDoc if this type has a typedef
+      saveFromDocMethod = """
+  // Create from typedef record (Convex Doc)
+  int saveFromDoc(${className}Doc doc) {
+    final model = $className.fromDoc(doc);
+    return createFromAPI(model);
+  }
+
+""";
+    }
+
     return """
 import 'package:${context.packageName}/objectbox.g.dart';
 import '../box/${typeName.snakeCase}_box.dart';
 import '../../json/index.dart';
-
+$typedefImport
 class $repoClassName {
   final Box<$boxClassName> _box;
 
@@ -2249,7 +2518,7 @@ class $repoClassName {
     return _box.put(boxModel);
   }
 
-  // Read as API model
+$saveFromDocMethod  // Read as API model
   $className? getAsAPI(int id) {
     final boxModel = _box.get(id);
     return boxModel?.toAPI();
@@ -3439,6 +3708,177 @@ class JsObject extends JsType with JsObjectMappable {
 
     buffer.writeln();
 
+    // Only generate fromDoc and toDocBody if this class has a typedef
+    // (i.e., it's a function response type, not just a nested model)
+    if (context.clientContext.typedefToFunctionPath.containsKey(className)) {
+      // Add fromDoc factory constructor for converting from typedef record
+      final typedefName = '${className}Doc';
+      buffer.writeln('  /// Create from Convex typedef record');
+      buffer.writeln('  factory $className.fromDoc($typedefName doc) {');
+
+      // Check if this typedef has a body wrapper
+      final hasBodyWrapper = context.clientContext.typedefHasBodyWrapper[className] ?? true; // default to true for safety
+
+      if (hasBodyWrapper) {
+        // Typedef has .body wrapper - unwrap it
+        buffer.writeln('    final body = doc.body;');
+        buffer.writeln('    if (body == null) {');
+        buffer.writeln('      throw ArgumentError(\'Cannot create $className from null doc.body\');');
+        buffer.writeln('    }');
+        buffer.writeln('    return $className(');
+        for (final entry in value.entries) {
+          final fieldName = _dartSafeName(entry.key);
+          final specialPrefix = entry.key.startsWith('_') ? '\$' : '';
+          final docField = '$specialPrefix${fieldName.replaceFirst('\$', '')}';
+
+          // Check if this field has been extracted as a separate class using mapping data
+          context.setFieldContext(fieldName, fieldContext ?? "returns");
+          final mapping = context.getObjectFieldMapping(
+            fieldName,
+            context.getCurrentFieldContext(),
+          );
+          var extractedClassName = mapping?.name;
+          context.clearFieldContext();
+
+          // Special case: if field is "list" and this class has a responseList configuration, use that
+          if (fieldName == 'list' && context.clientContext.responseListClassName.containsKey(className)) {
+            extractedClassName = context.clientContext.responseListClassName[className];
+            print("DEBUG: Using responseList class for list field in $className: $extractedClassName");
+          }
+
+          if (entry.value.optional) {
+            if (extractedClassName != null && entry.value.fieldType is JsObject) {
+              buffer.writeln('      $fieldName: body.$docField.isDefined ? Defined($extractedClassName.fromRecord(body.$docField.asDefined().value)) : const Undefined(),');
+            } else {
+              buffer.writeln('      $fieldName: body.$docField.isDefined ? Defined(body.$docField.asDefined().value) : const Undefined(),');
+            }
+          } else {
+            if (extractedClassName != null && entry.value.fieldType is JsObject) {
+              buffer.writeln('      $fieldName: $extractedClassName.fromRecord(body.$docField),');
+            } else if (extractedClassName != null && entry.value.fieldType is JsArray) {
+              // Handle arrays of custom classes
+              buffer.writeln('      $fieldName: body.$docField.map((item) => $extractedClassName.fromRecord(item)).toIList(),');
+            } else {
+              buffer.writeln('      $fieldName: body.$docField,');
+            }
+          }
+        }
+        buffer.writeln('    );');
+      } else {
+        // Typedef is direct record - use fields directly from doc
+        buffer.writeln('    return $className(');
+        for (final entry in value.entries) {
+          final fieldName = _dartSafeName(entry.key);
+          final specialPrefix = entry.key.startsWith('_') ? '\$' : '';
+          final docField = '$specialPrefix${fieldName.replaceFirst('\$', '')}';
+
+          // Check if this field has been extracted as a separate class using mapping data
+          context.setFieldContext(fieldName, fieldContext ?? "returns");
+          final mapping = context.getObjectFieldMapping(
+            fieldName,
+            context.getCurrentFieldContext(),
+          );
+          var extractedClassName = mapping?.name;
+          context.clearFieldContext();
+
+          // Special case: if field is "list" and this class has a responseList configuration, use that
+          if (fieldName == 'list' && context.clientContext.responseListClassName.containsKey(className)) {
+            extractedClassName = context.clientContext.responseListClassName[className];
+            print("DEBUG: Using responseList class for list field in $className: $extractedClassName");
+          }
+
+          if (entry.value.optional) {
+            if (extractedClassName != null && entry.value.fieldType is JsObject) {
+              buffer.writeln('      $fieldName: doc.$docField.isDefined ? Defined($extractedClassName.fromRecord(doc.$docField.asDefined().value)) : const Undefined(),');
+            } else {
+              buffer.writeln('      $fieldName: doc.$docField.isDefined ? Defined(doc.$docField.asDefined().value) : const Undefined(),');
+            }
+          } else {
+            if (extractedClassName != null && entry.value.fieldType is JsObject) {
+              buffer.writeln('      $fieldName: $extractedClassName.fromRecord(doc.$docField),');
+            } else if (extractedClassName != null && entry.value.fieldType is JsArray) {
+              // Handle arrays of custom classes
+              buffer.writeln('      $fieldName: doc.$docField.map((item) => $extractedClassName.fromRecord(item)).toIList(),');
+            } else {
+              buffer.writeln('      $fieldName: doc.$docField,');
+            }
+          }
+        }
+        buffer.writeln('    );');
+      }
+      buffer.writeln('  }');
+
+      buffer.writeln();
+
+      // Add toDoc method for converting to typedef record
+      buffer.writeln('  /// Convert to Convex typedef record');
+      buffer.writeln('  dynamic toDoc() {');
+      buffer.writeln('    return (');
+      for (final entry in value.entries) {
+        final fieldName = _dartSafeName(entry.key);
+        final specialPrefix = entry.key.startsWith('_') ? '\$' : '';
+        final docField = '$specialPrefix${fieldName.replaceFirst('\$', '')}';
+
+        if (entry.value.optional) {
+          buffer.writeln('      $docField: $fieldName,');
+        } else {
+          buffer.writeln('      $docField: $fieldName,');
+        }
+      }
+      buffer.writeln('    );');
+      buffer.writeln('  }');
+
+      buffer.writeln();
+    } else {
+      // For nested models without typedefs, generate fromRecord to convert from inline record types
+      // Build the record type signature
+      buffer.writeln('  /// Create from inline record (used in typedef conversions)');
+      buffer.writeln('  factory $className.fromRecord(({');
+      for (final entry in value.entries) {
+        final fieldName = _dartSafeName(entry.key);
+        final specialPrefix = entry.key.startsWith('_') ? '\$' : '';
+        final docField = '$specialPrefix${fieldName.replaceFirst('\$', '')}';
+        final fieldType = entry.value.dartType(context);
+        buffer.writeln('    $fieldType $docField,');
+      }
+      buffer.writeln('  }) record) {');
+      buffer.writeln('    return $className(');
+      for (final entry in value.entries) {
+        final fieldName = _dartSafeName(entry.key);
+        final specialPrefix = entry.key.startsWith('_') ? '\$' : '';
+        final docField = '$specialPrefix${fieldName.replaceFirst('\$', '')}';
+
+        // Check if this field has been extracted as a separate class using mapping data
+        context.setFieldContext(fieldName, fieldContext ?? "args");
+        final mapping = context.getObjectFieldMapping(
+          fieldName,
+          context.getCurrentFieldContext(),
+        );
+        final extractedClassName = mapping?.name;
+        context.clearFieldContext();
+
+        if (entry.value.optional) {
+          if (extractedClassName != null && entry.value is JsObject) {
+            buffer.writeln('      $fieldName: record.$docField.isDefined ? Defined($extractedClassName.fromRecord(record.$docField.asDefined().value)) : const Undefined(),');
+          } else {
+            buffer.writeln('      $fieldName: record.$docField,');
+          }
+        } else {
+          if (extractedClassName != null && entry.value is JsObject) {
+            buffer.writeln('      $fieldName: $extractedClassName.fromRecord(record.$docField),');
+          } else {
+            buffer.writeln('      $fieldName: record.$docField,');
+          }
+        }
+      }
+      buffer.writeln('    );');
+      buffer.writeln('  }');
+
+      buffer.writeln();
+    }
+
+    buffer.writeln();
+
     // Add copyWith method
     buffer.writeln('  $className copyWith({');
     for (final entry in value.entries) {
@@ -3511,16 +3951,31 @@ class JsObject extends JsType with JsObjectMappable {
 
     buffer.writeln('}');
 
-    // Generate imports for used extracted classes and insert them
+    // Generate imports for used extracted classes and typedef and insert them
     String finalContent = buffer.toString();
+    final imports = StringBuffer();
+
+    // Add imports for extracted classes
     if (usedExtractedClasses.isNotEmpty) {
-      final imports = StringBuffer();
       for (final usedClass in usedExtractedClasses) {
         final fileName = usedClass.snakeCase;
         imports.writeln('import "$fileName.dart";');
       }
+    }
 
-      // Insert imports after the existing imports
+    // Add import for typedef if this type has one
+    print("DEBUG: Checking typedef import for $className. Available mappings: ${context.clientContext.typedefToFunctionPath.keys}");
+    if (context.clientContext.typedefToFunctionPath.containsKey(className)) {
+      final functionPath = context.clientContext.typedefToFunctionPath[className]!;
+      final typedefName = '${className}Doc';
+      print("DEBUG: Adding typedef import for $className: $functionPath");
+      imports.writeln('import "$functionPath" show $typedefName;');
+    } else {
+      print("DEBUG: No typedef mapping found for $className");
+    }
+
+    // Insert imports after the existing imports if any were generated
+    if (imports.isNotEmpty) {
       final importInsertPoint =
           finalContent.indexOf('import "../../literals.dart";\n') +
           'import "../../literals.dart";\n'.length;

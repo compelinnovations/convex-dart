@@ -46,6 +46,19 @@ class DeviceInfo {
     };
   }
 
+  /// Create from inline record (used in typedef conversions)
+  factory DeviceInfo.fromRecord(
+    ({String deviceId, String deviceModel, String deviceName, String deviceOs})
+    record,
+  ) {
+    return DeviceInfo(
+      deviceId: record.deviceId,
+      deviceModel: record.deviceModel,
+      deviceName: record.deviceName,
+      deviceOs: record.deviceOs,
+    );
+  }
+
   DeviceInfo copyWith({
     String? deviceId,
     String? deviceModel,
