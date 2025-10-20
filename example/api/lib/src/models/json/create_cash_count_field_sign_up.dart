@@ -38,7 +38,7 @@ class CreateCashCountFieldSignUp {
 
   Map<String, dynamic> toJson() {
     return {
-      'deviceInfo': deviceInfo,
+      'deviceInfo': deviceInfo.toJson(),
       'ownerUserId': ownerUserId,
       'referralCode': referralCode,
     };

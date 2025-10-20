@@ -55,10 +55,13 @@ class ListQuery {
       if (lastSyncDate.isDefined)
         'lastSyncDate': lastSyncDate.asDefined().value,
       if (paginationOpts.isDefined)
-        'paginationOpts': paginationOpts.asDefined().value,
+        'paginationOpts': paginationOpts.asDefined().value.toJson(),
       if (searchText.isDefined) 'searchText': searchText.asDefined().value,
       if (sortBy.isDefined) 'sortBy': sortBy.asDefined().value,
-      if (sortOrder.isDefined) 'sortOrder': sortOrder.asDefined().value,
+      if (sortOrder.isDefined)
+        'sortOrder': (sortOrder.asDefined().value.value is String
+            ? sortOrder.asDefined().value.value
+            : (sortOrder.asDefined().value.value as dynamic).value),
     };
   }
 

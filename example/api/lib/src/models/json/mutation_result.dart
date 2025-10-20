@@ -29,7 +29,7 @@ class MutationResult {
 
   Map<String, dynamic> toJson() {
     return {
-      if ($_id.isDefined) '_id': $_id.asDefined().value,
+      if ($_id.isDefined) '_id': $_id.asDefined().value.value,
       'message': message,
     };
   }

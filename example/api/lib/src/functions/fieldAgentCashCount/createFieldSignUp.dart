@@ -30,13 +30,13 @@ BTreeMapStringValue serialize(CreateCashCountFieldSignUp args) {
 
 MutationResultDoc deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on405277) => (
-      $_id: on405277.containsKey('_id')
+    (on612160) => (
+      $_id: on612160.containsKey('_id')
           ? Defined<CashCountFieldSignUpsId>(
-              CashCountFieldSignUpsId(on405277['_id'] as String),
+              CashCountFieldSignUpsId(on612160['_id'] as String),
             )
           : Undefined<CashCountFieldSignUpsId>(),
-      message: (on405277['message'] as String),
+      message: (on612160['message'] as String),
     ),
   );
 }

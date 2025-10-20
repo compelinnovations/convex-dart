@@ -85,7 +85,11 @@ class CashCountFieldSignUpBox {
           ? jsonEncode(model.createMeta.asDefined().value.toJson())
           : null,
       createdAt: model.createdAt.round(),
-      creatorId: jsonEncode(model.creatorId),
+      creatorId: jsonEncode(
+        model.creatorId.value is String
+            ? model.creatorId.value
+            : (model.creatorId.value as dynamic).value,
+      ),
       deletedAt: model.deletedAt.isDefined
           ? model.deletedAt.asDefined().value.round()
           : null,
@@ -113,7 +117,11 @@ class CashCountFieldSignUpBox {
       statUpdatedAt: model.statUpdatedAt.isDefined
           ? model.statUpdatedAt.asDefined().value.round()
           : null,
-      status: jsonEncode(model.status),
+      status: jsonEncode(
+        model.status.value is String
+            ? model.status.value
+            : (model.status.value as dynamic).value,
+      ),
       teamId: model.teamId.isDefined ? model.teamId.asDefined().value : null,
       updateMeta: model.updateMeta.isDefined
           ? jsonEncode(model.updateMeta.asDefined().value.toJson())

@@ -24,7 +24,7 @@ class PaginationOpts {
   }
 
   Map<String, dynamic> toJson() {
-    return {'cursor': encodeValue(cursor), 'numItems': encodeValue(numItems)};
+    return {'cursor': cursor, 'numItems': numItems};
   }
 
   /// Create from inline record (used in typedef conversions)

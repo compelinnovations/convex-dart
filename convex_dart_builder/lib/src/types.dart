@@ -856,8 +856,83 @@ class FunctionBuildContext {
   }
 
   String _generateToJsonValue(JsType fieldType, String fieldValue) {
-    // Simple conversion for basic types
-    return fieldValue; // Most types can be serialized as-is
+    // Convert to plain JSON without DartValue wrappers
+    // Similar to ObjectBoxJson but for standard JSON serialization
+    return switch (fieldType) {
+      // Union types: check if they contain ConvexIds that need recursive extraction
+      JsUnion union => union.isRealUnion
+          ? _generateUnionToJsonValue(union, fieldValue)
+          : fieldValue,
+      // Literal types need .value to extract the string value
+      JsLiteral _ => '$fieldValue.value',
+      // ConvexId types need .value to extract the string ID
+      ConvexId _ => '$fieldValue.value',
+      // Nested objects need to be recursively converted
+      JsObject _ => '$fieldValue.toJson()',
+      // Arrays need to map over items and convert each
+      JsArray array => _generateToJsonArrayValue(array, fieldValue),
+      // Records (IMap) need to be converted to plain Dart maps
+      JsRecord record => _generateRecordToJsonValue(record, fieldValue),
+      // Maps need to be converted to plain Dart maps
+      _ => fieldValue, // Primitive types (int, double, bool, String) are safe as-is
+    };
+  }
+
+  String _generateUnionToJsonValue(JsUnion union, String fieldValue) {
+    final realTypes = union.value.where((e) => e is! JsNull).toList();
+
+    // Check if any of the union types need special conversion
+    final hasConvexId = realTypes.any((e) => e is ConvexId);
+    final hasLiteral = realTypes.any((e) => e is JsLiteral);
+
+    // If union contains ConvexIds or Literals, generate code that handles recursive extraction
+    if (hasConvexId || hasLiteral) {
+      // Generate inline code: check if the unwrapped value is a primitive, otherwise extract .value
+      return '($fieldValue.value is String ? $fieldValue.value : ($fieldValue.value as dynamic).value)';
+    }
+
+    // For simple unions without special types, just extract .value
+    return '$fieldValue.value';
+  }
+
+  String _generateRecordToJsonValue(JsRecord record, String fieldValue) {
+    final valuesType = record.values.fieldType;
+
+    // Check if values need recursive conversion
+    return switch (valuesType) {
+      // If values are objects, need to recursively convert each value
+      JsObject _ => '$fieldValue.map((k, v) => MapEntry(k, v.toJson())).unlock',
+      // If values are unions, need to extract .value from each
+      JsUnion union => union.isRealUnion
+          ? '$fieldValue.map((k, v) => MapEntry(k, v.value)).unlock'
+          : '$fieldValue.unlock',
+      // If values are literals, need to extract .value
+      JsLiteral _ => '$fieldValue.map((k, v) => MapEntry(k, v.value)).unlock',
+      // If values are ConvexIds, need to extract .value
+      ConvexId _ => '$fieldValue.map((k, v) => MapEntry(k, v.value)).unlock',
+      // If values are arrays, need to convert each array
+      JsArray array => '$fieldValue.map((k, v) => MapEntry(k, ${_generateToJsonArrayValue(array, "v")})).unlock',
+      // If values are nested records, recursively convert
+      JsRecord nestedRecord => '$fieldValue.map((k, v) => MapEntry(k, ${_generateRecordToJsonValue(nestedRecord, "v")})).unlock',
+      // For primitive values, just unlock (convert IMap to Map)
+      _ => '$fieldValue.unlock',
+    };
+  }
+
+  String _generateToJsonArrayValue(JsArray array, String fieldValue) {
+    final elementType = array.value;
+    return switch (elementType) {
+      // Arrays of objects need recursive conversion
+      JsObject _ => '$fieldValue.map((item) => item.toJson()).toList()',
+      // Arrays of unions need .value extraction
+      JsUnion _ => '$fieldValue.map((item) => item.value).toList()',
+      // Arrays of literals need .value extraction
+      JsLiteral _ => '$fieldValue.map((item) => item.value).toList()',
+      // Arrays of IDs need .value extraction
+      ConvexId _ => '$fieldValue.map((item) => item.value).toList()',
+      // Primitive arrays just convert from IList to List
+      _ => '$fieldValue.toList()',
+    };
   }
 
   String _getDefaultValueForType(JsType fieldType) {
@@ -2117,10 +2192,28 @@ ${functionContext.classBuffer.toString()}""";
             buffer.writeln(
               "      $fieldName: model.$originalName.isDefined ? jsonEncode(model.$originalName.asDefined().value.toJson()) : null,",
             );
-          } else if (isUnionType || field.field.fieldType is JsRecord) {
-            // Union types and records (without mapping) serialize directly without calling toJson()
+          } else if (isUnionType) {
+            // Union types need value extraction - check if contains ConvexIds/Literals
+            final union = field.field.fieldType as JsUnion;
+            final realTypes = union.value.where((e) => e is! JsNull).toList();
+            final hasConvexId = realTypes.any((e) => e is ConvexId);
+            final hasLiteral = realTypes.any((e) => e is JsLiteral);
+
+            if (hasConvexId || hasLiteral) {
+              // Generate runtime type check for nested value extraction
+              buffer.writeln(
+                "      $fieldName: model.$originalName.isDefined ? jsonEncode(model.$originalName.asDefined().value.value is String ? model.$originalName.asDefined().value.value : (model.$originalName.asDefined().value.value as dynamic).value) : null,",
+              );
+            } else {
+              // Simple union - just extract .value
+              buffer.writeln(
+                "      $fieldName: model.$originalName.isDefined ? jsonEncode(model.$originalName.asDefined().value.value) : null,",
+              );
+            }
+          } else if (field.field.fieldType is JsRecord) {
+            // Records (IMap) need .unlock to convert to plain Map
             buffer.writeln(
-              "      $fieldName: model.$originalName.isDefined ? jsonEncode(model.$originalName.asDefined().value) : null,",
+              "      $fieldName: model.$originalName.isDefined ? jsonEncode(model.$originalName.asDefined().value.unlock) : null,",
             );
           } else {
             // Regular objects call toJson()
@@ -2137,9 +2230,25 @@ ${functionContext.classBuffer.toString()}""";
           } else if (hasCustomMapping) {
             // Fields with custom mappings use toJson() on the mapped type
             buffer.writeln("      $fieldName: jsonEncode(model.$originalName.toJson()),");
-          } else if (isUnionType || field.field.fieldType is JsRecord) {
-            // Union types and records (without mapping) serialize directly without calling toJson()
-            buffer.writeln("      $fieldName: jsonEncode(model.$originalName),");
+          } else if (isUnionType) {
+            // Union types need value extraction - check if contains ConvexIds/Literals
+            final union = field.field.fieldType as JsUnion;
+            final realTypes = union.value.where((e) => e is! JsNull).toList();
+            final hasConvexId = realTypes.any((e) => e is ConvexId);
+            final hasLiteral = realTypes.any((e) => e is JsLiteral);
+
+            if (hasConvexId || hasLiteral) {
+              // Generate runtime type check for nested value extraction
+              buffer.writeln(
+                "      $fieldName: jsonEncode(model.$originalName.value is String ? model.$originalName.value : (model.$originalName.value as dynamic).value),",
+              );
+            } else {
+              // Simple union - just extract .value
+              buffer.writeln("      $fieldName: jsonEncode(model.$originalName.value),");
+            }
+          } else if (field.field.fieldType is JsRecord) {
+            // Records (IMap) need .unlock to convert to plain Map
+            buffer.writeln("      $fieldName: jsonEncode(model.$originalName.unlock),");
           } else {
             // Regular objects call toJson()
             buffer.writeln("      $fieldName: jsonEncode(model.$originalName.toJson()),");
@@ -3685,22 +3794,16 @@ class JsObject extends JsType with JsObjectMappable {
     for (final entry in value.entries) {
       final fieldName = _dartSafeName(entry.key);
       final jsonKey = entry.key;
-
-      // Use proper serialization based on field type
-      context.setFieldContext(entry.key, fieldContext ?? "nested");
-      final serializeValue = entry.value.fieldType.serialize(
-        context,
-        fieldName,
-        nullable: entry.value.optional,
-      );
-      context.clearFieldContext();
+      final fieldType = entry.value.fieldType;
 
       if (entry.value.optional) {
         buffer.writeln(
-          '      if ($fieldName.isDefined) \'$jsonKey\': ${entry.value.fieldType.serialize(context, "$fieldName.asDefined().value", nullable: false)},',
+          '      if ($fieldName.isDefined) \'$jsonKey\': ${context._generateToJsonValue(fieldType, "$fieldName.asDefined().value")},',
         );
       } else {
-        buffer.writeln('      \'$jsonKey\': $serializeValue,');
+        buffer.writeln(
+          '      \'$jsonKey\': ${context._generateToJsonValue(fieldType, fieldName)},',
+        );
       }
     }
     buffer.writeln('    };');

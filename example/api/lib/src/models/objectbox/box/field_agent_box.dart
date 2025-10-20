@@ -114,7 +114,11 @@ class FieldAgentBox {
           ? jsonEncode(model.createMeta.asDefined().value.toJson())
           : null,
       createdAt: model.createdAt.round(),
-      creatorId: jsonEncode(model.creatorId),
+      creatorId: jsonEncode(
+        model.creatorId.value is String
+            ? model.creatorId.value
+            : (model.creatorId.value as dynamic).value,
+      ),
       dateBirth: model.dateBirth.isDefined
           ? model.dateBirth.asDefined().value
           : null,
@@ -129,7 +133,11 @@ class FieldAgentBox {
       fullName: model.fullName.isDefined
           ? model.fullName.asDefined().value
           : null,
-      gender: jsonEncode(model.gender),
+      gender: jsonEncode(
+        model.gender.value is String
+            ? model.gender.value
+            : (model.gender.value as dynamic).value,
+      ),
       invitationId: model.invitationId.isDefined
           ? model.invitationId.asDefined().value
           : null,
@@ -141,7 +149,11 @@ class FieldAgentBox {
       profileImage: model.profileImage.isDefined
           ? jsonEncode(model.profileImage.asDefined().value.toJson())
           : null,
-      project: jsonEncode(model.project),
+      project: jsonEncode(
+        model.project.value is String
+            ? model.project.value
+            : (model.project.value as dynamic).value,
+      ),
       referralCode: model.referralCode,
       status: model.status,
       teamId: model.teamId.isDefined ? model.teamId.asDefined().value : null,

@@ -51,15 +51,11 @@ class AuditAction {
 
   Map<String, dynamic> toJson() {
     return {
-      'action': encodeValue(action),
-      if (details.isDefined)
-        'details': encodeValue({
-          for (final on993275 in details.asDefined().value.entries)
-            on993275.key: encodeValue(encodeValue(on993275.value)),
-        }),
-      if (name.isDefined) 'name': encodeValue(name.asDefined().value),
-      if (role.isDefined) 'role': encodeValue(role.asDefined().value),
-      if (userId.isDefined) 'userId': encodeValue(userId.asDefined().value),
+      'action': action,
+      if (details.isDefined) 'details': details.asDefined().value.unlock,
+      if (name.isDefined) 'name': name.asDefined().value,
+      if (role.isDefined) 'role': role.asDefined().value,
+      if (userId.isDefined) 'userId': userId.asDefined().value,
     };
   }
 

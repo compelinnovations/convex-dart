@@ -198,36 +198,44 @@ class FieldAgent {
   Map<String, dynamic> toJson() {
     return {
       '_creationTime': $_creationTime,
-      '_id': $_id,
+      '_id': $_id.value,
       if (countryCityId.isDefined)
-        'countryCityId': countryCityId.asDefined().value,
+        'countryCityId': countryCityId.asDefined().value.value,
       if (countryCityName.isDefined)
         'countryCityName': countryCityName.asDefined().value,
       if (countryCode.isDefined) 'countryCode': countryCode.asDefined().value,
       'countryISO': countryISO,
       'countryName': countryName,
       if (countryStateId.isDefined)
-        'countryStateId': countryStateId.asDefined().value,
+        'countryStateId': countryStateId.asDefined().value.value,
       if (countryStateName.isDefined)
         'countryStateName': countryStateName.asDefined().value,
-      if (createMeta.isDefined) 'createMeta': createMeta.asDefined().value,
+      if (createMeta.isDefined)
+        'createMeta': createMeta.asDefined().value.toJson(),
       'createdAt': createdAt,
-      'creatorId': creatorId,
+      'creatorId': (creatorId.value is String
+          ? creatorId.value
+          : (creatorId.value as dynamic).value),
       if (dateBirth.isDefined) 'dateBirth': dateBirth.asDefined().value,
       if (deletedAt.isDefined) 'deletedAt': deletedAt.asDefined().value,
-      if (deletedMeta.isDefined) 'deletedMeta': deletedMeta.asDefined().value,
+      if (deletedMeta.isDefined)
+        'deletedMeta': deletedMeta.asDefined().value.toJson(),
       'email': email,
       'firstName': firstName,
       if (fullName.isDefined) 'fullName': fullName.asDefined().value,
-      'gender': gender,
+      'gender': (gender.value is String
+          ? gender.value
+          : (gender.value as dynamic).value),
       if (invitationId.isDefined)
         'invitationId': invitationId.asDefined().value,
       'lastName': lastName,
       if (middleName.isDefined) 'middleName': middleName.asDefined().value,
       'phoneNumber': phoneNumber,
       if (profileImage.isDefined)
-        'profileImage': profileImage.asDefined().value,
-      'project': project,
+        'profileImage': profileImage.asDefined().value.toJson(),
+      'project': (project.value is String
+          ? project.value
+          : (project.value as dynamic).value),
       'referralCode': referralCode,
       'status': status,
       if (teamId.isDefined) 'teamId': teamId.asDefined().value,
@@ -247,7 +255,8 @@ class FieldAgent {
         'totalCashCountFieldSignUpsCount': totalCashCountFieldSignUpsCount
             .asDefined()
             .value,
-      if (updateMeta.isDefined) 'updateMeta': updateMeta.asDefined().value,
+      if (updateMeta.isDefined)
+        'updateMeta': updateMeta.asDefined().value.toJson(),
       if (updatedAt.isDefined) 'updatedAt': updatedAt.asDefined().value,
       if (userId.isDefined) 'userId': userId.asDefined().value,
     };

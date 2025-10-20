@@ -52,9 +52,9 @@ class CashCountFieldSignUps {
   Map<String, dynamic> toJson() {
     return {
       'continueCursor': continueCursor,
-      'deletedIds': deletedIds,
+      'deletedIds': deletedIds.map((item) => item.value).toList(),
       'isDone': isDone,
-      'list': list,
+      'list': list.toList(),
     };
   }
 

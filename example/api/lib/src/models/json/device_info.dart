@@ -39,10 +39,10 @@ class DeviceInfo {
 
   Map<String, dynamic> toJson() {
     return {
-      'deviceId': encodeValue(deviceId),
-      'deviceModel': encodeValue(deviceModel),
-      'deviceName': encodeValue(deviceName),
-      'deviceOs': encodeValue(deviceOs),
+      'deviceId': deviceId,
+      'deviceModel': deviceModel,
+      'deviceName': deviceName,
+      'deviceOs': deviceOs,
     };
   }
 

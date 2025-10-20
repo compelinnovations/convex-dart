@@ -51,12 +51,11 @@ class MediaData {
 
   Map<String, dynamic> toJson() {
     return {
-      if (blurHash.isDefined)
-        'blurHash': encodeValue(blurHash.asDefined().value),
-      if (mime.isDefined) 'mime': encodeValue(mime.asDefined().value),
-      if (name.isDefined) 'name': encodeValue(name.asDefined().value),
-      if (size.isDefined) 'size': encodeValue(size.asDefined().value),
-      'storageId': encodeValue(storageId),
+      if (blurHash.isDefined) 'blurHash': blurHash.asDefined().value,
+      if (mime.isDefined) 'mime': mime.asDefined().value,
+      if (name.isDefined) 'name': name.asDefined().value,
+      if (size.isDefined) 'size': size.asDefined().value,
+      'storageId': storageId,
     };
   }
 

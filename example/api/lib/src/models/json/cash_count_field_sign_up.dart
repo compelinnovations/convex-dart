@@ -157,32 +157,39 @@ class CashCountFieldSignUp {
   Map<String, dynamic> toJson() {
     return {
       '_creationTime': $_creationTime,
-      '_id': $_id,
+      '_id': $_id.value,
       if (completedAt.isDefined) 'completedAt': completedAt.asDefined().value,
       if (completedMeta.isDefined)
-        'completedMeta': completedMeta.asDefined().value,
-      if (createMeta.isDefined) 'createMeta': createMeta.asDefined().value,
+        'completedMeta': completedMeta.asDefined().value.toJson(),
+      if (createMeta.isDefined)
+        'createMeta': createMeta.asDefined().value.toJson(),
       'createdAt': createdAt,
-      'creatorId': creatorId,
+      'creatorId': (creatorId.value is String
+          ? creatorId.value
+          : (creatorId.value as dynamic).value),
       if (deletedAt.isDefined) 'deletedAt': deletedAt.asDefined().value,
-      if (deletedMeta.isDefined) 'deletedMeta': deletedMeta.asDefined().value,
+      if (deletedMeta.isDefined)
+        'deletedMeta': deletedMeta.asDefined().value.toJson(),
       'deviceId': deviceId,
-      'deviceInfo': deviceInfo,
+      'deviceInfo': deviceInfo.toJson(),
       if (expiredAt.isDefined) 'expiredAt': expiredAt.asDefined().value,
-      'fieldAgentId': fieldAgentId,
+      'fieldAgentId': fieldAgentId.value,
       'mongoId': mongoId,
       'phoneNumber': phoneNumber,
       'referralCode': referralCode,
       if (rejectionAt.isDefined) 'rejectionAt': rejectionAt.asDefined().value,
       if (rejectionMeta.isDefined)
-        'rejectionMeta': rejectionMeta.asDefined().value,
+        'rejectionMeta': rejectionMeta.asDefined().value.toJson(),
       if (rejectionReason.isDefined)
         'rejectionReason': rejectionReason.asDefined().value,
       if (statUpdatedAt.isDefined)
         'statUpdatedAt': statUpdatedAt.asDefined().value,
-      'status': status,
+      'status': (status.value is String
+          ? status.value
+          : (status.value as dynamic).value),
       if (teamId.isDefined) 'teamId': teamId.asDefined().value,
-      if (updateMeta.isDefined) 'updateMeta': updateMeta.asDefined().value,
+      if (updateMeta.isDefined)
+        'updateMeta': updateMeta.asDefined().value.toJson(),
       if (updatedAt.isDefined) 'updatedAt': updatedAt.asDefined().value,
     };
   }
