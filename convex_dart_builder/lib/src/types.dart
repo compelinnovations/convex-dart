@@ -3630,6 +3630,7 @@ class JsObject extends JsType with JsObjectMappable {
     if (effectiveFieldName != null && effectiveFieldContext != null) {
       // Try both the full path and just the field name for mapping lookup
       final fullPath = context.getFullFieldPath(effectiveFieldName);
+
       final mapping =
           context.getObjectFieldMapping(fullPath, effectiveFieldContext) ??
           context.getObjectFieldMapping(
@@ -3952,8 +3953,15 @@ class JsObject extends JsType with JsObjectMappable {
         final docField = '$specialPrefix${fieldName.replaceFirst('\$', '')}';
 
         // Check if this field has been extracted as a separate class using mapping data
-        context.setFieldContext(fieldName, fieldContext ?? "args");
+        // Use the fieldContext passed to this method (returns/args/nested) for proper mapping lookup
+        context.setFieldContext(fieldName, fieldContext ?? "nested");
+
+        // Try to get mapping using the full path first (for nested fields like week.friday)
+        final fullPath = context.getFullFieldPath(fieldName);
         final mapping = context.getObjectFieldMapping(
+          fullPath,
+          context.getCurrentFieldContext(),
+        ) ?? context.getObjectFieldMapping(
           fieldName,
           context.getCurrentFieldContext(),
         );
@@ -3961,13 +3969,13 @@ class JsObject extends JsType with JsObjectMappable {
         context.clearFieldContext();
 
         if (entry.value.optional) {
-          if (extractedClassName != null && entry.value is JsObject) {
+          if (extractedClassName != null && entry.value.fieldType is JsObject) {
             buffer.writeln('      $fieldName: record.$docField.isDefined ? Defined($extractedClassName.fromRecord(record.$docField.asDefined().value)) : const Undefined(),');
           } else {
             buffer.writeln('      $fieldName: record.$docField,');
           }
         } else {
-          if (extractedClassName != null && entry.value is JsObject) {
+          if (extractedClassName != null && entry.value.fieldType is JsObject) {
             buffer.writeln('      $fieldName: $extractedClassName.fromRecord(record.$docField),');
           } else {
             buffer.writeln('      $fieldName: record.$docField,');
