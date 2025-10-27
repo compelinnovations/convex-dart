@@ -635,10 +635,27 @@ class FunctionBuildContext {
         final specialPrefix = entry.key.startsWith('_') ? '\$' : '';
         final docField = '$specialPrefix${fieldName.replaceFirst('\$', '')}';
 
+        // Check if this field is an extracted class that needs toRecord() conversion
+        setFieldContext(fieldName, fieldContext ?? "returns");
+        final mapping = getObjectFieldMapping(
+          fieldName,
+          getCurrentFieldContext(),
+        );
+        final extractedClassName = mapping?.name;
+        clearFieldContext();
+
         if (entry.value.optional) {
-          classBuffer.writeln('      $docField: $fieldName,');
+          if (extractedClassName != null && entry.value.fieldType is JsObject) {
+            classBuffer.writeln('      $docField: $fieldName.isDefined ? Defined($fieldName.asDefined().value.toRecord()) : const Undefined(),');
+          } else {
+            classBuffer.writeln('      $docField: $fieldName,');
+          }
         } else {
-          classBuffer.writeln('      $docField: $fieldName,');
+          if (extractedClassName != null && entry.value.fieldType is JsObject) {
+            classBuffer.writeln('      $docField: $fieldName.toRecord(),');
+          } else {
+            classBuffer.writeln('      $docField: $fieldName,');
+          }
         }
       }
       classBuffer.writeln('    );');
@@ -3941,10 +3958,31 @@ class JsObject extends JsType with JsObjectMappable {
         final specialPrefix = entry.key.startsWith('_') ? '\$' : '';
         final docField = '$specialPrefix${fieldName.replaceFirst('\$', '')}';
 
+        // Check if this field is an extracted class that needs toRecord() conversion
+        context.setFieldContext(fieldName, fieldContext ?? "returns");
+        final fullPath = context.getFullFieldPath(fieldName);
+        final mapping = context.getObjectFieldMapping(
+          fullPath,
+          context.getCurrentFieldContext(),
+        ) ?? context.getObjectFieldMapping(
+          fieldName,
+          context.getCurrentFieldContext(),
+        );
+        final extractedClassName = mapping?.name;
+        context.clearFieldContext();
+
         if (entry.value.optional) {
-          buffer.writeln('      $docField: $fieldName,');
+          if (extractedClassName != null && entry.value.fieldType is JsObject) {
+            buffer.writeln('      $docField: $fieldName.isDefined ? Defined($fieldName.asDefined().value.toRecord()) : const Undefined(),');
+          } else {
+            buffer.writeln('      $docField: $fieldName,');
+          }
         } else {
-          buffer.writeln('      $docField: $fieldName,');
+          if (extractedClassName != null && entry.value.fieldType is JsObject) {
+            buffer.writeln('      $docField: $fieldName.toRecord(),');
+          } else {
+            buffer.writeln('      $docField: $fieldName,');
+          }
         }
       }
       buffer.writeln('    );');
@@ -3998,6 +4036,47 @@ class JsObject extends JsType with JsObjectMappable {
           } else {
             buffer.writeln('      $fieldName: record.$docField,');
           }
+        }
+      }
+      buffer.writeln('    );');
+      buffer.writeln('  }');
+
+      buffer.writeln();
+
+      // Add toRecord() method - converts class back to record type
+      buffer.writeln('  /// Convert to inline record (inverse of fromRecord)');
+      buffer.writeln('  ({');
+      for (final entry in value.entries) {
+        final fieldName = _dartSafeName(entry.key);
+        final specialPrefix = entry.key.startsWith('_') ? '\$' : '';
+        final docField = '$specialPrefix${fieldName.replaceFirst('\$', '')}';
+        final fieldType = entry.value.dartType(context);
+        buffer.writeln('    $fieldType $docField,');
+      }
+      buffer.writeln('  }) toRecord() {');
+      buffer.writeln('    return (');
+      for (final entry in value.entries) {
+        final fieldName = _dartSafeName(entry.key);
+        final specialPrefix = entry.key.startsWith('_') ? '\$' : '';
+        final docField = '$specialPrefix${fieldName.replaceFirst('\$', '')}';
+
+        // Check if this field is an extracted class that needs toRecord() conversion
+        context.setFieldContext(fieldName, fieldContext ?? "nested");
+        final fullPath = context.getFullFieldPath(fieldName);
+        final mapping = context.getObjectFieldMapping(
+          fullPath,
+          context.getCurrentFieldContext(),
+        ) ?? context.getObjectFieldMapping(
+          fieldName,
+          context.getCurrentFieldContext(),
+        );
+        final extractedClassName = mapping?.name;
+        context.clearFieldContext();
+
+        if (extractedClassName != null && entry.value.fieldType is JsObject) {
+          buffer.writeln('      $docField: $fieldName.toRecord(),');
+        } else {
+          buffer.writeln('      $docField: $fieldName,');
         }
       }
       buffer.writeln('    );');
