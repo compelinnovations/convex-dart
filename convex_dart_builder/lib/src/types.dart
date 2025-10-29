@@ -1367,10 +1367,16 @@ import 'package:convex_dart/src/convex_dart_for_generated_code.dart'
 /// Wrapper class for ConvexClient that exposes the underlying client instance
 class ConvexClient {
   /// Initialize the ConvexClient singleton
-  static Future<void> init() async {
+  ///
+  /// [deploymentUrl] - Optional custom deployment URL. If not provided, uses the default URL from convex.json
+  /// [clientId] - Optional custom client ID. Defaults to "flutter-rust-client"
+  static Future<void> init({
+    String? deploymentUrl,
+    String? clientId,
+  }) async {
     await internal.ConvexClient.init(
-      deploymentUrl: "$url",
-      clientId: "flutter-rust-client",
+      deploymentUrl: deploymentUrl ?? "$url",
+      clientId: clientId ?? "flutter-rust-client",
     );
   }
 
