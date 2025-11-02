@@ -59,6 +59,17 @@ class DeviceInfo {
     );
   }
 
+  /// Convert to inline record (inverse of fromRecord)
+  ({String deviceId, String deviceModel, String deviceName, String deviceOs})
+  toRecord() {
+    return (
+      deviceId: deviceId,
+      deviceModel: deviceModel,
+      deviceName: deviceName,
+      deviceOs: deviceOs,
+    );
+  }
+
   DeviceInfo copyWith({
     String? deviceId,
     String? deviceModel,

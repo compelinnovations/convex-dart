@@ -1,6 +1,6 @@
 {
   "stakeholder": "fieldAgent",
-  "timestamp": "2025-10-14T22:52:00.630Z",
+  "timestamp": "2025-11-02T03:39:40.048Z",
   "functions": [
     {
       "functionName": "getMe",
@@ -8,14 +8,39 @@
       "endpoint": "GET:/api/run/app/fieldAgentAuth/getMe"
     },
     {
-      "functionName": "listPendingFieldSignUps",
+      "functionName": "listCashCountFieldPendingSignUps",
       "responseType": "CashCountFieldSignUps",
-      "endpoint": "GET:/api/run/app/fieldAgentCashCount/listPendingFieldSignUps"
+      "endpoint": "GET:/api/run/app/fieldAgentCashCount/listCashCountFieldPendingSignUps"
     },
     {
       "functionName": "getMyProfile",
       "responseType": "FieldAgent",
       "endpoint": "GET:/api/run/app/fieldAgentAuth/getMyProfile"
+    },
+    {
+      "functionName": "getCashCountFieldSignUpStats",
+      "responseType": "CashCountFieldSignUpStats",
+      "endpoint": "GET:/api/run/app/fieldAgentCashCount/getCashCountFieldSignUpStats"
+    },
+    {
+      "functionName": "listCashCountFieldSignUpLeaderboard",
+      "responseType": "CashCountFieldSignUpLeaderboards",
+      "endpoint": "GET:/api/run/app/fieldAgentCashCount/listCashCountFieldSignUpLeaderboard"
+    },
+    {
+      "functionName": "listCashCountFieldInvalidSignUps",
+      "responseType": "CashCountFieldSignUps",
+      "endpoint": "GET:/api/run/app/fieldAgentCashCount/listCashCountFieldInvalidSignUps"
+    },
+    {
+      "functionName": "getFieldAgentWeeklyEarningsSummary",
+      "responseType": "FieldAgentWeeklyEarningsSummary",
+      "endpoint": "GET:/api/run/app/fieldAgentEarnings/getFieldAgentWeeklyEarningsSummary"
+    },
+    {
+      "functionName": "listFieldAgentWeeklyEarnings",
+      "responseType": "FieldAgentWeeklyEarnings",
+      "endpoint": "GET:/api/run/app/fieldAgentEarnings/listFieldAgentWeeklyEarnings"
     }
   ]
 }

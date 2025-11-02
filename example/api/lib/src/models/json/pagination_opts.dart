@@ -34,6 +34,11 @@ class PaginationOpts {
     return PaginationOpts(cursor: record.cursor, numItems: record.numItems);
   }
 
+  /// Convert to inline record (inverse of fromRecord)
+  ({String? cursor, double numItems}) toRecord() {
+    return (cursor: cursor, numItems: numItems);
+  }
+
   PaginationOpts copyWith({String? cursor, double? numItems}) {
     return PaginationOpts(
       cursor: cursor ?? this.cursor,

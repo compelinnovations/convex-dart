@@ -843,8 +843,21 @@ class FunctionBuildContext {
   }
 
   String _generateUnionFromJson(JsUnion union, String jsonValue) {
-    // For unions, especially literal unions, we need special handling
-    // For now, keep it simple
+    // For nullable unions like `StorageId | null`, handle the single non-null type
+    if (!union.isRealUnion) {
+      final realTypes = union.value.where((e) => e is! JsNull).toList();
+      if (realTypes.length == 1) {
+        final singleType = realTypes.first;
+        return switch (singleType) {
+          ConvexId convexId => '$jsonValue != null ? ${convexId.typeName}($jsonValue as String) : null',
+          JsLiteral literal => '$jsonValue != null ? ${_generateLiteralFromJson(literal, jsonValue)} : null',
+          JsObject _ => '$jsonValue != null ? ($jsonValue as Map<String, dynamic>) : null',
+          JsArray array => '$jsonValue != null ? ${_generateArrayFromJson(array, jsonValue)} : null',
+          _ => jsonValue, // For primitives, no special handling needed
+        };
+      }
+    }
+    // For real unions, keep it simple for now
     return jsonValue;
   }
 
@@ -879,13 +892,13 @@ class FunctionBuildContext {
       // Union types: check if they contain ConvexIds that need recursive extraction
       JsUnion union => union.isRealUnion
           ? _generateUnionToJsonValue(union, fieldValue)
-          : fieldValue,
+          : _generateNullableUnionToJsonValue(union, fieldValue),
       // Literal types need .value to extract the string value
       JsLiteral _ => '$fieldValue.value',
       // ConvexId types need .value to extract the string ID
       ConvexId _ => '$fieldValue.value',
-      // Nested objects need to be recursively converted
-      JsObject _ => '$fieldValue.toJson()',
+      // Nested objects: check if extracted class or inline record
+      JsObject obj => _generateObjectToJsonValue(obj, fieldValue),
       // Arrays need to map over items and convert each
       JsArray array => _generateToJsonArrayValue(array, fieldValue),
       // Records (IMap) need to be converted to plain Dart maps
@@ -893,6 +906,29 @@ class FunctionBuildContext {
       // Maps need to be converted to plain Dart maps
       _ => fieldValue, // Primitive types (int, double, bool, String) are safe as-is
     };
+  }
+
+  String _generateObjectToJsonValue(JsObject obj, String fieldValue) {
+    // For inline records (simple objects with few fields), convert to map manually
+    // For extracted classes, call toJson()
+    // A simple heuristic: if object has 1-2 fields and no nested objects, it's likely inline
+    final isLikelyInline = obj.value.length <= 2 &&
+                          !obj.value.values.any((field) => field.fieldType is JsObject);
+
+    if (isLikelyInline) {
+      // Generate inline map conversion for record types
+      final entries = obj.value.entries.map((entry) {
+        final jsonKey = entry.key;
+        final accessor = obj.dartSafeName(entry.key);
+        final fieldType = entry.value.fieldType;
+        final valueExpr = _generateToJsonValue(fieldType, '$fieldValue.$accessor');
+        return "'$jsonKey': $valueExpr";
+      }).join(', ');
+      return '{$entries}';
+    } else {
+      // Assume it's an extracted class with toJson() method
+      return '$fieldValue.toJson()';
+    }
   }
 
   String _generateUnionToJsonValue(JsUnion union, String fieldValue) {
@@ -910,6 +946,25 @@ class FunctionBuildContext {
 
     // For simple unions without special types, just extract .value
     return '$fieldValue.value';
+  }
+
+  String _generateNullableUnionToJsonValue(JsUnion union, String fieldValue) {
+    // Handle nullable unions like `StorageId | null`
+    final realTypes = union.value.where((e) => e is! JsNull).toList();
+    if (realTypes.length == 1) {
+      final singleType = realTypes.first;
+      // Handle the single non-null type with nullable accessor
+      return switch (singleType) {
+        ConvexId _ => '$fieldValue?.value',
+        JsLiteral _ => '$fieldValue?.value',
+        JsObject obj => '$fieldValue != null ? ${_generateObjectToJsonValue(obj, fieldValue)} : null',
+        JsArray array => '$fieldValue != null ? ${_generateToJsonArrayValue(array, fieldValue)} : null',
+        JsRecord record => '$fieldValue != null ? ${_generateRecordToJsonValue(record, fieldValue)} : null',
+        _ => fieldValue, // For primitives, no special handling needed
+      };
+    }
+    // This shouldn't happen, but fallback to fieldValue
+    return fieldValue;
   }
 
   String _generateRecordToJsonValue(JsRecord record, String fieldValue) {
@@ -4356,10 +4411,30 @@ class JsObject extends JsType with JsObjectMappable {
       JsBoolean _ => "$jsonValue as bool",
       JsArray _ => "$jsonValue as List<dynamic>",
       JsObject _ => "($jsonValue as Map<String, dynamic>).toIMap()",
-      ConvexId _ => "$jsonValue as String",
+      ConvexId convexId => "${convexId.typeName}($jsonValue as String)",
+      JsUnion union => _getSeparateFileUnionFromJson(union, jsonValue),
       JsRecord _ => "($jsonValue as Map<String, dynamic>).toIMap()",
       _ => jsonValue,
     };
+  }
+
+  String _getSeparateFileUnionFromJson(JsUnion union, String jsonValue) {
+    // For nullable unions like `StorageId | null`, handle the single non-null type
+    if (!union.isRealUnion) {
+      final realTypes = union.value.where((e) => e is! JsNull).toList();
+      if (realTypes.length == 1) {
+        final singleType = realTypes.first;
+        return switch (singleType) {
+          ConvexId convexId => '$jsonValue != null ? ${convexId.typeName}($jsonValue as String) : null',
+          JsLiteral literal => '$jsonValue != null ? ${literal.literalTypeName}.validate($jsonValue) : null',
+          JsObject _ => '$jsonValue != null ? ($jsonValue as Map<String, dynamic>).toIMap() : null',
+          JsArray _ => '$jsonValue != null ? ($jsonValue as List<dynamic>) : null',
+          _ => jsonValue, // For primitives, no special handling needed
+        };
+      }
+    }
+    // For real unions, keep it simple for now
+    return jsonValue;
   }
 }
 

@@ -16,7 +16,11 @@ import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
 import 'src/models/objectbox/box/auth_user_box.dart';
 import 'src/models/objectbox/box/cash_count_field_sign_up_box.dart';
+import 'src/models/objectbox/box/cash_count_field_sign_up_position_box.dart';
+import 'src/models/objectbox/box/cash_count_field_sign_up_stats_box.dart';
 import 'src/models/objectbox/box/field_agent_box.dart';
+import 'src/models/objectbox/box/field_agent_weekly_earning_box.dart';
+import 'src/models/objectbox/box/field_agent_weekly_earnings_summary_box.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -76,12 +80,6 @@ final _entities = <obx_int.ModelEntity>[
         flags: 0,
       ),
       obx_int.ModelProperty(
-        id: const obx_int.IdUid(10, 8333489055791111135),
-        name: 'createMeta',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
         id: const obx_int.IdUid(11, 8959101224931586100),
         name: 'createdAt',
         type: 12,
@@ -91,18 +89,6 @@ final _entities = <obx_int.ModelEntity>[
         id: const obx_int.IdUid(12, 5478875498365185455),
         name: 'dbId',
         type: 8,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(13, 4548536748823477922),
-        name: 'deletedAt',
-        type: 12,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(14, 1837199048463628871),
-        name: 'deletedMeta',
-        type: 9,
         flags: 0,
       ),
       obx_int.ModelProperty(
@@ -250,12 +236,6 @@ final _entities = <obx_int.ModelEntity>[
         flags: 0,
       ),
       obx_int.ModelProperty(
-        id: const obx_int.IdUid(39, 875611790132478376),
-        name: 'updateMeta',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
         id: const obx_int.IdUid(40, 6711255155685030688),
         name: 'updatedAt',
         type: 12,
@@ -274,173 +254,7 @@ final _entities = <obx_int.ModelEntity>[
         flags: 0,
       ),
       obx_int.ModelProperty(
-        id: const obx_int.IdUid(43, 3764772260803327932),
-        name: 'currentLocation',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
         id: const obx_int.IdUid(44, 8173091906690746093),
-        name: 'creationTime',
-        type: 12,
-        flags: 0,
-      ),
-    ],
-    relations: <obx_int.ModelRelation>[],
-    backlinks: <obx_int.ModelBacklink>[],
-  ),
-  obx_int.ModelEntity(
-    id: const obx_int.IdUid(19, 2851251314550912979),
-    name: 'CashCountFieldSignUpBox',
-    lastPropertyId: const obx_int.IdUid(26, 6266113098038628457),
-    flags: 0,
-    properties: <obx_int.ModelProperty>[
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(1, 958095520644049601),
-        name: 'id',
-        type: 6,
-        flags: 1,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(3, 2995268697826826738),
-        name: 'dbId',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(4, 1432262932073035031),
-        name: 'completedAt',
-        type: 12,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(5, 9209508261654703234),
-        name: 'completedMeta',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(6, 8042879651313556216),
-        name: 'createMeta',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(7, 5200304212497397045),
-        name: 'createdAt',
-        type: 12,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(8, 5456317331045439930),
-        name: 'creatorId',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(9, 8875271250312223389),
-        name: 'deletedAt',
-        type: 12,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(10, 8361773210385047668),
-        name: 'deletedMeta',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(11, 3257707974152910464),
-        name: 'deviceId',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(12, 7215090163771125270),
-        name: 'deviceInfo',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(13, 7576590344388059299),
-        name: 'expiredAt',
-        type: 12,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(14, 1647466347239814860),
-        name: 'fieldAgentId',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(15, 4112429504083072832),
-        name: 'mongoId',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(16, 5099032966665944365),
-        name: 'phoneNumber',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(17, 2331721514470387294),
-        name: 'referralCode',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(18, 6180518091701855126),
-        name: 'rejectionAt',
-        type: 12,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(19, 2744992489110683474),
-        name: 'rejectionMeta',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(20, 3046830927486095649),
-        name: 'rejectionReason',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(21, 7463310167697249955),
-        name: 'statUpdatedAt',
-        type: 12,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(22, 2155315550432537951),
-        name: 'status',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(23, 8705705820279152950),
-        name: 'teamId',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(24, 1890090956892725462),
-        name: 'updateMeta',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(25, 7896660738470951998),
-        name: 'updatedAt',
-        type: 12,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(26, 6266113098038628457),
         name: 'creationTime',
         type: 12,
         flags: 0,
@@ -452,7 +266,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(20, 3921185338622067297),
     name: 'FieldAgentBox',
-    lastPropertyId: const obx_int.IdUid(36, 4879528454934818188),
+    lastPropertyId: const obx_int.IdUid(47, 5028645622006120785),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -671,6 +485,584 @@ final _entities = <obx_int.ModelEntity>[
         type: 9,
         flags: 0,
       ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(37, 7875003737765366319),
+        name: 'ayekooLeaderboardPosition',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(38, 513253299287655342),
+        name: 'cashCountLeaderboardPosition',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(39, 5992273343476545479),
+        name: 'invitationStatus',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(40, 3963302536382292852),
+        name: 'totalAyekooCollectionsApprovedCount',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(41, 244919310842268945),
+        name: 'totalAyekooCollectionsInvalidCount',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(42, 4394155950502027449),
+        name: 'totalAyekooCollectionsPendingCount',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(43, 7847396509482378564),
+        name: 'totalAyekooCollectionsRejectedCount',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(44, 1865329306741651687),
+        name: 'totalCashCountFieldSignUpsApprovedCount',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(45, 3522889860771332138),
+        name: 'totalCashCountFieldSignUpsInvalidCount',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(46, 7393505335303217753),
+        name: 'totalCashCountFieldSignUpsPendingCount',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(47, 5028645622006120785),
+        name: 'totalCashCountFieldSignUpsRejectedCount',
+        type: 8,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(21, 6095326816925985749),
+    name: 'CashCountFieldSignUpBox',
+    lastPropertyId: const obx_int.IdUid(39, 7963973470367217272),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 7599745175933162867),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 1229811409531754626),
+        name: 'creationTime',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 167833852944431108),
+        name: 'dbId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 3343501092857513953),
+        name: 'businessName',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 2464697087540000266),
+        name: 'cashCountTeamId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 7605596116775449746),
+        name: 'cashCountUserFullName',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 1955519848015773603),
+        name: 'cashCountUserId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(8, 1086033169155706507),
+        name: 'cashCountUserRole',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(9, 2947280534066093840),
+        name: 'commissionAmount',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(10, 611007796116792893),
+        name: 'createMeta',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(11, 6225092069981358812),
+        name: 'createdAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(12, 2674485568721315467),
+        name: 'creatorId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(13, 6453811222194935147),
+        name: 'dateEarned',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(14, 9189859589058187152),
+        name: 'deletedAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(15, 4419744663658488977),
+        name: 'deletedMeta',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(16, 5188555290022661057),
+        name: 'deviceId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(17, 434138271373761754),
+        name: 'deviceInfo',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(18, 7953297158271979435),
+        name: 'expiredAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(19, 6334276747116081679),
+        name: 'fieldAgentId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(20, 9133379471908190519),
+        name: 'fieldAgentName',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(21, 4962821056752642354),
+        name: 'invalidRejectionReason',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(22, 6688374751579670906),
+        name: 'mongoId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(23, 5588518923867002507),
+        name: 'mongoTeamId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(24, 4980277766271922482),
+        name: 'monthTxnsCount',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(25, 3760023279539317114),
+        name: 'paidAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(26, 5409833790296297504),
+        name: 'paymentBatchId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(27, 1207974410661233334),
+        name: 'paymentStatus',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(28, 3110994778862607061),
+        name: 'periodEndDate',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(29, 7224347279337415231),
+        name: 'periodStartDate',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(30, 8228270020475625374),
+        name: 'phoneNumber',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(31, 8628480010700501174),
+        name: 'processedAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(32, 1522097160754821204),
+        name: 'referralCode',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(33, 878845331773083939),
+        name: 'status',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(34, 1822011315611352411),
+        name: 'teamId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(35, 4780539646334083324),
+        name: 'txnsCount',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(36, 1909048546992364631),
+        name: 'updateMeta',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(37, 432614843143836682),
+        name: 'updatedAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(38, 6713888453034282707),
+        name: 'weekOf',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(39, 7963973470367217272),
+        name: 'weekTxnsCount',
+        type: 8,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(22, 7026388465598979319),
+    name: 'CashCountFieldSignUpPositionBox',
+    lastPropertyId: const obx_int.IdUid(13, 7217268511350695459),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 6411679349893260870),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 4756981461799129893),
+        name: 'dbId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 4041313560457450932),
+        name: 'fieldAgentId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 8377797439631240489),
+        name: 'firstName',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 5038513917928086436),
+        name: 'fullName',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 2011216069613893198),
+        name: 'image',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 1256523526156298972),
+        name: 'lastName',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(8, 6369560201852500188),
+        name: 'position',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(9, 4785997541225455460),
+        name: 'totalSignUps',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(10, 2040043371316771520),
+        name: 'totalSignUpsApproved',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(11, 3078512334668504865),
+        name: 'totalSignUpsInvalid',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(12, 8837721667207039051),
+        name: 'totalSignUpsPending',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(13, 7217268511350695459),
+        name: 'totalSignUpsRejected',
+        type: 8,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(23, 8504087852252682608),
+    name: 'CashCountFieldSignUpStatsBox',
+    lastPropertyId: const obx_int.IdUid(4, 3528485681141228299),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 4432476730937151089),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 8760554659502073111),
+        name: 'month',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 5145948262611165331),
+        name: 'today',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 3528485681141228299),
+        name: 'week',
+        type: 9,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(24, 1699975809197912982),
+    name: 'FieldAgentWeeklyEarningBox',
+    lastPropertyId: const obx_int.IdUid(11, 4559723871527907762),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 1260070963392618958),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 8861719279698083187),
+        name: 'approvedAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 1505115289674148426),
+        name: 'batchId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 2366198934950880292),
+        name: 'paidAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 5100890979378283238),
+        name: 'payoutStatus',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 6089296978946129757),
+        name: 'periodEndDate',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 3248176325803157293),
+        name: 'periodStartDate',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(8, 190011721505358200),
+        name: 'totalAcquisitions',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(9, 3728211254263445521),
+        name: 'totalEarnings',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(10, 6614659948136515274),
+        name: 'weekLabel',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(11, 4559723871527907762),
+        name: 'weekOf',
+        type: 9,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(25, 2690526521168380346),
+    name: 'FieldAgentWeeklyEarningsSummaryBox',
+    lastPropertyId: const obx_int.IdUid(10, 5011942343075539184),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 6785346267460919293),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 5384095944012583845),
+        name: 'batchId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 6106838269746824910),
+        name: 'commissionPerAcquisition',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 8409115579201246080),
+        name: 'paidAt',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 3378681393167223378),
+        name: 'payoutStatus',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 8287181743594451564),
+        name: 'periodEndDate',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 2185485841972518455),
+        name: 'periodStartDate',
+        type: 12,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(8, 3895184317567381201),
+        name: 'totalEarnings',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(9, 3125997748664602333),
+        name: 'totalSignUps',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(10, 5011942343075539184),
+        name: 'weekLabel',
+        type: 9,
+        flags: 0,
+      ),
     ],
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
@@ -715,7 +1107,7 @@ Future<obx.Store> openStore({
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
     entities: _entities,
-    lastEntityId: const obx_int.IdUid(20, 3921185338622067297),
+    lastEntityId: const obx_int.IdUid(25, 2690526521168380346),
     lastIndexId: const obx_int.IdUid(5, 8360414782938869669),
     lastRelationId: const obx_int.IdUid(0, 0),
     lastSequenceId: const obx_int.IdUid(0, 0),
@@ -737,6 +1129,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
       3735040337502674930,
       8119889653396101914,
       3346228968144275508,
+      2851251314550912979,
     ],
     retiredIndexUids: const [],
     retiredPropertyUids: const [
@@ -1030,6 +1423,36 @@ obx_int.ModelDefinition getObjectBoxModel() {
       6576216995235191970,
       6519672474009036381,
       2474186804949459003,
+      8333489055791111135,
+      4548536748823477922,
+      1837199048463628871,
+      875611790132478376,
+      3764772260803327932,
+      958095520644049601,
+      2995268697826826738,
+      1432262932073035031,
+      9209508261654703234,
+      8042879651313556216,
+      5200304212497397045,
+      5456317331045439930,
+      8875271250312223389,
+      8361773210385047668,
+      3257707974152910464,
+      7215090163771125270,
+      7576590344388059299,
+      1647466347239814860,
+      4112429504083072832,
+      5099032966665944365,
+      2331721514470387294,
+      6180518091701855126,
+      2744992489110683474,
+      3046830927486095649,
+      7463310167697249955,
+      2155315550432537951,
+      8705705820279152950,
+      1890090956892725462,
+      7896660738470951998,
+      6266113098038628457,
     ],
     retiredRelationUids: const [],
     modelVersion: 5,
@@ -1062,12 +1485,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final banReasonOffset = object.banReason == null
             ? null
             : fbb.writeString(object.banReason!);
-        final createMetaOffset = object.createMeta == null
-            ? null
-            : fbb.writeString(object.createMeta!);
-        final deletedMetaOffset = object.deletedMeta == null
-            ? null
-            : fbb.writeString(object.deletedMeta!);
         final displayUsernameOffset = object.displayUsername == null
             ? null
             : fbb.writeString(object.displayUsername!);
@@ -1124,18 +1541,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final teamTypeOffset = object.teamType == null
             ? null
             : fbb.writeString(object.teamType!);
-        final updateMetaOffset = object.updateMeta == null
-            ? null
-            : fbb.writeString(object.updateMeta!);
         final userIdOffset = object.userId == null
             ? null
             : fbb.writeString(object.userId!);
         final usernameOffset = object.username == null
             ? null
             : fbb.writeString(object.username!);
-        final currentLocationOffset = object.currentLocation == null
-            ? null
-            : fbb.writeString(object.currentLocation!);
         fbb.startTable(45);
         fbb.addInt64(0, object.id);
         fbb.addOffset(2, idRefOffset);
@@ -1145,11 +1556,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addInt64(6, object.banExpires);
         fbb.addOffset(7, banReasonOffset);
         fbb.addBool(8, object.banned);
-        fbb.addOffset(9, createMetaOffset);
         fbb.addInt64(10, object.createdAt);
         fbb.addFloat64(11, object.dbId);
-        fbb.addInt64(12, object.deletedAt);
-        fbb.addOffset(13, deletedMetaOffset);
         fbb.addOffset(14, displayUsernameOffset);
         fbb.addOffset(15, emailOffset);
         fbb.addBool(16, object.emailVerified);
@@ -1174,11 +1582,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addOffset(35, teamMemberIdOffset);
         fbb.addOffset(36, teamTypeOffset);
         fbb.addBool(37, object.twoFactorEnabled);
-        fbb.addOffset(38, updateMetaOffset);
         fbb.addInt64(39, object.updatedAt);
         fbb.addOffset(40, userIdOffset);
         fbb.addOffset(41, usernameOffset);
-        fbb.addOffset(42, currentLocationOffset);
         fbb.addInt64(43, object.creationTime);
         fbb.finish(fbb.endTable());
         return object.id;
@@ -1223,31 +1629,17 @@ obx_int.ModelDefinition getObjectBoxModel() {
           rootOffset,
           20,
         );
-        final createMetaParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGetNullable(buffer, rootOffset, 22);
         final createdAtParam = const fb.Int64Reader().vTableGet(
           buffer,
           rootOffset,
           24,
           0,
         );
-        final currentLocationParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGetNullable(buffer, rootOffset, 88);
         final dbIdParam = const fb.Float64Reader().vTableGetNullable(
           buffer,
           rootOffset,
           26,
         );
-        final deletedAtParam = const fb.Int64Reader().vTableGetNullable(
-          buffer,
-          rootOffset,
-          28,
-        );
-        final deletedMetaParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGetNullable(buffer, rootOffset, 30);
         final displayUsernameParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGetNullable(buffer, rootOffset, 32);
@@ -1323,9 +1715,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
           rootOffset,
           78,
         );
-        final updateMetaParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGetNullable(buffer, rootOffset, 80);
         final updatedAtParam = const fb.Int64Reader().vTableGet(
           buffer,
           rootOffset,
@@ -1348,12 +1737,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
           banExpires: banExpiresParam,
           banReason: banReasonParam,
           banned: bannedParam,
-          createMeta: createMetaParam,
           createdAt: createdAtParam,
-          currentLocation: currentLocationParam,
           dbId: dbIdParam,
-          deletedAt: deletedAtParam,
-          deletedMeta: deletedMetaParam,
           displayUsername: displayUsernameParam,
           email: emailParam,
           emailVerified: emailVerifiedParam,
@@ -1378,7 +1763,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
           teamMemberId: teamMemberIdParam,
           teamType: teamTypeParam,
           twoFactorEnabled: twoFactorEnabledParam,
-          updateMeta: updateMetaParam,
           updatedAt: updatedAtParam,
           userId: userIdParam,
           username: usernameParam,
@@ -1387,206 +1771,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         return object;
       },
     ),
-    CashCountFieldSignUpBox: obx_int.EntityDefinition<CashCountFieldSignUpBox>(
-      model: _entities[1],
-      toOneRelations: (CashCountFieldSignUpBox object) => [],
-      toManyRelations: (CashCountFieldSignUpBox object) => {},
-      getId: (CashCountFieldSignUpBox object) => object.id,
-      setId: (CashCountFieldSignUpBox object, int id) {
-        object.id = id;
-      },
-      objectToFB: (CashCountFieldSignUpBox object, fb.Builder fbb) {
-        final dbIdOffset = fbb.writeString(object.dbId);
-        final completedMetaOffset = object.completedMeta == null
-            ? null
-            : fbb.writeString(object.completedMeta!);
-        final createMetaOffset = object.createMeta == null
-            ? null
-            : fbb.writeString(object.createMeta!);
-        final creatorIdOffset = fbb.writeString(object.creatorId);
-        final deletedMetaOffset = object.deletedMeta == null
-            ? null
-            : fbb.writeString(object.deletedMeta!);
-        final deviceIdOffset = fbb.writeString(object.deviceId);
-        final deviceInfoOffset = fbb.writeString(object.deviceInfo);
-        final fieldAgentIdOffset = fbb.writeString(object.fieldAgentId);
-        final mongoIdOffset = fbb.writeString(object.mongoId);
-        final phoneNumberOffset = fbb.writeString(object.phoneNumber);
-        final referralCodeOffset = fbb.writeString(object.referralCode);
-        final rejectionMetaOffset = object.rejectionMeta == null
-            ? null
-            : fbb.writeString(object.rejectionMeta!);
-        final rejectionReasonOffset = object.rejectionReason == null
-            ? null
-            : fbb.writeString(object.rejectionReason!);
-        final statusOffset = fbb.writeString(object.status);
-        final teamIdOffset = object.teamId == null
-            ? null
-            : fbb.writeString(object.teamId!);
-        final updateMetaOffset = object.updateMeta == null
-            ? null
-            : fbb.writeString(object.updateMeta!);
-        fbb.startTable(27);
-        fbb.addInt64(0, object.id);
-        fbb.addOffset(2, dbIdOffset);
-        fbb.addInt64(3, object.completedAt);
-        fbb.addOffset(4, completedMetaOffset);
-        fbb.addOffset(5, createMetaOffset);
-        fbb.addInt64(6, object.createdAt);
-        fbb.addOffset(7, creatorIdOffset);
-        fbb.addInt64(8, object.deletedAt);
-        fbb.addOffset(9, deletedMetaOffset);
-        fbb.addOffset(10, deviceIdOffset);
-        fbb.addOffset(11, deviceInfoOffset);
-        fbb.addInt64(12, object.expiredAt);
-        fbb.addOffset(13, fieldAgentIdOffset);
-        fbb.addOffset(14, mongoIdOffset);
-        fbb.addOffset(15, phoneNumberOffset);
-        fbb.addOffset(16, referralCodeOffset);
-        fbb.addInt64(17, object.rejectionAt);
-        fbb.addOffset(18, rejectionMetaOffset);
-        fbb.addOffset(19, rejectionReasonOffset);
-        fbb.addInt64(20, object.statUpdatedAt);
-        fbb.addOffset(21, statusOffset);
-        fbb.addOffset(22, teamIdOffset);
-        fbb.addOffset(23, updateMetaOffset);
-        fbb.addInt64(24, object.updatedAt);
-        fbb.addInt64(25, object.creationTime);
-        fbb.finish(fbb.endTable());
-        return object.id;
-      },
-      objectFromFB: (obx.Store store, ByteData fbData) {
-        final buffer = fb.BufferContext(fbData);
-        final rootOffset = buffer.derefObject(0);
-        final idParam = const fb.Int64Reader().vTableGet(
-          buffer,
-          rootOffset,
-          4,
-          0,
-        );
-        final creationTimeParam = const fb.Int64Reader().vTableGet(
-          buffer,
-          rootOffset,
-          54,
-          0,
-        );
-        final dbIdParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGet(buffer, rootOffset, 8, '');
-        final completedAtParam = const fb.Int64Reader().vTableGetNullable(
-          buffer,
-          rootOffset,
-          10,
-        );
-        final completedMetaParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGetNullable(buffer, rootOffset, 12);
-        final createMetaParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGetNullable(buffer, rootOffset, 14);
-        final createdAtParam = const fb.Int64Reader().vTableGet(
-          buffer,
-          rootOffset,
-          16,
-          0,
-        );
-        final creatorIdParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGet(buffer, rootOffset, 18, '');
-        final deletedAtParam = const fb.Int64Reader().vTableGetNullable(
-          buffer,
-          rootOffset,
-          20,
-        );
-        final deletedMetaParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGetNullable(buffer, rootOffset, 22);
-        final deviceIdParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGet(buffer, rootOffset, 24, '');
-        final deviceInfoParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGet(buffer, rootOffset, 26, '');
-        final expiredAtParam = const fb.Int64Reader().vTableGetNullable(
-          buffer,
-          rootOffset,
-          28,
-        );
-        final fieldAgentIdParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGet(buffer, rootOffset, 30, '');
-        final mongoIdParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGet(buffer, rootOffset, 32, '');
-        final phoneNumberParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGet(buffer, rootOffset, 34, '');
-        final referralCodeParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGet(buffer, rootOffset, 36, '');
-        final rejectionAtParam = const fb.Int64Reader().vTableGetNullable(
-          buffer,
-          rootOffset,
-          38,
-        );
-        final rejectionMetaParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGetNullable(buffer, rootOffset, 40);
-        final rejectionReasonParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGetNullable(buffer, rootOffset, 42);
-        final statUpdatedAtParam = const fb.Int64Reader().vTableGetNullable(
-          buffer,
-          rootOffset,
-          44,
-        );
-        final statusParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGet(buffer, rootOffset, 46, '');
-        final teamIdParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGetNullable(buffer, rootOffset, 48);
-        final updateMetaParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGetNullable(buffer, rootOffset, 50);
-        final updatedAtParam = const fb.Int64Reader().vTableGetNullable(
-          buffer,
-          rootOffset,
-          52,
-        );
-        final object = CashCountFieldSignUpBox(
-          id: idParam,
-          creationTime: creationTimeParam,
-          dbId: dbIdParam,
-          completedAt: completedAtParam,
-          completedMeta: completedMetaParam,
-          createMeta: createMetaParam,
-          createdAt: createdAtParam,
-          creatorId: creatorIdParam,
-          deletedAt: deletedAtParam,
-          deletedMeta: deletedMetaParam,
-          deviceId: deviceIdParam,
-          deviceInfo: deviceInfoParam,
-          expiredAt: expiredAtParam,
-          fieldAgentId: fieldAgentIdParam,
-          mongoId: mongoIdParam,
-          phoneNumber: phoneNumberParam,
-          referralCode: referralCodeParam,
-          rejectionAt: rejectionAtParam,
-          rejectionMeta: rejectionMetaParam,
-          rejectionReason: rejectionReasonParam,
-          statUpdatedAt: statUpdatedAtParam,
-          status: statusParam,
-          teamId: teamIdParam,
-          updateMeta: updateMetaParam,
-          updatedAt: updatedAtParam,
-        );
-
-        return object;
-      },
-    ),
     FieldAgentBox: obx_int.EntityDefinition<FieldAgentBox>(
-      model: _entities[2],
+      model: _entities[1],
       toOneRelations: (FieldAgentBox object) => [],
       toManyRelations: (FieldAgentBox object) => {},
       getId: (FieldAgentBox object) => object.id,
@@ -1648,7 +1834,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final userIdOffset = object.userId == null
             ? null
             : fbb.writeString(object.userId!);
-        fbb.startTable(37);
+        final invitationStatusOffset = object.invitationStatus == null
+            ? null
+            : fbb.writeString(object.invitationStatus!);
+        fbb.startTable(48);
         fbb.addInt64(0, object.id);
         fbb.addInt64(1, object.creationTime);
         fbb.addOffset(2, dbIdOffset);
@@ -1685,6 +1874,17 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addOffset(33, updateMetaOffset);
         fbb.addInt64(34, object.updatedAt);
         fbb.addOffset(35, userIdOffset);
+        fbb.addFloat64(36, object.ayekooLeaderboardPosition);
+        fbb.addFloat64(37, object.cashCountLeaderboardPosition);
+        fbb.addOffset(38, invitationStatusOffset);
+        fbb.addFloat64(39, object.totalAyekooCollectionsApprovedCount);
+        fbb.addFloat64(40, object.totalAyekooCollectionsInvalidCount);
+        fbb.addFloat64(41, object.totalAyekooCollectionsPendingCount);
+        fbb.addFloat64(42, object.totalAyekooCollectionsRejectedCount);
+        fbb.addFloat64(43, object.totalCashCountFieldSignUpsApprovedCount);
+        fbb.addFloat64(44, object.totalCashCountFieldSignUpsInvalidCount);
+        fbb.addFloat64(45, object.totalCashCountFieldSignUpsPendingCount);
+        fbb.addFloat64(46, object.totalCashCountFieldSignUpsRejectedCount);
         fbb.finish(fbb.endTable());
         return object.id;
       },
@@ -1706,6 +1906,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final dbIdParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGet(buffer, rootOffset, 8, '');
+        final ayekooLeaderboardPositionParam = const fb.Float64Reader()
+            .vTableGetNullable(buffer, rootOffset, 76);
+        final cashCountLeaderboardPositionParam = const fb.Float64Reader()
+            .vTableGetNullable(buffer, rootOffset, 78);
         final countryCityIdParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGetNullable(buffer, rootOffset, 10);
@@ -1767,6 +1971,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final invitationIdParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGetNullable(buffer, rootOffset, 44);
+        final invitationStatusParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 80);
         final lastNameParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGet(buffer, rootOffset, 46, '');
@@ -1793,12 +2000,28 @@ obx_int.ModelDefinition getObjectBoxModel() {
         ).vTableGetNullable(buffer, rootOffset, 60);
         final totalAyekooAllocationsCountParam = const fb.Float64Reader()
             .vTableGetNullable(buffer, rootOffset, 62);
+        final totalAyekooCollectionsApprovedCountParam =
+            const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 82);
         final totalAyekooCollectionsCountParam = const fb.Float64Reader()
             .vTableGetNullable(buffer, rootOffset, 64);
+        final totalAyekooCollectionsInvalidCountParam = const fb.Float64Reader()
+            .vTableGetNullable(buffer, rootOffset, 84);
+        final totalAyekooCollectionsPendingCountParam = const fb.Float64Reader()
+            .vTableGetNullable(buffer, rootOffset, 86);
+        final totalAyekooCollectionsRejectedCountParam =
+            const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 88);
         final totalCashCountAllocationsCountParam = const fb.Float64Reader()
             .vTableGetNullable(buffer, rootOffset, 66);
+        final totalCashCountFieldSignUpsApprovedCountParam =
+            const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 90);
         final totalCashCountFieldSignUpsCountParam = const fb.Float64Reader()
             .vTableGetNullable(buffer, rootOffset, 68);
+        final totalCashCountFieldSignUpsInvalidCountParam =
+            const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 92);
+        final totalCashCountFieldSignUpsPendingCountParam =
+            const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 94);
+        final totalCashCountFieldSignUpsRejectedCountParam =
+            const fb.Float64Reader().vTableGetNullable(buffer, rootOffset, 96);
         final updateMetaParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGetNullable(buffer, rootOffset, 70);
@@ -1814,6 +2037,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
           id: idParam,
           creationTime: creationTimeParam,
           dbId: dbIdParam,
+          ayekooLeaderboardPosition: ayekooLeaderboardPositionParam,
+          cashCountLeaderboardPosition: cashCountLeaderboardPositionParam,
           countryCityId: countryCityIdParam,
           countryCityName: countryCityNameParam,
           countryCode: countryCodeParam,
@@ -1832,6 +2057,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fullName: fullNameParam,
           gender: genderParam,
           invitationId: invitationIdParam,
+          invitationStatus: invitationStatusParam,
           lastName: lastNameParam,
           middleName: middleNameParam,
           phoneNumber: phoneNumberParam,
@@ -1841,9 +2067,25 @@ obx_int.ModelDefinition getObjectBoxModel() {
           status: statusParam,
           teamId: teamIdParam,
           totalAyekooAllocationsCount: totalAyekooAllocationsCountParam,
+          totalAyekooCollectionsApprovedCount:
+              totalAyekooCollectionsApprovedCountParam,
           totalAyekooCollectionsCount: totalAyekooCollectionsCountParam,
+          totalAyekooCollectionsInvalidCount:
+              totalAyekooCollectionsInvalidCountParam,
+          totalAyekooCollectionsPendingCount:
+              totalAyekooCollectionsPendingCountParam,
+          totalAyekooCollectionsRejectedCount:
+              totalAyekooCollectionsRejectedCountParam,
           totalCashCountAllocationsCount: totalCashCountAllocationsCountParam,
+          totalCashCountFieldSignUpsApprovedCount:
+              totalCashCountFieldSignUpsApprovedCountParam,
           totalCashCountFieldSignUpsCount: totalCashCountFieldSignUpsCountParam,
+          totalCashCountFieldSignUpsInvalidCount:
+              totalCashCountFieldSignUpsInvalidCountParam,
+          totalCashCountFieldSignUpsPendingCount:
+              totalCashCountFieldSignUpsPendingCountParam,
+          totalCashCountFieldSignUpsRejectedCount:
+              totalCashCountFieldSignUpsRejectedCountParam,
           updateMeta: updateMetaParam,
           updatedAt: updatedAtParam,
           userId: userIdParam,
@@ -1852,6 +2094,662 @@ obx_int.ModelDefinition getObjectBoxModel() {
         return object;
       },
     ),
+    CashCountFieldSignUpBox: obx_int.EntityDefinition<CashCountFieldSignUpBox>(
+      model: _entities[2],
+      toOneRelations: (CashCountFieldSignUpBox object) => [],
+      toManyRelations: (CashCountFieldSignUpBox object) => {},
+      getId: (CashCountFieldSignUpBox object) => object.id,
+      setId: (CashCountFieldSignUpBox object, int id) {
+        object.id = id;
+      },
+      objectToFB: (CashCountFieldSignUpBox object, fb.Builder fbb) {
+        final dbIdOffset = fbb.writeString(object.dbId);
+        final businessNameOffset = fbb.writeString(object.businessName);
+        final cashCountTeamIdOffset = object.cashCountTeamId == null
+            ? null
+            : fbb.writeString(object.cashCountTeamId!);
+        final cashCountUserFullNameOffset = object.cashCountUserFullName == null
+            ? null
+            : fbb.writeString(object.cashCountUserFullName!);
+        final cashCountUserIdOffset = object.cashCountUserId == null
+            ? null
+            : fbb.writeString(object.cashCountUserId!);
+        final cashCountUserRoleOffset = object.cashCountUserRole == null
+            ? null
+            : fbb.writeString(object.cashCountUserRole!);
+        final createMetaOffset = object.createMeta == null
+            ? null
+            : fbb.writeString(object.createMeta!);
+        final creatorIdOffset = fbb.writeString(object.creatorId);
+        final deletedMetaOffset = object.deletedMeta == null
+            ? null
+            : fbb.writeString(object.deletedMeta!);
+        final deviceIdOffset = fbb.writeString(object.deviceId);
+        final deviceInfoOffset = fbb.writeString(object.deviceInfo);
+        final fieldAgentIdOffset = fbb.writeString(object.fieldAgentId);
+        final fieldAgentNameOffset = object.fieldAgentName == null
+            ? null
+            : fbb.writeString(object.fieldAgentName!);
+        final invalidRejectionReasonOffset =
+            object.invalidRejectionReason == null
+            ? null
+            : fbb.writeString(object.invalidRejectionReason!);
+        final mongoIdOffset = fbb.writeString(object.mongoId);
+        final mongoTeamIdOffset = fbb.writeString(object.mongoTeamId);
+        final paymentBatchIdOffset = object.paymentBatchId == null
+            ? null
+            : fbb.writeString(object.paymentBatchId!);
+        final paymentStatusOffset = object.paymentStatus == null
+            ? null
+            : fbb.writeString(object.paymentStatus!);
+        final phoneNumberOffset = fbb.writeString(object.phoneNumber);
+        final referralCodeOffset = fbb.writeString(object.referralCode);
+        final statusOffset = fbb.writeString(object.status);
+        final teamIdOffset = object.teamId == null
+            ? null
+            : fbb.writeString(object.teamId!);
+        final updateMetaOffset = object.updateMeta == null
+            ? null
+            : fbb.writeString(object.updateMeta!);
+        final weekOfOffset = object.weekOf == null
+            ? null
+            : fbb.writeString(object.weekOf!);
+        fbb.startTable(40);
+        fbb.addInt64(0, object.id);
+        fbb.addInt64(1, object.creationTime);
+        fbb.addOffset(2, dbIdOffset);
+        fbb.addOffset(3, businessNameOffset);
+        fbb.addOffset(4, cashCountTeamIdOffset);
+        fbb.addOffset(5, cashCountUserFullNameOffset);
+        fbb.addOffset(6, cashCountUserIdOffset);
+        fbb.addOffset(7, cashCountUserRoleOffset);
+        fbb.addFloat64(8, object.commissionAmount);
+        fbb.addOffset(9, createMetaOffset);
+        fbb.addInt64(10, object.createdAt);
+        fbb.addOffset(11, creatorIdOffset);
+        fbb.addFloat64(12, object.dateEarned);
+        fbb.addInt64(13, object.deletedAt);
+        fbb.addOffset(14, deletedMetaOffset);
+        fbb.addOffset(15, deviceIdOffset);
+        fbb.addOffset(16, deviceInfoOffset);
+        fbb.addInt64(17, object.expiredAt);
+        fbb.addOffset(18, fieldAgentIdOffset);
+        fbb.addOffset(19, fieldAgentNameOffset);
+        fbb.addOffset(20, invalidRejectionReasonOffset);
+        fbb.addOffset(21, mongoIdOffset);
+        fbb.addOffset(22, mongoTeamIdOffset);
+        fbb.addFloat64(23, object.monthTxnsCount);
+        fbb.addInt64(24, object.paidAt);
+        fbb.addOffset(25, paymentBatchIdOffset);
+        fbb.addOffset(26, paymentStatusOffset);
+        fbb.addInt64(27, object.periodEndDate);
+        fbb.addInt64(28, object.periodStartDate);
+        fbb.addOffset(29, phoneNumberOffset);
+        fbb.addInt64(30, object.processedAt);
+        fbb.addOffset(31, referralCodeOffset);
+        fbb.addOffset(32, statusOffset);
+        fbb.addOffset(33, teamIdOffset);
+        fbb.addFloat64(34, object.txnsCount);
+        fbb.addOffset(35, updateMetaOffset);
+        fbb.addInt64(36, object.updatedAt);
+        fbb.addOffset(37, weekOfOffset);
+        fbb.addFloat64(38, object.weekTxnsCount);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+        final idParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          4,
+          0,
+        );
+        final creationTimeParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          6,
+          0,
+        );
+        final dbIdParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 8, '');
+        final businessNameParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 10, '');
+        final cashCountTeamIdParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 12);
+        final cashCountUserFullNameParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 14);
+        final cashCountUserIdParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 16);
+        final cashCountUserRoleParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 18);
+        final commissionAmountParam = const fb.Float64Reader()
+            .vTableGetNullable(buffer, rootOffset, 20);
+        final createMetaParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 22);
+        final createdAtParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          24,
+          0,
+        );
+        final creatorIdParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 26, '');
+        final dateEarnedParam = const fb.Float64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          28,
+        );
+        final deletedAtParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          30,
+        );
+        final deletedMetaParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 32);
+        final deviceIdParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 34, '');
+        final deviceInfoParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 36, '');
+        final expiredAtParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          38,
+        );
+        final fieldAgentIdParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 40, '');
+        final fieldAgentNameParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 42);
+        final invalidRejectionReasonParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 44);
+        final mongoIdParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 46, '');
+        final mongoTeamIdParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 48, '');
+        final monthTxnsCountParam = const fb.Float64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          50,
+        );
+        final paidAtParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          52,
+        );
+        final paymentBatchIdParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 54);
+        final paymentStatusParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 56);
+        final periodEndDateParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          58,
+        );
+        final periodStartDateParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          60,
+        );
+        final phoneNumberParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 62, '');
+        final processedAtParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          64,
+        );
+        final referralCodeParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 66, '');
+        final statusParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 68, '');
+        final teamIdParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 70);
+        final txnsCountParam = const fb.Float64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          72,
+        );
+        final updateMetaParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 74);
+        final updatedAtParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          76,
+        );
+        final weekOfParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 78);
+        final weekTxnsCountParam = const fb.Float64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          80,
+        );
+        final object = CashCountFieldSignUpBox(
+          id: idParam,
+          creationTime: creationTimeParam,
+          dbId: dbIdParam,
+          businessName: businessNameParam,
+          cashCountTeamId: cashCountTeamIdParam,
+          cashCountUserFullName: cashCountUserFullNameParam,
+          cashCountUserId: cashCountUserIdParam,
+          cashCountUserRole: cashCountUserRoleParam,
+          commissionAmount: commissionAmountParam,
+          createMeta: createMetaParam,
+          createdAt: createdAtParam,
+          creatorId: creatorIdParam,
+          dateEarned: dateEarnedParam,
+          deletedAt: deletedAtParam,
+          deletedMeta: deletedMetaParam,
+          deviceId: deviceIdParam,
+          deviceInfo: deviceInfoParam,
+          expiredAt: expiredAtParam,
+          fieldAgentId: fieldAgentIdParam,
+          fieldAgentName: fieldAgentNameParam,
+          invalidRejectionReason: invalidRejectionReasonParam,
+          mongoId: mongoIdParam,
+          mongoTeamId: mongoTeamIdParam,
+          monthTxnsCount: monthTxnsCountParam,
+          paidAt: paidAtParam,
+          paymentBatchId: paymentBatchIdParam,
+          paymentStatus: paymentStatusParam,
+          periodEndDate: periodEndDateParam,
+          periodStartDate: periodStartDateParam,
+          phoneNumber: phoneNumberParam,
+          processedAt: processedAtParam,
+          referralCode: referralCodeParam,
+          status: statusParam,
+          teamId: teamIdParam,
+          txnsCount: txnsCountParam,
+          updateMeta: updateMetaParam,
+          updatedAt: updatedAtParam,
+          weekOf: weekOfParam,
+          weekTxnsCount: weekTxnsCountParam,
+        );
+
+        return object;
+      },
+    ),
+    CashCountFieldSignUpPositionBox:
+        obx_int.EntityDefinition<CashCountFieldSignUpPositionBox>(
+          model: _entities[3],
+          toOneRelations: (CashCountFieldSignUpPositionBox object) => [],
+          toManyRelations: (CashCountFieldSignUpPositionBox object) => {},
+          getId: (CashCountFieldSignUpPositionBox object) => object.id,
+          setId: (CashCountFieldSignUpPositionBox object, int id) {
+            object.id = id;
+          },
+          objectToFB: (CashCountFieldSignUpPositionBox object, fb.Builder fbb) {
+            final dbIdOffset = fbb.writeString(object.dbId);
+            final fieldAgentIdOffset = fbb.writeString(object.fieldAgentId);
+            final firstNameOffset = fbb.writeString(object.firstName);
+            final fullNameOffset = fbb.writeString(object.fullName);
+            final imageOffset = object.image == null
+                ? null
+                : fbb.writeString(object.image!);
+            final lastNameOffset = fbb.writeString(object.lastName);
+            fbb.startTable(14);
+            fbb.addInt64(0, object.id);
+            fbb.addOffset(1, dbIdOffset);
+            fbb.addOffset(2, fieldAgentIdOffset);
+            fbb.addOffset(3, firstNameOffset);
+            fbb.addOffset(4, fullNameOffset);
+            fbb.addOffset(5, imageOffset);
+            fbb.addOffset(6, lastNameOffset);
+            fbb.addFloat64(7, object.position);
+            fbb.addFloat64(8, object.totalSignUps);
+            fbb.addFloat64(9, object.totalSignUpsApproved);
+            fbb.addFloat64(10, object.totalSignUpsInvalid);
+            fbb.addFloat64(11, object.totalSignUpsPending);
+            fbb.addFloat64(12, object.totalSignUpsRejected);
+            fbb.finish(fbb.endTable());
+            return object.id;
+          },
+          objectFromFB: (obx.Store store, ByteData fbData) {
+            final buffer = fb.BufferContext(fbData);
+            final rootOffset = buffer.derefObject(0);
+            final idParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              4,
+              0,
+            );
+            final dbIdParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGet(buffer, rootOffset, 6, '');
+            final fieldAgentIdParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGet(buffer, rootOffset, 8, '');
+            final firstNameParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGet(buffer, rootOffset, 10, '');
+            final fullNameParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGet(buffer, rootOffset, 12, '');
+            final imageParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGetNullable(buffer, rootOffset, 14);
+            final lastNameParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGet(buffer, rootOffset, 16, '');
+            final positionParam = const fb.Float64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              18,
+              0,
+            );
+            final totalSignUpsParam = const fb.Float64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              20,
+              0,
+            );
+            final totalSignUpsApprovedParam = const fb.Float64Reader()
+                .vTableGet(buffer, rootOffset, 22, 0);
+            final totalSignUpsInvalidParam = const fb.Float64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              24,
+              0,
+            );
+            final totalSignUpsPendingParam = const fb.Float64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              26,
+              0,
+            );
+            final totalSignUpsRejectedParam = const fb.Float64Reader()
+                .vTableGet(buffer, rootOffset, 28, 0);
+            final object = CashCountFieldSignUpPositionBox(
+              id: idParam,
+              dbId: dbIdParam,
+              fieldAgentId: fieldAgentIdParam,
+              firstName: firstNameParam,
+              fullName: fullNameParam,
+              image: imageParam,
+              lastName: lastNameParam,
+              position: positionParam,
+              totalSignUps: totalSignUpsParam,
+              totalSignUpsApproved: totalSignUpsApprovedParam,
+              totalSignUpsInvalid: totalSignUpsInvalidParam,
+              totalSignUpsPending: totalSignUpsPendingParam,
+              totalSignUpsRejected: totalSignUpsRejectedParam,
+            );
+
+            return object;
+          },
+        ),
+    CashCountFieldSignUpStatsBox:
+        obx_int.EntityDefinition<CashCountFieldSignUpStatsBox>(
+          model: _entities[4],
+          toOneRelations: (CashCountFieldSignUpStatsBox object) => [],
+          toManyRelations: (CashCountFieldSignUpStatsBox object) => {},
+          getId: (CashCountFieldSignUpStatsBox object) => object.id,
+          setId: (CashCountFieldSignUpStatsBox object, int id) {
+            object.id = id;
+          },
+          objectToFB: (CashCountFieldSignUpStatsBox object, fb.Builder fbb) {
+            final monthOffset = fbb.writeString(object.month);
+            final todayOffset = fbb.writeString(object.today);
+            final weekOffset = fbb.writeString(object.week);
+            fbb.startTable(5);
+            fbb.addInt64(0, object.id);
+            fbb.addOffset(1, monthOffset);
+            fbb.addOffset(2, todayOffset);
+            fbb.addOffset(3, weekOffset);
+            fbb.finish(fbb.endTable());
+            return object.id;
+          },
+          objectFromFB: (obx.Store store, ByteData fbData) {
+            final buffer = fb.BufferContext(fbData);
+            final rootOffset = buffer.derefObject(0);
+            final idParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              4,
+              0,
+            );
+            final monthParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGet(buffer, rootOffset, 6, '');
+            final todayParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGet(buffer, rootOffset, 8, '');
+            final weekParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGet(buffer, rootOffset, 10, '');
+            final object = CashCountFieldSignUpStatsBox(
+              id: idParam,
+              month: monthParam,
+              today: todayParam,
+              week: weekParam,
+            );
+
+            return object;
+          },
+        ),
+    FieldAgentWeeklyEarningBox:
+        obx_int.EntityDefinition<FieldAgentWeeklyEarningBox>(
+          model: _entities[5],
+          toOneRelations: (FieldAgentWeeklyEarningBox object) => [],
+          toManyRelations: (FieldAgentWeeklyEarningBox object) => {},
+          getId: (FieldAgentWeeklyEarningBox object) => object.id,
+          setId: (FieldAgentWeeklyEarningBox object, int id) {
+            object.id = id;
+          },
+          objectToFB: (FieldAgentWeeklyEarningBox object, fb.Builder fbb) {
+            final batchIdOffset = fbb.writeString(object.batchId);
+            final payoutStatusOffset = fbb.writeString(object.payoutStatus);
+            final weekLabelOffset = fbb.writeString(object.weekLabel);
+            final weekOfOffset = object.weekOf == null
+                ? null
+                : fbb.writeString(object.weekOf!);
+            fbb.startTable(12);
+            fbb.addInt64(0, object.id);
+            fbb.addInt64(1, object.approvedAt);
+            fbb.addOffset(2, batchIdOffset);
+            fbb.addInt64(3, object.paidAt);
+            fbb.addOffset(4, payoutStatusOffset);
+            fbb.addInt64(5, object.periodEndDate);
+            fbb.addInt64(6, object.periodStartDate);
+            fbb.addFloat64(7, object.totalAcquisitions);
+            fbb.addFloat64(8, object.totalEarnings);
+            fbb.addOffset(9, weekLabelOffset);
+            fbb.addOffset(10, weekOfOffset);
+            fbb.finish(fbb.endTable());
+            return object.id;
+          },
+          objectFromFB: (obx.Store store, ByteData fbData) {
+            final buffer = fb.BufferContext(fbData);
+            final rootOffset = buffer.derefObject(0);
+            final idParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              4,
+              0,
+            );
+            final approvedAtParam = const fb.Int64Reader().vTableGetNullable(
+              buffer,
+              rootOffset,
+              6,
+            );
+            final batchIdParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGet(buffer, rootOffset, 8, '');
+            final paidAtParam = const fb.Int64Reader().vTableGetNullable(
+              buffer,
+              rootOffset,
+              10,
+            );
+            final payoutStatusParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGet(buffer, rootOffset, 12, '');
+            final periodEndDateParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              14,
+              0,
+            );
+            final periodStartDateParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              16,
+              0,
+            );
+            final totalAcquisitionsParam = const fb.Float64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              18,
+              0,
+            );
+            final totalEarningsParam = const fb.Float64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              20,
+              0,
+            );
+            final weekLabelParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGet(buffer, rootOffset, 22, '');
+            final weekOfParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGetNullable(buffer, rootOffset, 24);
+            final object = FieldAgentWeeklyEarningBox(
+              id: idParam,
+              approvedAt: approvedAtParam,
+              batchId: batchIdParam,
+              paidAt: paidAtParam,
+              payoutStatus: payoutStatusParam,
+              periodEndDate: periodEndDateParam,
+              periodStartDate: periodStartDateParam,
+              totalAcquisitions: totalAcquisitionsParam,
+              totalEarnings: totalEarningsParam,
+              weekLabel: weekLabelParam,
+              weekOf: weekOfParam,
+            );
+
+            return object;
+          },
+        ),
+    FieldAgentWeeklyEarningsSummaryBox:
+        obx_int.EntityDefinition<FieldAgentWeeklyEarningsSummaryBox>(
+          model: _entities[6],
+          toOneRelations: (FieldAgentWeeklyEarningsSummaryBox object) => [],
+          toManyRelations: (FieldAgentWeeklyEarningsSummaryBox object) => {},
+          getId: (FieldAgentWeeklyEarningsSummaryBox object) => object.id,
+          setId: (FieldAgentWeeklyEarningsSummaryBox object, int id) {
+            object.id = id;
+          },
+          objectToFB:
+              (FieldAgentWeeklyEarningsSummaryBox object, fb.Builder fbb) {
+                final batchIdOffset = object.batchId == null
+                    ? null
+                    : fbb.writeString(object.batchId!);
+                final payoutStatusOffset = object.payoutStatus == null
+                    ? null
+                    : fbb.writeString(object.payoutStatus!);
+                final weekLabelOffset = fbb.writeString(object.weekLabel);
+                fbb.startTable(11);
+                fbb.addInt64(0, object.id);
+                fbb.addOffset(1, batchIdOffset);
+                fbb.addFloat64(2, object.commissionPerAcquisition);
+                fbb.addInt64(3, object.paidAt);
+                fbb.addOffset(4, payoutStatusOffset);
+                fbb.addInt64(5, object.periodEndDate);
+                fbb.addInt64(6, object.periodStartDate);
+                fbb.addFloat64(7, object.totalEarnings);
+                fbb.addFloat64(8, object.totalSignUps);
+                fbb.addOffset(9, weekLabelOffset);
+                fbb.finish(fbb.endTable());
+                return object.id;
+              },
+          objectFromFB: (obx.Store store, ByteData fbData) {
+            final buffer = fb.BufferContext(fbData);
+            final rootOffset = buffer.derefObject(0);
+            final idParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              4,
+              0,
+            );
+            final batchIdParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGetNullable(buffer, rootOffset, 6);
+            final commissionPerAcquisitionParam = const fb.Float64Reader()
+                .vTableGet(buffer, rootOffset, 8, 0);
+            final paidAtParam = const fb.Int64Reader().vTableGetNullable(
+              buffer,
+              rootOffset,
+              10,
+            );
+            final payoutStatusParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGetNullable(buffer, rootOffset, 12);
+            final periodEndDateParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              14,
+              0,
+            );
+            final periodStartDateParam = const fb.Int64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              16,
+              0,
+            );
+            final totalEarningsParam = const fb.Float64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              18,
+              0,
+            );
+            final totalSignUpsParam = const fb.Float64Reader().vTableGet(
+              buffer,
+              rootOffset,
+              20,
+              0,
+            );
+            final weekLabelParam = const fb.StringReader(
+              asciiOptimization: true,
+            ).vTableGet(buffer, rootOffset, 22, '');
+            final object = FieldAgentWeeklyEarningsSummaryBox(
+              id: idParam,
+              batchId: batchIdParam,
+              commissionPerAcquisition: commissionPerAcquisitionParam,
+              paidAt: paidAtParam,
+              payoutStatus: payoutStatusParam,
+              periodEndDate: periodEndDateParam,
+              periodStartDate: periodStartDateParam,
+              totalEarnings: totalEarningsParam,
+              totalSignUps: totalSignUpsParam,
+              weekLabel: weekLabelParam,
+            );
+
+            return object;
+          },
+        ),
   };
 
   return obx_int.ModelDefinition(model, bindings);
@@ -1899,488 +2797,815 @@ class AuthUserBox_ {
     _entities[0].properties[7],
   );
 
-  /// See [AuthUserBox.createMeta].
-  static final createMeta = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[8],
-  );
-
   /// See [AuthUserBox.createdAt].
   static final createdAt = obx.QueryDateNanoProperty<AuthUserBox>(
-    _entities[0].properties[9],
+    _entities[0].properties[8],
   );
 
   /// See [AuthUserBox.dbId].
   static final dbId = obx.QueryDoubleProperty<AuthUserBox>(
-    _entities[0].properties[10],
-  );
-
-  /// See [AuthUserBox.deletedAt].
-  static final deletedAt = obx.QueryDateNanoProperty<AuthUserBox>(
-    _entities[0].properties[11],
-  );
-
-  /// See [AuthUserBox.deletedMeta].
-  static final deletedMeta = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[12],
+    _entities[0].properties[9],
   );
 
   /// See [AuthUserBox.displayUsername].
   static final displayUsername = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[13],
+    _entities[0].properties[10],
   );
 
   /// See [AuthUserBox.email].
   static final email = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[14],
+    _entities[0].properties[11],
   );
 
   /// See [AuthUserBox.emailVerified].
   static final emailVerified = obx.QueryBooleanProperty<AuthUserBox>(
-    _entities[0].properties[15],
+    _entities[0].properties[12],
   );
 
   /// See [AuthUserBox.fbmToken].
   static final fbmToken = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[16],
+    _entities[0].properties[13],
   );
 
   /// See [AuthUserBox.fieldAgentId].
   static final fieldAgentId = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[17],
+    _entities[0].properties[14],
   );
 
   /// See [AuthUserBox.firstName].
   static final firstName = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[18],
+    _entities[0].properties[15],
   );
 
   /// See [AuthUserBox.fullName].
   static final fullName = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[19],
+    _entities[0].properties[16],
   );
 
   /// See [AuthUserBox.image].
   static final image = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[20],
+    _entities[0].properties[17],
   );
 
   /// See [AuthUserBox.lastName].
   static final lastName = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[21],
+    _entities[0].properties[18],
   );
 
   /// See [AuthUserBox.memberId].
   static final memberId = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[22],
+    _entities[0].properties[19],
   );
 
   /// See [AuthUserBox.name].
   static final name = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[23],
+    _entities[0].properties[20],
   );
 
   /// See [AuthUserBox.organizationId].
   static final organizationId = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[24],
+    _entities[0].properties[21],
   );
 
   /// See [AuthUserBox.phoneNumber].
   static final phoneNumber = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[25],
+    _entities[0].properties[22],
   );
 
   /// See [AuthUserBox.phoneNumberVerified].
   static final phoneNumberVerified = obx.QueryBooleanProperty<AuthUserBox>(
-    _entities[0].properties[26],
+    _entities[0].properties[23],
   );
 
   /// See [AuthUserBox.profileImageBlurHash].
   static final profileImageBlurHash = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[27],
+    _entities[0].properties[24],
   );
 
   /// See [AuthUserBox.profileImageSize].
   static final profileImageSize = obx.QueryDoubleProperty<AuthUserBox>(
-    _entities[0].properties[28],
+    _entities[0].properties[25],
   );
 
   /// See [AuthUserBox.role].
   static final role = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[29],
+    _entities[0].properties[26],
   );
 
   /// See [AuthUserBox.shippingClientId].
   static final shippingClientId = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[30],
+    _entities[0].properties[27],
   );
 
   /// See [AuthUserBox.status].
   static final status = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[31],
+    _entities[0].properties[28],
   );
 
   /// See [AuthUserBox.subRole].
   static final subRole = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[32],
+    _entities[0].properties[29],
   );
 
   /// See [AuthUserBox.teamId].
   static final teamId = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[33],
+    _entities[0].properties[30],
   );
 
   /// See [AuthUserBox.teamMemberId].
   static final teamMemberId = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[34],
+    _entities[0].properties[31],
   );
 
   /// See [AuthUserBox.teamType].
   static final teamType = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[35],
+    _entities[0].properties[32],
   );
 
   /// See [AuthUserBox.twoFactorEnabled].
   static final twoFactorEnabled = obx.QueryBooleanProperty<AuthUserBox>(
-    _entities[0].properties[36],
-  );
-
-  /// See [AuthUserBox.updateMeta].
-  static final updateMeta = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[37],
+    _entities[0].properties[33],
   );
 
   /// See [AuthUserBox.updatedAt].
   static final updatedAt = obx.QueryDateNanoProperty<AuthUserBox>(
-    _entities[0].properties[38],
+    _entities[0].properties[34],
   );
 
   /// See [AuthUserBox.userId].
   static final userId = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[39],
+    _entities[0].properties[35],
   );
 
   /// See [AuthUserBox.username].
   static final username = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[40],
-  );
-
-  /// See [AuthUserBox.currentLocation].
-  static final currentLocation = obx.QueryStringProperty<AuthUserBox>(
-    _entities[0].properties[41],
+    _entities[0].properties[36],
   );
 
   /// See [AuthUserBox.creationTime].
   static final creationTime = obx.QueryDateNanoProperty<AuthUserBox>(
-    _entities[0].properties[42],
+    _entities[0].properties[37],
   );
-}
-
-/// [CashCountFieldSignUpBox] entity fields to define ObjectBox queries.
-class CashCountFieldSignUpBox_ {
-  /// See [CashCountFieldSignUpBox.id].
-  static final id = obx.QueryIntegerProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[0],
-  );
-
-  /// See [CashCountFieldSignUpBox.dbId].
-  static final dbId = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[1],
-  );
-
-  /// See [CashCountFieldSignUpBox.completedAt].
-  static final completedAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[2],
-  );
-
-  /// See [CashCountFieldSignUpBox.completedMeta].
-  static final completedMeta = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[3],
-  );
-
-  /// See [CashCountFieldSignUpBox.createMeta].
-  static final createMeta = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[4],
-  );
-
-  /// See [CashCountFieldSignUpBox.createdAt].
-  static final createdAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[5],
-  );
-
-  /// See [CashCountFieldSignUpBox.creatorId].
-  static final creatorId = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[6],
-  );
-
-  /// See [CashCountFieldSignUpBox.deletedAt].
-  static final deletedAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[7],
-  );
-
-  /// See [CashCountFieldSignUpBox.deletedMeta].
-  static final deletedMeta = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[8],
-  );
-
-  /// See [CashCountFieldSignUpBox.deviceId].
-  static final deviceId = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[9],
-  );
-
-  /// See [CashCountFieldSignUpBox.deviceInfo].
-  static final deviceInfo = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[10],
-  );
-
-  /// See [CashCountFieldSignUpBox.expiredAt].
-  static final expiredAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[11],
-  );
-
-  /// See [CashCountFieldSignUpBox.fieldAgentId].
-  static final fieldAgentId = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[12],
-  );
-
-  /// See [CashCountFieldSignUpBox.mongoId].
-  static final mongoId = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[13],
-  );
-
-  /// See [CashCountFieldSignUpBox.phoneNumber].
-  static final phoneNumber = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[14],
-  );
-
-  /// See [CashCountFieldSignUpBox.referralCode].
-  static final referralCode = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[15],
-  );
-
-  /// See [CashCountFieldSignUpBox.rejectionAt].
-  static final rejectionAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[16],
-  );
-
-  /// See [CashCountFieldSignUpBox.rejectionMeta].
-  static final rejectionMeta = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[17],
-  );
-
-  /// See [CashCountFieldSignUpBox.rejectionReason].
-  static final rejectionReason =
-      obx.QueryStringProperty<CashCountFieldSignUpBox>(
-        _entities[1].properties[18],
-      );
-
-  /// See [CashCountFieldSignUpBox.statUpdatedAt].
-  static final statUpdatedAt =
-      obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
-        _entities[1].properties[19],
-      );
-
-  /// See [CashCountFieldSignUpBox.status].
-  static final status = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[20],
-  );
-
-  /// See [CashCountFieldSignUpBox.teamId].
-  static final teamId = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[21],
-  );
-
-  /// See [CashCountFieldSignUpBox.updateMeta].
-  static final updateMeta = obx.QueryStringProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[22],
-  );
-
-  /// See [CashCountFieldSignUpBox.updatedAt].
-  static final updatedAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
-    _entities[1].properties[23],
-  );
-
-  /// See [CashCountFieldSignUpBox.creationTime].
-  static final creationTime =
-      obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
-        _entities[1].properties[24],
-      );
 }
 
 /// [FieldAgentBox] entity fields to define ObjectBox queries.
 class FieldAgentBox_ {
   /// See [FieldAgentBox.id].
   static final id = obx.QueryIntegerProperty<FieldAgentBox>(
-    _entities[2].properties[0],
+    _entities[1].properties[0],
   );
 
   /// See [FieldAgentBox.creationTime].
   static final creationTime = obx.QueryDateNanoProperty<FieldAgentBox>(
-    _entities[2].properties[1],
+    _entities[1].properties[1],
   );
 
   /// See [FieldAgentBox.dbId].
   static final dbId = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[2],
+    _entities[1].properties[2],
   );
 
   /// See [FieldAgentBox.countryCityId].
   static final countryCityId = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[3],
+    _entities[1].properties[3],
   );
 
   /// See [FieldAgentBox.countryCityName].
   static final countryCityName = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[4],
+    _entities[1].properties[4],
   );
 
   /// See [FieldAgentBox.countryCode].
   static final countryCode = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[5],
+    _entities[1].properties[5],
   );
 
   /// See [FieldAgentBox.countryISO].
   static final countryISO = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[6],
+    _entities[1].properties[6],
   );
 
   /// See [FieldAgentBox.countryName].
   static final countryName = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[7],
+    _entities[1].properties[7],
   );
 
   /// See [FieldAgentBox.countryStateId].
   static final countryStateId = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[8],
+    _entities[1].properties[8],
   );
 
   /// See [FieldAgentBox.countryStateName].
   static final countryStateName = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[9],
+    _entities[1].properties[9],
   );
 
   /// See [FieldAgentBox.createMeta].
   static final createMeta = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[10],
+    _entities[1].properties[10],
   );
 
   /// See [FieldAgentBox.createdAt].
   static final createdAt = obx.QueryDateNanoProperty<FieldAgentBox>(
-    _entities[2].properties[11],
+    _entities[1].properties[11],
   );
 
   /// See [FieldAgentBox.creatorId].
   static final creatorId = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[12],
+    _entities[1].properties[12],
   );
 
   /// See [FieldAgentBox.dateBirth].
   static final dateBirth = obx.QueryDoubleProperty<FieldAgentBox>(
-    _entities[2].properties[13],
+    _entities[1].properties[13],
   );
 
   /// See [FieldAgentBox.deletedAt].
   static final deletedAt = obx.QueryDateNanoProperty<FieldAgentBox>(
-    _entities[2].properties[14],
+    _entities[1].properties[14],
   );
 
   /// See [FieldAgentBox.deletedMeta].
   static final deletedMeta = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[15],
+    _entities[1].properties[15],
   );
 
   /// See [FieldAgentBox.email].
   static final email = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[16],
+    _entities[1].properties[16],
   );
 
   /// See [FieldAgentBox.firstName].
   static final firstName = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[17],
+    _entities[1].properties[17],
   );
 
   /// See [FieldAgentBox.fullName].
   static final fullName = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[18],
+    _entities[1].properties[18],
   );
 
   /// See [FieldAgentBox.gender].
   static final gender = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[19],
+    _entities[1].properties[19],
   );
 
   /// See [FieldAgentBox.invitationId].
   static final invitationId = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[20],
+    _entities[1].properties[20],
   );
 
   /// See [FieldAgentBox.lastName].
   static final lastName = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[21],
+    _entities[1].properties[21],
   );
 
   /// See [FieldAgentBox.middleName].
   static final middleName = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[22],
+    _entities[1].properties[22],
   );
 
   /// See [FieldAgentBox.phoneNumber].
   static final phoneNumber = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[23],
+    _entities[1].properties[23],
   );
 
   /// See [FieldAgentBox.profileImage].
   static final profileImage = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[24],
+    _entities[1].properties[24],
   );
 
   /// See [FieldAgentBox.project].
   static final project = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[25],
+    _entities[1].properties[25],
   );
 
   /// See [FieldAgentBox.referralCode].
   static final referralCode = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[26],
+    _entities[1].properties[26],
   );
 
   /// See [FieldAgentBox.status].
   static final status = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[27],
+    _entities[1].properties[27],
   );
 
   /// See [FieldAgentBox.teamId].
   static final teamId = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[28],
+    _entities[1].properties[28],
   );
 
   /// See [FieldAgentBox.totalAyekooAllocationsCount].
   static final totalAyekooAllocationsCount =
-      obx.QueryDoubleProperty<FieldAgentBox>(_entities[2].properties[29]);
+      obx.QueryDoubleProperty<FieldAgentBox>(_entities[1].properties[29]);
 
   /// See [FieldAgentBox.totalAyekooCollectionsCount].
   static final totalAyekooCollectionsCount =
-      obx.QueryDoubleProperty<FieldAgentBox>(_entities[2].properties[30]);
+      obx.QueryDoubleProperty<FieldAgentBox>(_entities[1].properties[30]);
 
   /// See [FieldAgentBox.totalCashCountAllocationsCount].
   static final totalCashCountAllocationsCount =
-      obx.QueryDoubleProperty<FieldAgentBox>(_entities[2].properties[31]);
+      obx.QueryDoubleProperty<FieldAgentBox>(_entities[1].properties[31]);
 
   /// See [FieldAgentBox.totalCashCountFieldSignUpsCount].
   static final totalCashCountFieldSignUpsCount =
-      obx.QueryDoubleProperty<FieldAgentBox>(_entities[2].properties[32]);
+      obx.QueryDoubleProperty<FieldAgentBox>(_entities[1].properties[32]);
 
   /// See [FieldAgentBox.updateMeta].
   static final updateMeta = obx.QueryStringProperty<FieldAgentBox>(
-    _entities[2].properties[33],
+    _entities[1].properties[33],
   );
 
   /// See [FieldAgentBox.updatedAt].
   static final updatedAt = obx.QueryDateNanoProperty<FieldAgentBox>(
-    _entities[2].properties[34],
+    _entities[1].properties[34],
   );
 
   /// See [FieldAgentBox.userId].
   static final userId = obx.QueryStringProperty<FieldAgentBox>(
+    _entities[1].properties[35],
+  );
+
+  /// See [FieldAgentBox.ayekooLeaderboardPosition].
+  static final ayekooLeaderboardPosition =
+      obx.QueryDoubleProperty<FieldAgentBox>(_entities[1].properties[36]);
+
+  /// See [FieldAgentBox.cashCountLeaderboardPosition].
+  static final cashCountLeaderboardPosition =
+      obx.QueryDoubleProperty<FieldAgentBox>(_entities[1].properties[37]);
+
+  /// See [FieldAgentBox.invitationStatus].
+  static final invitationStatus = obx.QueryStringProperty<FieldAgentBox>(
+    _entities[1].properties[38],
+  );
+
+  /// See [FieldAgentBox.totalAyekooCollectionsApprovedCount].
+  static final totalAyekooCollectionsApprovedCount =
+      obx.QueryDoubleProperty<FieldAgentBox>(_entities[1].properties[39]);
+
+  /// See [FieldAgentBox.totalAyekooCollectionsInvalidCount].
+  static final totalAyekooCollectionsInvalidCount =
+      obx.QueryDoubleProperty<FieldAgentBox>(_entities[1].properties[40]);
+
+  /// See [FieldAgentBox.totalAyekooCollectionsPendingCount].
+  static final totalAyekooCollectionsPendingCount =
+      obx.QueryDoubleProperty<FieldAgentBox>(_entities[1].properties[41]);
+
+  /// See [FieldAgentBox.totalAyekooCollectionsRejectedCount].
+  static final totalAyekooCollectionsRejectedCount =
+      obx.QueryDoubleProperty<FieldAgentBox>(_entities[1].properties[42]);
+
+  /// See [FieldAgentBox.totalCashCountFieldSignUpsApprovedCount].
+  static final totalCashCountFieldSignUpsApprovedCount =
+      obx.QueryDoubleProperty<FieldAgentBox>(_entities[1].properties[43]);
+
+  /// See [FieldAgentBox.totalCashCountFieldSignUpsInvalidCount].
+  static final totalCashCountFieldSignUpsInvalidCount =
+      obx.QueryDoubleProperty<FieldAgentBox>(_entities[1].properties[44]);
+
+  /// See [FieldAgentBox.totalCashCountFieldSignUpsPendingCount].
+  static final totalCashCountFieldSignUpsPendingCount =
+      obx.QueryDoubleProperty<FieldAgentBox>(_entities[1].properties[45]);
+
+  /// See [FieldAgentBox.totalCashCountFieldSignUpsRejectedCount].
+  static final totalCashCountFieldSignUpsRejectedCount =
+      obx.QueryDoubleProperty<FieldAgentBox>(_entities[1].properties[46]);
+}
+
+/// [CashCountFieldSignUpBox] entity fields to define ObjectBox queries.
+class CashCountFieldSignUpBox_ {
+  /// See [CashCountFieldSignUpBox.id].
+  static final id = obx.QueryIntegerProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[0],
+  );
+
+  /// See [CashCountFieldSignUpBox.creationTime].
+  static final creationTime =
+      obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
+        _entities[2].properties[1],
+      );
+
+  /// See [CashCountFieldSignUpBox.dbId].
+  static final dbId = obx.QueryStringProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[2],
+  );
+
+  /// See [CashCountFieldSignUpBox.businessName].
+  static final businessName = obx.QueryStringProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[3],
+  );
+
+  /// See [CashCountFieldSignUpBox.cashCountTeamId].
+  static final cashCountTeamId =
+      obx.QueryStringProperty<CashCountFieldSignUpBox>(
+        _entities[2].properties[4],
+      );
+
+  /// See [CashCountFieldSignUpBox.cashCountUserFullName].
+  static final cashCountUserFullName =
+      obx.QueryStringProperty<CashCountFieldSignUpBox>(
+        _entities[2].properties[5],
+      );
+
+  /// See [CashCountFieldSignUpBox.cashCountUserId].
+  static final cashCountUserId =
+      obx.QueryStringProperty<CashCountFieldSignUpBox>(
+        _entities[2].properties[6],
+      );
+
+  /// See [CashCountFieldSignUpBox.cashCountUserRole].
+  static final cashCountUserRole =
+      obx.QueryStringProperty<CashCountFieldSignUpBox>(
+        _entities[2].properties[7],
+      );
+
+  /// See [CashCountFieldSignUpBox.commissionAmount].
+  static final commissionAmount =
+      obx.QueryDoubleProperty<CashCountFieldSignUpBox>(
+        _entities[2].properties[8],
+      );
+
+  /// See [CashCountFieldSignUpBox.createMeta].
+  static final createMeta = obx.QueryStringProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[9],
+  );
+
+  /// See [CashCountFieldSignUpBox.createdAt].
+  static final createdAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[10],
+  );
+
+  /// See [CashCountFieldSignUpBox.creatorId].
+  static final creatorId = obx.QueryStringProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[11],
+  );
+
+  /// See [CashCountFieldSignUpBox.dateEarned].
+  static final dateEarned = obx.QueryDoubleProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[12],
+  );
+
+  /// See [CashCountFieldSignUpBox.deletedAt].
+  static final deletedAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[13],
+  );
+
+  /// See [CashCountFieldSignUpBox.deletedMeta].
+  static final deletedMeta = obx.QueryStringProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[14],
+  );
+
+  /// See [CashCountFieldSignUpBox.deviceId].
+  static final deviceId = obx.QueryStringProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[15],
+  );
+
+  /// See [CashCountFieldSignUpBox.deviceInfo].
+  static final deviceInfo = obx.QueryStringProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[16],
+  );
+
+  /// See [CashCountFieldSignUpBox.expiredAt].
+  static final expiredAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[17],
+  );
+
+  /// See [CashCountFieldSignUpBox.fieldAgentId].
+  static final fieldAgentId = obx.QueryStringProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[18],
+  );
+
+  /// See [CashCountFieldSignUpBox.fieldAgentName].
+  static final fieldAgentName =
+      obx.QueryStringProperty<CashCountFieldSignUpBox>(
+        _entities[2].properties[19],
+      );
+
+  /// See [CashCountFieldSignUpBox.invalidRejectionReason].
+  static final invalidRejectionReason =
+      obx.QueryStringProperty<CashCountFieldSignUpBox>(
+        _entities[2].properties[20],
+      );
+
+  /// See [CashCountFieldSignUpBox.mongoId].
+  static final mongoId = obx.QueryStringProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[21],
+  );
+
+  /// See [CashCountFieldSignUpBox.mongoTeamId].
+  static final mongoTeamId = obx.QueryStringProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[22],
+  );
+
+  /// See [CashCountFieldSignUpBox.monthTxnsCount].
+  static final monthTxnsCount =
+      obx.QueryDoubleProperty<CashCountFieldSignUpBox>(
+        _entities[2].properties[23],
+      );
+
+  /// See [CashCountFieldSignUpBox.paidAt].
+  static final paidAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[24],
+  );
+
+  /// See [CashCountFieldSignUpBox.paymentBatchId].
+  static final paymentBatchId =
+      obx.QueryStringProperty<CashCountFieldSignUpBox>(
+        _entities[2].properties[25],
+      );
+
+  /// See [CashCountFieldSignUpBox.paymentStatus].
+  static final paymentStatus = obx.QueryStringProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[26],
+  );
+
+  /// See [CashCountFieldSignUpBox.periodEndDate].
+  static final periodEndDate =
+      obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
+        _entities[2].properties[27],
+      );
+
+  /// See [CashCountFieldSignUpBox.periodStartDate].
+  static final periodStartDate =
+      obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
+        _entities[2].properties[28],
+      );
+
+  /// See [CashCountFieldSignUpBox.phoneNumber].
+  static final phoneNumber = obx.QueryStringProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[29],
+  );
+
+  /// See [CashCountFieldSignUpBox.processedAt].
+  static final processedAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[30],
+  );
+
+  /// See [CashCountFieldSignUpBox.referralCode].
+  static final referralCode = obx.QueryStringProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[31],
+  );
+
+  /// See [CashCountFieldSignUpBox.status].
+  static final status = obx.QueryStringProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[32],
+  );
+
+  /// See [CashCountFieldSignUpBox.teamId].
+  static final teamId = obx.QueryStringProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[33],
+  );
+
+  /// See [CashCountFieldSignUpBox.txnsCount].
+  static final txnsCount = obx.QueryDoubleProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[34],
+  );
+
+  /// See [CashCountFieldSignUpBox.updateMeta].
+  static final updateMeta = obx.QueryStringProperty<CashCountFieldSignUpBox>(
     _entities[2].properties[35],
   );
+
+  /// See [CashCountFieldSignUpBox.updatedAt].
+  static final updatedAt = obx.QueryDateNanoProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[36],
+  );
+
+  /// See [CashCountFieldSignUpBox.weekOf].
+  static final weekOf = obx.QueryStringProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[37],
+  );
+
+  /// See [CashCountFieldSignUpBox.weekTxnsCount].
+  static final weekTxnsCount = obx.QueryDoubleProperty<CashCountFieldSignUpBox>(
+    _entities[2].properties[38],
+  );
+}
+
+/// [CashCountFieldSignUpPositionBox] entity fields to define ObjectBox queries.
+class CashCountFieldSignUpPositionBox_ {
+  /// See [CashCountFieldSignUpPositionBox.id].
+  static final id = obx.QueryIntegerProperty<CashCountFieldSignUpPositionBox>(
+    _entities[3].properties[0],
+  );
+
+  /// See [CashCountFieldSignUpPositionBox.dbId].
+  static final dbId = obx.QueryStringProperty<CashCountFieldSignUpPositionBox>(
+    _entities[3].properties[1],
+  );
+
+  /// See [CashCountFieldSignUpPositionBox.fieldAgentId].
+  static final fieldAgentId =
+      obx.QueryStringProperty<CashCountFieldSignUpPositionBox>(
+        _entities[3].properties[2],
+      );
+
+  /// See [CashCountFieldSignUpPositionBox.firstName].
+  static final firstName =
+      obx.QueryStringProperty<CashCountFieldSignUpPositionBox>(
+        _entities[3].properties[3],
+      );
+
+  /// See [CashCountFieldSignUpPositionBox.fullName].
+  static final fullName =
+      obx.QueryStringProperty<CashCountFieldSignUpPositionBox>(
+        _entities[3].properties[4],
+      );
+
+  /// See [CashCountFieldSignUpPositionBox.image].
+  static final image = obx.QueryStringProperty<CashCountFieldSignUpPositionBox>(
+    _entities[3].properties[5],
+  );
+
+  /// See [CashCountFieldSignUpPositionBox.lastName].
+  static final lastName =
+      obx.QueryStringProperty<CashCountFieldSignUpPositionBox>(
+        _entities[3].properties[6],
+      );
+
+  /// See [CashCountFieldSignUpPositionBox.position].
+  static final position =
+      obx.QueryDoubleProperty<CashCountFieldSignUpPositionBox>(
+        _entities[3].properties[7],
+      );
+
+  /// See [CashCountFieldSignUpPositionBox.totalSignUps].
+  static final totalSignUps =
+      obx.QueryDoubleProperty<CashCountFieldSignUpPositionBox>(
+        _entities[3].properties[8],
+      );
+
+  /// See [CashCountFieldSignUpPositionBox.totalSignUpsApproved].
+  static final totalSignUpsApproved =
+      obx.QueryDoubleProperty<CashCountFieldSignUpPositionBox>(
+        _entities[3].properties[9],
+      );
+
+  /// See [CashCountFieldSignUpPositionBox.totalSignUpsInvalid].
+  static final totalSignUpsInvalid =
+      obx.QueryDoubleProperty<CashCountFieldSignUpPositionBox>(
+        _entities[3].properties[10],
+      );
+
+  /// See [CashCountFieldSignUpPositionBox.totalSignUpsPending].
+  static final totalSignUpsPending =
+      obx.QueryDoubleProperty<CashCountFieldSignUpPositionBox>(
+        _entities[3].properties[11],
+      );
+
+  /// See [CashCountFieldSignUpPositionBox.totalSignUpsRejected].
+  static final totalSignUpsRejected =
+      obx.QueryDoubleProperty<CashCountFieldSignUpPositionBox>(
+        _entities[3].properties[12],
+      );
+}
+
+/// [CashCountFieldSignUpStatsBox] entity fields to define ObjectBox queries.
+class CashCountFieldSignUpStatsBox_ {
+  /// See [CashCountFieldSignUpStatsBox.id].
+  static final id = obx.QueryIntegerProperty<CashCountFieldSignUpStatsBox>(
+    _entities[4].properties[0],
+  );
+
+  /// See [CashCountFieldSignUpStatsBox.month].
+  static final month = obx.QueryStringProperty<CashCountFieldSignUpStatsBox>(
+    _entities[4].properties[1],
+  );
+
+  /// See [CashCountFieldSignUpStatsBox.today].
+  static final today = obx.QueryStringProperty<CashCountFieldSignUpStatsBox>(
+    _entities[4].properties[2],
+  );
+
+  /// See [CashCountFieldSignUpStatsBox.week].
+  static final week = obx.QueryStringProperty<CashCountFieldSignUpStatsBox>(
+    _entities[4].properties[3],
+  );
+}
+
+/// [FieldAgentWeeklyEarningBox] entity fields to define ObjectBox queries.
+class FieldAgentWeeklyEarningBox_ {
+  /// See [FieldAgentWeeklyEarningBox.id].
+  static final id = obx.QueryIntegerProperty<FieldAgentWeeklyEarningBox>(
+    _entities[5].properties[0],
+  );
+
+  /// See [FieldAgentWeeklyEarningBox.approvedAt].
+  static final approvedAt =
+      obx.QueryDateNanoProperty<FieldAgentWeeklyEarningBox>(
+        _entities[5].properties[1],
+      );
+
+  /// See [FieldAgentWeeklyEarningBox.batchId].
+  static final batchId = obx.QueryStringProperty<FieldAgentWeeklyEarningBox>(
+    _entities[5].properties[2],
+  );
+
+  /// See [FieldAgentWeeklyEarningBox.paidAt].
+  static final paidAt = obx.QueryDateNanoProperty<FieldAgentWeeklyEarningBox>(
+    _entities[5].properties[3],
+  );
+
+  /// See [FieldAgentWeeklyEarningBox.payoutStatus].
+  static final payoutStatus =
+      obx.QueryStringProperty<FieldAgentWeeklyEarningBox>(
+        _entities[5].properties[4],
+      );
+
+  /// See [FieldAgentWeeklyEarningBox.periodEndDate].
+  static final periodEndDate =
+      obx.QueryDateNanoProperty<FieldAgentWeeklyEarningBox>(
+        _entities[5].properties[5],
+      );
+
+  /// See [FieldAgentWeeklyEarningBox.periodStartDate].
+  static final periodStartDate =
+      obx.QueryDateNanoProperty<FieldAgentWeeklyEarningBox>(
+        _entities[5].properties[6],
+      );
+
+  /// See [FieldAgentWeeklyEarningBox.totalAcquisitions].
+  static final totalAcquisitions =
+      obx.QueryDoubleProperty<FieldAgentWeeklyEarningBox>(
+        _entities[5].properties[7],
+      );
+
+  /// See [FieldAgentWeeklyEarningBox.totalEarnings].
+  static final totalEarnings =
+      obx.QueryDoubleProperty<FieldAgentWeeklyEarningBox>(
+        _entities[5].properties[8],
+      );
+
+  /// See [FieldAgentWeeklyEarningBox.weekLabel].
+  static final weekLabel = obx.QueryStringProperty<FieldAgentWeeklyEarningBox>(
+    _entities[5].properties[9],
+  );
+
+  /// See [FieldAgentWeeklyEarningBox.weekOf].
+  static final weekOf = obx.QueryStringProperty<FieldAgentWeeklyEarningBox>(
+    _entities[5].properties[10],
+  );
+}
+
+/// [FieldAgentWeeklyEarningsSummaryBox] entity fields to define ObjectBox queries.
+class FieldAgentWeeklyEarningsSummaryBox_ {
+  /// See [FieldAgentWeeklyEarningsSummaryBox.id].
+  static final id =
+      obx.QueryIntegerProperty<FieldAgentWeeklyEarningsSummaryBox>(
+        _entities[6].properties[0],
+      );
+
+  /// See [FieldAgentWeeklyEarningsSummaryBox.batchId].
+  static final batchId =
+      obx.QueryStringProperty<FieldAgentWeeklyEarningsSummaryBox>(
+        _entities[6].properties[1],
+      );
+
+  /// See [FieldAgentWeeklyEarningsSummaryBox.commissionPerAcquisition].
+  static final commissionPerAcquisition =
+      obx.QueryDoubleProperty<FieldAgentWeeklyEarningsSummaryBox>(
+        _entities[6].properties[2],
+      );
+
+  /// See [FieldAgentWeeklyEarningsSummaryBox.paidAt].
+  static final paidAt =
+      obx.QueryDateNanoProperty<FieldAgentWeeklyEarningsSummaryBox>(
+        _entities[6].properties[3],
+      );
+
+  /// See [FieldAgentWeeklyEarningsSummaryBox.payoutStatus].
+  static final payoutStatus =
+      obx.QueryStringProperty<FieldAgentWeeklyEarningsSummaryBox>(
+        _entities[6].properties[4],
+      );
+
+  /// See [FieldAgentWeeklyEarningsSummaryBox.periodEndDate].
+  static final periodEndDate =
+      obx.QueryDateNanoProperty<FieldAgentWeeklyEarningsSummaryBox>(
+        _entities[6].properties[5],
+      );
+
+  /// See [FieldAgentWeeklyEarningsSummaryBox.periodStartDate].
+  static final periodStartDate =
+      obx.QueryDateNanoProperty<FieldAgentWeeklyEarningsSummaryBox>(
+        _entities[6].properties[6],
+      );
+
+  /// See [FieldAgentWeeklyEarningsSummaryBox.totalEarnings].
+  static final totalEarnings =
+      obx.QueryDoubleProperty<FieldAgentWeeklyEarningsSummaryBox>(
+        _entities[6].properties[7],
+      );
+
+  /// See [FieldAgentWeeklyEarningsSummaryBox.totalSignUps].
+  static final totalSignUps =
+      obx.QueryDoubleProperty<FieldAgentWeeklyEarningsSummaryBox>(
+        _entities[6].properties[8],
+      );
+
+  /// See [FieldAgentWeeklyEarningsSummaryBox.weekLabel].
+  static final weekLabel =
+      obx.QueryStringProperty<FieldAgentWeeklyEarningsSummaryBox>(
+        _entities[6].properties[9],
+      );
 }

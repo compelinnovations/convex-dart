@@ -12,6 +12,8 @@ import "../../functions/fieldAgentAuth/getMyProfile.dart" show FieldAgentDoc;
 class FieldAgent {
   final double $_creationTime;
   final FieldAgentsId $_id;
+  final Optional<double> ayekooLeaderboardPosition;
+  final Optional<double> cashCountLeaderboardPosition;
   final Optional<CountryCitiesId> countryCityId;
   final Optional<String> countryCityName;
   final Optional<String> countryCode;
@@ -30,6 +32,7 @@ class FieldAgent {
   final Optional<String> fullName;
   final Union2<$MaleLiteral, $FemaleLiteral> gender;
   final Optional<String> invitationId;
+  final Optional<String> invitationStatus;
   final String lastName;
   final Optional<String> middleName;
   final String phoneNumber;
@@ -39,9 +42,17 @@ class FieldAgent {
   final String status;
   final Optional<String> teamId;
   final Optional<double> totalAyekooAllocationsCount;
+  final Optional<double> totalAyekooCollectionsApprovedCount;
   final Optional<double> totalAyekooCollectionsCount;
+  final Optional<double> totalAyekooCollectionsInvalidCount;
+  final Optional<double> totalAyekooCollectionsPendingCount;
+  final Optional<double> totalAyekooCollectionsRejectedCount;
   final Optional<double> totalCashCountAllocationsCount;
+  final Optional<double> totalCashCountFieldSignUpsApprovedCount;
   final Optional<double> totalCashCountFieldSignUpsCount;
+  final Optional<double> totalCashCountFieldSignUpsInvalidCount;
+  final Optional<double> totalCashCountFieldSignUpsPendingCount;
+  final Optional<double> totalCashCountFieldSignUpsRejectedCount;
   final Optional<AuditAction> updateMeta;
   final Optional<double> updatedAt;
   final Optional<String> userId;
@@ -49,6 +60,8 @@ class FieldAgent {
   const FieldAgent({
     required this.$_creationTime,
     required this.$_id,
+    this.ayekooLeaderboardPosition = const Undefined(),
+    this.cashCountLeaderboardPosition = const Undefined(),
     this.countryCityId = const Undefined(),
     this.countryCityName = const Undefined(),
     this.countryCode = const Undefined(),
@@ -67,6 +80,7 @@ class FieldAgent {
     this.fullName = const Undefined(),
     required this.gender,
     this.invitationId = const Undefined(),
+    this.invitationStatus = const Undefined(),
     required this.lastName,
     this.middleName = const Undefined(),
     required this.phoneNumber,
@@ -76,9 +90,17 @@ class FieldAgent {
     required this.status,
     this.teamId = const Undefined(),
     this.totalAyekooAllocationsCount = const Undefined(),
+    this.totalAyekooCollectionsApprovedCount = const Undefined(),
     this.totalAyekooCollectionsCount = const Undefined(),
+    this.totalAyekooCollectionsInvalidCount = const Undefined(),
+    this.totalAyekooCollectionsPendingCount = const Undefined(),
+    this.totalAyekooCollectionsRejectedCount = const Undefined(),
     this.totalCashCountAllocationsCount = const Undefined(),
+    this.totalCashCountFieldSignUpsApprovedCount = const Undefined(),
     this.totalCashCountFieldSignUpsCount = const Undefined(),
+    this.totalCashCountFieldSignUpsInvalidCount = const Undefined(),
+    this.totalCashCountFieldSignUpsPendingCount = const Undefined(),
+    this.totalCashCountFieldSignUpsRejectedCount = const Undefined(),
     this.updateMeta = const Undefined(),
     this.updatedAt = const Undefined(),
     this.userId = const Undefined(),
@@ -107,6 +129,12 @@ class FieldAgent {
     return FieldAgent(
       $_creationTime: json['_creationTime'] as double,
       $_id: FieldAgentsId(json['_id'] as String),
+      ayekooLeaderboardPosition: json['ayekooLeaderboardPosition'] != null
+          ? Defined(json['ayekooLeaderboardPosition'] as double)
+          : const Undefined(),
+      cashCountLeaderboardPosition: json['cashCountLeaderboardPosition'] != null
+          ? Defined(json['cashCountLeaderboardPosition'] as double)
+          : const Undefined(),
       countryCityId: json['countryCityId'] != null
           ? Defined(CountryCitiesId(json['countryCityId'] as String))
           : const Undefined(),
@@ -151,6 +179,9 @@ class FieldAgent {
       invitationId: json['invitationId'] != null
           ? Defined(json['invitationId'] as String)
           : const Undefined(),
+      invitationStatus: json['invitationStatus'] != null
+          ? Defined(json['invitationStatus'] as String)
+          : const Undefined(),
       lastName: json['lastName'] as String,
       middleName: json['middleName'] != null
           ? Defined(json['middleName'] as String)
@@ -170,16 +201,48 @@ class FieldAgent {
       totalAyekooAllocationsCount: json['totalAyekooAllocationsCount'] != null
           ? Defined(json['totalAyekooAllocationsCount'] as double)
           : const Undefined(),
+      totalAyekooCollectionsApprovedCount:
+          json['totalAyekooCollectionsApprovedCount'] != null
+          ? Defined(json['totalAyekooCollectionsApprovedCount'] as double)
+          : const Undefined(),
       totalAyekooCollectionsCount: json['totalAyekooCollectionsCount'] != null
           ? Defined(json['totalAyekooCollectionsCount'] as double)
+          : const Undefined(),
+      totalAyekooCollectionsInvalidCount:
+          json['totalAyekooCollectionsInvalidCount'] != null
+          ? Defined(json['totalAyekooCollectionsInvalidCount'] as double)
+          : const Undefined(),
+      totalAyekooCollectionsPendingCount:
+          json['totalAyekooCollectionsPendingCount'] != null
+          ? Defined(json['totalAyekooCollectionsPendingCount'] as double)
+          : const Undefined(),
+      totalAyekooCollectionsRejectedCount:
+          json['totalAyekooCollectionsRejectedCount'] != null
+          ? Defined(json['totalAyekooCollectionsRejectedCount'] as double)
           : const Undefined(),
       totalCashCountAllocationsCount:
           json['totalCashCountAllocationsCount'] != null
           ? Defined(json['totalCashCountAllocationsCount'] as double)
           : const Undefined(),
+      totalCashCountFieldSignUpsApprovedCount:
+          json['totalCashCountFieldSignUpsApprovedCount'] != null
+          ? Defined(json['totalCashCountFieldSignUpsApprovedCount'] as double)
+          : const Undefined(),
       totalCashCountFieldSignUpsCount:
           json['totalCashCountFieldSignUpsCount'] != null
           ? Defined(json['totalCashCountFieldSignUpsCount'] as double)
+          : const Undefined(),
+      totalCashCountFieldSignUpsInvalidCount:
+          json['totalCashCountFieldSignUpsInvalidCount'] != null
+          ? Defined(json['totalCashCountFieldSignUpsInvalidCount'] as double)
+          : const Undefined(),
+      totalCashCountFieldSignUpsPendingCount:
+          json['totalCashCountFieldSignUpsPendingCount'] != null
+          ? Defined(json['totalCashCountFieldSignUpsPendingCount'] as double)
+          : const Undefined(),
+      totalCashCountFieldSignUpsRejectedCount:
+          json['totalCashCountFieldSignUpsRejectedCount'] != null
+          ? Defined(json['totalCashCountFieldSignUpsRejectedCount'] as double)
           : const Undefined(),
       updateMeta: json['updateMeta'] != null
           ? Defined(
@@ -199,6 +262,14 @@ class FieldAgent {
     return {
       '_creationTime': $_creationTime,
       '_id': $_id.value,
+      if (ayekooLeaderboardPosition.isDefined)
+        'ayekooLeaderboardPosition': ayekooLeaderboardPosition
+            .asDefined()
+            .value,
+      if (cashCountLeaderboardPosition.isDefined)
+        'cashCountLeaderboardPosition': cashCountLeaderboardPosition
+            .asDefined()
+            .value,
       if (countryCityId.isDefined)
         'countryCityId': countryCityId.asDefined().value.value,
       if (countryCityName.isDefined)
@@ -228,6 +299,8 @@ class FieldAgent {
           : (gender.value as dynamic).value),
       if (invitationId.isDefined)
         'invitationId': invitationId.asDefined().value,
+      if (invitationStatus.isDefined)
+        'invitationStatus': invitationStatus.asDefined().value,
       'lastName': lastName,
       if (middleName.isDefined) 'middleName': middleName.asDefined().value,
       'phoneNumber': phoneNumber,
@@ -243,18 +316,44 @@ class FieldAgent {
         'totalAyekooAllocationsCount': totalAyekooAllocationsCount
             .asDefined()
             .value,
+      if (totalAyekooCollectionsApprovedCount.isDefined)
+        'totalAyekooCollectionsApprovedCount':
+            totalAyekooCollectionsApprovedCount.asDefined().value,
       if (totalAyekooCollectionsCount.isDefined)
         'totalAyekooCollectionsCount': totalAyekooCollectionsCount
             .asDefined()
             .value,
+      if (totalAyekooCollectionsInvalidCount.isDefined)
+        'totalAyekooCollectionsInvalidCount': totalAyekooCollectionsInvalidCount
+            .asDefined()
+            .value,
+      if (totalAyekooCollectionsPendingCount.isDefined)
+        'totalAyekooCollectionsPendingCount': totalAyekooCollectionsPendingCount
+            .asDefined()
+            .value,
+      if (totalAyekooCollectionsRejectedCount.isDefined)
+        'totalAyekooCollectionsRejectedCount':
+            totalAyekooCollectionsRejectedCount.asDefined().value,
       if (totalCashCountAllocationsCount.isDefined)
         'totalCashCountAllocationsCount': totalCashCountAllocationsCount
             .asDefined()
             .value,
+      if (totalCashCountFieldSignUpsApprovedCount.isDefined)
+        'totalCashCountFieldSignUpsApprovedCount':
+            totalCashCountFieldSignUpsApprovedCount.asDefined().value,
       if (totalCashCountFieldSignUpsCount.isDefined)
         'totalCashCountFieldSignUpsCount': totalCashCountFieldSignUpsCount
             .asDefined()
             .value,
+      if (totalCashCountFieldSignUpsInvalidCount.isDefined)
+        'totalCashCountFieldSignUpsInvalidCount':
+            totalCashCountFieldSignUpsInvalidCount.asDefined().value,
+      if (totalCashCountFieldSignUpsPendingCount.isDefined)
+        'totalCashCountFieldSignUpsPendingCount':
+            totalCashCountFieldSignUpsPendingCount.asDefined().value,
+      if (totalCashCountFieldSignUpsRejectedCount.isDefined)
+        'totalCashCountFieldSignUpsRejectedCount':
+            totalCashCountFieldSignUpsRejectedCount.asDefined().value,
       if (updateMeta.isDefined)
         'updateMeta': updateMeta.asDefined().value.toJson(),
       if (updatedAt.isDefined) 'updatedAt': updatedAt.asDefined().value,
@@ -271,6 +370,12 @@ class FieldAgent {
     return FieldAgent(
       $_creationTime: body.$_creationTime,
       $_id: body.$_id,
+      ayekooLeaderboardPosition: body.ayekooLeaderboardPosition.isDefined
+          ? Defined(body.ayekooLeaderboardPosition.asDefined().value)
+          : const Undefined(),
+      cashCountLeaderboardPosition: body.cashCountLeaderboardPosition.isDefined
+          ? Defined(body.cashCountLeaderboardPosition.asDefined().value)
+          : const Undefined(),
       countryCityId: body.countryCityId.isDefined
           ? Defined(body.countryCityId.asDefined().value)
           : const Undefined(),
@@ -311,6 +416,9 @@ class FieldAgent {
       invitationId: body.invitationId.isDefined
           ? Defined(body.invitationId.asDefined().value)
           : const Undefined(),
+      invitationStatus: body.invitationStatus.isDefined
+          ? Defined(body.invitationStatus.asDefined().value)
+          : const Undefined(),
       lastName: body.lastName,
       middleName: body.middleName.isDefined
           ? Defined(body.middleName.asDefined().value)
@@ -328,16 +436,56 @@ class FieldAgent {
       totalAyekooAllocationsCount: body.totalAyekooAllocationsCount.isDefined
           ? Defined(body.totalAyekooAllocationsCount.asDefined().value)
           : const Undefined(),
+      totalAyekooCollectionsApprovedCount:
+          body.totalAyekooCollectionsApprovedCount.isDefined
+          ? Defined(body.totalAyekooCollectionsApprovedCount.asDefined().value)
+          : const Undefined(),
       totalAyekooCollectionsCount: body.totalAyekooCollectionsCount.isDefined
           ? Defined(body.totalAyekooCollectionsCount.asDefined().value)
+          : const Undefined(),
+      totalAyekooCollectionsInvalidCount:
+          body.totalAyekooCollectionsInvalidCount.isDefined
+          ? Defined(body.totalAyekooCollectionsInvalidCount.asDefined().value)
+          : const Undefined(),
+      totalAyekooCollectionsPendingCount:
+          body.totalAyekooCollectionsPendingCount.isDefined
+          ? Defined(body.totalAyekooCollectionsPendingCount.asDefined().value)
+          : const Undefined(),
+      totalAyekooCollectionsRejectedCount:
+          body.totalAyekooCollectionsRejectedCount.isDefined
+          ? Defined(body.totalAyekooCollectionsRejectedCount.asDefined().value)
           : const Undefined(),
       totalCashCountAllocationsCount:
           body.totalCashCountAllocationsCount.isDefined
           ? Defined(body.totalCashCountAllocationsCount.asDefined().value)
           : const Undefined(),
+      totalCashCountFieldSignUpsApprovedCount:
+          body.totalCashCountFieldSignUpsApprovedCount.isDefined
+          ? Defined(
+              body.totalCashCountFieldSignUpsApprovedCount.asDefined().value,
+            )
+          : const Undefined(),
       totalCashCountFieldSignUpsCount:
           body.totalCashCountFieldSignUpsCount.isDefined
           ? Defined(body.totalCashCountFieldSignUpsCount.asDefined().value)
+          : const Undefined(),
+      totalCashCountFieldSignUpsInvalidCount:
+          body.totalCashCountFieldSignUpsInvalidCount.isDefined
+          ? Defined(
+              body.totalCashCountFieldSignUpsInvalidCount.asDefined().value,
+            )
+          : const Undefined(),
+      totalCashCountFieldSignUpsPendingCount:
+          body.totalCashCountFieldSignUpsPendingCount.isDefined
+          ? Defined(
+              body.totalCashCountFieldSignUpsPendingCount.asDefined().value,
+            )
+          : const Undefined(),
+      totalCashCountFieldSignUpsRejectedCount:
+          body.totalCashCountFieldSignUpsRejectedCount.isDefined
+          ? Defined(
+              body.totalCashCountFieldSignUpsRejectedCount.asDefined().value,
+            )
           : const Undefined(),
       updateMeta: body.updateMeta.isDefined
           ? Defined(AuditAction.fromRecord(body.updateMeta.asDefined().value))
@@ -356,6 +504,8 @@ class FieldAgent {
     return (
       $_creationTime: $_creationTime,
       $_id: $_id,
+      ayekooLeaderboardPosition: ayekooLeaderboardPosition,
+      cashCountLeaderboardPosition: cashCountLeaderboardPosition,
       countryCityId: countryCityId,
       countryCityName: countryCityName,
       countryCode: countryCode,
@@ -363,30 +513,51 @@ class FieldAgent {
       countryName: countryName,
       countryStateId: countryStateId,
       countryStateName: countryStateName,
-      createMeta: createMeta,
+      createMeta: createMeta.isDefined
+          ? Defined(createMeta.asDefined().value.toRecord())
+          : const Undefined(),
       createdAt: createdAt,
       creatorId: creatorId,
       dateBirth: dateBirth,
       deletedAt: deletedAt,
-      deletedMeta: deletedMeta,
+      deletedMeta: deletedMeta.isDefined
+          ? Defined(deletedMeta.asDefined().value.toRecord())
+          : const Undefined(),
       email: email,
       firstName: firstName,
       fullName: fullName,
       gender: gender,
       invitationId: invitationId,
+      invitationStatus: invitationStatus,
       lastName: lastName,
       middleName: middleName,
       phoneNumber: phoneNumber,
-      profileImage: profileImage,
+      profileImage: profileImage.isDefined
+          ? Defined(profileImage.asDefined().value.toRecord())
+          : const Undefined(),
       project: project,
       referralCode: referralCode,
       status: status,
       teamId: teamId,
       totalAyekooAllocationsCount: totalAyekooAllocationsCount,
+      totalAyekooCollectionsApprovedCount: totalAyekooCollectionsApprovedCount,
       totalAyekooCollectionsCount: totalAyekooCollectionsCount,
+      totalAyekooCollectionsInvalidCount: totalAyekooCollectionsInvalidCount,
+      totalAyekooCollectionsPendingCount: totalAyekooCollectionsPendingCount,
+      totalAyekooCollectionsRejectedCount: totalAyekooCollectionsRejectedCount,
       totalCashCountAllocationsCount: totalCashCountAllocationsCount,
+      totalCashCountFieldSignUpsApprovedCount:
+          totalCashCountFieldSignUpsApprovedCount,
       totalCashCountFieldSignUpsCount: totalCashCountFieldSignUpsCount,
-      updateMeta: updateMeta,
+      totalCashCountFieldSignUpsInvalidCount:
+          totalCashCountFieldSignUpsInvalidCount,
+      totalCashCountFieldSignUpsPendingCount:
+          totalCashCountFieldSignUpsPendingCount,
+      totalCashCountFieldSignUpsRejectedCount:
+          totalCashCountFieldSignUpsRejectedCount,
+      updateMeta: updateMeta.isDefined
+          ? Defined(updateMeta.asDefined().value.toRecord())
+          : const Undefined(),
       updatedAt: updatedAt,
       userId: userId,
     );
@@ -395,6 +566,8 @@ class FieldAgent {
   FieldAgent copyWith({
     double? $_creationTime,
     FieldAgentsId? $_id,
+    Optional<double>? ayekooLeaderboardPosition,
+    Optional<double>? cashCountLeaderboardPosition,
     Optional<CountryCitiesId>? countryCityId,
     Optional<String>? countryCityName,
     Optional<String>? countryCode,
@@ -413,6 +586,7 @@ class FieldAgent {
     Optional<String>? fullName,
     Union2<$MaleLiteral, $FemaleLiteral>? gender,
     Optional<String>? invitationId,
+    Optional<String>? invitationStatus,
     String? lastName,
     Optional<String>? middleName,
     String? phoneNumber,
@@ -422,9 +596,17 @@ class FieldAgent {
     String? status,
     Optional<String>? teamId,
     Optional<double>? totalAyekooAllocationsCount,
+    Optional<double>? totalAyekooCollectionsApprovedCount,
     Optional<double>? totalAyekooCollectionsCount,
+    Optional<double>? totalAyekooCollectionsInvalidCount,
+    Optional<double>? totalAyekooCollectionsPendingCount,
+    Optional<double>? totalAyekooCollectionsRejectedCount,
     Optional<double>? totalCashCountAllocationsCount,
+    Optional<double>? totalCashCountFieldSignUpsApprovedCount,
     Optional<double>? totalCashCountFieldSignUpsCount,
+    Optional<double>? totalCashCountFieldSignUpsInvalidCount,
+    Optional<double>? totalCashCountFieldSignUpsPendingCount,
+    Optional<double>? totalCashCountFieldSignUpsRejectedCount,
     Optional<AuditAction>? updateMeta,
     Optional<double>? updatedAt,
     Optional<String>? userId,
@@ -432,6 +614,10 @@ class FieldAgent {
     return FieldAgent(
       $_creationTime: $_creationTime ?? this.$_creationTime,
       $_id: $_id ?? this.$_id,
+      ayekooLeaderboardPosition:
+          ayekooLeaderboardPosition ?? this.ayekooLeaderboardPosition,
+      cashCountLeaderboardPosition:
+          cashCountLeaderboardPosition ?? this.cashCountLeaderboardPosition,
       countryCityId: countryCityId ?? this.countryCityId,
       countryCityName: countryCityName ?? this.countryCityName,
       countryCode: countryCode ?? this.countryCode,
@@ -450,6 +636,7 @@ class FieldAgent {
       fullName: fullName ?? this.fullName,
       gender: gender ?? this.gender,
       invitationId: invitationId ?? this.invitationId,
+      invitationStatus: invitationStatus ?? this.invitationStatus,
       lastName: lastName ?? this.lastName,
       middleName: middleName ?? this.middleName,
       phoneNumber: phoneNumber ?? this.phoneNumber,
@@ -460,13 +647,37 @@ class FieldAgent {
       teamId: teamId ?? this.teamId,
       totalAyekooAllocationsCount:
           totalAyekooAllocationsCount ?? this.totalAyekooAllocationsCount,
+      totalAyekooCollectionsApprovedCount:
+          totalAyekooCollectionsApprovedCount ??
+          this.totalAyekooCollectionsApprovedCount,
       totalAyekooCollectionsCount:
           totalAyekooCollectionsCount ?? this.totalAyekooCollectionsCount,
+      totalAyekooCollectionsInvalidCount:
+          totalAyekooCollectionsInvalidCount ??
+          this.totalAyekooCollectionsInvalidCount,
+      totalAyekooCollectionsPendingCount:
+          totalAyekooCollectionsPendingCount ??
+          this.totalAyekooCollectionsPendingCount,
+      totalAyekooCollectionsRejectedCount:
+          totalAyekooCollectionsRejectedCount ??
+          this.totalAyekooCollectionsRejectedCount,
       totalCashCountAllocationsCount:
           totalCashCountAllocationsCount ?? this.totalCashCountAllocationsCount,
+      totalCashCountFieldSignUpsApprovedCount:
+          totalCashCountFieldSignUpsApprovedCount ??
+          this.totalCashCountFieldSignUpsApprovedCount,
       totalCashCountFieldSignUpsCount:
           totalCashCountFieldSignUpsCount ??
           this.totalCashCountFieldSignUpsCount,
+      totalCashCountFieldSignUpsInvalidCount:
+          totalCashCountFieldSignUpsInvalidCount ??
+          this.totalCashCountFieldSignUpsInvalidCount,
+      totalCashCountFieldSignUpsPendingCount:
+          totalCashCountFieldSignUpsPendingCount ??
+          this.totalCashCountFieldSignUpsPendingCount,
+      totalCashCountFieldSignUpsRejectedCount:
+          totalCashCountFieldSignUpsRejectedCount ??
+          this.totalCashCountFieldSignUpsRejectedCount,
       updateMeta: updateMeta ?? this.updateMeta,
       updatedAt: updatedAt ?? this.updatedAt,
       userId: userId ?? this.userId,
@@ -479,6 +690,8 @@ class FieldAgent {
     return other is FieldAgent &&
         other.$_creationTime == $_creationTime &&
         other.$_id == $_id &&
+        other.ayekooLeaderboardPosition == ayekooLeaderboardPosition &&
+        other.cashCountLeaderboardPosition == cashCountLeaderboardPosition &&
         other.countryCityId == countryCityId &&
         other.countryCityName == countryCityName &&
         other.countryCode == countryCode &&
@@ -497,6 +710,7 @@ class FieldAgent {
         other.fullName == fullName &&
         other.gender == gender &&
         other.invitationId == invitationId &&
+        other.invitationStatus == invitationStatus &&
         other.lastName == lastName &&
         other.middleName == middleName &&
         other.phoneNumber == phoneNumber &&
@@ -506,11 +720,27 @@ class FieldAgent {
         other.status == status &&
         other.teamId == teamId &&
         other.totalAyekooAllocationsCount == totalAyekooAllocationsCount &&
+        other.totalAyekooCollectionsApprovedCount ==
+            totalAyekooCollectionsApprovedCount &&
         other.totalAyekooCollectionsCount == totalAyekooCollectionsCount &&
+        other.totalAyekooCollectionsInvalidCount ==
+            totalAyekooCollectionsInvalidCount &&
+        other.totalAyekooCollectionsPendingCount ==
+            totalAyekooCollectionsPendingCount &&
+        other.totalAyekooCollectionsRejectedCount ==
+            totalAyekooCollectionsRejectedCount &&
         other.totalCashCountAllocationsCount ==
             totalCashCountAllocationsCount &&
+        other.totalCashCountFieldSignUpsApprovedCount ==
+            totalCashCountFieldSignUpsApprovedCount &&
         other.totalCashCountFieldSignUpsCount ==
             totalCashCountFieldSignUpsCount &&
+        other.totalCashCountFieldSignUpsInvalidCount ==
+            totalCashCountFieldSignUpsInvalidCount &&
+        other.totalCashCountFieldSignUpsPendingCount ==
+            totalCashCountFieldSignUpsPendingCount &&
+        other.totalCashCountFieldSignUpsRejectedCount ==
+            totalCashCountFieldSignUpsRejectedCount &&
         other.updateMeta == updateMeta &&
         other.updatedAt == updatedAt &&
         other.userId == userId;
@@ -520,6 +750,8 @@ class FieldAgent {
   int get hashCode {
     return $_creationTime.hashCode ^
         $_id.hashCode ^
+        ayekooLeaderboardPosition.hashCode ^
+        cashCountLeaderboardPosition.hashCode ^
         countryCityId.hashCode ^
         countryCityName.hashCode ^
         countryCode.hashCode ^
@@ -538,6 +770,7 @@ class FieldAgent {
         fullName.hashCode ^
         gender.hashCode ^
         invitationId.hashCode ^
+        invitationStatus.hashCode ^
         lastName.hashCode ^
         middleName.hashCode ^
         phoneNumber.hashCode ^
@@ -547,9 +780,17 @@ class FieldAgent {
         status.hashCode ^
         teamId.hashCode ^
         totalAyekooAllocationsCount.hashCode ^
+        totalAyekooCollectionsApprovedCount.hashCode ^
         totalAyekooCollectionsCount.hashCode ^
+        totalAyekooCollectionsInvalidCount.hashCode ^
+        totalAyekooCollectionsPendingCount.hashCode ^
+        totalAyekooCollectionsRejectedCount.hashCode ^
         totalCashCountAllocationsCount.hashCode ^
+        totalCashCountFieldSignUpsApprovedCount.hashCode ^
         totalCashCountFieldSignUpsCount.hashCode ^
+        totalCashCountFieldSignUpsInvalidCount.hashCode ^
+        totalCashCountFieldSignUpsPendingCount.hashCode ^
+        totalCashCountFieldSignUpsRejectedCount.hashCode ^
         updateMeta.hashCode ^
         updatedAt.hashCode ^
         userId.hashCode;

@@ -8,7 +8,7 @@
       "returns": {}
     }
   },
-  "GET:/api/run/app/fieldAgentCashCount/listPendingFieldSignUps": {
+  "GET:/api/run/app/fieldAgentCashCount/listCashCountFieldPendingSignUps": {
     "request": "ListQuery",
     "response": "CashCountFieldSignUps",
     "createBox": true,
@@ -51,7 +51,7 @@
       }
     }
   },
-  "POST:/api/run/app/fieldAgentCashCount/createFieldSignUp": {
+  "POST:/api/run/app/fieldAgentCashCount/createCashCountFieldSignUp": {
     "request": "CreateCashCountFieldSignUp",
     "response": "MutationResult",
     "createBox": false,
@@ -90,6 +90,144 @@
           "objectBoxType": "String"
         }
       }
+    }
+  },
+  "GET:/api/run/app/fieldAgentAuth/getMyInvitation": {
+    "request": "GetMyInvitation",
+    "response": "Invitation",
+    "createBox": false
+  },
+  "GET:/api/run/app/fieldAgentCashCount/getCashCountFieldSignUpStats": {
+    "request": "GetCashCountFieldSignUpStats",
+    "response": "CashCountFieldSignUpStats",
+    "createBox": true,
+    "objectFields": {
+      "args": {},
+      "returns": {
+        "month": {
+          "name": "CashCountFieldSignUpStat",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "today": {
+          "name": "CashCountFieldSignUpStat",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "week": {
+          "name": "CashCountFieldSignUpStatWeek",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "week.friday": {
+          "name": "CashCountFieldSignUpStat",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "week.monday": {
+          "name": "CashCountFieldSignUpStat",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "week.saturday": {
+          "name": "CashCountFieldSignUpStat",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "week.sunday": {
+          "name": "CashCountFieldSignUpStat",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "week.thursday": {
+          "name": "CashCountFieldSignUpStat",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "week.total": {
+          "name": "CashCountFieldSignUpStat",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "week.tuesday": {
+          "name": "CashCountFieldSignUpStat",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "week.wednesday": {
+          "name": "CashCountFieldSignUpStat",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        }
+      }
+    }
+  },
+  "GET:/api/run/app/fieldAgentCashCount/listCashCountFieldSignUpLeaderboard": {
+    "request": "ListQuery",
+    "response": "CashCountFieldSignUpLeaderboards",
+    "createBox": true,
+    "responseList": "CashCountFieldSignUpPosition",
+    "objectFields": {
+      "args": {
+        "paginationOpts": "PaginationOpts"
+      },
+      "returns": {
+        "list.image": {
+          "name": "MediaData",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        }
+      }
+    }
+  },
+  "GET:/api/run/app/fieldAgentCashCount/listCashCountFieldInvalidSignUps": {
+    "request": "ListQuery",
+    "response": "CashCountFieldSignUps",
+    "createBox": true,
+    "responseList": "CashCountFieldSignUp",
+    "objectFields": {
+      "args": {
+        "paginationOpts": "PaginationOpts"
+      },
+      "returns": {
+        "list.deviceInfo": {
+          "name": "DeviceInfo",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "list.deletedMeta": {
+          "name": "AuditAction",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "list.updateMeta": {
+          "name": "AuditAction",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        },
+        "list.createMeta": {
+          "name": "AuditAction",
+          "jsonType": "separate",
+          "objectBoxType": "String"
+        }
+      }
+    }
+  },
+  "GET:/api/run/app/fieldAgentEarnings/getFieldAgentWeeklyEarningsSummary": {
+    "request": "GetFieldAgentWeeklyEarningsSummary",
+    "response": "FieldAgentWeeklyEarningsSummary",
+    "createBox": true
+  },
+  "GET:/api/run/app/fieldAgentEarnings/listFieldAgentWeeklyEarnings": {
+    "request": "ListQuery",
+    "response": "FieldAgentWeeklyEarnings",
+    "createBox": true,
+    "responseList": "FieldAgentWeeklyEarning",
+    "objectFields": {
+      "args": {
+        "paginationOpts": "PaginationOpts"
+      },
+      "returns": {}
     }
   }
 }

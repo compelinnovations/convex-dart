@@ -12,6 +12,7 @@ class MediaData {
   final Optional<String> name;
   final Optional<double> size;
   final StorageId? storageId;
+  final Optional<String> url;
 
   const MediaData({
     this.blurHash = const Undefined(),
@@ -19,6 +20,7 @@ class MediaData {
     this.name = const Undefined(),
     this.size = const Undefined(),
     required this.storageId,
+    this.url = const Undefined(),
   });
 
   factory MediaData.empty() {
@@ -28,6 +30,7 @@ class MediaData {
       name: const Undefined(),
       size: const Undefined(),
       storageId: null,
+      url: const Undefined(),
     );
   }
 
@@ -45,7 +48,12 @@ class MediaData {
       size: json.containsKey('size')
           ? Defined(json['size'] as double)
           : const Undefined(),
-      storageId: json['storageId'],
+      storageId: json['storageId'] != null
+          ? StorageId(json['storageId'] as String)
+          : null,
+      url: json.containsKey('url')
+          ? Defined(json['url'] as String)
+          : const Undefined(),
     );
   }
 
@@ -55,7 +63,8 @@ class MediaData {
       if (mime.isDefined) 'mime': mime.asDefined().value,
       if (name.isDefined) 'name': name.asDefined().value,
       if (size.isDefined) 'size': size.asDefined().value,
-      'storageId': storageId,
+      'storageId': storageId?.value,
+      if (url.isDefined) 'url': url.asDefined().value,
     };
   }
 
@@ -67,6 +76,7 @@ class MediaData {
       Optional<String> name,
       Optional<double> size,
       StorageId? storageId,
+      Optional<String> url,
     })
     record,
   ) {
@@ -76,6 +86,27 @@ class MediaData {
       name: record.name,
       size: record.size,
       storageId: record.storageId,
+      url: record.url,
+    );
+  }
+
+  /// Convert to inline record (inverse of fromRecord)
+  ({
+    Optional<String> blurHash,
+    Optional<String> mime,
+    Optional<String> name,
+    Optional<double> size,
+    StorageId? storageId,
+    Optional<String> url,
+  })
+  toRecord() {
+    return (
+      blurHash: blurHash,
+      mime: mime,
+      name: name,
+      size: size,
+      storageId: storageId,
+      url: url,
     );
   }
 
@@ -85,6 +116,7 @@ class MediaData {
     Optional<String>? name,
     Optional<double>? size,
     StorageId? storageId,
+    Optional<String>? url,
   }) {
     return MediaData(
       blurHash: blurHash ?? this.blurHash,
@@ -92,6 +124,7 @@ class MediaData {
       name: name ?? this.name,
       size: size ?? this.size,
       storageId: storageId ?? this.storageId,
+      url: url ?? this.url,
     );
   }
 
@@ -103,7 +136,8 @@ class MediaData {
         other.mime == mime &&
         other.name == name &&
         other.size == size &&
-        other.storageId == storageId;
+        other.storageId == storageId &&
+        other.url == url;
   }
 
   @override
@@ -112,7 +146,8 @@ class MediaData {
         mime.hashCode ^
         name.hashCode ^
         size.hashCode ^
-        storageId.hashCode;
+        storageId.hashCode ^
+        url.hashCode;
   }
 
   @override

@@ -135,3 +135,69 @@ class CashCountFieldSignUpsId implements TableId {
     return value;
   }
 }
+
+class CashCountTeamsId implements TableId {
+  @override
+  final String value;
+  static const String tableName = "cashCountTeams";
+  const CashCountTeamsId(this.value);
+  @override
+  bool operator ==(Object other) {
+    if (other is CashCountTeamsId) {
+      return value == other.value;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return value;
+  }
+}
+
+class CashCountAuthUsersId implements TableId {
+  @override
+  final String value;
+  static const String tableName = "cashCountAuthUsers";
+  const CashCountAuthUsersId(this.value);
+  @override
+  bool operator ==(Object other) {
+    if (other is CashCountAuthUsersId) {
+      return value == other.value;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return value;
+  }
+}
+
+class FieldAgentPaymentBatchesId implements TableId {
+  @override
+  final String value;
+  static const String tableName = "fieldAgentPaymentBatches";
+  const FieldAgentPaymentBatchesId(this.value);
+  @override
+  bool operator ==(Object other) {
+    if (other is FieldAgentPaymentBatchesId) {
+      return value == other.value;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return value;
+  }
+}

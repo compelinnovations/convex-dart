@@ -16,12 +16,8 @@ class AuthUser {
   final Optional<double?> banExpires;
   final Optional<String?> banReason;
   final Optional<bool?> banned;
-  final Optional<String?> createMeta;
   final double createdAt;
-  final Optional<String?> currentLocation;
   final Optional<double?> dbId;
-  final Optional<double?> deletedAt;
-  final Optional<String?> deletedMeta;
   final Optional<String?> displayUsername;
   final String email;
   final bool emailVerified;
@@ -46,7 +42,6 @@ class AuthUser {
   final Optional<String?> teamMemberId;
   final Optional<String?> teamType;
   final Optional<bool?> twoFactorEnabled;
-  final Optional<String?> updateMeta;
   final double updatedAt;
   final Optional<String?> userId;
   final Optional<String?> username;
@@ -60,12 +55,8 @@ class AuthUser {
     this.banExpires = const Undefined(),
     this.banReason = const Undefined(),
     this.banned = const Undefined(),
-    this.createMeta = const Undefined(),
     required this.createdAt,
-    this.currentLocation = const Undefined(),
     this.dbId = const Undefined(),
-    this.deletedAt = const Undefined(),
-    this.deletedMeta = const Undefined(),
     this.displayUsername = const Undefined(),
     required this.email,
     required this.emailVerified,
@@ -90,7 +81,6 @@ class AuthUser {
     this.teamMemberId = const Undefined(),
     this.teamType = const Undefined(),
     this.twoFactorEnabled = const Undefined(),
-    this.updateMeta = const Undefined(),
     required this.updatedAt,
     this.userId = const Undefined(),
     this.username = const Undefined(),
@@ -131,20 +121,8 @@ class AuthUser {
       banned: json['banned'] != null
           ? Defined(json['banned'])
           : const Undefined(),
-      createMeta: json['createMeta'] != null
-          ? Defined(json['createMeta'])
-          : const Undefined(),
       createdAt: json['createdAt'] as double,
-      currentLocation: json['currentLocation'] != null
-          ? Defined(json['currentLocation'])
-          : const Undefined(),
       dbId: json['dbId'] != null ? Defined(json['dbId']) : const Undefined(),
-      deletedAt: json['deletedAt'] != null
-          ? Defined(json['deletedAt'])
-          : const Undefined(),
-      deletedMeta: json['deletedMeta'] != null
-          ? Defined(json['deletedMeta'])
-          : const Undefined(),
       displayUsername: json['displayUsername'] != null
           ? Defined(json['displayUsername'])
           : const Undefined(),
@@ -207,9 +185,6 @@ class AuthUser {
       twoFactorEnabled: json['twoFactorEnabled'] != null
           ? Defined(json['twoFactorEnabled'])
           : const Undefined(),
-      updateMeta: json['updateMeta'] != null
-          ? Defined(json['updateMeta'])
-          : const Undefined(),
       updatedAt: json['updatedAt'] as double,
       userId: json['userId'] != null
           ? Defined(json['userId'])
@@ -233,13 +208,8 @@ class AuthUser {
       if (banExpires.isDefined) 'banExpires': banExpires.asDefined().value,
       if (banReason.isDefined) 'banReason': banReason.asDefined().value,
       if (banned.isDefined) 'banned': banned.asDefined().value,
-      if (createMeta.isDefined) 'createMeta': createMeta.asDefined().value,
       'createdAt': createdAt,
-      if (currentLocation.isDefined)
-        'currentLocation': currentLocation.asDefined().value,
       if (dbId.isDefined) 'dbId': dbId.asDefined().value,
-      if (deletedAt.isDefined) 'deletedAt': deletedAt.asDefined().value,
-      if (deletedMeta.isDefined) 'deletedMeta': deletedMeta.asDefined().value,
       if (displayUsername.isDefined)
         'displayUsername': displayUsername.asDefined().value,
       'email': email,
@@ -273,7 +243,6 @@ class AuthUser {
       if (teamType.isDefined) 'teamType': teamType.asDefined().value,
       if (twoFactorEnabled.isDefined)
         'twoFactorEnabled': twoFactorEnabled.asDefined().value,
-      if (updateMeta.isDefined) 'updateMeta': updateMeta.asDefined().value,
       'updatedAt': updatedAt,
       if (userId.isDefined) 'userId': userId.asDefined().value,
       if (username.isDefined) 'username': username.asDefined().value,
@@ -309,21 +278,9 @@ class AuthUser {
       banned: body.banned.isDefined
           ? Defined(body.banned.asDefined().value)
           : const Undefined(),
-      createMeta: body.createMeta.isDefined
-          ? Defined(body.createMeta.asDefined().value)
-          : const Undefined(),
       createdAt: body.createdAt,
-      currentLocation: body.currentLocation.isDefined
-          ? Defined(body.currentLocation.asDefined().value)
-          : const Undefined(),
       dbId: body.dbId.isDefined
           ? Defined(body.dbId.asDefined().value)
-          : const Undefined(),
-      deletedAt: body.deletedAt.isDefined
-          ? Defined(body.deletedAt.asDefined().value)
-          : const Undefined(),
-      deletedMeta: body.deletedMeta.isDefined
-          ? Defined(body.deletedMeta.asDefined().value)
           : const Undefined(),
       displayUsername: body.displayUsername.isDefined
           ? Defined(body.displayUsername.asDefined().value)
@@ -391,9 +348,6 @@ class AuthUser {
       twoFactorEnabled: body.twoFactorEnabled.isDefined
           ? Defined(body.twoFactorEnabled.asDefined().value)
           : const Undefined(),
-      updateMeta: body.updateMeta.isDefined
-          ? Defined(body.updateMeta.asDefined().value)
-          : const Undefined(),
       updatedAt: body.updatedAt,
       userId: body.userId.isDefined
           ? Defined(body.userId.asDefined().value)
@@ -415,12 +369,8 @@ class AuthUser {
       banExpires: banExpires,
       banReason: banReason,
       banned: banned,
-      createMeta: createMeta,
       createdAt: createdAt,
-      currentLocation: currentLocation,
       dbId: dbId,
-      deletedAt: deletedAt,
-      deletedMeta: deletedMeta,
       displayUsername: displayUsername,
       email: email,
       emailVerified: emailVerified,
@@ -445,7 +395,6 @@ class AuthUser {
       teamMemberId: teamMemberId,
       teamType: teamType,
       twoFactorEnabled: twoFactorEnabled,
-      updateMeta: updateMeta,
       updatedAt: updatedAt,
       userId: userId,
       username: username,
@@ -461,12 +410,8 @@ class AuthUser {
     Optional<double?>? banExpires,
     Optional<String?>? banReason,
     Optional<bool?>? banned,
-    Optional<String?>? createMeta,
     double? createdAt,
-    Optional<String?>? currentLocation,
     Optional<double?>? dbId,
-    Optional<double?>? deletedAt,
-    Optional<String?>? deletedMeta,
     Optional<String?>? displayUsername,
     String? email,
     bool? emailVerified,
@@ -491,7 +436,6 @@ class AuthUser {
     Optional<String?>? teamMemberId,
     Optional<String?>? teamType,
     Optional<bool?>? twoFactorEnabled,
-    Optional<String?>? updateMeta,
     double? updatedAt,
     Optional<String?>? userId,
     Optional<String?>? username,
@@ -505,12 +449,8 @@ class AuthUser {
       banExpires: banExpires ?? this.banExpires,
       banReason: banReason ?? this.banReason,
       banned: banned ?? this.banned,
-      createMeta: createMeta ?? this.createMeta,
       createdAt: createdAt ?? this.createdAt,
-      currentLocation: currentLocation ?? this.currentLocation,
       dbId: dbId ?? this.dbId,
-      deletedAt: deletedAt ?? this.deletedAt,
-      deletedMeta: deletedMeta ?? this.deletedMeta,
       displayUsername: displayUsername ?? this.displayUsername,
       email: email ?? this.email,
       emailVerified: emailVerified ?? this.emailVerified,
@@ -535,7 +475,6 @@ class AuthUser {
       teamMemberId: teamMemberId ?? this.teamMemberId,
       teamType: teamType ?? this.teamType,
       twoFactorEnabled: twoFactorEnabled ?? this.twoFactorEnabled,
-      updateMeta: updateMeta ?? this.updateMeta,
       updatedAt: updatedAt ?? this.updatedAt,
       userId: userId ?? this.userId,
       username: username ?? this.username,
@@ -554,12 +493,8 @@ class AuthUser {
         other.banExpires == banExpires &&
         other.banReason == banReason &&
         other.banned == banned &&
-        other.createMeta == createMeta &&
         other.createdAt == createdAt &&
-        other.currentLocation == currentLocation &&
         other.dbId == dbId &&
-        other.deletedAt == deletedAt &&
-        other.deletedMeta == deletedMeta &&
         other.displayUsername == displayUsername &&
         other.email == email &&
         other.emailVerified == emailVerified &&
@@ -584,7 +519,6 @@ class AuthUser {
         other.teamMemberId == teamMemberId &&
         other.teamType == teamType &&
         other.twoFactorEnabled == twoFactorEnabled &&
-        other.updateMeta == updateMeta &&
         other.updatedAt == updatedAt &&
         other.userId == userId &&
         other.username == username;
@@ -600,12 +534,8 @@ class AuthUser {
         banExpires.hashCode ^
         banReason.hashCode ^
         banned.hashCode ^
-        createMeta.hashCode ^
         createdAt.hashCode ^
-        currentLocation.hashCode ^
         dbId.hashCode ^
-        deletedAt.hashCode ^
-        deletedMeta.hashCode ^
         displayUsername.hashCode ^
         email.hashCode ^
         emailVerified.hashCode ^
@@ -630,7 +560,6 @@ class AuthUser {
         teamMemberId.hashCode ^
         teamType.hashCode ^
         twoFactorEnabled.hashCode ^
-        updateMeta.hashCode ^
         updatedAt.hashCode ^
         userId.hashCode ^
         username.hashCode;

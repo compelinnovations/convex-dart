@@ -17,14 +17,9 @@ class AuthUserBox {
   int? banExpires;
   String? banReason;
   bool? banned;
-  String? createMeta;
   @Property(type: PropertyType.dateNano)
   int createdAt;
-  String? currentLocation;
   double? dbId;
-  @Property(type: PropertyType.dateNano)
-  int? deletedAt;
-  String? deletedMeta;
   String? displayUsername;
   String email;
   bool emailVerified;
@@ -49,7 +44,6 @@ class AuthUserBox {
   String? teamMemberId;
   String? teamType;
   bool? twoFactorEnabled;
-  String? updateMeta;
   @Property(type: PropertyType.dateNano)
   int updatedAt;
   String? userId;
@@ -65,12 +59,8 @@ class AuthUserBox {
     this.banExpires,
     this.banReason,
     this.banned,
-    this.createMeta,
     required this.createdAt,
-    this.currentLocation,
     this.dbId,
-    this.deletedAt,
-    this.deletedMeta,
     this.displayUsername,
     required this.email,
     required this.emailVerified,
@@ -95,7 +85,6 @@ class AuthUserBox {
     this.teamMemberId,
     this.teamType,
     this.twoFactorEnabled,
-    this.updateMeta,
     required this.updatedAt,
     this.userId,
     this.username,
@@ -122,20 +111,8 @@ class AuthUserBox {
           ? model.banReason.asDefined().value
           : null,
       banned: model.banned.isDefined ? model.banned.asDefined().value : null,
-      createMeta: model.createMeta.isDefined
-          ? model.createMeta.asDefined().value
-          : null,
       createdAt: model.createdAt.round(),
-      currentLocation: model.currentLocation.isDefined
-          ? model.currentLocation.asDefined().value
-          : null,
       dbId: model.dbId.isDefined ? model.dbId.asDefined().value : null,
-      deletedAt: model.deletedAt.isDefined
-          ? model.deletedAt.asDefined().value?.round()
-          : null,
-      deletedMeta: model.deletedMeta.isDefined
-          ? model.deletedMeta.asDefined().value
-          : null,
       displayUsername: model.displayUsername.isDefined
           ? model.displayUsername.asDefined().value
           : null,
@@ -192,9 +169,6 @@ class AuthUserBox {
       twoFactorEnabled: model.twoFactorEnabled.isDefined
           ? model.twoFactorEnabled.asDefined().value
           : null,
-      updateMeta: model.updateMeta.isDefined
-          ? model.updateMeta.asDefined().value
-          : null,
       updatedAt: model.updatedAt.round(),
       userId: model.userId.isDefined ? model.userId.asDefined().value : null,
       username: model.username.isDefined
@@ -221,18 +195,8 @@ class AuthUserBox {
           : const Undefined(),
       banReason: banReason != null ? Defined(banReason!) : const Undefined(),
       banned: banned != null ? Defined(banned!) : const Undefined(),
-      createMeta: createMeta != null ? Defined(createMeta!) : const Undefined(),
       createdAt: createdAt.toDouble(),
-      currentLocation: currentLocation != null
-          ? Defined(currentLocation!)
-          : const Undefined(),
       dbId: dbId != null ? Defined(dbId!) : const Undefined(),
-      deletedAt: deletedAt != null
-          ? Defined(deletedAt!.toDouble())
-          : const Undefined(),
-      deletedMeta: deletedMeta != null
-          ? Defined(deletedMeta!)
-          : const Undefined(),
       displayUsername: displayUsername != null
           ? Defined(displayUsername!)
           : const Undefined(),
@@ -277,7 +241,6 @@ class AuthUserBox {
       twoFactorEnabled: twoFactorEnabled != null
           ? Defined(twoFactorEnabled!)
           : const Undefined(),
-      updateMeta: updateMeta != null ? Defined(updateMeta!) : const Undefined(),
       updatedAt: updatedAt.toDouble(),
       userId: userId != null ? Defined(userId!) : const Undefined(),
       username: username != null ? Defined(username!) : const Undefined(),

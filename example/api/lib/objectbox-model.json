@@ -50,11 +50,6 @@
           "type": 1
         },
         {
-          "id": "10:8333489055791111135",
-          "name": "createMeta",
-          "type": 9
-        },
-        {
           "id": "11:8959101224931586100",
           "name": "createdAt",
           "type": 12
@@ -63,16 +58,6 @@
           "id": "12:5478875498365185455",
           "name": "dbId",
           "type": 8
-        },
-        {
-          "id": "13:4548536748823477922",
-          "name": "deletedAt",
-          "type": 12
-        },
-        {
-          "id": "14:1837199048463628871",
-          "name": "deletedMeta",
-          "type": 9
         },
         {
           "id": "15:862889559935729086",
@@ -195,11 +180,6 @@
           "type": 1
         },
         {
-          "id": "39:875611790132478376",
-          "name": "updateMeta",
-          "type": 9
-        },
-        {
           "id": "40:6711255155685030688",
           "name": "updatedAt",
           "type": 12
@@ -215,11 +195,6 @@
           "type": 9
         },
         {
-          "id": "43:3764772260803327932",
-          "name": "currentLocation",
-          "type": 9
-        },
-        {
           "id": "44:8173091906690746093",
           "name": "creationTime",
           "type": 12
@@ -228,142 +203,8 @@
       "relations": []
     },
     {
-      "id": "19:2851251314550912979",
-      "lastPropertyId": "26:6266113098038628457",
-      "name": "CashCountFieldSignUpBox",
-      "properties": [
-        {
-          "id": "1:958095520644049601",
-          "name": "id",
-          "type": 6,
-          "flags": 1
-        },
-        {
-          "id": "3:2995268697826826738",
-          "name": "dbId",
-          "type": 9
-        },
-        {
-          "id": "4:1432262932073035031",
-          "name": "completedAt",
-          "type": 12
-        },
-        {
-          "id": "5:9209508261654703234",
-          "name": "completedMeta",
-          "type": 9
-        },
-        {
-          "id": "6:8042879651313556216",
-          "name": "createMeta",
-          "type": 9
-        },
-        {
-          "id": "7:5200304212497397045",
-          "name": "createdAt",
-          "type": 12
-        },
-        {
-          "id": "8:5456317331045439930",
-          "name": "creatorId",
-          "type": 9
-        },
-        {
-          "id": "9:8875271250312223389",
-          "name": "deletedAt",
-          "type": 12
-        },
-        {
-          "id": "10:8361773210385047668",
-          "name": "deletedMeta",
-          "type": 9
-        },
-        {
-          "id": "11:3257707974152910464",
-          "name": "deviceId",
-          "type": 9
-        },
-        {
-          "id": "12:7215090163771125270",
-          "name": "deviceInfo",
-          "type": 9
-        },
-        {
-          "id": "13:7576590344388059299",
-          "name": "expiredAt",
-          "type": 12
-        },
-        {
-          "id": "14:1647466347239814860",
-          "name": "fieldAgentId",
-          "type": 9
-        },
-        {
-          "id": "15:4112429504083072832",
-          "name": "mongoId",
-          "type": 9
-        },
-        {
-          "id": "16:5099032966665944365",
-          "name": "phoneNumber",
-          "type": 9
-        },
-        {
-          "id": "17:2331721514470387294",
-          "name": "referralCode",
-          "type": 9
-        },
-        {
-          "id": "18:6180518091701855126",
-          "name": "rejectionAt",
-          "type": 12
-        },
-        {
-          "id": "19:2744992489110683474",
-          "name": "rejectionMeta",
-          "type": 9
-        },
-        {
-          "id": "20:3046830927486095649",
-          "name": "rejectionReason",
-          "type": 9
-        },
-        {
-          "id": "21:7463310167697249955",
-          "name": "statUpdatedAt",
-          "type": 12
-        },
-        {
-          "id": "22:2155315550432537951",
-          "name": "status",
-          "type": 9
-        },
-        {
-          "id": "23:8705705820279152950",
-          "name": "teamId",
-          "type": 9
-        },
-        {
-          "id": "24:1890090956892725462",
-          "name": "updateMeta",
-          "type": 9
-        },
-        {
-          "id": "25:7896660738470951998",
-          "name": "updatedAt",
-          "type": 12
-        },
-        {
-          "id": "26:6266113098038628457",
-          "name": "creationTime",
-          "type": 12
-        }
-      ],
-      "relations": []
-    },
-    {
       "id": "20:3921185338622067297",
-      "lastPropertyId": "36:4879528454934818188",
+      "lastPropertyId": "47:5028645622006120785",
       "name": "FieldAgentBox",
       "properties": [
         {
@@ -546,12 +387,497 @@
           "id": "36:4879528454934818188",
           "name": "userId",
           "type": 9
+        },
+        {
+          "id": "37:7875003737765366319",
+          "name": "ayekooLeaderboardPosition",
+          "type": 8
+        },
+        {
+          "id": "38:513253299287655342",
+          "name": "cashCountLeaderboardPosition",
+          "type": 8
+        },
+        {
+          "id": "39:5992273343476545479",
+          "name": "invitationStatus",
+          "type": 9
+        },
+        {
+          "id": "40:3963302536382292852",
+          "name": "totalAyekooCollectionsApprovedCount",
+          "type": 8
+        },
+        {
+          "id": "41:244919310842268945",
+          "name": "totalAyekooCollectionsInvalidCount",
+          "type": 8
+        },
+        {
+          "id": "42:4394155950502027449",
+          "name": "totalAyekooCollectionsPendingCount",
+          "type": 8
+        },
+        {
+          "id": "43:7847396509482378564",
+          "name": "totalAyekooCollectionsRejectedCount",
+          "type": 8
+        },
+        {
+          "id": "44:1865329306741651687",
+          "name": "totalCashCountFieldSignUpsApprovedCount",
+          "type": 8
+        },
+        {
+          "id": "45:3522889860771332138",
+          "name": "totalCashCountFieldSignUpsInvalidCount",
+          "type": 8
+        },
+        {
+          "id": "46:7393505335303217753",
+          "name": "totalCashCountFieldSignUpsPendingCount",
+          "type": 8
+        },
+        {
+          "id": "47:5028645622006120785",
+          "name": "totalCashCountFieldSignUpsRejectedCount",
+          "type": 8
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "21:6095326816925985749",
+      "lastPropertyId": "39:7963973470367217272",
+      "name": "CashCountFieldSignUpBox",
+      "properties": [
+        {
+          "id": "1:7599745175933162867",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1229811409531754626",
+          "name": "creationTime",
+          "type": 12
+        },
+        {
+          "id": "3:167833852944431108",
+          "name": "dbId",
+          "type": 9
+        },
+        {
+          "id": "4:3343501092857513953",
+          "name": "businessName",
+          "type": 9
+        },
+        {
+          "id": "5:2464697087540000266",
+          "name": "cashCountTeamId",
+          "type": 9
+        },
+        {
+          "id": "6:7605596116775449746",
+          "name": "cashCountUserFullName",
+          "type": 9
+        },
+        {
+          "id": "7:1955519848015773603",
+          "name": "cashCountUserId",
+          "type": 9
+        },
+        {
+          "id": "8:1086033169155706507",
+          "name": "cashCountUserRole",
+          "type": 9
+        },
+        {
+          "id": "9:2947280534066093840",
+          "name": "commissionAmount",
+          "type": 8
+        },
+        {
+          "id": "10:611007796116792893",
+          "name": "createMeta",
+          "type": 9
+        },
+        {
+          "id": "11:6225092069981358812",
+          "name": "createdAt",
+          "type": 12
+        },
+        {
+          "id": "12:2674485568721315467",
+          "name": "creatorId",
+          "type": 9
+        },
+        {
+          "id": "13:6453811222194935147",
+          "name": "dateEarned",
+          "type": 8
+        },
+        {
+          "id": "14:9189859589058187152",
+          "name": "deletedAt",
+          "type": 12
+        },
+        {
+          "id": "15:4419744663658488977",
+          "name": "deletedMeta",
+          "type": 9
+        },
+        {
+          "id": "16:5188555290022661057",
+          "name": "deviceId",
+          "type": 9
+        },
+        {
+          "id": "17:434138271373761754",
+          "name": "deviceInfo",
+          "type": 9
+        },
+        {
+          "id": "18:7953297158271979435",
+          "name": "expiredAt",
+          "type": 12
+        },
+        {
+          "id": "19:6334276747116081679",
+          "name": "fieldAgentId",
+          "type": 9
+        },
+        {
+          "id": "20:9133379471908190519",
+          "name": "fieldAgentName",
+          "type": 9
+        },
+        {
+          "id": "21:4962821056752642354",
+          "name": "invalidRejectionReason",
+          "type": 9
+        },
+        {
+          "id": "22:6688374751579670906",
+          "name": "mongoId",
+          "type": 9
+        },
+        {
+          "id": "23:5588518923867002507",
+          "name": "mongoTeamId",
+          "type": 9
+        },
+        {
+          "id": "24:4980277766271922482",
+          "name": "monthTxnsCount",
+          "type": 8
+        },
+        {
+          "id": "25:3760023279539317114",
+          "name": "paidAt",
+          "type": 12
+        },
+        {
+          "id": "26:5409833790296297504",
+          "name": "paymentBatchId",
+          "type": 9
+        },
+        {
+          "id": "27:1207974410661233334",
+          "name": "paymentStatus",
+          "type": 9
+        },
+        {
+          "id": "28:3110994778862607061",
+          "name": "periodEndDate",
+          "type": 12
+        },
+        {
+          "id": "29:7224347279337415231",
+          "name": "periodStartDate",
+          "type": 12
+        },
+        {
+          "id": "30:8228270020475625374",
+          "name": "phoneNumber",
+          "type": 9
+        },
+        {
+          "id": "31:8628480010700501174",
+          "name": "processedAt",
+          "type": 12
+        },
+        {
+          "id": "32:1522097160754821204",
+          "name": "referralCode",
+          "type": 9
+        },
+        {
+          "id": "33:878845331773083939",
+          "name": "status",
+          "type": 9
+        },
+        {
+          "id": "34:1822011315611352411",
+          "name": "teamId",
+          "type": 9
+        },
+        {
+          "id": "35:4780539646334083324",
+          "name": "txnsCount",
+          "type": 8
+        },
+        {
+          "id": "36:1909048546992364631",
+          "name": "updateMeta",
+          "type": 9
+        },
+        {
+          "id": "37:432614843143836682",
+          "name": "updatedAt",
+          "type": 12
+        },
+        {
+          "id": "38:6713888453034282707",
+          "name": "weekOf",
+          "type": 9
+        },
+        {
+          "id": "39:7963973470367217272",
+          "name": "weekTxnsCount",
+          "type": 8
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "22:7026388465598979319",
+      "lastPropertyId": "13:7217268511350695459",
+      "name": "CashCountFieldSignUpPositionBox",
+      "properties": [
+        {
+          "id": "1:6411679349893260870",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4756981461799129893",
+          "name": "dbId",
+          "type": 9
+        },
+        {
+          "id": "3:4041313560457450932",
+          "name": "fieldAgentId",
+          "type": 9
+        },
+        {
+          "id": "4:8377797439631240489",
+          "name": "firstName",
+          "type": 9
+        },
+        {
+          "id": "5:5038513917928086436",
+          "name": "fullName",
+          "type": 9
+        },
+        {
+          "id": "6:2011216069613893198",
+          "name": "image",
+          "type": 9
+        },
+        {
+          "id": "7:1256523526156298972",
+          "name": "lastName",
+          "type": 9
+        },
+        {
+          "id": "8:6369560201852500188",
+          "name": "position",
+          "type": 8
+        },
+        {
+          "id": "9:4785997541225455460",
+          "name": "totalSignUps",
+          "type": 8
+        },
+        {
+          "id": "10:2040043371316771520",
+          "name": "totalSignUpsApproved",
+          "type": 8
+        },
+        {
+          "id": "11:3078512334668504865",
+          "name": "totalSignUpsInvalid",
+          "type": 8
+        },
+        {
+          "id": "12:8837721667207039051",
+          "name": "totalSignUpsPending",
+          "type": 8
+        },
+        {
+          "id": "13:7217268511350695459",
+          "name": "totalSignUpsRejected",
+          "type": 8
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "23:8504087852252682608",
+      "lastPropertyId": "4:3528485681141228299",
+      "name": "CashCountFieldSignUpStatsBox",
+      "properties": [
+        {
+          "id": "1:4432476730937151089",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8760554659502073111",
+          "name": "month",
+          "type": 9
+        },
+        {
+          "id": "3:5145948262611165331",
+          "name": "today",
+          "type": 9
+        },
+        {
+          "id": "4:3528485681141228299",
+          "name": "week",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "24:1699975809197912982",
+      "lastPropertyId": "11:4559723871527907762",
+      "name": "FieldAgentWeeklyEarningBox",
+      "properties": [
+        {
+          "id": "1:1260070963392618958",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8861719279698083187",
+          "name": "approvedAt",
+          "type": 12
+        },
+        {
+          "id": "3:1505115289674148426",
+          "name": "batchId",
+          "type": 9
+        },
+        {
+          "id": "4:2366198934950880292",
+          "name": "paidAt",
+          "type": 12
+        },
+        {
+          "id": "5:5100890979378283238",
+          "name": "payoutStatus",
+          "type": 9
+        },
+        {
+          "id": "6:6089296978946129757",
+          "name": "periodEndDate",
+          "type": 12
+        },
+        {
+          "id": "7:3248176325803157293",
+          "name": "periodStartDate",
+          "type": 12
+        },
+        {
+          "id": "8:190011721505358200",
+          "name": "totalAcquisitions",
+          "type": 8
+        },
+        {
+          "id": "9:3728211254263445521",
+          "name": "totalEarnings",
+          "type": 8
+        },
+        {
+          "id": "10:6614659948136515274",
+          "name": "weekLabel",
+          "type": 9
+        },
+        {
+          "id": "11:4559723871527907762",
+          "name": "weekOf",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "25:2690526521168380346",
+      "lastPropertyId": "10:5011942343075539184",
+      "name": "FieldAgentWeeklyEarningsSummaryBox",
+      "properties": [
+        {
+          "id": "1:6785346267460919293",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5384095944012583845",
+          "name": "batchId",
+          "type": 9
+        },
+        {
+          "id": "3:6106838269746824910",
+          "name": "commissionPerAcquisition",
+          "type": 8
+        },
+        {
+          "id": "4:8409115579201246080",
+          "name": "paidAt",
+          "type": 12
+        },
+        {
+          "id": "5:3378681393167223378",
+          "name": "payoutStatus",
+          "type": 9
+        },
+        {
+          "id": "6:8287181743594451564",
+          "name": "periodEndDate",
+          "type": 12
+        },
+        {
+          "id": "7:2185485841972518455",
+          "name": "periodStartDate",
+          "type": 12
+        },
+        {
+          "id": "8:3895184317567381201",
+          "name": "totalEarnings",
+          "type": 8
+        },
+        {
+          "id": "9:3125997748664602333",
+          "name": "totalSignUps",
+          "type": 8
+        },
+        {
+          "id": "10:5011942343075539184",
+          "name": "weekLabel",
+          "type": 9
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "20:3921185338622067297",
+  "lastEntityId": "25:2690526521168380346",
   "lastIndexId": "5:8360414782938869669",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
@@ -574,7 +900,8 @@
     3818690167004839259,
     3735040337502674930,
     8119889653396101914,
-    3346228968144275508
+    3346228968144275508,
+    2851251314550912979
   ],
   "retiredIndexUids": [],
   "retiredPropertyUids": [
@@ -867,7 +1194,37 @@
     1437693660548674405,
     6576216995235191970,
     6519672474009036381,
-    2474186804949459003
+    2474186804949459003,
+    8333489055791111135,
+    4548536748823477922,
+    1837199048463628871,
+    875611790132478376,
+    3764772260803327932,
+    958095520644049601,
+    2995268697826826738,
+    1432262932073035031,
+    9209508261654703234,
+    8042879651313556216,
+    5200304212497397045,
+    5456317331045439930,
+    8875271250312223389,
+    8361773210385047668,
+    3257707974152910464,
+    7215090163771125270,
+    7576590344388059299,
+    1647466347239814860,
+    4112429504083072832,
+    5099032966665944365,
+    2331721514470387294,
+    6180518091701855126,
+    2744992489110683474,
+    3046830927486095649,
+    7463310167697249955,
+    2155315550432537951,
+    8705705820279152950,
+    1890090956892725462,
+    7896660738470951998,
+    6266113098038628457
   ],
   "retiredRelationUids": [],
   "version": 1

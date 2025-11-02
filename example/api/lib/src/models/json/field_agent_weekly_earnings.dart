@@ -5,44 +5,37 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
 import "dart:typed_data";
 import "../../schema.dart";
 import "../../literals.dart";
-import "cash_count_field_sign_up.dart";
-import "../../functions/fieldAgentCashCount/listCashCountFieldPendingSignUps.dart"
-    show CashCountFieldSignUpsDoc;
+import "field_agent_weekly_earning.dart";
+import "../../functions/fieldAgentEarnings/listFieldAgentWeeklyEarnings.dart"
+    show FieldAgentWeeklyEarningsDoc;
 
-class CashCountFieldSignUps {
+class FieldAgentWeeklyEarnings {
   final String continueCursor;
-  final IList<CashCountFieldSignUpsId> deletedIds;
   final bool isDone;
-  final IList<CashCountFieldSignUp> list;
+  final IList<FieldAgentWeeklyEarning> list;
 
-  const CashCountFieldSignUps({
+  const FieldAgentWeeklyEarnings({
     required this.continueCursor,
-    required this.deletedIds,
     required this.isDone,
     required this.list,
   });
 
-  factory CashCountFieldSignUps.empty() {
-    return CashCountFieldSignUps(
+  factory FieldAgentWeeklyEarnings.empty() {
+    return FieldAgentWeeklyEarnings(
       continueCursor: '',
-      deletedIds: <CashCountFieldSignUpsId>[].toIList(),
       isDone: false,
-      list: <CashCountFieldSignUp>[].toIList(),
+      list: <FieldAgentWeeklyEarning>[].toIList(),
     );
   }
 
-  factory CashCountFieldSignUps.fromJson(Map<String, dynamic> json) {
-    return CashCountFieldSignUps(
+  factory FieldAgentWeeklyEarnings.fromJson(Map<String, dynamic> json) {
+    return FieldAgentWeeklyEarnings(
       continueCursor: json['continueCursor'] as String,
-      deletedIds: (json['deletedIds'] as List<dynamic>)
-          .map((e) => CashCountFieldSignUpsId(e as String))
-          .toList()
-          .toIList(),
       isDone: json['isDone'] as bool,
       list: (json['list'] as List<dynamic>)
           .map(
             (item) =>
-                CashCountFieldSignUp.fromJson(item as Map<String, dynamic>),
+                FieldAgentWeeklyEarning.fromJson(item as Map<String, dynamic>),
           )
           .toList()
           .toIList(),
@@ -52,43 +45,34 @@ class CashCountFieldSignUps {
   Map<String, dynamic> toJson() {
     return {
       'continueCursor': continueCursor,
-      'deletedIds': deletedIds.map((item) => item.value).toList(),
       'isDone': isDone,
       'list': list.toList(),
     };
   }
 
   /// Create from Convex typedef record
-  factory CashCountFieldSignUps.fromDoc(CashCountFieldSignUpsDoc doc) {
-    return CashCountFieldSignUps(
+  factory FieldAgentWeeklyEarnings.fromDoc(FieldAgentWeeklyEarningsDoc doc) {
+    return FieldAgentWeeklyEarnings(
       continueCursor: doc.continueCursor,
-      deletedIds: doc.deletedIds,
       isDone: doc.isDone,
       list: doc.list
-          .map((item) => CashCountFieldSignUp.fromRecord(item))
+          .map((item) => FieldAgentWeeklyEarning.fromRecord(item))
           .toIList(),
     );
   }
 
   /// Convert to Convex typedef record
   dynamic toDoc() {
-    return (
-      continueCursor: continueCursor,
-      deletedIds: deletedIds,
-      isDone: isDone,
-      list: list,
-    );
+    return (continueCursor: continueCursor, isDone: isDone, list: list);
   }
 
-  CashCountFieldSignUps copyWith({
+  FieldAgentWeeklyEarnings copyWith({
     String? continueCursor,
-    IList<CashCountFieldSignUpsId>? deletedIds,
     bool? isDone,
-    IList<CashCountFieldSignUp>? list,
+    IList<FieldAgentWeeklyEarning>? list,
   }) {
-    return CashCountFieldSignUps(
+    return FieldAgentWeeklyEarnings(
       continueCursor: continueCursor ?? this.continueCursor,
-      deletedIds: deletedIds ?? this.deletedIds,
       isDone: isDone ?? this.isDone,
       list: list ?? this.list,
     );
@@ -97,19 +81,15 @@ class CashCountFieldSignUps {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is CashCountFieldSignUps &&
+    return other is FieldAgentWeeklyEarnings &&
         other.continueCursor == continueCursor &&
-        other.deletedIds == deletedIds &&
         other.isDone == isDone &&
         other.list == list;
   }
 
   @override
   int get hashCode {
-    return continueCursor.hashCode ^
-        deletedIds.hashCode ^
-        isDone.hashCode ^
-        list.hashCode;
+    return continueCursor.hashCode ^ isDone.hashCode ^ list.hashCode;
   }
 
   @override

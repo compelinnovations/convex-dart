@@ -110,39 +110,11 @@
                 },
                 "optional": true
               },
-              "createMeta": {
-                "fieldType": {
-                  "type": "union",
-                  "value": [
-                    {
-                      "type": "null"
-                    },
-                    {
-                      "type": "string"
-                    }
-                  ]
-                },
-                "optional": true
-              },
               "createdAt": {
                 "fieldType": {
                   "type": "number"
                 },
                 "optional": false
-              },
-              "currentLocation": {
-                "fieldType": {
-                  "type": "union",
-                  "value": [
-                    {
-                      "type": "null"
-                    },
-                    {
-                      "type": "string"
-                    }
-                  ]
-                },
-                "optional": true
               },
               "dbId": {
                 "fieldType": {
@@ -153,34 +125,6 @@
                     },
                     {
                       "type": "number"
-                    }
-                  ]
-                },
-                "optional": true
-              },
-              "deletedAt": {
-                "fieldType": {
-                  "type": "union",
-                  "value": [
-                    {
-                      "type": "null"
-                    },
-                    {
-                      "type": "number"
-                    }
-                  ]
-                },
-                "optional": true
-              },
-              "deletedMeta": {
-                "fieldType": {
-                  "type": "union",
-                  "value": [
-                    {
-                      "type": "null"
-                    },
-                    {
-                      "type": "string"
                     }
                   ]
                 },
@@ -498,20 +442,6 @@
                 },
                 "optional": true
               },
-              "updateMeta": {
-                "fieldType": {
-                  "type": "union",
-                  "value": [
-                    {
-                      "type": "null"
-                    },
-                    {
-                      "type": "string"
-                    }
-                  ]
-                },
-                "optional": true
-              },
               "updatedAt": {
                 "fieldType": {
                   "type": "number"
@@ -582,6 +512,18 @@
                   "type": "id"
                 },
                 "optional": false
+              },
+              "ayekooLeaderboardPosition": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
+              },
+              "cashCountLeaderboardPosition": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
               },
               "countryCityId": {
                 "fieldType": {
@@ -798,6 +740,12 @@
                 },
                 "optional": true
               },
+              "invitationStatus": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": true
+              },
               "lastName": {
                 "fieldType": {
                   "type": "string"
@@ -858,6 +806,12 @@
                         ]
                       },
                       "optional": false
+                    },
+                    "url": {
+                      "fieldType": {
+                        "type": "string"
+                      },
+                      "optional": true
                     }
                   }
                 },
@@ -903,7 +857,31 @@
                 },
                 "optional": true
               },
+              "totalAyekooCollectionsApprovedCount": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
+              },
               "totalAyekooCollectionsCount": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
+              },
+              "totalAyekooCollectionsInvalidCount": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
+              },
+              "totalAyekooCollectionsPendingCount": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
+              },
+              "totalAyekooCollectionsRejectedCount": {
                 "fieldType": {
                   "type": "number"
                 },
@@ -915,7 +893,31 @@
                 },
                 "optional": true
               },
+              "totalCashCountFieldSignUpsApprovedCount": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
+              },
               "totalCashCountFieldSignUpsCount": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
+              },
+              "totalCashCountFieldSignUpsInvalidCount": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
+              },
+              "totalCashCountFieldSignUpsPendingCount": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
+              },
+              "totalCashCountFieldSignUpsRejectedCount": {
                 "fieldType": {
                   "type": "number"
                 },
@@ -994,7 +996,415 @@
     {
       "args": {
         "type": "object",
+        "value": {}
+      },
+      "functionType": "Query",
+      "identifier": "app/fieldAgentAuth.js:getMyInvitation",
+      "returns": {
+        "type": "union",
+        "value": [
+          {
+            "type": "object",
+            "value": {
+              "_creationTime": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": true
+              },
+              "_id": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": true
+              },
+              "acceptedAt": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "appCountryIso": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "appCountryName": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "createdAt": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "deletedAt": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "email": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": false
+              },
+              "expiresAt": {
+                "fieldType": {
+                  "type": "number"
+                },
+                "optional": false
+              },
+              "fieldAgentId": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "firstName": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "fullName": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "inviteMessage": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "inviterEmail": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "inviterId": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": false
+              },
+              "inviterMemberId": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "inviterName": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "inviterPhoneNumber": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "lastName": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "organizationId": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": false
+              },
+              "organizationName": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "organizationType": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "phoneNumber": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "role": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "shippingClientId": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "status": {
+                "fieldType": {
+                  "type": "string"
+                },
+                "optional": false
+              },
+              "subRole": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "teamId": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "teamName": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "teamType": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "optional": true
+              },
+              "updatedAt": {
+                "fieldType": {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                },
+                "optional": true
+              }
+            }
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
         "value": {
+          "authUserId": {
+            "fieldType": {
+              "type": "string"
+            },
+            "optional": false
+          },
           "deviceInfo": {
             "fieldType": {
               "type": "object",
@@ -1027,13 +1437,13 @@
             },
             "optional": false
           },
-          "ownerUserId": {
+          "referralCode": {
             "fieldType": {
               "type": "string"
             },
             "optional": false
           },
-          "referralCode": {
+          "teamId": {
             "fieldType": {
               "type": "string"
             },
@@ -1042,7 +1452,7 @@
         }
       },
       "functionType": "Mutation",
-      "identifier": "app/fieldAgentCashCount.js:createFieldSignUp",
+      "identifier": "app/fieldAgentCashCount.js:createCashCountFieldSignUp",
       "returns": {
         "type": "object",
         "value": {
@@ -1062,7 +1472,7 @@
         }
       },
       "visibility": {
-        "kind": "public"
+        "kind": "internal"
       }
     },
     {
@@ -1134,7 +1544,7 @@
         }
       },
       "functionType": "Query",
-      "identifier": "app/fieldAgentCashCount.js:listPendingFieldSignUps",
+      "identifier": "app/fieldAgentCashCount.js:listCashCountFieldPendingSignUps",
       "returns": {
         "type": "object",
         "value": {
@@ -1179,56 +1589,41 @@
                     },
                     "optional": false
                   },
-                  "completedAt": {
+                  "businessName": {
                     "fieldType": {
-                      "type": "number"
+                      "type": "string"
+                    },
+                    "optional": false
+                  },
+                  "cashCountTeamId": {
+                    "fieldType": {
+                      "tableName": "cashCountTeams",
+                      "type": "id"
                     },
                     "optional": true
                   },
-                  "completedMeta": {
+                  "cashCountUserFullName": {
                     "fieldType": {
-                      "type": "object",
-                      "value": {
-                        "action": {
-                          "fieldType": {
-                            "type": "string"
-                          },
-                          "optional": false
-                        },
-                        "details": {
-                          "fieldType": {
-                            "keys": {
-                              "type": "string"
-                            },
-                            "type": "record",
-                            "values": {
-                              "fieldType": {
-                                "type": "any"
-                              },
-                              "optional": false
-                            }
-                          },
-                          "optional": true
-                        },
-                        "name": {
-                          "fieldType": {
-                            "type": "string"
-                          },
-                          "optional": true
-                        },
-                        "role": {
-                          "fieldType": {
-                            "type": "string"
-                          },
-                          "optional": true
-                        },
-                        "userId": {
-                          "fieldType": {
-                            "type": "string"
-                          },
-                          "optional": true
-                        }
-                      }
+                      "type": "string"
+                    },
+                    "optional": true
+                  },
+                  "cashCountUserId": {
+                    "fieldType": {
+                      "tableName": "cashCountAuthUsers",
+                      "type": "id"
+                    },
+                    "optional": true
+                  },
+                  "cashCountUserRole": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": true
+                  },
+                  "commissionAmount": {
+                    "fieldType": {
+                      "type": "number"
                     },
                     "optional": true
                   },
@@ -1303,6 +1698,12 @@
                       ]
                     },
                     "optional": false
+                  },
+                  "dateEarned": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
                   },
                   "deletedAt": {
                     "fieldType": {
@@ -1408,11 +1809,66 @@
                     },
                     "optional": false
                   },
+                  "fieldAgentName": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": true
+                  },
+                  "invalidRejectionReason": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": true
+                  },
                   "mongoId": {
                     "fieldType": {
                       "type": "string"
                     },
                     "optional": false
+                  },
+                  "mongoTeamId": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": false
+                  },
+                  "monthTxnsCount": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  },
+                  "paidAt": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  },
+                  "paymentBatchId": {
+                    "fieldType": {
+                      "tableName": "fieldAgentPaymentBatches",
+                      "type": "id"
+                    },
+                    "optional": true
+                  },
+                  "paymentStatus": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": true
+                  },
+                  "periodEndDate": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  },
+                  "periodStartDate": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
                   },
                   "phoneNumber": {
                     "fieldType": {
@@ -1420,76 +1876,17 @@
                     },
                     "optional": false
                   },
+                  "processedAt": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  },
                   "referralCode": {
                     "fieldType": {
                       "type": "string"
                     },
                     "optional": false
-                  },
-                  "rejectionAt": {
-                    "fieldType": {
-                      "type": "number"
-                    },
-                    "optional": true
-                  },
-                  "rejectionMeta": {
-                    "fieldType": {
-                      "type": "object",
-                      "value": {
-                        "action": {
-                          "fieldType": {
-                            "type": "string"
-                          },
-                          "optional": false
-                        },
-                        "details": {
-                          "fieldType": {
-                            "keys": {
-                              "type": "string"
-                            },
-                            "type": "record",
-                            "values": {
-                              "fieldType": {
-                                "type": "any"
-                              },
-                              "optional": false
-                            }
-                          },
-                          "optional": true
-                        },
-                        "name": {
-                          "fieldType": {
-                            "type": "string"
-                          },
-                          "optional": true
-                        },
-                        "role": {
-                          "fieldType": {
-                            "type": "string"
-                          },
-                          "optional": true
-                        },
-                        "userId": {
-                          "fieldType": {
-                            "type": "string"
-                          },
-                          "optional": true
-                        }
-                      }
-                    },
-                    "optional": true
-                  },
-                  "rejectionReason": {
-                    "fieldType": {
-                      "type": "string"
-                    },
-                    "optional": true
-                  },
-                  "statUpdatedAt": {
-                    "fieldType": {
-                      "type": "number"
-                    },
-                    "optional": true
                   },
                   "status": {
                     "fieldType": {
@@ -1497,7 +1894,7 @@
                       "value": [
                         {
                           "type": "literal",
-                          "value": "Completed"
+                          "value": "Approved"
                         },
                         {
                           "type": "literal",
@@ -1505,11 +1902,11 @@
                         },
                         {
                           "type": "literal",
-                          "value": "Rejected"
+                          "value": "Invalid"
                         },
                         {
                           "type": "literal",
-                          "value": "Expired"
+                          "value": "Rejected"
                         }
                       ]
                     },
@@ -1518,6 +1915,12 @@
                   "teamId": {
                     "fieldType": {
                       "type": "string"
+                    },
+                    "optional": true
+                  },
+                  "txnsCount": {
+                    "fieldType": {
+                      "type": "number"
                     },
                     "optional": true
                   },
@@ -1571,6 +1974,1402 @@
                   "updatedAt": {
                     "fieldType": {
                       "type": "number"
+                    },
+                    "optional": true
+                  },
+                  "weekOf": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": true
+                  },
+                  "weekTxnsCount": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  }
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "lastSyncDate": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": true
+          },
+          "paginationOpts": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "cursor": {
+                  "fieldType": {
+                    "type": "union",
+                    "value": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "optional": false
+                },
+                "numItems": {
+                  "fieldType": {
+                    "type": "number"
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": true
+          },
+          "searchText": {
+            "fieldType": {
+              "type": "string"
+            },
+            "optional": true
+          },
+          "sortBy": {
+            "fieldType": {
+              "type": "string"
+            },
+            "optional": true
+          },
+          "sortOrder": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "literal",
+                  "value": "asc"
+                },
+                {
+                  "type": "literal",
+                  "value": "desc"
+                }
+              ]
+            },
+            "optional": true
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "app/fieldAgentCashCount.js:listCashCountFieldInvalidSignUps",
+      "returns": {
+        "type": "object",
+        "value": {
+          "continueCursor": {
+            "fieldType": {
+              "type": "string"
+            },
+            "optional": false
+          },
+          "deletedIds": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "tableName": "cashCountFieldSignUps",
+                "type": "id"
+              }
+            },
+            "optional": false
+          },
+          "isDone": {
+            "fieldType": {
+              "type": "boolean"
+            },
+            "optional": false
+          },
+          "list": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "object",
+                "value": {
+                  "_creationTime": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": false
+                  },
+                  "_id": {
+                    "fieldType": {
+                      "tableName": "cashCountFieldSignUps",
+                      "type": "id"
+                    },
+                    "optional": false
+                  },
+                  "businessName": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": false
+                  },
+                  "cashCountTeamId": {
+                    "fieldType": {
+                      "tableName": "cashCountTeams",
+                      "type": "id"
+                    },
+                    "optional": true
+                  },
+                  "cashCountUserFullName": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": true
+                  },
+                  "cashCountUserId": {
+                    "fieldType": {
+                      "tableName": "cashCountAuthUsers",
+                      "type": "id"
+                    },
+                    "optional": true
+                  },
+                  "cashCountUserRole": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": true
+                  },
+                  "commissionAmount": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  },
+                  "createMeta": {
+                    "fieldType": {
+                      "type": "object",
+                      "value": {
+                        "action": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": false
+                        },
+                        "details": {
+                          "fieldType": {
+                            "keys": {
+                              "type": "string"
+                            },
+                            "type": "record",
+                            "values": {
+                              "fieldType": {
+                                "type": "any"
+                              },
+                              "optional": false
+                            }
+                          },
+                          "optional": true
+                        },
+                        "name": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        },
+                        "role": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        },
+                        "userId": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        }
+                      }
+                    },
+                    "optional": true
+                  },
+                  "createdAt": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": false
+                  },
+                  "creatorId": {
+                    "fieldType": {
+                      "type": "union",
+                      "value": [
+                        {
+                          "tableName": "fieldAgents",
+                          "type": "id"
+                        },
+                        {
+                          "tableName": "shippingClients",
+                          "type": "id"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "optional": false
+                  },
+                  "dateEarned": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  },
+                  "deletedAt": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  },
+                  "deletedMeta": {
+                    "fieldType": {
+                      "type": "object",
+                      "value": {
+                        "action": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": false
+                        },
+                        "details": {
+                          "fieldType": {
+                            "keys": {
+                              "type": "string"
+                            },
+                            "type": "record",
+                            "values": {
+                              "fieldType": {
+                                "type": "any"
+                              },
+                              "optional": false
+                            }
+                          },
+                          "optional": true
+                        },
+                        "name": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        },
+                        "role": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        },
+                        "userId": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        }
+                      }
+                    },
+                    "optional": true
+                  },
+                  "deviceId": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": false
+                  },
+                  "deviceInfo": {
+                    "fieldType": {
+                      "type": "object",
+                      "value": {
+                        "deviceId": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": false
+                        },
+                        "deviceModel": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": false
+                        },
+                        "deviceName": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": false
+                        },
+                        "deviceOs": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": false
+                        }
+                      }
+                    },
+                    "optional": false
+                  },
+                  "expiredAt": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  },
+                  "fieldAgentId": {
+                    "fieldType": {
+                      "tableName": "fieldAgents",
+                      "type": "id"
+                    },
+                    "optional": false
+                  },
+                  "fieldAgentName": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": true
+                  },
+                  "invalidRejectionReason": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": true
+                  },
+                  "mongoId": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": false
+                  },
+                  "mongoTeamId": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": false
+                  },
+                  "monthTxnsCount": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  },
+                  "paidAt": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  },
+                  "paymentBatchId": {
+                    "fieldType": {
+                      "tableName": "fieldAgentPaymentBatches",
+                      "type": "id"
+                    },
+                    "optional": true
+                  },
+                  "paymentStatus": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": true
+                  },
+                  "periodEndDate": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  },
+                  "periodStartDate": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  },
+                  "phoneNumber": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": false
+                  },
+                  "processedAt": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  },
+                  "referralCode": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": false
+                  },
+                  "status": {
+                    "fieldType": {
+                      "type": "union",
+                      "value": [
+                        {
+                          "type": "literal",
+                          "value": "Approved"
+                        },
+                        {
+                          "type": "literal",
+                          "value": "Pending"
+                        },
+                        {
+                          "type": "literal",
+                          "value": "Invalid"
+                        },
+                        {
+                          "type": "literal",
+                          "value": "Rejected"
+                        }
+                      ]
+                    },
+                    "optional": false
+                  },
+                  "teamId": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": true
+                  },
+                  "txnsCount": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  },
+                  "updateMeta": {
+                    "fieldType": {
+                      "type": "object",
+                      "value": {
+                        "action": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": false
+                        },
+                        "details": {
+                          "fieldType": {
+                            "keys": {
+                              "type": "string"
+                            },
+                            "type": "record",
+                            "values": {
+                              "fieldType": {
+                                "type": "any"
+                              },
+                              "optional": false
+                            }
+                          },
+                          "optional": true
+                        },
+                        "name": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        },
+                        "role": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        },
+                        "userId": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        }
+                      }
+                    },
+                    "optional": true
+                  },
+                  "updatedAt": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  },
+                  "weekOf": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": true
+                  },
+                  "weekTxnsCount": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  }
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {}
+      },
+      "functionType": "Query",
+      "identifier": "app/fieldAgentCashCount.js:getCashCountFieldSignUpStats",
+      "returns": {
+        "type": "object",
+        "value": {
+          "month": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "approved": {
+                  "fieldType": {
+                    "type": "number"
+                  },
+                  "optional": false
+                },
+                "invalid": {
+                  "fieldType": {
+                    "type": "number"
+                  },
+                  "optional": false
+                },
+                "pending": {
+                  "fieldType": {
+                    "type": "number"
+                  },
+                  "optional": false
+                },
+                "rejected": {
+                  "fieldType": {
+                    "type": "number"
+                  },
+                  "optional": false
+                },
+                "total": {
+                  "fieldType": {
+                    "type": "number"
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          },
+          "today": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "approved": {
+                  "fieldType": {
+                    "type": "number"
+                  },
+                  "optional": false
+                },
+                "invalid": {
+                  "fieldType": {
+                    "type": "number"
+                  },
+                  "optional": false
+                },
+                "pending": {
+                  "fieldType": {
+                    "type": "number"
+                  },
+                  "optional": false
+                },
+                "rejected": {
+                  "fieldType": {
+                    "type": "number"
+                  },
+                  "optional": false
+                },
+                "total": {
+                  "fieldType": {
+                    "type": "number"
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          },
+          "week": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "friday": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "approved": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "invalid": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "pending": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "rejected": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "total": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                },
+                "monday": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "approved": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "invalid": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "pending": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "rejected": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "total": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                },
+                "saturday": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "approved": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "invalid": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "pending": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "rejected": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "total": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                },
+                "sunday": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "approved": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "invalid": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "pending": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "rejected": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "total": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                },
+                "thursday": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "approved": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "invalid": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "pending": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "rejected": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "total": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                },
+                "total": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "approved": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "invalid": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "pending": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "rejected": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "total": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                },
+                "tuesday": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "approved": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "invalid": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "pending": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "rejected": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "total": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                },
+                "wednesday": {
+                  "fieldType": {
+                    "type": "object",
+                    "value": {
+                      "approved": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "invalid": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "pending": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "rejected": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      },
+                      "total": {
+                        "fieldType": {
+                          "type": "number"
+                        },
+                        "optional": false
+                      }
+                    }
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "lastSyncDate": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": true
+          },
+          "paginationOpts": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "cursor": {
+                  "fieldType": {
+                    "type": "union",
+                    "value": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "optional": false
+                },
+                "numItems": {
+                  "fieldType": {
+                    "type": "number"
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": true
+          },
+          "searchText": {
+            "fieldType": {
+              "type": "string"
+            },
+            "optional": true
+          },
+          "sortBy": {
+            "fieldType": {
+              "type": "string"
+            },
+            "optional": true
+          },
+          "sortOrder": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "literal",
+                  "value": "asc"
+                },
+                {
+                  "type": "literal",
+                  "value": "desc"
+                }
+              ]
+            },
+            "optional": true
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "app/fieldAgentCashCount.js:listCashCountFieldSignUpLeaderboard",
+      "returns": {
+        "type": "object",
+        "value": {
+          "deletedIds": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "tableName": "fieldAgents",
+                "type": "id"
+              }
+            },
+            "optional": false
+          },
+          "list": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "object",
+                "value": {
+                  "_id": {
+                    "fieldType": {
+                      "tableName": "fieldAgents",
+                      "type": "id"
+                    },
+                    "optional": false
+                  },
+                  "fieldAgentId": {
+                    "fieldType": {
+                      "tableName": "fieldAgents",
+                      "type": "id"
+                    },
+                    "optional": false
+                  },
+                  "firstName": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": false
+                  },
+                  "fullName": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": false
+                  },
+                  "image": {
+                    "fieldType": {
+                      "type": "object",
+                      "value": {
+                        "blurHash": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        },
+                        "mime": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        },
+                        "name": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        },
+                        "size": {
+                          "fieldType": {
+                            "type": "number"
+                          },
+                          "optional": true
+                        },
+                        "storageId": {
+                          "fieldType": {
+                            "type": "union",
+                            "value": [
+                              {
+                                "tableName": "_storage",
+                                "type": "id"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "optional": false
+                        },
+                        "url": {
+                          "fieldType": {
+                            "type": "string"
+                          },
+                          "optional": true
+                        }
+                      }
+                    },
+                    "optional": true
+                  },
+                  "lastName": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": false
+                  },
+                  "position": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": false
+                  },
+                  "totalSignUps": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": false
+                  },
+                  "totalSignUpsApproved": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": false
+                  },
+                  "totalSignUpsInvalid": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": false
+                  },
+                  "totalSignUpsPending": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": false
+                  },
+                  "totalSignUpsRejected": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": false
+                  }
+                }
+              }
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {}
+      },
+      "functionType": "Query",
+      "identifier": "app/fieldAgentEarnings.js:getFieldAgentWeeklyEarningsSummary",
+      "returns": {
+        "type": "object",
+        "value": {
+          "batchId": {
+            "fieldType": {
+              "tableName": "fieldAgentPaymentBatches",
+              "type": "id"
+            },
+            "optional": true
+          },
+          "commissionPerAcquisition": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": false
+          },
+          "paidAt": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": true
+          },
+          "payoutStatus": {
+            "fieldType": {
+              "type": "string"
+            },
+            "optional": true
+          },
+          "periodEndDate": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": false
+          },
+          "periodStartDate": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": false
+          },
+          "totalEarnings": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": false
+          },
+          "totalSignUps": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": false
+          },
+          "weekLabel": {
+            "fieldType": {
+              "type": "string"
+            },
+            "optional": false
+          }
+        }
+      },
+      "visibility": {
+        "kind": "public"
+      }
+    },
+    {
+      "args": {
+        "type": "object",
+        "value": {
+          "lastSyncDate": {
+            "fieldType": {
+              "type": "number"
+            },
+            "optional": true
+          },
+          "paginationOpts": {
+            "fieldType": {
+              "type": "object",
+              "value": {
+                "cursor": {
+                  "fieldType": {
+                    "type": "union",
+                    "value": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "optional": false
+                },
+                "numItems": {
+                  "fieldType": {
+                    "type": "number"
+                  },
+                  "optional": false
+                }
+              }
+            },
+            "optional": true
+          },
+          "searchText": {
+            "fieldType": {
+              "type": "string"
+            },
+            "optional": true
+          },
+          "sortBy": {
+            "fieldType": {
+              "type": "string"
+            },
+            "optional": true
+          },
+          "sortOrder": {
+            "fieldType": {
+              "type": "union",
+              "value": [
+                {
+                  "type": "literal",
+                  "value": "asc"
+                },
+                {
+                  "type": "literal",
+                  "value": "desc"
+                }
+              ]
+            },
+            "optional": true
+          }
+        }
+      },
+      "functionType": "Query",
+      "identifier": "app/fieldAgentEarnings.js:listFieldAgentWeeklyEarnings",
+      "returns": {
+        "type": "object",
+        "value": {
+          "continueCursor": {
+            "fieldType": {
+              "type": "string"
+            },
+            "optional": false
+          },
+          "isDone": {
+            "fieldType": {
+              "type": "boolean"
+            },
+            "optional": false
+          },
+          "list": {
+            "fieldType": {
+              "type": "array",
+              "value": {
+                "type": "object",
+                "value": {
+                  "approvedAt": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  },
+                  "batchId": {
+                    "fieldType": {
+                      "tableName": "fieldAgentPaymentBatches",
+                      "type": "id"
+                    },
+                    "optional": false
+                  },
+                  "paidAt": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": true
+                  },
+                  "payoutStatus": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": false
+                  },
+                  "periodEndDate": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": false
+                  },
+                  "periodStartDate": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": false
+                  },
+                  "totalAcquisitions": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": false
+                  },
+                  "totalEarnings": {
+                    "fieldType": {
+                      "type": "number"
+                    },
+                    "optional": false
+                  },
+                  "weekLabel": {
+                    "fieldType": {
+                      "type": "string"
+                    },
+                    "optional": false
+                  },
+                  "weekOf": {
+                    "fieldType": {
+                      "type": "string"
                     },
                     "optional": true
                   }

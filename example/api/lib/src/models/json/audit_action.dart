@@ -79,6 +79,24 @@ class AuditAction {
     );
   }
 
+  /// Convert to inline record (inverse of fromRecord)
+  ({
+    String action,
+    Optional<IMap<String, dynamic>> details,
+    Optional<String> name,
+    Optional<String> role,
+    Optional<String> userId,
+  })
+  toRecord() {
+    return (
+      action: action,
+      details: details,
+      name: name,
+      role: role,
+      userId: userId,
+    );
+  }
+
   AuditAction copyWith({
     String? action,
     Optional<IMap<String, dynamic>>? details,

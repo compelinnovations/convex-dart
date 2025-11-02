@@ -153,17 +153,17 @@ class $DescLiteral implements Literal {
   }
 }
 
-class $CompletedLiteral implements Literal {
-  const $CompletedLiteral();
-  const $CompletedLiteral.validate(dynamic value)
-    : assert(value == 'Completed', r"Value mismatch for $CompletedLiteral");
+class $ApprovedLiteral implements Literal {
+  const $ApprovedLiteral();
+  const $ApprovedLiteral.validate(dynamic value)
+    : assert(value == 'Approved', r"Value mismatch for $ApprovedLiteral");
 
   @override
-  final value = 'Completed';
+  final value = 'Approved';
 
   @override
   bool operator ==(Object other) {
-    if (other is $CompletedLiteral) {
+    if (other is $ApprovedLiteral) {
       return value == other.value;
     }
     return false;
@@ -174,7 +174,7 @@ class $CompletedLiteral implements Literal {
 
   @override
   String toString() {
-    return r"$CompletedLiteral(Completed)";
+    return r"$ApprovedLiteral(Approved)";
   }
 }
 
@@ -203,6 +203,31 @@ class $PendingLiteral implements Literal {
   }
 }
 
+class $InvalidLiteral implements Literal {
+  const $InvalidLiteral();
+  const $InvalidLiteral.validate(dynamic value)
+    : assert(value == 'Invalid', r"Value mismatch for $InvalidLiteral");
+
+  @override
+  final value = 'Invalid';
+
+  @override
+  bool operator ==(Object other) {
+    if (other is $InvalidLiteral) {
+      return value == other.value;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => value.hashCode;
+
+  @override
+  String toString() {
+    return r"$InvalidLiteral(Invalid)";
+  }
+}
+
 class $RejectedLiteral implements Literal {
   const $RejectedLiteral();
   const $RejectedLiteral.validate(dynamic value)
@@ -225,30 +250,5 @@ class $RejectedLiteral implements Literal {
   @override
   String toString() {
     return r"$RejectedLiteral(Rejected)";
-  }
-}
-
-class $ExpiredLiteral implements Literal {
-  const $ExpiredLiteral();
-  const $ExpiredLiteral.validate(dynamic value)
-    : assert(value == 'Expired', r"Value mismatch for $ExpiredLiteral");
-
-  @override
-  final value = 'Expired';
-
-  @override
-  bool operator ==(Object other) {
-    if (other is $ExpiredLiteral) {
-      return value == other.value;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode => value.hashCode;
-
-  @override
-  String toString() {
-    return r"$ExpiredLiteral(Expired)";
   }
 }

@@ -12,6 +12,8 @@ class FieldAgentBox {
   @Property(type: PropertyType.dateNano)
   int creationTime;
   String dbId;
+  double? ayekooLeaderboardPosition;
+  double? cashCountLeaderboardPosition;
   String? countryCityId;
   String? countryCityName;
   String? countryCode;
@@ -32,6 +34,7 @@ class FieldAgentBox {
   String? fullName;
   String gender;
   String? invitationId;
+  String? invitationStatus;
   String lastName;
   String? middleName;
   String phoneNumber;
@@ -41,9 +44,17 @@ class FieldAgentBox {
   String status;
   String? teamId;
   double? totalAyekooAllocationsCount;
+  double? totalAyekooCollectionsApprovedCount;
   double? totalAyekooCollectionsCount;
+  double? totalAyekooCollectionsInvalidCount;
+  double? totalAyekooCollectionsPendingCount;
+  double? totalAyekooCollectionsRejectedCount;
   double? totalCashCountAllocationsCount;
+  double? totalCashCountFieldSignUpsApprovedCount;
   double? totalCashCountFieldSignUpsCount;
+  double? totalCashCountFieldSignUpsInvalidCount;
+  double? totalCashCountFieldSignUpsPendingCount;
+  double? totalCashCountFieldSignUpsRejectedCount;
   String? updateMeta;
   @Property(type: PropertyType.dateNano)
   int? updatedAt;
@@ -53,6 +64,8 @@ class FieldAgentBox {
     this.id = 0,
     required this.creationTime,
     required this.dbId,
+    this.ayekooLeaderboardPosition,
+    this.cashCountLeaderboardPosition,
     this.countryCityId,
     this.countryCityName,
     this.countryCode,
@@ -71,6 +84,7 @@ class FieldAgentBox {
     this.fullName,
     required this.gender,
     this.invitationId,
+    this.invitationStatus,
     required this.lastName,
     this.middleName,
     required this.phoneNumber,
@@ -80,9 +94,17 @@ class FieldAgentBox {
     required this.status,
     this.teamId,
     this.totalAyekooAllocationsCount,
+    this.totalAyekooCollectionsApprovedCount,
     this.totalAyekooCollectionsCount,
+    this.totalAyekooCollectionsInvalidCount,
+    this.totalAyekooCollectionsPendingCount,
+    this.totalAyekooCollectionsRejectedCount,
     this.totalCashCountAllocationsCount,
+    this.totalCashCountFieldSignUpsApprovedCount,
     this.totalCashCountFieldSignUpsCount,
+    this.totalCashCountFieldSignUpsInvalidCount,
+    this.totalCashCountFieldSignUpsPendingCount,
+    this.totalCashCountFieldSignUpsRejectedCount,
     this.updateMeta,
     this.updatedAt,
     this.userId,
@@ -93,6 +115,12 @@ class FieldAgentBox {
       id: 0,
       creationTime: model.$_creationTime.round(),
       dbId: model.$_id.value,
+      ayekooLeaderboardPosition: model.ayekooLeaderboardPosition.isDefined
+          ? model.ayekooLeaderboardPosition.asDefined().value
+          : null,
+      cashCountLeaderboardPosition: model.cashCountLeaderboardPosition.isDefined
+          ? model.cashCountLeaderboardPosition.asDefined().value
+          : null,
       countryCityId: model.countryCityId.isDefined
           ? model.countryCityId.asDefined().value.value
           : null,
@@ -141,6 +169,9 @@ class FieldAgentBox {
       invitationId: model.invitationId.isDefined
           ? model.invitationId.asDefined().value
           : null,
+      invitationStatus: model.invitationStatus.isDefined
+          ? model.invitationStatus.asDefined().value
+          : null,
       lastName: model.lastName,
       middleName: model.middleName.isDefined
           ? model.middleName.asDefined().value
@@ -160,16 +191,48 @@ class FieldAgentBox {
       totalAyekooAllocationsCount: model.totalAyekooAllocationsCount.isDefined
           ? model.totalAyekooAllocationsCount.asDefined().value
           : null,
+      totalAyekooCollectionsApprovedCount:
+          model.totalAyekooCollectionsApprovedCount.isDefined
+          ? model.totalAyekooCollectionsApprovedCount.asDefined().value
+          : null,
       totalAyekooCollectionsCount: model.totalAyekooCollectionsCount.isDefined
           ? model.totalAyekooCollectionsCount.asDefined().value
+          : null,
+      totalAyekooCollectionsInvalidCount:
+          model.totalAyekooCollectionsInvalidCount.isDefined
+          ? model.totalAyekooCollectionsInvalidCount.asDefined().value
+          : null,
+      totalAyekooCollectionsPendingCount:
+          model.totalAyekooCollectionsPendingCount.isDefined
+          ? model.totalAyekooCollectionsPendingCount.asDefined().value
+          : null,
+      totalAyekooCollectionsRejectedCount:
+          model.totalAyekooCollectionsRejectedCount.isDefined
+          ? model.totalAyekooCollectionsRejectedCount.asDefined().value
           : null,
       totalCashCountAllocationsCount:
           model.totalCashCountAllocationsCount.isDefined
           ? model.totalCashCountAllocationsCount.asDefined().value
           : null,
+      totalCashCountFieldSignUpsApprovedCount:
+          model.totalCashCountFieldSignUpsApprovedCount.isDefined
+          ? model.totalCashCountFieldSignUpsApprovedCount.asDefined().value
+          : null,
       totalCashCountFieldSignUpsCount:
           model.totalCashCountFieldSignUpsCount.isDefined
           ? model.totalCashCountFieldSignUpsCount.asDefined().value
+          : null,
+      totalCashCountFieldSignUpsInvalidCount:
+          model.totalCashCountFieldSignUpsInvalidCount.isDefined
+          ? model.totalCashCountFieldSignUpsInvalidCount.asDefined().value
+          : null,
+      totalCashCountFieldSignUpsPendingCount:
+          model.totalCashCountFieldSignUpsPendingCount.isDefined
+          ? model.totalCashCountFieldSignUpsPendingCount.asDefined().value
+          : null,
+      totalCashCountFieldSignUpsRejectedCount:
+          model.totalCashCountFieldSignUpsRejectedCount.isDefined
+          ? model.totalCashCountFieldSignUpsRejectedCount.asDefined().value
           : null,
       updateMeta: model.updateMeta.isDefined
           ? jsonEncode(model.updateMeta.asDefined().value.toJson())
@@ -185,6 +248,12 @@ class FieldAgentBox {
     return FieldAgent(
       $_creationTime: creationTime.toDouble(),
       $_id: FieldAgentsId(dbId),
+      ayekooLeaderboardPosition: ayekooLeaderboardPosition != null
+          ? Defined(ayekooLeaderboardPosition!)
+          : const Undefined(),
+      cashCountLeaderboardPosition: cashCountLeaderboardPosition != null
+          ? Defined(cashCountLeaderboardPosition!)
+          : const Undefined(),
       countryCityId: countryCityId != null
           ? Defined(CountryCitiesId(countryCityId!))
           : const Undefined(),
@@ -229,6 +298,9 @@ class FieldAgentBox {
       invitationId: invitationId != null
           ? Defined(invitationId!)
           : const Undefined(),
+      invitationStatus: invitationStatus != null
+          ? Defined(invitationStatus!)
+          : const Undefined(),
       lastName: lastName,
       middleName: middleName != null ? Defined(middleName!) : const Undefined(),
       phoneNumber: phoneNumber,
@@ -246,14 +318,46 @@ class FieldAgentBox {
       totalAyekooAllocationsCount: totalAyekooAllocationsCount != null
           ? Defined(totalAyekooAllocationsCount!)
           : const Undefined(),
+      totalAyekooCollectionsApprovedCount:
+          totalAyekooCollectionsApprovedCount != null
+          ? Defined(totalAyekooCollectionsApprovedCount!)
+          : const Undefined(),
       totalAyekooCollectionsCount: totalAyekooCollectionsCount != null
           ? Defined(totalAyekooCollectionsCount!)
+          : const Undefined(),
+      totalAyekooCollectionsInvalidCount:
+          totalAyekooCollectionsInvalidCount != null
+          ? Defined(totalAyekooCollectionsInvalidCount!)
+          : const Undefined(),
+      totalAyekooCollectionsPendingCount:
+          totalAyekooCollectionsPendingCount != null
+          ? Defined(totalAyekooCollectionsPendingCount!)
+          : const Undefined(),
+      totalAyekooCollectionsRejectedCount:
+          totalAyekooCollectionsRejectedCount != null
+          ? Defined(totalAyekooCollectionsRejectedCount!)
           : const Undefined(),
       totalCashCountAllocationsCount: totalCashCountAllocationsCount != null
           ? Defined(totalCashCountAllocationsCount!)
           : const Undefined(),
+      totalCashCountFieldSignUpsApprovedCount:
+          totalCashCountFieldSignUpsApprovedCount != null
+          ? Defined(totalCashCountFieldSignUpsApprovedCount!)
+          : const Undefined(),
       totalCashCountFieldSignUpsCount: totalCashCountFieldSignUpsCount != null
           ? Defined(totalCashCountFieldSignUpsCount!)
+          : const Undefined(),
+      totalCashCountFieldSignUpsInvalidCount:
+          totalCashCountFieldSignUpsInvalidCount != null
+          ? Defined(totalCashCountFieldSignUpsInvalidCount!)
+          : const Undefined(),
+      totalCashCountFieldSignUpsPendingCount:
+          totalCashCountFieldSignUpsPendingCount != null
+          ? Defined(totalCashCountFieldSignUpsPendingCount!)
+          : const Undefined(),
+      totalCashCountFieldSignUpsRejectedCount:
+          totalCashCountFieldSignUpsRejectedCount != null
+          ? Defined(totalCashCountFieldSignUpsRejectedCount!)
           : const Undefined(),
       updateMeta: updateMeta != null
           ? Defined(

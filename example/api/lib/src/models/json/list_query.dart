@@ -55,7 +55,10 @@ class ListQuery {
       if (lastSyncDate.isDefined)
         'lastSyncDate': lastSyncDate.asDefined().value,
       if (paginationOpts.isDefined)
-        'paginationOpts': paginationOpts.asDefined().value.toJson(),
+        'paginationOpts': {
+          'cursor': paginationOpts.asDefined().value.cursor,
+          'numItems': paginationOpts.asDefined().value.numItems,
+        },
       if (searchText.isDefined) 'searchText': searchText.asDefined().value,
       if (sortBy.isDefined) 'sortBy': sortBy.asDefined().value,
       if (sortOrder.isDefined)
