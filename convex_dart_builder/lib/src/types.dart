@@ -514,9 +514,21 @@ class FunctionBuildContext {
           '      if ($fieldName.isDefined) \'$jsonKey\': ${_generateToJsonValue(fieldType, "$fieldName.asDefined().value")},',
         );
       } else {
-        classBuffer.writeln(
-          '      \'$jsonKey\': ${_generateToJsonValue(fieldType, fieldName)},',
-        );
+        // Check if this is a nullable union (e.g., StorageId | null)
+        final isNullableUnion = fieldType is JsUnion &&
+                                 fieldType.value.any((t) => t is JsNull) &&
+                                 !fieldType.isRealUnion;
+
+        if (isNullableUnion) {
+          // For nullable required fields, only include in JSON if not null
+          classBuffer.writeln(
+            '      if ($fieldName != null) \'$jsonKey\': ${_generateToJsonValue(fieldType, fieldName)},',
+          );
+        } else {
+          classBuffer.writeln(
+            '      \'$jsonKey\': ${_generateToJsonValue(fieldType, fieldName)},',
+          );
+        }
       }
     }
     classBuffer.writeln('    };');
@@ -3898,9 +3910,21 @@ class JsObject extends JsType with JsObjectMappable {
           '      if ($fieldName.isDefined) \'$jsonKey\': ${context._generateToJsonValue(fieldType, "$fieldName.asDefined().value")},',
         );
       } else {
-        buffer.writeln(
-          '      \'$jsonKey\': ${context._generateToJsonValue(fieldType, fieldName)},',
-        );
+        // Check if this is a nullable union (e.g., StorageId | null)
+        final isNullableUnion = fieldType is JsUnion &&
+                                 fieldType.value.any((t) => t is JsNull) &&
+                                 !fieldType.isRealUnion;
+
+        if (isNullableUnion) {
+          // For nullable required fields, only include in JSON if not null
+          buffer.writeln(
+            '      if ($fieldName != null) \'$jsonKey\': ${context._generateToJsonValue(fieldType, fieldName)},',
+          );
+        } else {
+          buffer.writeln(
+            '      \'$jsonKey\': ${context._generateToJsonValue(fieldType, fieldName)},',
+          );
+        }
       }
     }
     buffer.writeln('    };');

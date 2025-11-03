@@ -805,7 +805,7 @@
                           }
                         ]
                       },
-                      "optional": false
+                      "optional": true
                     },
                     "url": {
                       "fieldType": {
@@ -3085,7 +3085,7 @@
                               }
                             ]
                           },
-                          "optional": false
+                          "optional": true
                         },
                         "url": {
                           "fieldType": {

@@ -11,7 +11,7 @@ class MediaData {
   final Optional<String> mime;
   final Optional<String> name;
   final Optional<double> size;
-  final StorageId? storageId;
+  final Optional<StorageId?> storageId;
   final Optional<String> url;
 
   const MediaData({
@@ -19,7 +19,7 @@ class MediaData {
     this.mime = const Undefined(),
     this.name = const Undefined(),
     this.size = const Undefined(),
-    required this.storageId,
+    this.storageId = const Undefined(),
     this.url = const Undefined(),
   });
 
@@ -29,7 +29,7 @@ class MediaData {
       mime: const Undefined(),
       name: const Undefined(),
       size: const Undefined(),
-      storageId: null,
+      storageId: const Undefined(),
       url: const Undefined(),
     );
   }
@@ -48,9 +48,13 @@ class MediaData {
       size: json.containsKey('size')
           ? Defined(json['size'] as double)
           : const Undefined(),
-      storageId: json['storageId'] != null
-          ? StorageId(json['storageId'] as String)
-          : null,
+      storageId: json.containsKey('storageId')
+          ? Defined(
+              json['storageId'] != null
+                  ? StorageId(json['storageId'] as String)
+                  : null,
+            )
+          : const Undefined(),
       url: json.containsKey('url')
           ? Defined(json['url'] as String)
           : const Undefined(),
@@ -63,7 +67,7 @@ class MediaData {
       if (mime.isDefined) 'mime': mime.asDefined().value,
       if (name.isDefined) 'name': name.asDefined().value,
       if (size.isDefined) 'size': size.asDefined().value,
-      'storageId': storageId?.value,
+      if (storageId.isDefined) 'storageId': storageId.asDefined().value?.value,
       if (url.isDefined) 'url': url.asDefined().value,
     };
   }
@@ -75,7 +79,7 @@ class MediaData {
       Optional<String> mime,
       Optional<String> name,
       Optional<double> size,
-      StorageId? storageId,
+      Optional<StorageId?> storageId,
       Optional<String> url,
     })
     record,
@@ -96,7 +100,7 @@ class MediaData {
     Optional<String> mime,
     Optional<String> name,
     Optional<double> size,
-    StorageId? storageId,
+    Optional<StorageId?> storageId,
     Optional<String> url,
   })
   toRecord() {
@@ -115,7 +119,7 @@ class MediaData {
     Optional<String>? mime,
     Optional<String>? name,
     Optional<double>? size,
-    StorageId? storageId,
+    Optional<StorageId?>? storageId,
     Optional<String>? url,
   }) {
     return MediaData(
