@@ -18,25 +18,25 @@ BTreeMapStringValue serialize(void args) {
 
 FieldAgentWeeklyEarningsSummaryDoc deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on384199) => (
-      batchId: on384199.containsKey('batchId')
+    (on181715) => (
+      batchId: on181715.containsKey('batchId')
           ? Defined<FieldAgentPaymentBatchesId>(
-              FieldAgentPaymentBatchesId(on384199['batchId'] as String),
+              FieldAgentPaymentBatchesId(on181715['batchId'] as String),
             )
           : Undefined<FieldAgentPaymentBatchesId>(),
       commissionPerAcquisition:
-          (on384199['commissionPerAcquisition'] as double),
-      paidAt: on384199.containsKey('paidAt')
-          ? Defined<double>((on384199['paidAt'] as double))
+          (on181715['commissionPerAcquisition'] as double),
+      paidAt: on181715.containsKey('paidAt')
+          ? Defined<double>((on181715['paidAt'] as double))
           : Undefined<double>(),
-      payoutStatus: on384199.containsKey('payoutStatus')
-          ? Defined<String>((on384199['payoutStatus'] as String))
+      payoutStatus: on181715.containsKey('payoutStatus')
+          ? Defined<String>((on181715['payoutStatus'] as String))
           : Undefined<String>(),
-      periodEndDate: (on384199['periodEndDate'] as double),
-      periodStartDate: (on384199['periodStartDate'] as double),
-      totalEarnings: (on384199['totalEarnings'] as double),
-      totalSignUps: (on384199['totalSignUps'] as double),
-      weekLabel: (on384199['weekLabel'] as String),
+      periodEndDate: (on181715['periodEndDate'] as double),
+      periodStartDate: (on181715['periodStartDate'] as double),
+      totalEarnings: (on181715['totalEarnings'] as double),
+      totalSignUps: (on181715['totalSignUps'] as double),
+      weekLabel: (on181715['weekLabel'] as String),
     ),
   );
 }

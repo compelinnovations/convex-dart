@@ -32,8 +32,8 @@ BTreeMapStringValue serialize(ListQuery args) {
       if (args.sortOrder.isDefined)
         'sortOrder': encodeValue(
           args.sortOrder.asDefined().value.split(
-            (on571608) => encodeValue(on571608),
-            (on920262) => encodeValue(on920262),
+            (on56829) => encodeValue(on56829),
+            (on847155) => encodeValue(on847155),
           ),
         ),
     },
@@ -42,56 +42,52 @@ BTreeMapStringValue serialize(ListQuery args) {
 
 CashCountFieldSignUpLeaderboardsDoc deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on786140) => (
-      deletedIds: (on786140['deletedIds'] as IList<dynamic>)
-          .map((on924540) => FieldAgentsId(on924540 as String))
+    (on952138) => (
+      deletedIds: (on952138['deletedIds'] as IList<dynamic>)
+          .map((on152422) => FieldAgentsId(on152422 as String))
           .toIList(),
-      list: (on786140['list'] as IList<dynamic>)
+      list: (on952138['list'] as IList<dynamic>)
           .map(
-            (on919698) => (on919698 as IMap<String, dynamic>).then(
-              (on702667) => (
-                $_id: FieldAgentsId(on702667['_id'] as String),
-                fieldAgentId: FieldAgentsId(on702667['fieldAgentId'] as String),
-                firstName: (on702667['firstName'] as String),
-                fullName: (on702667['fullName'] as String),
-                image: on702667.containsKey('image')
+            (on818807) => (on818807 as IMap<String, dynamic>).then(
+              (on431378) => (
+                $_id: FieldAgentsId(on431378['_id'] as String),
+                fieldAgentId: FieldAgentsId(on431378['fieldAgentId'] as String),
+                firstName: (on431378['firstName'] as String),
+                fullName: (on431378['fullName'] as String),
+                image: on431378.containsKey('image')
                     ? Defined<
                         ({
                           Optional<String> blurHash,
                           Optional<String> mime,
                           Optional<String> name,
                           Optional<double> size,
-                          Optional<StorageId?> storageId,
+                          Optional<StorageId> storageId,
                           Optional<String> url,
                         })
                       >(
-                        (on702667['image'] as IMap<String, dynamic>).then(
-                          (on338953) => (
-                            blurHash: on338953.containsKey('blurHash')
+                        (on431378['image'] as IMap<String, dynamic>).then(
+                          (on492483) => (
+                            blurHash: on492483.containsKey('blurHash')
                                 ? Defined<String>(
-                                    (on338953['blurHash'] as String),
+                                    (on492483['blurHash'] as String),
                                   )
                                 : Undefined<String>(),
-                            mime: on338953.containsKey('mime')
-                                ? Defined<String>((on338953['mime'] as String))
+                            mime: on492483.containsKey('mime')
+                                ? Defined<String>((on492483['mime'] as String))
                                 : Undefined<String>(),
-                            name: on338953.containsKey('name')
-                                ? Defined<String>((on338953['name'] as String))
+                            name: on492483.containsKey('name')
+                                ? Defined<String>((on492483['name'] as String))
                                 : Undefined<String>(),
-                            size: on338953.containsKey('size')
-                                ? Defined<double>((on338953['size'] as double))
+                            size: on492483.containsKey('size')
+                                ? Defined<double>((on492483['size'] as double))
                                 : Undefined<double>(),
-                            storageId: on338953.containsKey('storageId')
-                                ? Defined<StorageId?>(
-                                    on338953['storageId'] == null
-                                        ? null
-                                        : StorageId(
-                                            on338953['storageId'] as String,
-                                          ),
+                            storageId: on492483.containsKey('storageId')
+                                ? Defined<StorageId>(
+                                    StorageId(on492483['storageId'] as String),
                                   )
-                                : Undefined<StorageId?>(),
-                            url: on338953.containsKey('url')
-                                ? Defined<String>((on338953['url'] as String))
+                                : Undefined<StorageId>(),
+                            url: on492483.containsKey('url')
+                                ? Defined<String>((on492483['url'] as String))
                                 : Undefined<String>(),
                           ),
                         ),
@@ -102,21 +98,21 @@ CashCountFieldSignUpLeaderboardsDoc deserialize(DartValue map) {
                           Optional<String> mime,
                           Optional<String> name,
                           Optional<double> size,
-                          Optional<StorageId?> storageId,
+                          Optional<StorageId> storageId,
                           Optional<String> url,
                         })
                       >(),
-                lastName: (on702667['lastName'] as String),
-                position: (on702667['position'] as double),
-                totalSignUps: (on702667['totalSignUps'] as double),
+                lastName: (on431378['lastName'] as String),
+                position: (on431378['position'] as double),
+                totalSignUps: (on431378['totalSignUps'] as double),
                 totalSignUpsApproved:
-                    (on702667['totalSignUpsApproved'] as double),
+                    (on431378['totalSignUpsApproved'] as double),
                 totalSignUpsInvalid:
-                    (on702667['totalSignUpsInvalid'] as double),
+                    (on431378['totalSignUpsInvalid'] as double),
                 totalSignUpsPending:
-                    (on702667['totalSignUpsPending'] as double),
+                    (on431378['totalSignUpsPending'] as double),
                 totalSignUpsRejected:
-                    (on702667['totalSignUpsRejected'] as double),
+                    (on431378['totalSignUpsRejected'] as double),
               ),
             ),
           )
@@ -139,7 +135,7 @@ typedef CashCountFieldSignUpLeaderboardsDoc = ({
           Optional<String> mime,
           Optional<String> name,
           Optional<double> size,
-          Optional<StorageId?> storageId,
+          Optional<StorageId> storageId,
           Optional<String> url,
         })
       >

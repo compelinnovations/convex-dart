@@ -32,8 +32,8 @@ BTreeMapStringValue serialize(ListQuery args) {
       if (args.sortOrder.isDefined)
         'sortOrder': encodeValue(
           args.sortOrder.asDefined().value.split(
-            (on34263) => encodeValue(on34263),
-            (on399925) => encodeValue(on399925),
+            (on390407) => encodeValue(on390407),
+            (on854163) => encodeValue(on854163),
           ),
         ),
     },
@@ -42,30 +42,30 @@ BTreeMapStringValue serialize(ListQuery args) {
 
 FieldAgentWeeklyEarningsDoc deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on390674) => (
-      continueCursor: (on390674['continueCursor'] as String),
-      isDone: (on390674['isDone'] as bool),
-      list: (on390674['list'] as IList<dynamic>)
+    (on502526) => (
+      continueCursor: (on502526['continueCursor'] as String),
+      isDone: (on502526['isDone'] as bool),
+      list: (on502526['list'] as IList<dynamic>)
           .map(
-            (on383975) => (on383975 as IMap<String, dynamic>).then(
-              (on850664) => (
-                approvedAt: on850664.containsKey('approvedAt')
-                    ? Defined<double>((on850664['approvedAt'] as double))
+            (on852808) => (on852808 as IMap<String, dynamic>).then(
+              (on938160) => (
+                approvedAt: on938160.containsKey('approvedAt')
+                    ? Defined<double>((on938160['approvedAt'] as double))
                     : Undefined<double>(),
                 batchId: FieldAgentPaymentBatchesId(
-                  on850664['batchId'] as String,
+                  on938160['batchId'] as String,
                 ),
-                paidAt: on850664.containsKey('paidAt')
-                    ? Defined<double>((on850664['paidAt'] as double))
+                paidAt: on938160.containsKey('paidAt')
+                    ? Defined<double>((on938160['paidAt'] as double))
                     : Undefined<double>(),
-                payoutStatus: (on850664['payoutStatus'] as String),
-                periodEndDate: (on850664['periodEndDate'] as double),
-                periodStartDate: (on850664['periodStartDate'] as double),
-                totalAcquisitions: (on850664['totalAcquisitions'] as double),
-                totalEarnings: (on850664['totalEarnings'] as double),
-                weekLabel: (on850664['weekLabel'] as String),
-                weekOf: on850664.containsKey('weekOf')
-                    ? Defined<String>((on850664['weekOf'] as String))
+                payoutStatus: (on938160['payoutStatus'] as String),
+                periodEndDate: (on938160['periodEndDate'] as double),
+                periodStartDate: (on938160['periodStartDate'] as double),
+                totalAcquisitions: (on938160['totalAcquisitions'] as double),
+                totalEarnings: (on938160['totalEarnings'] as double),
+                weekLabel: (on938160['weekLabel'] as String),
+                weekOf: on938160.containsKey('weekOf')
+                    ? Defined<String>((on938160['weekOf'] as String))
                     : Undefined<String>(),
               ),
             ),

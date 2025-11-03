@@ -1,6 +1,5 @@
 import 'package:objectbox/objectbox.dart';
 import 'dart:convert';
-import 'package:convex_dart/convex_dart.dart';
 import '../../json/index.dart';
 
 @Entity()

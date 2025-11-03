@@ -32,8 +32,8 @@ BTreeMapStringValue serialize(ListQuery args) {
       if (args.sortOrder.isDefined)
         'sortOrder': encodeValue(
           args.sortOrder.asDefined().value.split(
-            (on929851) => encodeValue(on929851),
-            (on299667) => encodeValue(on299667),
+            (on540229) => encodeValue(on540229),
+            (on760238) => encodeValue(on760238),
           ),
         ),
     },
@@ -42,44 +42,44 @@ BTreeMapStringValue serialize(ListQuery args) {
 
 CashCountFieldSignUpsDoc deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on985189) => (
-      continueCursor: (on985189['continueCursor'] as String),
-      deletedIds: (on985189['deletedIds'] as IList<dynamic>)
-          .map((on669297) => CashCountFieldSignUpsId(on669297 as String))
+    (on710918) => (
+      continueCursor: (on710918['continueCursor'] as String),
+      deletedIds: (on710918['deletedIds'] as IList<dynamic>)
+          .map((on852588) => CashCountFieldSignUpsId(on852588 as String))
           .toIList(),
-      isDone: (on985189['isDone'] as bool),
-      list: (on985189['list'] as IList<dynamic>)
+      isDone: (on710918['isDone'] as bool),
+      list: (on710918['list'] as IList<dynamic>)
           .map(
-            (on726539) => (on726539 as IMap<String, dynamic>).then(
-              (on370401) => (
-                $_creationTime: (on370401['_creationTime'] as double),
-                $_id: CashCountFieldSignUpsId(on370401['_id'] as String),
-                businessName: (on370401['businessName'] as String),
-                cashCountTeamId: on370401.containsKey('cashCountTeamId')
+            (on257540) => (on257540 as IMap<String, dynamic>).then(
+              (on46947) => (
+                $_creationTime: (on46947['_creationTime'] as double),
+                $_id: CashCountFieldSignUpsId(on46947['_id'] as String),
+                businessName: (on46947['businessName'] as String),
+                cashCountTeamId: on46947.containsKey('cashCountTeamId')
                     ? Defined<CashCountTeamsId>(
-                        CashCountTeamsId(on370401['cashCountTeamId'] as String),
+                        CashCountTeamsId(on46947['cashCountTeamId'] as String),
                       )
                     : Undefined<CashCountTeamsId>(),
                 cashCountUserFullName:
-                    on370401.containsKey('cashCountUserFullName')
+                    on46947.containsKey('cashCountUserFullName')
                     ? Defined<String>(
-                        (on370401['cashCountUserFullName'] as String),
+                        (on46947['cashCountUserFullName'] as String),
                       )
                     : Undefined<String>(),
-                cashCountUserId: on370401.containsKey('cashCountUserId')
+                cashCountUserId: on46947.containsKey('cashCountUserId')
                     ? Defined<CashCountAuthUsersId>(
                         CashCountAuthUsersId(
-                          on370401['cashCountUserId'] as String,
+                          on46947['cashCountUserId'] as String,
                         ),
                       )
                     : Undefined<CashCountAuthUsersId>(),
-                cashCountUserRole: on370401.containsKey('cashCountUserRole')
-                    ? Defined<String>((on370401['cashCountUserRole'] as String))
+                cashCountUserRole: on46947.containsKey('cashCountUserRole')
+                    ? Defined<String>((on46947['cashCountUserRole'] as String))
                     : Undefined<String>(),
-                commissionAmount: on370401.containsKey('commissionAmount')
-                    ? Defined<double>((on370401['commissionAmount'] as double))
+                commissionAmount: on46947.containsKey('commissionAmount')
+                    ? Defined<double>((on46947['commissionAmount'] as double))
                     : Undefined<double>(),
-                createMeta: on370401.containsKey('createMeta')
+                createMeta: on46947.containsKey('createMeta')
                     ? Defined<
                         ({
                           String action,
@@ -89,28 +89,28 @@ CashCountFieldSignUpsDoc deserialize(DartValue map) {
                           Optional<String> userId,
                         })
                       >(
-                        (on370401['createMeta'] as IMap<String, dynamic>).then(
-                          (on598302) => (
-                            action: (on598302['action'] as String),
-                            details: on598302.containsKey('details')
+                        (on46947['createMeta'] as IMap<String, dynamic>).then(
+                          (on718177) => (
+                            action: (on718177['action'] as String),
+                            details: on718177.containsKey('details')
                                 ? Defined<IMap<String, dynamic>>(
-                                    (on598302['details']
+                                    (on718177['details']
                                             as IMap<String, dynamic>)
                                         .map(
-                                          (on182598, on20374) =>
-                                              MapEntry(on182598, on20374),
+                                          (on812444, on433559) =>
+                                              MapEntry(on812444, on433559),
                                         ),
                                   )
                                 : Undefined<IMap<String, dynamic>>(),
-                            name: on598302.containsKey('name')
-                                ? Defined<String>((on598302['name'] as String))
+                            name: on718177.containsKey('name')
+                                ? Defined<String>((on718177['name'] as String))
                                 : Undefined<String>(),
-                            role: on598302.containsKey('role')
-                                ? Defined<String>((on598302['role'] as String))
+                            role: on718177.containsKey('role')
+                                ? Defined<String>((on718177['role'] as String))
                                 : Undefined<String>(),
-                            userId: on598302.containsKey('userId')
+                            userId: on718177.containsKey('userId')
                                 ? Defined<String>(
-                                    (on598302['userId'] as String),
+                                    (on718177['userId'] as String),
                                   )
                                 : Undefined<String>(),
                           ),
@@ -125,32 +125,32 @@ CashCountFieldSignUpsDoc deserialize(DartValue map) {
                           Optional<String> userId,
                         })
                       >(),
-                createdAt: (on370401['createdAt'] as double),
+                createdAt: (on46947['createdAt'] as double),
                 creatorId: Union3<FieldAgentsId, ShippingClientsId, String>(() {
                   try {
-                    return FieldAgentsId(on370401['creatorId'] as String);
+                    return FieldAgentsId(on46947['creatorId'] as String);
                   } catch (e) {}
 
                   try {
-                    return ShippingClientsId(on370401['creatorId'] as String);
+                    return ShippingClientsId(on46947['creatorId'] as String);
                   } catch (e) {}
 
                   try {
-                    return (on370401['creatorId'] as String);
+                    return (on46947['creatorId'] as String);
                   } catch (e) {}
 
                   throw Exception(
-                    (on370401['creatorId'].toString() ?? "null") +
+                    (on46947['creatorId'].toString() ?? "null") +
                         r" cannot be deserialized into a Union3<FieldAgentsId, ShippingClientsId, String>",
                   );
                 }()),
-                dateEarned: on370401.containsKey('dateEarned')
-                    ? Defined<double>((on370401['dateEarned'] as double))
+                dateEarned: on46947.containsKey('dateEarned')
+                    ? Defined<double>((on46947['dateEarned'] as double))
                     : Undefined<double>(),
-                deletedAt: on370401.containsKey('deletedAt')
-                    ? Defined<double>((on370401['deletedAt'] as double))
+                deletedAt: on46947.containsKey('deletedAt')
+                    ? Defined<double>((on46947['deletedAt'] as double))
                     : Undefined<double>(),
-                deletedMeta: on370401.containsKey('deletedMeta')
+                deletedMeta: on46947.containsKey('deletedMeta')
                     ? Defined<
                         ({
                           String action,
@@ -160,29 +160,27 @@ CashCountFieldSignUpsDoc deserialize(DartValue map) {
                           Optional<String> userId,
                         })
                       >(
-                        (on370401['deletedMeta'] as IMap<String, dynamic>).then(
-                          (on117806) => (
-                            action: (on117806['action'] as String),
-                            details: on117806.containsKey('details')
+                        (on46947['deletedMeta'] as IMap<String, dynamic>).then(
+                          (on28368) => (
+                            action: (on28368['action'] as String),
+                            details: on28368.containsKey('details')
                                 ? Defined<IMap<String, dynamic>>(
-                                    (on117806['details']
+                                    (on28368['details']
                                             as IMap<String, dynamic>)
                                         .map(
-                                          (on243573, on376216) =>
-                                              MapEntry(on243573, on376216),
+                                          (on656782, on870788) =>
+                                              MapEntry(on656782, on870788),
                                         ),
                                   )
                                 : Undefined<IMap<String, dynamic>>(),
-                            name: on117806.containsKey('name')
-                                ? Defined<String>((on117806['name'] as String))
+                            name: on28368.containsKey('name')
+                                ? Defined<String>((on28368['name'] as String))
                                 : Undefined<String>(),
-                            role: on117806.containsKey('role')
-                                ? Defined<String>((on117806['role'] as String))
+                            role: on28368.containsKey('role')
+                                ? Defined<String>((on28368['role'] as String))
                                 : Undefined<String>(),
-                            userId: on117806.containsKey('userId')
-                                ? Defined<String>(
-                                    (on117806['userId'] as String),
-                                  )
+                            userId: on28368.containsKey('userId')
+                                ? Defined<String>((on28368['userId'] as String))
                                 : Undefined<String>(),
                           ),
                         ),
@@ -196,58 +194,58 @@ CashCountFieldSignUpsDoc deserialize(DartValue map) {
                           Optional<String> userId,
                         })
                       >(),
-                deviceId: (on370401['deviceId'] as String),
-                deviceInfo: (on370401['deviceInfo'] as IMap<String, dynamic>)
+                deviceId: (on46947['deviceId'] as String),
+                deviceInfo: (on46947['deviceInfo'] as IMap<String, dynamic>)
                     .then(
-                      (on344261) => (
-                        deviceId: (on344261['deviceId'] as String),
-                        deviceModel: (on344261['deviceModel'] as String),
-                        deviceName: (on344261['deviceName'] as String),
-                        deviceOs: (on344261['deviceOs'] as String),
+                      (on108692) => (
+                        deviceId: (on108692['deviceId'] as String),
+                        deviceModel: (on108692['deviceModel'] as String),
+                        deviceName: (on108692['deviceName'] as String),
+                        deviceOs: (on108692['deviceOs'] as String),
                       ),
                     ),
-                expiredAt: on370401.containsKey('expiredAt')
-                    ? Defined<double>((on370401['expiredAt'] as double))
+                expiredAt: on46947.containsKey('expiredAt')
+                    ? Defined<double>((on46947['expiredAt'] as double))
                     : Undefined<double>(),
-                fieldAgentId: FieldAgentsId(on370401['fieldAgentId'] as String),
-                fieldAgentName: on370401.containsKey('fieldAgentName')
-                    ? Defined<String>((on370401['fieldAgentName'] as String))
+                fieldAgentId: FieldAgentsId(on46947['fieldAgentId'] as String),
+                fieldAgentName: on46947.containsKey('fieldAgentName')
+                    ? Defined<String>((on46947['fieldAgentName'] as String))
                     : Undefined<String>(),
                 invalidRejectionReason:
-                    on370401.containsKey('invalidRejectionReason')
+                    on46947.containsKey('invalidRejectionReason')
                     ? Defined<String>(
-                        (on370401['invalidRejectionReason'] as String),
+                        (on46947['invalidRejectionReason'] as String),
                       )
                     : Undefined<String>(),
-                mongoId: (on370401['mongoId'] as String),
-                mongoTeamId: (on370401['mongoTeamId'] as String),
-                monthTxnsCount: on370401.containsKey('monthTxnsCount')
-                    ? Defined<double>((on370401['monthTxnsCount'] as double))
+                mongoId: (on46947['mongoId'] as String),
+                mongoTeamId: (on46947['mongoTeamId'] as String),
+                monthTxnsCount: on46947.containsKey('monthTxnsCount')
+                    ? Defined<double>((on46947['monthTxnsCount'] as double))
                     : Undefined<double>(),
-                paidAt: on370401.containsKey('paidAt')
-                    ? Defined<double>((on370401['paidAt'] as double))
+                paidAt: on46947.containsKey('paidAt')
+                    ? Defined<double>((on46947['paidAt'] as double))
                     : Undefined<double>(),
-                paymentBatchId: on370401.containsKey('paymentBatchId')
+                paymentBatchId: on46947.containsKey('paymentBatchId')
                     ? Defined<FieldAgentPaymentBatchesId>(
                         FieldAgentPaymentBatchesId(
-                          on370401['paymentBatchId'] as String,
+                          on46947['paymentBatchId'] as String,
                         ),
                       )
                     : Undefined<FieldAgentPaymentBatchesId>(),
-                paymentStatus: on370401.containsKey('paymentStatus')
-                    ? Defined<String>((on370401['paymentStatus'] as String))
+                paymentStatus: on46947.containsKey('paymentStatus')
+                    ? Defined<String>((on46947['paymentStatus'] as String))
                     : Undefined<String>(),
-                periodEndDate: on370401.containsKey('periodEndDate')
-                    ? Defined<double>((on370401['periodEndDate'] as double))
+                periodEndDate: on46947.containsKey('periodEndDate')
+                    ? Defined<double>((on46947['periodEndDate'] as double))
                     : Undefined<double>(),
-                periodStartDate: on370401.containsKey('periodStartDate')
-                    ? Defined<double>((on370401['periodStartDate'] as double))
+                periodStartDate: on46947.containsKey('periodStartDate')
+                    ? Defined<double>((on46947['periodStartDate'] as double))
                     : Undefined<double>(),
-                phoneNumber: (on370401['phoneNumber'] as String),
-                processedAt: on370401.containsKey('processedAt')
-                    ? Defined<double>((on370401['processedAt'] as double))
+                phoneNumber: (on46947['phoneNumber'] as String),
+                processedAt: on46947.containsKey('processedAt')
+                    ? Defined<double>((on46947['processedAt'] as double))
                     : Undefined<double>(),
-                referralCode: (on370401['referralCode'] as String),
+                referralCode: (on46947['referralCode'] as String),
                 status:
                     Union4<
                       $ApprovedLiteral,
@@ -261,21 +259,21 @@ CashCountFieldSignUpsDoc deserialize(DartValue map) {
                         'Invalid': $InvalidLiteral(),
                         'Rejected': $RejectedLiteral(),
                       };
-                      if (map.containsKey(on370401['status'])) {
-                        return map[on370401['status']];
+                      if (map.containsKey(on46947['status'])) {
+                        return map[on46947['status']];
                       }
                       throw Exception(
-                        (on370401['status'].toString() ?? "null") +
+                        (on46947['status'].toString() ?? "null") +
                             r" cannot be deserialized into a Union4<$ApprovedLiteral, $PendingLiteral, $InvalidLiteral, $RejectedLiteral>",
                       );
                     }()),
-                teamId: on370401.containsKey('teamId')
-                    ? Defined<String>((on370401['teamId'] as String))
+                teamId: on46947.containsKey('teamId')
+                    ? Defined<String>((on46947['teamId'] as String))
                     : Undefined<String>(),
-                txnsCount: on370401.containsKey('txnsCount')
-                    ? Defined<double>((on370401['txnsCount'] as double))
+                txnsCount: on46947.containsKey('txnsCount')
+                    ? Defined<double>((on46947['txnsCount'] as double))
                     : Undefined<double>(),
-                updateMeta: on370401.containsKey('updateMeta')
+                updateMeta: on46947.containsKey('updateMeta')
                     ? Defined<
                         ({
                           String action,
@@ -285,29 +283,26 @@ CashCountFieldSignUpsDoc deserialize(DartValue map) {
                           Optional<String> userId,
                         })
                       >(
-                        (on370401['updateMeta'] as IMap<String, dynamic>).then(
-                          (on570079) => (
-                            action: (on570079['action'] as String),
-                            details: on570079.containsKey('details')
+                        (on46947['updateMeta'] as IMap<String, dynamic>).then(
+                          (on8535) => (
+                            action: (on8535['action'] as String),
+                            details: on8535.containsKey('details')
                                 ? Defined<IMap<String, dynamic>>(
-                                    (on570079['details']
-                                            as IMap<String, dynamic>)
+                                    (on8535['details'] as IMap<String, dynamic>)
                                         .map(
-                                          (on634091, on291345) =>
-                                              MapEntry(on634091, on291345),
+                                          (on343381, on389263) =>
+                                              MapEntry(on343381, on389263),
                                         ),
                                   )
                                 : Undefined<IMap<String, dynamic>>(),
-                            name: on570079.containsKey('name')
-                                ? Defined<String>((on570079['name'] as String))
+                            name: on8535.containsKey('name')
+                                ? Defined<String>((on8535['name'] as String))
                                 : Undefined<String>(),
-                            role: on570079.containsKey('role')
-                                ? Defined<String>((on570079['role'] as String))
+                            role: on8535.containsKey('role')
+                                ? Defined<String>((on8535['role'] as String))
                                 : Undefined<String>(),
-                            userId: on570079.containsKey('userId')
-                                ? Defined<String>(
-                                    (on570079['userId'] as String),
-                                  )
+                            userId: on8535.containsKey('userId')
+                                ? Defined<String>((on8535['userId'] as String))
                                 : Undefined<String>(),
                           ),
                         ),
@@ -321,14 +316,14 @@ CashCountFieldSignUpsDoc deserialize(DartValue map) {
                           Optional<String> userId,
                         })
                       >(),
-                updatedAt: on370401.containsKey('updatedAt')
-                    ? Defined<double>((on370401['updatedAt'] as double))
+                updatedAt: on46947.containsKey('updatedAt')
+                    ? Defined<double>((on46947['updatedAt'] as double))
                     : Undefined<double>(),
-                weekOf: on370401.containsKey('weekOf')
-                    ? Defined<String>((on370401['weekOf'] as String))
+                weekOf: on46947.containsKey('weekOf')
+                    ? Defined<String>((on46947['weekOf'] as String))
                     : Undefined<String>(),
-                weekTxnsCount: on370401.containsKey('weekTxnsCount')
-                    ? Defined<double>((on370401['weekTxnsCount'] as double))
+                weekTxnsCount: on46947.containsKey('weekTxnsCount')
+                    ? Defined<double>((on46947['weekTxnsCount'] as double))
                     : Undefined<double>(),
               ),
             ),

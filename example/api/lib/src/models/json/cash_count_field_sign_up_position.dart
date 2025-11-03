@@ -101,7 +101,7 @@ class CashCountFieldSignUpPosition {
           Optional<String> mime,
           Optional<String> name,
           Optional<double> size,
-          Optional<StorageId?> storageId,
+          Optional<StorageId> storageId,
           Optional<String> url,
         })
       >

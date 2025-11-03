@@ -858,15 +858,30 @@ class FunctionBuildContext {
     // For nullable unions like `StorageId | null`, handle the single non-null type
     if (!union.isRealUnion) {
       final realTypes = union.value.where((e) => e is! JsNull).toList();
+      final containsNull = union.value.any((e) => e is JsNull);
+
       if (realTypes.length == 1) {
         final singleType = realTypes.first;
-        return switch (singleType) {
-          ConvexId convexId => '$jsonValue != null ? ${convexId.typeName}($jsonValue as String) : null',
-          JsLiteral literal => '$jsonValue != null ? ${_generateLiteralFromJson(literal, jsonValue)} : null',
-          JsObject _ => '$jsonValue != null ? ($jsonValue as Map<String, dynamic>) : null',
-          JsArray array => '$jsonValue != null ? ${_generateArrayFromJson(array, jsonValue)} : null',
-          _ => jsonValue, // For primitives, no special handling needed
-        };
+
+        // Only add null check if the union actually contains null
+        if (containsNull) {
+          return switch (singleType) {
+            ConvexId convexId => '$jsonValue != null ? ${convexId.typeName}($jsonValue as String) : null',
+            JsLiteral literal => '$jsonValue != null ? ${_generateLiteralFromJson(literal, jsonValue)} : null',
+            JsObject _ => '$jsonValue != null ? ($jsonValue as Map<String, dynamic>) : null',
+            JsArray array => '$jsonValue != null ? ${_generateArrayFromJson(array, jsonValue)} : null',
+            _ => jsonValue, // For primitives, no special handling needed
+          };
+        } else {
+          // Union with single type and no null - treat as non-nullable
+          return switch (singleType) {
+            ConvexId convexId => '${convexId.typeName}($jsonValue as String)',
+            JsLiteral literal => _generateLiteralFromJson(literal, jsonValue),
+            JsObject _ => '$jsonValue as Map<String, dynamic>',
+            JsArray array => _generateArrayFromJson(array, jsonValue),
+            _ => jsonValue, // For primitives, no special handling needed
+          };
+        }
       }
     }
     // For real unions, keep it simple for now
@@ -963,17 +978,33 @@ class FunctionBuildContext {
   String _generateNullableUnionToJsonValue(JsUnion union, String fieldValue) {
     // Handle nullable unions like `StorageId | null`
     final realTypes = union.value.where((e) => e is! JsNull).toList();
+    final containsNull = union.value.any((e) => e is JsNull);
+
     if (realTypes.length == 1) {
       final singleType = realTypes.first;
-      // Handle the single non-null type with nullable accessor
-      return switch (singleType) {
-        ConvexId _ => '$fieldValue?.value',
-        JsLiteral _ => '$fieldValue?.value',
-        JsObject obj => '$fieldValue != null ? ${_generateObjectToJsonValue(obj, fieldValue)} : null',
-        JsArray array => '$fieldValue != null ? ${_generateToJsonArrayValue(array, fieldValue)} : null',
-        JsRecord record => '$fieldValue != null ? ${_generateRecordToJsonValue(record, fieldValue)} : null',
-        _ => fieldValue, // For primitives, no special handling needed
-      };
+
+      // Only use nullable accessor if the union actually contains null
+      if (containsNull) {
+        // Handle the single non-null type with nullable accessor
+        return switch (singleType) {
+          ConvexId _ => '$fieldValue?.value',
+          JsLiteral _ => '$fieldValue?.value',
+          JsObject obj => '$fieldValue != null ? ${_generateObjectToJsonValue(obj, fieldValue)} : null',
+          JsArray array => '$fieldValue != null ? ${_generateToJsonArrayValue(array, fieldValue)} : null',
+          JsRecord record => '$fieldValue != null ? ${_generateRecordToJsonValue(record, fieldValue)} : null',
+          _ => fieldValue, // For primitives, no special handling needed
+        };
+      } else {
+        // Union with single type and no null - treat as non-nullable
+        return switch (singleType) {
+          ConvexId _ => '$fieldValue.value',
+          JsLiteral _ => '$fieldValue.value',
+          JsObject obj => _generateObjectToJsonValue(obj, fieldValue),
+          JsArray array => _generateToJsonArrayValue(array, fieldValue),
+          JsRecord record => _generateRecordToJsonValue(record, fieldValue),
+          _ => fieldValue, // For primitives, no special handling needed
+        };
+      }
     }
     // This shouldn't happen, but fallback to fieldValue
     return fieldValue;
@@ -4446,15 +4477,30 @@ class JsObject extends JsType with JsObjectMappable {
     // For nullable unions like `StorageId | null`, handle the single non-null type
     if (!union.isRealUnion) {
       final realTypes = union.value.where((e) => e is! JsNull).toList();
+      final containsNull = union.value.any((e) => e is JsNull);
+
       if (realTypes.length == 1) {
         final singleType = realTypes.first;
-        return switch (singleType) {
-          ConvexId convexId => '$jsonValue != null ? ${convexId.typeName}($jsonValue as String) : null',
-          JsLiteral literal => '$jsonValue != null ? ${literal.literalTypeName}.validate($jsonValue) : null',
-          JsObject _ => '$jsonValue != null ? ($jsonValue as Map<String, dynamic>).toIMap() : null',
-          JsArray _ => '$jsonValue != null ? ($jsonValue as List<dynamic>) : null',
-          _ => jsonValue, // For primitives, no special handling needed
-        };
+
+        // Only add null check if the union actually contains null
+        if (containsNull) {
+          return switch (singleType) {
+            ConvexId convexId => '$jsonValue != null ? ${convexId.typeName}($jsonValue as String) : null',
+            JsLiteral literal => '$jsonValue != null ? ${literal.literalTypeName}.validate($jsonValue) : null',
+            JsObject _ => '$jsonValue != null ? ($jsonValue as Map<String, dynamic>).toIMap() : null',
+            JsArray _ => '$jsonValue != null ? ($jsonValue as List<dynamic>) : null',
+            _ => jsonValue, // For primitives, no special handling needed
+          };
+        } else {
+          // Union with single type and no null - treat as non-nullable
+          return switch (singleType) {
+            ConvexId convexId => '${convexId.typeName}($jsonValue as String)',
+            JsLiteral literal => '${literal.literalTypeName}.validate($jsonValue)',
+            JsObject _ => '($jsonValue as Map<String, dynamic>).toIMap()',
+            JsArray _ => '$jsonValue as List<dynamic>',
+            _ => jsonValue, // For primitives, no special handling needed
+          };
+        }
       }
     }
     // For real unions, keep it simple for now

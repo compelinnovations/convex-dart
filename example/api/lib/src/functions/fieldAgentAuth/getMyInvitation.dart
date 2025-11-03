@@ -18,89 +18,89 @@ BTreeMapStringValue serialize(void args) {
 InvitationDoc deserialize(DartValue map) {
   return (
     body: (decodeValue(map) as IMap<String, dynamic>?)?.then(
-      (on188338) => (
-        $_creationTime: on188338.containsKey('_creationTime')
-            ? Defined<double>((on188338['_creationTime'] as double))
+      (on971007) => (
+        $_creationTime: on971007.containsKey('_creationTime')
+            ? Defined<double>((on971007['_creationTime'] as double))
             : Undefined<double>(),
-        $_id: on188338.containsKey('_id')
-            ? Defined<String>((on188338['_id'] as String))
+        $_id: on971007.containsKey('_id')
+            ? Defined<String>((on971007['_id'] as String))
             : Undefined<String>(),
-        acceptedAt: on188338.containsKey('acceptedAt')
-            ? Defined<double?>((on188338['acceptedAt'] as double?))
+        acceptedAt: on971007.containsKey('acceptedAt')
+            ? Defined<double?>((on971007['acceptedAt'] as double?))
             : Undefined<double?>(),
-        appCountryIso: on188338.containsKey('appCountryIso')
-            ? Defined<String?>((on188338['appCountryIso'] as String?))
+        appCountryIso: on971007.containsKey('appCountryIso')
+            ? Defined<String?>((on971007['appCountryIso'] as String?))
             : Undefined<String?>(),
-        appCountryName: on188338.containsKey('appCountryName')
-            ? Defined<String?>((on188338['appCountryName'] as String?))
+        appCountryName: on971007.containsKey('appCountryName')
+            ? Defined<String?>((on971007['appCountryName'] as String?))
             : Undefined<String?>(),
-        createdAt: on188338.containsKey('createdAt')
-            ? Defined<double?>((on188338['createdAt'] as double?))
+        createdAt: on971007.containsKey('createdAt')
+            ? Defined<double?>((on971007['createdAt'] as double?))
             : Undefined<double?>(),
-        deletedAt: on188338.containsKey('deletedAt')
-            ? Defined<double?>((on188338['deletedAt'] as double?))
+        deletedAt: on971007.containsKey('deletedAt')
+            ? Defined<double?>((on971007['deletedAt'] as double?))
             : Undefined<double?>(),
-        email: (on188338['email'] as String),
-        expiresAt: (on188338['expiresAt'] as double),
-        fieldAgentId: on188338.containsKey('fieldAgentId')
-            ? Defined<String?>((on188338['fieldAgentId'] as String?))
+        email: (on971007['email'] as String),
+        expiresAt: (on971007['expiresAt'] as double),
+        fieldAgentId: on971007.containsKey('fieldAgentId')
+            ? Defined<String?>((on971007['fieldAgentId'] as String?))
             : Undefined<String?>(),
-        firstName: on188338.containsKey('firstName')
-            ? Defined<String?>((on188338['firstName'] as String?))
+        firstName: on971007.containsKey('firstName')
+            ? Defined<String?>((on971007['firstName'] as String?))
             : Undefined<String?>(),
-        fullName: on188338.containsKey('fullName')
-            ? Defined<String?>((on188338['fullName'] as String?))
+        fullName: on971007.containsKey('fullName')
+            ? Defined<String?>((on971007['fullName'] as String?))
             : Undefined<String?>(),
-        inviteMessage: on188338.containsKey('inviteMessage')
-            ? Defined<String?>((on188338['inviteMessage'] as String?))
+        inviteMessage: on971007.containsKey('inviteMessage')
+            ? Defined<String?>((on971007['inviteMessage'] as String?))
             : Undefined<String?>(),
-        inviterEmail: on188338.containsKey('inviterEmail')
-            ? Defined<String?>((on188338['inviterEmail'] as String?))
+        inviterEmail: on971007.containsKey('inviterEmail')
+            ? Defined<String?>((on971007['inviterEmail'] as String?))
             : Undefined<String?>(),
-        inviterId: (on188338['inviterId'] as String),
-        inviterMemberId: on188338.containsKey('inviterMemberId')
-            ? Defined<String?>((on188338['inviterMemberId'] as String?))
+        inviterId: (on971007['inviterId'] as String),
+        inviterMemberId: on971007.containsKey('inviterMemberId')
+            ? Defined<String?>((on971007['inviterMemberId'] as String?))
             : Undefined<String?>(),
-        inviterName: on188338.containsKey('inviterName')
-            ? Defined<String?>((on188338['inviterName'] as String?))
+        inviterName: on971007.containsKey('inviterName')
+            ? Defined<String?>((on971007['inviterName'] as String?))
             : Undefined<String?>(),
-        inviterPhoneNumber: on188338.containsKey('inviterPhoneNumber')
-            ? Defined<String?>((on188338['inviterPhoneNumber'] as String?))
+        inviterPhoneNumber: on971007.containsKey('inviterPhoneNumber')
+            ? Defined<String?>((on971007['inviterPhoneNumber'] as String?))
             : Undefined<String?>(),
-        lastName: on188338.containsKey('lastName')
-            ? Defined<String?>((on188338['lastName'] as String?))
+        lastName: on971007.containsKey('lastName')
+            ? Defined<String?>((on971007['lastName'] as String?))
             : Undefined<String?>(),
-        organizationId: (on188338['organizationId'] as String),
-        organizationName: on188338.containsKey('organizationName')
-            ? Defined<String?>((on188338['organizationName'] as String?))
+        organizationId: (on971007['organizationId'] as String),
+        organizationName: on971007.containsKey('organizationName')
+            ? Defined<String?>((on971007['organizationName'] as String?))
             : Undefined<String?>(),
-        organizationType: on188338.containsKey('organizationType')
-            ? Defined<String?>((on188338['organizationType'] as String?))
+        organizationType: on971007.containsKey('organizationType')
+            ? Defined<String?>((on971007['organizationType'] as String?))
             : Undefined<String?>(),
-        phoneNumber: on188338.containsKey('phoneNumber')
-            ? Defined<String?>((on188338['phoneNumber'] as String?))
+        phoneNumber: on971007.containsKey('phoneNumber')
+            ? Defined<String?>((on971007['phoneNumber'] as String?))
             : Undefined<String?>(),
-        role: on188338.containsKey('role')
-            ? Defined<String?>((on188338['role'] as String?))
+        role: on971007.containsKey('role')
+            ? Defined<String?>((on971007['role'] as String?))
             : Undefined<String?>(),
-        shippingClientId: on188338.containsKey('shippingClientId')
-            ? Defined<String?>((on188338['shippingClientId'] as String?))
+        shippingClientId: on971007.containsKey('shippingClientId')
+            ? Defined<String?>((on971007['shippingClientId'] as String?))
             : Undefined<String?>(),
-        status: (on188338['status'] as String),
-        subRole: on188338.containsKey('subRole')
-            ? Defined<String?>((on188338['subRole'] as String?))
+        status: (on971007['status'] as String),
+        subRole: on971007.containsKey('subRole')
+            ? Defined<String?>((on971007['subRole'] as String?))
             : Undefined<String?>(),
-        teamId: on188338.containsKey('teamId')
-            ? Defined<String?>((on188338['teamId'] as String?))
+        teamId: on971007.containsKey('teamId')
+            ? Defined<String?>((on971007['teamId'] as String?))
             : Undefined<String?>(),
-        teamName: on188338.containsKey('teamName')
-            ? Defined<String?>((on188338['teamName'] as String?))
+        teamName: on971007.containsKey('teamName')
+            ? Defined<String?>((on971007['teamName'] as String?))
             : Undefined<String?>(),
-        teamType: on188338.containsKey('teamType')
-            ? Defined<String?>((on188338['teamType'] as String?))
+        teamType: on971007.containsKey('teamType')
+            ? Defined<String?>((on971007['teamType'] as String?))
             : Undefined<String?>(),
-        updatedAt: on188338.containsKey('updatedAt')
-            ? Defined<double?>((on188338['updatedAt'] as double?))
+        updatedAt: on971007.containsKey('updatedAt')
+            ? Defined<double?>((on971007['updatedAt'] as double?))
             : Undefined<double?>(),
       ),
     ),

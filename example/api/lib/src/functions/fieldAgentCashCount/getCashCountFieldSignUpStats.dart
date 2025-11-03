@@ -18,97 +18,97 @@ BTreeMapStringValue serialize(void args) {
 
 CashCountFieldSignUpStatsDoc deserialize(DartValue map) {
   return (decodeValue(map) as IMap<String, dynamic>).then(
-    (on495508) => (
-      month: (on495508['month'] as IMap<String, dynamic>).then(
-        (on175046) => (
-          approved: (on175046['approved'] as double),
-          invalid: (on175046['invalid'] as double),
-          pending: (on175046['pending'] as double),
-          rejected: (on175046['rejected'] as double),
-          total: (on175046['total'] as double),
+    (on244444) => (
+      month: (on244444['month'] as IMap<String, dynamic>).then(
+        (on652402) => (
+          approved: (on652402['approved'] as double),
+          invalid: (on652402['invalid'] as double),
+          pending: (on652402['pending'] as double),
+          rejected: (on652402['rejected'] as double),
+          total: (on652402['total'] as double),
         ),
       ),
-      today: (on495508['today'] as IMap<String, dynamic>).then(
-        (on627469) => (
-          approved: (on627469['approved'] as double),
-          invalid: (on627469['invalid'] as double),
-          pending: (on627469['pending'] as double),
-          rejected: (on627469['rejected'] as double),
-          total: (on627469['total'] as double),
+      today: (on244444['today'] as IMap<String, dynamic>).then(
+        (on932579) => (
+          approved: (on932579['approved'] as double),
+          invalid: (on932579['invalid'] as double),
+          pending: (on932579['pending'] as double),
+          rejected: (on932579['rejected'] as double),
+          total: (on932579['total'] as double),
         ),
       ),
-      week: (on495508['week'] as IMap<String, dynamic>).then(
-        (on647466) => (
-          friday: (on647466['friday'] as IMap<String, dynamic>).then(
-            (on897723) => (
-              approved: (on897723['approved'] as double),
-              invalid: (on897723['invalid'] as double),
-              pending: (on897723['pending'] as double),
-              rejected: (on897723['rejected'] as double),
-              total: (on897723['total'] as double),
+      week: (on244444['week'] as IMap<String, dynamic>).then(
+        (on448529) => (
+          friday: (on448529['friday'] as IMap<String, dynamic>).then(
+            (on531909) => (
+              approved: (on531909['approved'] as double),
+              invalid: (on531909['invalid'] as double),
+              pending: (on531909['pending'] as double),
+              rejected: (on531909['rejected'] as double),
+              total: (on531909['total'] as double),
             ),
           ),
-          monday: (on647466['monday'] as IMap<String, dynamic>).then(
-            (on465994) => (
-              approved: (on465994['approved'] as double),
-              invalid: (on465994['invalid'] as double),
-              pending: (on465994['pending'] as double),
-              rejected: (on465994['rejected'] as double),
-              total: (on465994['total'] as double),
+          monday: (on448529['monday'] as IMap<String, dynamic>).then(
+            (on706242) => (
+              approved: (on706242['approved'] as double),
+              invalid: (on706242['invalid'] as double),
+              pending: (on706242['pending'] as double),
+              rejected: (on706242['rejected'] as double),
+              total: (on706242['total'] as double),
             ),
           ),
-          saturday: (on647466['saturday'] as IMap<String, dynamic>).then(
-            (on375595) => (
-              approved: (on375595['approved'] as double),
-              invalid: (on375595['invalid'] as double),
-              pending: (on375595['pending'] as double),
-              rejected: (on375595['rejected'] as double),
-              total: (on375595['total'] as double),
+          saturday: (on448529['saturday'] as IMap<String, dynamic>).then(
+            (on510986) => (
+              approved: (on510986['approved'] as double),
+              invalid: (on510986['invalid'] as double),
+              pending: (on510986['pending'] as double),
+              rejected: (on510986['rejected'] as double),
+              total: (on510986['total'] as double),
             ),
           ),
-          sunday: (on647466['sunday'] as IMap<String, dynamic>).then(
-            (on511589) => (
-              approved: (on511589['approved'] as double),
-              invalid: (on511589['invalid'] as double),
-              pending: (on511589['pending'] as double),
-              rejected: (on511589['rejected'] as double),
-              total: (on511589['total'] as double),
+          sunday: (on448529['sunday'] as IMap<String, dynamic>).then(
+            (on796681) => (
+              approved: (on796681['approved'] as double),
+              invalid: (on796681['invalid'] as double),
+              pending: (on796681['pending'] as double),
+              rejected: (on796681['rejected'] as double),
+              total: (on796681['total'] as double),
             ),
           ),
-          thursday: (on647466['thursday'] as IMap<String, dynamic>).then(
-            (on725016) => (
-              approved: (on725016['approved'] as double),
-              invalid: (on725016['invalid'] as double),
-              pending: (on725016['pending'] as double),
-              rejected: (on725016['rejected'] as double),
-              total: (on725016['total'] as double),
+          thursday: (on448529['thursday'] as IMap<String, dynamic>).then(
+            (on999611) => (
+              approved: (on999611['approved'] as double),
+              invalid: (on999611['invalid'] as double),
+              pending: (on999611['pending'] as double),
+              rejected: (on999611['rejected'] as double),
+              total: (on999611['total'] as double),
             ),
           ),
-          total: (on647466['total'] as IMap<String, dynamic>).then(
-            (on34810) => (
-              approved: (on34810['approved'] as double),
-              invalid: (on34810['invalid'] as double),
-              pending: (on34810['pending'] as double),
-              rejected: (on34810['rejected'] as double),
-              total: (on34810['total'] as double),
+          total: (on448529['total'] as IMap<String, dynamic>).then(
+            (on117825) => (
+              approved: (on117825['approved'] as double),
+              invalid: (on117825['invalid'] as double),
+              pending: (on117825['pending'] as double),
+              rejected: (on117825['rejected'] as double),
+              total: (on117825['total'] as double),
             ),
           ),
-          tuesday: (on647466['tuesday'] as IMap<String, dynamic>).then(
-            (on261795) => (
-              approved: (on261795['approved'] as double),
-              invalid: (on261795['invalid'] as double),
-              pending: (on261795['pending'] as double),
-              rejected: (on261795['rejected'] as double),
-              total: (on261795['total'] as double),
+          tuesday: (on448529['tuesday'] as IMap<String, dynamic>).then(
+            (on466449) => (
+              approved: (on466449['approved'] as double),
+              invalid: (on466449['invalid'] as double),
+              pending: (on466449['pending'] as double),
+              rejected: (on466449['rejected'] as double),
+              total: (on466449['total'] as double),
             ),
           ),
-          wednesday: (on647466['wednesday'] as IMap<String, dynamic>).then(
-            (on56437) => (
-              approved: (on56437['approved'] as double),
-              invalid: (on56437['invalid'] as double),
-              pending: (on56437['pending'] as double),
-              rejected: (on56437['rejected'] as double),
-              total: (on56437['total'] as double),
+          wednesday: (on448529['wednesday'] as IMap<String, dynamic>).then(
+            (on212483) => (
+              approved: (on212483['approved'] as double),
+              invalid: (on212483['invalid'] as double),
+              pending: (on212483['pending'] as double),
+              rejected: (on212483['rejected'] as double),
+              total: (on212483['total'] as double),
             ),
           ),
         ),

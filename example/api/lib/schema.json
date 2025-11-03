@@ -799,9 +799,6 @@
                           {
                             "tableName": "_storage",
                             "type": "id"
-                          },
-                          {
-                            "type": "null"
                           }
                         ]
                       },
@@ -3079,9 +3076,6 @@
                               {
                                 "tableName": "_storage",
                                 "type": "id"
-                              },
-                              {
-                                "type": "null"
                               }
                             ]
                           },
