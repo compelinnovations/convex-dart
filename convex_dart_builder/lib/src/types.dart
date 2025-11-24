@@ -2042,11 +2042,14 @@ ${functionContext.classBuffer.toString()}""";
         final isEmbedded =
             (mapping?.isEmbedded ?? false) && entry.value.fieldType is JsObject;
         // Detect date/timestamp fields by common naming patterns
+        // BUT exclude complex objects that will be stored as JSON
         final isDateField =
-            entry.key.contains('At') ||
+            (entry.key.contains('At') ||
             entry.key.contains('Date') ||
             entry.key.contains('Expire') ||
-            entry.key.endsWith('Time');
+            entry.key.endsWith('Time')) &&
+            // Only treat as date field if it's a number type, not a complex object
+            (entry.value.fieldType is! JsObject);
 
         JsObject? embeddedSchema;
         String? embeddedClassName;
@@ -2420,8 +2423,12 @@ ${functionContext.classBuffer.toString()}""";
         final isConvexId = fieldType is ConvexId;
         final isLiteralUnion = fieldType is JsUnion &&
                                fieldType.value.every((t) => t is JsLiteral || t is JsNull);
+        final isRealUnion = fieldType is JsUnion && fieldType.isRealUnion;
 
-        if (isConvexId || isLiteralUnion) {
+        if (isRealUnion) {
+          // Real Union2/Union3 types - use .split() to extract string value
+          buffer.writeln("      $fieldName: model.${_dartSafeName(originalName)}.split((id) => id.value, (str) => str),");
+        } else if (isConvexId || isLiteralUnion) {
           buffer.writeln("      $fieldName: model.${_dartSafeName(originalName)}.value,");
         } else {
           buffer.writeln("      $fieldName: model.${_dartSafeName(originalName)},");
@@ -2458,7 +2465,12 @@ ${functionContext.classBuffer.toString()}""";
       } else if (originalName == '_creationTime') {
         // Handle _creationTime field - use $ prefix for constructor parameter
         // Note: fieldName is 'creationTime' in ObjectBox (without $)
-        buffer.writeln("      \$_creationTime: $fieldName.toDouble(),");
+        // Check if _creationTime is optional (nullable in ObjectBox)
+        if (field.field.optional) {
+          buffer.writeln("      \$_creationTime: $fieldName != null ? Defined($fieldName!.toDouble()) : const Undefined(),");
+        } else {
+          buffer.writeln("      \$_creationTime: $fieldName.toDouble(),");
+        }
       } else if (field.storeAsJson) {
         // Determine if this field is a union type that needs special deserialization
         final isUnionType = field.field.fieldType is JsUnion;
@@ -2531,12 +2543,29 @@ ${functionContext.classBuffer.toString()}""";
           );
         }
       } else {
-        // Check if this is an ID type that needs ID class reconstruction
-        final idClassName = _getIdClassNameFromField(field);
-        if (idClassName != null) {
-          buffer.writeln("      $originalName: $idClassName($fieldName),");
+        // Check if this is a real Union2/Union3 type that needs reconstruction
+        final fieldType = field.field.fieldType;
+        final isRealUnion = fieldType is JsUnion && fieldType.isRealUnion;
+
+        if (isRealUnion) {
+          // Reconstruct Union2/Union3 - assume first type is the ID type
+          final union = fieldType as JsUnion;
+          final firstType = union.value.first;
+          if (firstType is ConvexId) {
+            final idClassName = firstType.typeName;
+            buffer.writeln("      $originalName: Union2.in1($idClassName($fieldName)),");
+          } else {
+            // Fallback - just use the value as-is
+            buffer.writeln("      $originalName: $fieldName,");
+          }
         } else {
-          buffer.writeln("      $originalName: $fieldName,");
+          // Check if this is an ID type that needs ID class reconstruction
+          final idClassName = _getIdClassNameFromField(field);
+          if (idClassName != null) {
+            buffer.writeln("      $originalName: $idClassName($fieldName),");
+          } else {
+            buffer.writeln("      $originalName: $fieldName,");
+          }
         }
       }
     }
@@ -3724,14 +3753,38 @@ class JsObject extends JsType with JsObjectMappable {
       return "void";
     }
 
+    // Check if there's an explicit mapping to generate as a separate class
+    // This allows single-field objects to be extracted if configured in schema-mapping
+    final currentFieldName = context._currentFieldName;
+    final currentFieldContext = context._currentFieldContext;
+    bool hasSeparateMapping = false;
+
+    if (currentFieldName != null && currentFieldContext != null) {
+      final fullPath = context.getFullFieldPath(currentFieldName);
+      final mapping =
+          context.getObjectFieldMapping(fullPath, currentFieldContext) ??
+          context.getObjectFieldMapping(currentFieldName, currentFieldContext);
+
+      if (mapping != null && mapping.metadata != null) {
+        final jsonType = mapping.metadata!['jsonType'] as String?;
+        if (jsonType == "separate") {
+          hasSeparateMapping = true;
+        }
+      }
+    }
+
     // Check if this should be extracted as a separate model class
-    // Extract if it has multiple fields or nested objects
+    // Extract if:
+    // 1. Has multiple fields
+    // 2. Has nested objects
+    // 3. Has explicit "separate" mapping in schema-mapping.json
     if (value.length > 1 ||
-        value.values.any((field) => field.fieldType is JsObject)) {
+        value.values.any((field) => field.fieldType is JsObject) ||
+        hasSeparateMapping) {
       return _extractAsModelClass(context);
     }
 
-    // For simple single-field objects, use inline record type
+    // For simple single-field objects without mapping, use inline record type
     final recordFields = <String>[];
     for (final entry in value.entries) {
       // Set field context for each nested field
@@ -4189,10 +4242,18 @@ class JsObject extends JsType with JsObjectMappable {
         final extractedClassName = mapping?.name;
         context.clearFieldContext();
 
-        if (extractedClassName != null && entry.value.fieldType is JsObject) {
-          buffer.writeln('      $docField: $fieldName.toRecord(),');
+        if (entry.value.optional) {
+          if (extractedClassName != null && entry.value.fieldType is JsObject) {
+            buffer.writeln('      $docField: $fieldName.isDefined ? Defined($fieldName.asDefined().value.toRecord()) : const Undefined(),');
+          } else {
+            buffer.writeln('      $docField: $fieldName,');
+          }
         } else {
-          buffer.writeln('      $docField: $fieldName,');
+          if (extractedClassName != null && entry.value.fieldType is JsObject) {
+            buffer.writeln('      $docField: $fieldName.toRecord(),');
+          } else {
+            buffer.writeln('      $docField: $fieldName,');
+          }
         }
       }
       buffer.writeln('    );');
