@@ -1652,6 +1652,15 @@ class ${tableName.pascalCase}Id  implements TableId {
 import 'package:convex_dart/src/convex_dart_for_generated_code.dart'
     as internal;
 
+/// Re-export PreOperationHook type for use in app code
+typedef PreOperationHook = internal.PreOperationHook;
+
+/// Re-export ConnectionStateCallback type for use in app code
+typedef ConnectionStateCallback = internal.ConnectionStateCallback;
+
+/// Re-export ConnectionState enum for use in app code
+typedef ConnectionState = internal.ConnectionState;
+
 /// Wrapper class for ConvexClient that exposes the underlying client instance
 class ConvexClient {
   /// Initialize the ConvexClient singleton
@@ -1675,6 +1684,37 @@ class ConvexClient {
   static Future<void> setAuth({required String? token}) async {
     await internal.ConvexClient.instance.setAuth(token: token);
   }
+
+  /// Hook that runs before each operation (query, mutation, action)
+  /// Use this to check connection staleness and reconnect if needed
+  static set onBeforeOperation(PreOperationHook? hook) {
+    internal.ConvexClient.onBeforeOperation = hook;
+  }
+
+  /// Get the current pre-operation hook
+  static PreOperationHook? get onBeforeOperation =>
+      internal.ConvexClient.onBeforeOperation;
+
+  /// Register a callback to be notified when WebSocket connection state changes.
+  ///
+  /// The callback will be invoked with:
+  /// - [ConnectionState.connected] when a new connection is established
+  /// - [ConnectionState.disconnected] when the WebSocket drops (e.g., network loss)
+  /// - [ConnectionState.reconnecting] when reconnection is in progress
+  ///
+  /// Use this to trigger reconnection when internet is restored.
+  static void setConnectionStateCallback(ConnectionStateCallback callback) {
+    internal.ConvexClient.instance.setConnectionStateCallback(callback);
+  }
+
+  /// Get the current connection state
+  ///
+  /// Returns:
+  /// - [ConnectionState.connected] if WebSocket is active
+  /// - [ConnectionState.disconnected] if WebSocket dropped
+  /// - [ConnectionState.reconnecting] if reconnection is in progress
+  static ConnectionState get connectionState =>
+      internal.ConvexClient.instance.connectionState;
 }
     """;
   }

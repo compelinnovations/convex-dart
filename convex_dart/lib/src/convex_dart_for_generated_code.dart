@@ -4,8 +4,9 @@ export 'unions.dart';
 export 'encode.dart';
 export 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
-export 'rust/lib.dart' show BTreeMapStringValue;
-export 'convex_client.dart' show ConvexClient;
+export 'rust/lib.dart' show BTreeMapStringValue, ConnectionState;
+export 'convex_client.dart'
+    show ConvexClient, PreOperationHook, ConnectionStateCallback;
 export 'opperations.dart'
     show QueryOperation, MutationOperation, ActionOperation;
 export 'optional.dart';

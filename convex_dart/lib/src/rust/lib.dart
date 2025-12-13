@@ -10,8 +10,8 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'lib.freezed.dart';
 
-// These functions are ignored because they are not marked as `pub`: `connected_client`, `handle_direct_function_result`, `internal_action`, `internal_mutation`, `internal_set_auth`, `internal_subscribe`, `new`, `new`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `fmt`, `fmt`, `from`
+// These functions are ignored because they are not marked as `pub`: `connected_client`, `handle_direct_function_result`, `internal_action`, `internal_mutation`, `internal_set_auth`, `internal_subscribe`, `new`, `new`, `update_connection_state`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `from`
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<BTreeMap < String , DartValue >>>
 abstract class BTreeMapStringDartValue implements RustOpaqueInterface {}
@@ -33,6 +33,15 @@ abstract class MobileConvexClient implements RustOpaqueInterface {
     required String name,
     required BTreeMapStringValue args,
   });
+
+  /// Get the current connection state
+  ConnectionState getConnectionState();
+
+  /// Marks the connection as disconnected.
+  ///
+  /// Call this when the WebSocket connection drops (detected via subscription stream ending).
+  /// This will notify Dart so it can attempt to reconnect when internet is available.
+  Future<void> markDisconnected();
 
   /// Executes a mutation on the Convex backend.
   Future<DartValue> mutation({
@@ -61,6 +70,12 @@ abstract class MobileConvexClient implements RustOpaqueInterface {
     required BTreeMapStringValue args,
   });
 
+  /// Reconnects the client by dropping the existing connection and creating a new one.
+  ///
+  /// Call this when the WebSocket connection becomes stale (e.g., after app backgrounding).
+  /// The next query/mutation/action will establish a fresh connection.
+  Future<void> reconnect();
+
   /// Provide an OpenID Connect ID token to be associated with this client.
   ///
   /// Doing so will share that information with the Convex backend and a valid
@@ -69,6 +84,14 @@ abstract class MobileConvexClient implements RustOpaqueInterface {
   /// Passing [None] for the token will disassociate a previous token,
   /// effectively returning to a logged out state.
   Future<void> setAuth({String? token});
+
+  /// Register a callback to be notified of connection state changes.
+  ///
+  /// The callback will be called whenever the WebSocket connection state changes
+  /// (connected, disconnected, reconnecting).
+  Future<void> setConnectionStateCallback({
+    required FutureOr<void> Function(ConnectionState) callback,
+  });
 
   /// Subscribe to updates to a query against the Convex backend.
   ///
@@ -110,4 +133,16 @@ sealed class ClientError with _$ClientError implements FrbException {
   /// An unexpected server-side error from a remote Convex function.
   const factory ClientError.serverError({required String msg}) =
       ClientError_ServerError;
+}
+
+/// Connection state enum exposed to Dart
+enum ConnectionState {
+  /// Client is connected and operational
+  connected,
+
+  /// Client has disconnected (WebSocket dropped)
+  disconnected,
+
+  /// Client is attempting to reconnect
+  reconnecting,
 }

@@ -39,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.11.1";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1838872697;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 466121649;
 
 // Section: executor
 
@@ -162,6 +162,105 @@ fn wire__crate__MobileConvexClient_action_impl(
                     })()
                     .await,
                 )
+            }
+        },
+    )
+}
+fn wire__crate__MobileConvexClient_get_connection_state_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "MobileConvexClient_get_connection_state",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MobileConvexClient>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::MobileConvexClient::get_connection_state(&*api_that_guard),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__MobileConvexClient_mark_disconnected_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "MobileConvexClient_mark_disconnected",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MobileConvexClient>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| {
+                transform_result_sse::<_, ()>((move || {
+                    let mut api_that_guard = None;
+                    let decode_indices_ =
+                        flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                            flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                &api_that, 0, false,
+                            ),
+                        ]);
+                    for i in decode_indices_ {
+                        match i {
+                            0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                            _ => unreachable!(),
+                        }
+                    }
+                    let api_that_guard = api_that_guard.unwrap();
+                    let output_ok = Result::<_, ()>::Ok({
+                        crate::MobileConvexClient::mark_disconnected(&*api_that_guard);
+                    })?;
+                    Ok(output_ok)
+                })())
             }
         },
     )
@@ -321,6 +420,62 @@ fn wire__crate__MobileConvexClient_query_impl(
         },
     )
 }
+fn wire__crate__MobileConvexClient_reconnect_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "MobileConvexClient_reconnect",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MobileConvexClient>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::ClientError>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok =
+                            crate::MobileConvexClient::reconnect(&*api_that_guard).await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__MobileConvexClient_set_auth_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -375,6 +530,63 @@ fn wire__crate__MobileConvexClient_set_auth_impl(
                     })()
                     .await,
                 )
+            }
+        },
+    )
+}
+fn wire__crate__MobileConvexClient_set_connection_state_callback_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "MobileConvexClient_set_connection_state_callback",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<MobileConvexClient>,
+            >>::sse_decode(&mut deserializer);
+            let api_callback = decode_DartFn_Inputs_connection_state_Output_unit_AnyhowException(
+                <flutter_rust_bridge::DartOpaque>::sse_decode(&mut deserializer),
+            );
+            deserializer.end();
+            move |context| {
+                transform_result_sse::<_, ()>((move || {
+                    let mut api_that_guard = None;
+                    let decode_indices_ =
+                        flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                            flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                &api_that, 0, false,
+                            ),
+                        ]);
+                    for i in decode_indices_ {
+                        match i {
+                            0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                            _ => unreachable!(),
+                        }
+                    }
+                    let api_that_guard = api_that_guard.unwrap();
+                    let output_ok = Result::<_, ()>::Ok({
+                        crate::MobileConvexClient::set_connection_state_callback(
+                            &*api_that_guard,
+                            api_callback,
+                        );
+                    })?;
+                    Ok(output_ok)
+                })())
             }
         },
     )
@@ -695,6 +907,41 @@ fn wire__crate__dart_value__conversion__hashmap_to_btreemap_dart_value_impl(
 
 // Section: related_funcs
 
+fn decode_DartFn_Inputs_connection_state_Output_unit_AnyhowException(
+    dart_opaque: flutter_rust_bridge::DartOpaque,
+) -> impl Fn(crate::ConnectionState) -> flutter_rust_bridge::DartFnFuture<()> {
+    use flutter_rust_bridge::IntoDart;
+
+    async fn body(
+        dart_opaque: flutter_rust_bridge::DartOpaque,
+        arg0: crate::ConnectionState,
+    ) -> () {
+        let args = vec![arg0.into_into_dart().into_dart()];
+        let message = FLUTTER_RUST_BRIDGE_HANDLER
+            .dart_fn_invoke(dart_opaque, args)
+            .await;
+
+        let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+        let action = deserializer.cursor.read_u8().unwrap();
+        let ans = match action {
+            0 => std::result::Result::Ok(<()>::sse_decode(&mut deserializer)),
+            1 => std::result::Result::Err(
+                <flutter_rust_bridge::for_generated::anyhow::Error>::sse_decode(&mut deserializer),
+            ),
+            _ => unreachable!(),
+        };
+        deserializer.end();
+        let ans = ans.expect("Dart throws exception but Rust side assume it is not failable");
+        ans
+    }
+
+    move |arg0: crate::ConnectionState| {
+        flutter_rust_bridge::for_generated::convert_into_dart_fn_future(body(
+            dart_opaque.clone(),
+            arg0,
+        ))
+    }
+}
 fn decode_DartFn_Inputs_dart_function_result_Output_unit_AnyhowException(
     dart_opaque: flutter_rust_bridge::DartOpaque,
 ) -> impl Fn(crate::dart_value::function::DartFunctionResult) -> flutter_rust_bridge::DartFnFuture<()>
@@ -916,6 +1163,19 @@ impl SseDecode for crate::ClientError {
     }
 }
 
+impl SseDecode for crate::ConnectionState {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::ConnectionState::Connected,
+            1 => crate::ConnectionState::Disconnected,
+            2 => crate::ConnectionState::Reconnecting,
+            _ => unreachable!("Invalid variant for ConnectionState: {}", inner),
+        };
+    }
+}
+
 impl SseDecode for crate::dart_value::DartConvexError {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -999,6 +1259,13 @@ impl SseDecode for f64 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         deserializer.cursor.read_f64::<NativeEndian>().unwrap()
+    }
+}
+
+impl SseDecode for i32 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_i32::<NativeEndian>().unwrap()
     }
 }
 
@@ -1093,13 +1360,6 @@ impl SseDecode for usize {
     }
 }
 
-impl SseDecode for i32 {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        deserializer.cursor.read_i32::<NativeEndian>().unwrap()
-    }
-}
-
 fn pde_ffi_dispatcher_primary_impl(
     func_id: i32,
     port: flutter_rust_bridge::for_generated::MessagePort,
@@ -1111,10 +1371,23 @@ fn pde_ffi_dispatcher_primary_impl(
     match func_id {
         1 => wire__crate__DartQuerySubscriber_on_update_impl(port, ptr, rust_vec_len, data_len),
         2 => wire__crate__MobileConvexClient_action_impl(port, ptr, rust_vec_len, data_len),
-        3 => wire__crate__MobileConvexClient_mutation_impl(port, ptr, rust_vec_len, data_len),
-        5 => wire__crate__MobileConvexClient_query_impl(port, ptr, rust_vec_len, data_len),
-        6 => wire__crate__MobileConvexClient_set_auth_impl(port, ptr, rust_vec_len, data_len),
-        7 => wire__crate__MobileConvexClient_subscribe_impl(port, ptr, rust_vec_len, data_len),
+        4 => wire__crate__MobileConvexClient_mark_disconnected_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        5 => wire__crate__MobileConvexClient_mutation_impl(port, ptr, rust_vec_len, data_len),
+        7 => wire__crate__MobileConvexClient_query_impl(port, ptr, rust_vec_len, data_len),
+        8 => wire__crate__MobileConvexClient_reconnect_impl(port, ptr, rust_vec_len, data_len),
+        9 => wire__crate__MobileConvexClient_set_auth_impl(port, ptr, rust_vec_len, data_len),
+        10 => wire__crate__MobileConvexClient_set_connection_state_callback_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        11 => wire__crate__MobileConvexClient_subscribe_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -1127,34 +1400,35 @@ fn pde_ffi_dispatcher_sync_impl(
 ) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
     // Codec=Pde (Serialization + dispatch), see doc to use other codecs
     match func_id {
-        4 => wire__crate__MobileConvexClient_new_impl(ptr, rust_vec_len, data_len),
-        8 => wire__crate__SubscriptionHandle_cancel_impl(ptr, rust_vec_len, data_len),
-        10 => wire__crate__dart_value__conversion__btreemap_dart_value_to_btreemap_impl(
+        3 => wire__crate__MobileConvexClient_get_connection_state_impl(ptr, rust_vec_len, data_len),
+        6 => wire__crate__MobileConvexClient_new_impl(ptr, rust_vec_len, data_len),
+        12 => wire__crate__SubscriptionHandle_cancel_impl(ptr, rust_vec_len, data_len),
+        14 => wire__crate__dart_value__conversion__btreemap_dart_value_to_btreemap_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        11 => wire__crate__dart_value__conversion__btreemap_to_btreemap_dart_value_impl(
+        15 => wire__crate__dart_value__conversion__btreemap_to_btreemap_dart_value_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        12 => wire__crate__dart_value__conversion__btreemap_to_hashmap_impl(
+        16 => wire__crate__dart_value__conversion__btreemap_to_hashmap_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        13 => wire__crate__dart_value__conversion__btreemap_to_hashmap_dart_value_impl(
+        17 => wire__crate__dart_value__conversion__btreemap_to_hashmap_dart_value_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        14 => wire__crate__dart_value__conversion__hashmap_to_btreemap_impl(
+        18 => wire__crate__dart_value__conversion__hashmap_to_btreemap_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        15 => wire__crate__dart_value__conversion__hashmap_to_btreemap_dart_value_impl(
+        19 => wire__crate__dart_value__conversion__hashmap_to_btreemap_dart_value_impl(
             ptr,
             rust_vec_len,
             data_len,
@@ -1281,6 +1555,23 @@ impl flutter_rust_bridge::IntoDart for crate::ClientError {
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::ClientError {}
 impl flutter_rust_bridge::IntoIntoDart<crate::ClientError> for crate::ClientError {
     fn into_into_dart(self) -> crate::ClientError {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::ConnectionState {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::Connected => 0.into_dart(),
+            Self::Disconnected => 1.into_dart(),
+            Self::Reconnecting => 2.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for crate::ConnectionState {}
+impl flutter_rust_bridge::IntoIntoDart<crate::ConnectionState> for crate::ConnectionState {
+    fn into_into_dart(self) -> crate::ConnectionState {
         self
     }
 }
@@ -1541,6 +1832,23 @@ impl SseEncode for crate::ClientError {
     }
 }
 
+impl SseEncode for crate::ConnectionState {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::ConnectionState::Connected => 0,
+                crate::ConnectionState::Disconnected => 1,
+                crate::ConnectionState::Reconnecting => 2,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
 impl SseEncode for crate::dart_value::DartConvexError {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -1618,6 +1926,13 @@ impl SseEncode for f64 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         serializer.cursor.write_f64::<NativeEndian>(self).unwrap();
+    }
+}
+
+impl SseEncode for i32 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_i32::<NativeEndian>(self).unwrap();
     }
 }
 
@@ -1705,13 +2020,6 @@ impl SseEncode for usize {
             .cursor
             .write_u64::<NativeEndian>(self as _)
             .unwrap();
-    }
-}
-
-impl SseEncode for i32 {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        serializer.cursor.write_i32::<NativeEndian>(self).unwrap();
     }
 }
 

@@ -3,6 +3,16 @@ import 'package:convex_dart/src/rust/dart_value/function.dart';
 import 'package:convex_dart/src/rust/frb_generated.dart';
 import 'package:convex_dart/src/rust/lib.dart';
 
+/// Re-export ConnectionState from Rust for use in app code
+export 'package:convex_dart/src/rust/lib.dart' show ConnectionState;
+
+/// Callback type for pre-operation hook
+/// Return true to proceed, false to abort the operation
+typedef PreOperationHook = Future<bool> Function();
+
+/// Callback type for connection state changes
+typedef ConnectionStateCallback = Future<void> Function(ConnectionState state);
+
 /// A client for interacting with a Convex backend service.
 ///
 /// The ConvexClient provides methods for executing queries, mutations, actions and
@@ -16,6 +26,10 @@ class ConvexClient {
 
   /// The underlying mobile client that handles communication with Convex
   late final MobileConvexClient _client;
+
+  /// Hook that runs before each operation (query, mutation, action)
+  /// Use this to check connection staleness and reconnect if needed
+  static PreOperationHook? onBeforeOperation;
 
   /// Public getter to access singleton instance
   /// Throws if accessed before initialization
@@ -68,6 +82,10 @@ class ConvexClient {
   ///
   /// Will throw an [ClientError] if the query fails
   Future<DartValue> query(String name, BTreeMapStringValue args) async {
+    // Run pre-operation hook if set (e.g., to check connection staleness)
+    if (onBeforeOperation != null) {
+      await onBeforeOperation!();
+    }
     return await _client.query(name: name, args: args);
   }
 
@@ -104,6 +122,10 @@ class ConvexClient {
     required String name,
     required BTreeMapStringValue args,
   }) async {
+    // Run pre-operation hook if set (e.g., to check connection staleness)
+    if (onBeforeOperation != null) {
+      await onBeforeOperation!();
+    }
     return await _client.mutation(name: name, args: args);
   }
 
@@ -119,6 +141,10 @@ class ConvexClient {
     required String name,
     required BTreeMapStringValue args,
   }) async {
+    // Run pre-operation hook if set (e.g., to check connection staleness)
+    if (onBeforeOperation != null) {
+      await onBeforeOperation!();
+    }
     return await _client.action(name: name, args: args);
   }
 
@@ -130,4 +156,42 @@ class ConvexClient {
   Future<void> setAuth({required String? token}) async {
     return await _client.setAuth(token: token);
   }
+
+  /// Reconnects the client by dropping the existing connection and creating a new one.
+  ///
+  /// Call this when the WebSocket connection becomes stale (e.g., after app backgrounding).
+  /// This will force a fresh connection on the next query/mutation/action.
+  ///
+  /// Throws [ClientError] if reconnection fails.
+  Future<void> reconnect() async {
+    return await _client.reconnect();
+  }
+
+  /// Register a callback to be notified when WebSocket connection state changes.
+  ///
+  /// The callback will be invoked with:
+  /// - [ConnectionState.connected] when a new connection is established
+  /// - [ConnectionState.disconnected] when the WebSocket drops (e.g., network loss)
+  /// - [ConnectionState.reconnecting] when reconnection is in progress
+  ///
+  /// Use this to trigger reconnection when internet is restored:
+  /// ```dart
+  /// ConvexClient.instance.setConnectionStateCallback((state) async {
+  ///   if (state == ConnectionState.disconnected) {
+  ///     // WebSocket dropped - try to reconnect when internet returns
+  ///     await reconnectWhenInternetAvailable();
+  ///   }
+  /// });
+  /// ```
+  void setConnectionStateCallback(ConnectionStateCallback callback) {
+    _client.setConnectionStateCallback(callback: callback);
+  }
+
+  /// Get the current connection state
+  ///
+  /// Returns:
+  /// - [ConnectionState.connected] if WebSocket is active
+  /// - [ConnectionState.disconnected] if WebSocket dropped
+  /// - [ConnectionState.reconnecting] if reconnection is in progress
+  ConnectionState get connectionState => _client.getConnectionState();
 }

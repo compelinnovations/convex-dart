@@ -95,6 +95,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  FutureOr<void> Function(ConnectionState)
+  dco_decode_DartFn_Inputs_connection_state_Output_unit_AnyhowException(
+    dynamic raw,
+  );
+
+  @protected
   FutureOr<void> Function(DartFunctionResult)
   dco_decode_DartFn_Inputs_dart_function_result_Output_unit_AnyhowException(
     dynamic raw,
@@ -158,6 +164,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ClientError dco_decode_client_error(dynamic raw);
 
   @protected
+  ConnectionState dco_decode_connection_state(dynamic raw);
+
+  @protected
   DartConvexError dco_decode_dart_convex_error(dynamic raw);
 
   @protected
@@ -168,6 +177,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   double dco_decode_f_64(dynamic raw);
+
+  @protected
+  int dco_decode_i_32(dynamic raw);
 
   @protected
   PlatformInt64 dco_decode_i_64(dynamic raw);
@@ -313,6 +325,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   ClientError sse_decode_client_error(SseDeserializer deserializer);
 
   @protected
+  ConnectionState sse_decode_connection_state(SseDeserializer deserializer);
+
+  @protected
   DartConvexError sse_decode_dart_convex_error(SseDeserializer deserializer);
 
   @protected
@@ -325,6 +340,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   double sse_decode_f_64(SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_i_32(SseDeserializer deserializer);
 
   @protected
   PlatformInt64 sse_decode_i_64(SseDeserializer deserializer);
@@ -359,9 +377,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   BigInt sse_decode_usize(SseDeserializer deserializer);
-
-  @protected
-  int sse_decode_i_32(SseDeserializer deserializer);
 
   @protected
   void sse_encode_AnyhowException(
@@ -422,6 +437,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void
   sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSubscriptionHandle(
     SubscriptionHandle self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_DartFn_Inputs_connection_state_Output_unit_AnyhowException(
+    FutureOr<void> Function(ConnectionState) self,
     SseSerializer serializer,
   );
 
@@ -504,6 +525,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_client_error(ClientError self, SseSerializer serializer);
 
   @protected
+  void sse_encode_connection_state(
+    ConnectionState self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_dart_convex_error(
     DartConvexError self,
     SseSerializer serializer,
@@ -520,6 +547,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_f_64(double self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_i_32(int self, SseSerializer serializer);
 
   @protected
   void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer);
@@ -562,9 +592,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_usize(BigInt self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_i_32(int self, SseSerializer serializer);
 }
 
 // Section: wire_class

@@ -4,7 +4,6 @@ use std::{collections::BTreeMap, sync::Arc};
 
 #[cfg(debug_assertions)]
 use android_logger::Config;
-use async_once_cell::OnceCell;
 use convex::{ConvexClient, ConvexClientBuilder, FunctionResult, Value};
 use flutter_rust_bridge::{frb, DartFnFuture};
 use futures::{
@@ -17,6 +16,18 @@ use log::LevelFilter;
 use parking_lot::Mutex;
 
 use crate::dart_value::{function::DartFunctionResult, DartConvexError, DartValue};
+
+/// Connection state enum exposed to Dart
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[frb]
+pub enum ConnectionState {
+    /// Client is connected and operational
+    Connected,
+    /// Client has disconnected (WebSocket dropped)
+    Disconnected,
+    /// Client is attempting to reconnect
+    Reconnecting,
+}
 
 // Custom error type for Convex client operations, exposed to Dart.
 // Instead of serializing ConvexError into a string, we directly pass the DartConvexError
@@ -91,6 +102,9 @@ impl SubscriptionHandle {
     }
 }
 
+/// Callback type for connection state changes
+type ConnectionStateCallback = Box<dyn Fn(ConnectionState) -> DartFnFuture<()> + Send + Sync>;
+
 /// A wrapper around a [ConvexClient] and a [tokio::runtime::Runtime] used to
 /// asynchronously call Convex functions.
 ///
@@ -100,8 +114,12 @@ impl SubscriptionHandle {
 pub struct MobileConvexClient {
     deployment_url: String,
     client_id: String,
-    client: OnceCell<ConvexClient>,
+    client: Mutex<Option<ConvexClient>>,
     rt: tokio::runtime::Runtime,
+    /// Current connection state
+    connection_state: Mutex<ConnectionState>,
+    /// Callback for connection state changes
+    on_connection_state_changed: Mutex<Option<Arc<ConnectionStateCallback>>>,
 }
 
 impl MobileConvexClient {
@@ -123,8 +141,50 @@ impl MobileConvexClient {
         MobileConvexClient {
             deployment_url,
             client_id,
-            client: OnceCell::new(),
+            client: Mutex::new(None),
             rt,
+            connection_state: Mutex::new(ConnectionState::Disconnected),
+            on_connection_state_changed: Mutex::new(None),
+        }
+    }
+
+    /// Register a callback to be notified of connection state changes.
+    ///
+    /// The callback will be called whenever the WebSocket connection state changes
+    /// (connected, disconnected, reconnecting).
+    #[frb]
+    pub fn set_connection_state_callback(
+        &self,
+        callback: impl Fn(ConnectionState) -> DartFnFuture<()> + Send + Sync + 'static,
+    ) {
+        let mut guard = self.on_connection_state_changed.lock();
+        *guard = Some(Arc::new(Box::new(callback)));
+        debug!("Connection state callback registered");
+    }
+
+    /// Get the current connection state
+    #[frb(sync)]
+    pub fn get_connection_state(&self) -> ConnectionState {
+        *self.connection_state.lock()
+    }
+
+    /// Internal helper to update connection state and notify callback
+    fn update_connection_state(&self, new_state: ConnectionState) {
+        let old_state = {
+            let mut guard = self.connection_state.lock();
+            let old = *guard;
+            *guard = new_state;
+            old
+        };
+
+        if old_state != new_state {
+            debug!("Connection state changed: {:?} -> {:?}", old_state, new_state);
+            if let Some(callback) = self.on_connection_state_changed.lock().as_ref() {
+                let callback = callback.clone();
+                self.rt.spawn(async move {
+                    callback(new_state).await;
+                });
+            }
         }
     }
 
@@ -136,21 +196,76 @@ impl MobileConvexClient {
     /// Returns an error if ...
     /// TODO figure out reasons.
     async fn connected_client(&self) -> anyhow::Result<ConvexClient> {
+        // Check if we already have a client
+        {
+            let guard = self.client.lock();
+            if let Some(ref client) = *guard {
+                return Ok(client.clone());
+            }
+        }
+
+        // Create a new client
+        debug!("Creating new Convex client connection...");
         let url = self.deployment_url.clone();
-        self.client
-            .get_or_try_init(async {
-                let client_id = self.client_id.to_owned();
-                self.rt
-                    .spawn(async move {
-                        ConvexClientBuilder::new(url.as_str())
-                            .with_client_id(&client_id)
-                            .build()
-                            .await
-                    })
-                    .await?
+        let client_id = self.client_id.clone();
+        let new_client = self.rt
+            .spawn(async move {
+                ConvexClientBuilder::new(url.as_str())
+                    .with_client_id(&client_id)
+                    .build()
+                    .await
             })
-            .await
-            .map(|client_ref| client_ref.clone())
+            .await??;
+
+        // Store and return the new client
+        {
+            let mut guard = self.client.lock();
+            *guard = Some(new_client.clone());
+        }
+
+        // Update connection state to Connected
+        self.update_connection_state(ConnectionState::Connected);
+        debug!("Convex client connected successfully");
+
+        Ok(new_client)
+    }
+
+    /// Reconnects the client by dropping the existing connection and creating a new one.
+    ///
+    /// Call this when the WebSocket connection becomes stale (e.g., after app backgrounding).
+    /// The next query/mutation/action will establish a fresh connection.
+    #[frb]
+    pub async fn reconnect(&self) -> Result<(), ClientError> {
+        debug!("Reconnecting Convex client...");
+
+        // Update state to Reconnecting
+        self.update_connection_state(ConnectionState::Reconnecting);
+
+        // Clear the existing client
+        {
+            let mut guard = self.client.lock();
+            *guard = None;
+        }
+
+        // Force creation of a new client by calling connected_client
+        // This will update state to Connected on success
+        self.connected_client().await?;
+        debug!("Convex client reconnected successfully");
+        Ok(())
+    }
+
+    /// Marks the connection as disconnected.
+    ///
+    /// Call this when the WebSocket connection drops (detected via subscription stream ending).
+    /// This will notify Dart so it can attempt to reconnect when internet is available.
+    pub fn mark_disconnected(&self) {
+        debug!("Marking Convex client as disconnected");
+        // Clear the client so next operation will create a new one
+        {
+            let mut guard = self.client.lock();
+            *guard = None;
+        }
+        self.update_connection_state(ConnectionState::Disconnected);
     }
 
     /// Executes a query on the Convex backend.
@@ -194,27 +309,48 @@ impl MobileConvexClient {
         subscriber: Arc<DartQuerySubscriber>,
     ) -> anyhow::Result<SubscriptionHandle> {
         let mut client = self.connected_client().await?;
-        debug!("New subscription");
+        debug!("New subscription to: {}", name);
         let mut subscription = client.subscribe(name.as_str(), args).await?;
         let (cancel_sender, cancel_receiver) = oneshot::channel::<()>();
+
+        // Clone the callback for the spawned task to notify on disconnect
+        let disconnect_callback = self.on_connection_state_changed.lock().clone();
+
         self.rt.spawn(async move {
             let cancel_fut = cancel_receiver.fuse();
             pin_mut!(cancel_fut);
+            let mut disconnected = false;
+
             loop {
                 select_biased! {
                     new_val = subscription.next().fuse() => {
-                        let new_val = new_val.expect("Client dropped prematurely");
-                        // Instead of serializing the result to Dart, and calling
-                        // specific on_error and on_update callbacks, we've directly
-                        // pass the new event to the subscriber.
-                        subscriber.on_update(new_val.into()).await;
+                        match new_val {
+                            Some(val) => {
+                                // Got a value, pass it to the subscriber
+                                subscriber.on_update(val.into()).await;
+                            }
+                            None => {
+                                // Stream ended - WebSocket disconnected!
+                                debug!("Subscription stream ended - WebSocket disconnected");
+                                disconnected = true;
+                                break;
+                            }
+                        }
                     }
                     _ = cancel_fut => {
+                        debug!("Subscription canceled by user");
                         break;
                     }
                 }
             }
-            debug!("Subscription canceled");
+
+            // If we broke out due to disconnect (not user cancel), notify Dart
+            if disconnected {
+                debug!("Notifying Dart of WebSocket disconnect");
+                if let Some(callback) = disconnect_callback.as_ref() {
+                    callback(ConnectionState::Disconnected).await;
+                }
+            }
         });
         Ok(SubscriptionHandle::new(cancel_sender))
     }
