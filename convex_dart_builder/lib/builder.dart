@@ -184,6 +184,17 @@ class ConvexDartBuilder extends Builder {
       await file.writeAsString(entry.value);
     }
 
+    // Post-process: Remove unused imports from all generated files
+    print("DEBUG: Removing unused imports from generated files...");
+    int totalRemoved = 0;
+    for (final entry in clientBuildContext.outputs.entries) {
+      final filePath = path.join(libPath, entry.key);
+      final file = File(filePath);
+      final removedCount = await _removeUnusedImports(file);
+      totalRemoved += removedCount;
+    }
+    print("DEBUG: Removed $totalRemoved unused imports total");
+
     // Generate a _ignore.dart file to prevent build_runner from ignoring rebuilds
     final assetId = buildStep.inputId.changeExtension("_ignore.dart");
     await buildStep.writeAsString(
@@ -204,4 +215,344 @@ Future<void> wipeDartFiles(Directory dir) async {
       await file.delete();
     }
   }
+}
+
+/// Removes unused imports from a Dart file.
+/// Returns the number of imports removed.
+Future<int> _removeUnusedImports(File file) async {
+  final content = await file.readAsString();
+  final lines = content.split('\n');
+
+  // Separate imports from the rest of the code
+  final importLines = <_ImportInfo>[];
+  final otherLines = <String>[];
+  final ignoreLines = <String>[]; // file-level ignore comments
+
+  for (final line in lines) {
+    final trimmed = line.trim();
+    if (trimmed.startsWith('import ')) {
+      final importInfo = _parseImport(line);
+      if (importInfo != null) {
+        importLines.add(importInfo);
+      } else {
+        // Keep unparseable imports
+        otherLines.add(line);
+      }
+    } else if (trimmed.startsWith('// ignore_for_file:')) {
+      ignoreLines.add(line);
+    } else {
+      otherLines.add(line);
+    }
+  }
+
+  if (importLines.isEmpty) {
+    return 0;
+  }
+
+  // Join other lines to check for usage
+  final codeContent = otherLines.join('\n');
+
+  // Filter to only keep used imports
+  final usedImports = <_ImportInfo>[];
+  int removedCount = 0;
+
+  for (final import in importLines) {
+    if (_isImportUsed(import, codeContent)) {
+      usedImports.add(import);
+    } else {
+      removedCount++;
+    }
+  }
+
+  if (removedCount == 0) {
+    return 0;
+  }
+
+  // Rebuild the file content
+  final buffer = StringBuffer();
+
+  // Write ignore comments first
+  for (final ignoreLine in ignoreLines) {
+    buffer.writeln(ignoreLine);
+  }
+
+  // Write remaining imports
+  for (final import in usedImports) {
+    buffer.writeln(import.originalLine);
+  }
+
+  // Write the rest of the code
+  for (final line in otherLines) {
+    buffer.writeln(line);
+  }
+
+  // Remove trailing newline added by writeln
+  var result = buffer.toString();
+  if (result.endsWith('\n\n')) {
+    result = result.substring(0, result.length - 1);
+  }
+
+  await file.writeAsString(result);
+  return removedCount;
+}
+
+class _ImportInfo {
+  final String originalLine;
+  final String uri;
+  final String? alias; // 'as' alias
+  final List<String>? showNames; // 'show' identifiers
+  final List<String>? hideNames; // 'hide' identifiers
+
+  _ImportInfo({
+    required this.originalLine,
+    required this.uri,
+    this.alias,
+    this.showNames,
+    this.hideNames,
+  });
+
+  /// Get the identifiers that this import makes available
+  List<String> get availableIdentifiers {
+    final identifiers = <String>[];
+
+    // If there's an alias, that's what's used to access the import
+    if (alias != null) {
+      identifiers.add(alias!);
+    }
+
+    // If there's a show clause, those are the only identifiers exposed
+    if (showNames != null && showNames!.isNotEmpty) {
+      identifiers.addAll(showNames!);
+    }
+
+    // Extract potential identifiers from the URI
+    // e.g., 'package:foo/bar.dart' -> 'bar' might be used as prefix
+    // e.g., '../schema.dart' -> types defined in schema.dart
+    final uriMatch = RegExp(r'/([^/]+)\.dart').firstMatch(uri);
+    if (uriMatch != null) {
+      final filename = uriMatch.group(1)!;
+      // Convert snake_case to potential class names
+      final parts = filename.split('_');
+      final className = parts.map((p) => p.isEmpty ? '' : '${p[0].toUpperCase()}${p.substring(1)}').join('');
+      if (className.isNotEmpty) {
+        identifiers.add(className);
+      }
+    }
+
+    return identifiers;
+  }
+}
+
+_ImportInfo? _parseImport(String line) {
+  final trimmed = line.trim();
+
+  // Match import statement: import "uri" [as alias] [show/hide names];
+  final importRegex = RegExp(
+    r'''import\s+["']([^"']+)["']'''
+    r'''(?:\s+as\s+(\w+))?'''
+    r'''(?:\s+show\s+([^;]+))?'''
+    r'''(?:\s+hide\s+([^;]+))?'''
+    r'''\s*;'''
+  );
+
+  final match = importRegex.firstMatch(trimmed);
+  if (match == null) {
+    return null;
+  }
+
+  final uri = match.group(1)!;
+  final alias = match.group(2);
+  final showPart = match.group(3);
+  final hidePart = match.group(4);
+
+  List<String>? showNames;
+  List<String>? hideNames;
+
+  if (showPart != null) {
+    showNames = showPart.split(',').map((s) => s.trim()).where((s) => s.isNotEmpty).toList();
+  }
+  if (hidePart != null) {
+    hideNames = hidePart.split(',').map((s) => s.trim()).where((s) => s.isNotEmpty).toList();
+  }
+
+  return _ImportInfo(
+    originalLine: line,
+    uri: uri,
+    alias: alias,
+    showNames: showNames,
+    hideNames: hideNames,
+  );
+}
+
+bool _isImportUsed(_ImportInfo import, String codeContent) {
+  // Always keep dart:core and some essential imports
+  if (import.uri.startsWith('dart:core')) {
+    return true;
+  }
+
+  // If there's an alias, check if the alias is used
+  if (import.alias != null) {
+    // Check for alias usage like: alias.Something or alias.method()
+    final aliasPattern = RegExp(r'\b' + RegExp.escape(import.alias!) + r'\.');
+    if (aliasPattern.hasMatch(codeContent)) {
+      return true;
+    }
+    // If alias exists but not used, the import is unused
+    return false;
+  }
+
+  // If there's a show clause, check if any of the shown names are used
+  if (import.showNames != null && import.showNames!.isNotEmpty) {
+    for (final name in import.showNames!) {
+      // Check for word boundary usage of the identifier
+      final namePattern = RegExp(r'\b' + RegExp.escape(name) + r'\b');
+      if (namePattern.hasMatch(codeContent)) {
+        return true;
+      }
+    }
+    // None of the shown names are used
+    return false;
+  }
+
+  // For imports without alias or show, we need to check common patterns
+  // Check for common types/functions that might come from this import
+
+  // Extract potential identifiers from the URI
+  final uriParts = import.uri.split('/');
+  final lastPart = uriParts.last.replaceAll('.dart', '');
+
+  // Common patterns based on import URI
+  if (import.uri.contains('convex_dart')) {
+    // Check for common convex_dart types - includes both main and generated code types
+    final convexTypes = [
+      // Core types
+      'Optional', 'Defined', 'Undefined', 'IList', 'IMap', 'Union', 'ConvexClient', 'toIList',
+      // Literal and ID types
+      'Literal', 'TableId', 'ConvexId',
+      // Generated code types from convex_dart_for_generated_code
+      'MutationOperation', 'QueryOperation', 'ActionOperation',
+      'BTreeMapStringValue', 'DartValue',
+      'hashmapToBtreemap', 'decodeValue', 'encodeValue',
+      // Union types
+      'Union2', 'Union3', 'Union4', 'Union5', 'Union6', 'Union7', 'Union8', 'Union9',
+    ];
+    for (final type in convexTypes) {
+      if (RegExp(r'\b' + type + r'\b').hasMatch(codeContent)) {
+        return true;
+      }
+    }
+    // If none of the types are used, the import is unused
+    return false;
+  }
+
+  if (import.uri.contains('objectbox')) {
+    // Check for ObjectBox annotations
+    final objectBoxTypes = ['@Entity', '@Id', '@Embedded', 'Entity', 'Id', 'Embedded', 'Store', 'Box'];
+    for (final type in objectBoxTypes) {
+      if (codeContent.contains(type)) {
+        return true;
+      }
+    }
+    // If no ObjectBox types are used, the import is unused
+    return false;
+  }
+
+  if (import.uri.contains('dart:convert')) {
+    // Check for jsonEncode/jsonDecode
+    if (codeContent.contains('jsonEncode') || codeContent.contains('jsonDecode') ||
+        codeContent.contains('JsonEncoder') || codeContent.contains('JsonDecoder') ||
+        codeContent.contains('json.encode') || codeContent.contains('json.decode')) {
+      return true;
+    }
+    // If no convert functions are used, the import is unused
+    return false;
+  }
+
+  if (import.uri.contains('dart:typed_data')) {
+    // Check for typed data types
+    final typedDataTypes = ['Uint8List', 'Int8List', 'Uint16List', 'ByteData', 'ByteBuffer', 'Float32List', 'Float64List'];
+    for (final type in typedDataTypes) {
+      if (RegExp(r'\b' + type + r'\b').hasMatch(codeContent)) {
+        return true;
+      }
+    }
+    // If no typed data types are used, the import is unused
+    return false;
+  }
+
+  // Check for schema.dart types (table IDs)
+  if (import.uri.contains('schema.dart')) {
+    // Check for specific ID types (not just any word ending in Id)
+    // Schema IDs are PascalCase ending in Id like: UserId, NotificationsId, SmsRecordsId, etc.
+    final idPattern = RegExp(r'\b[A-Z][a-zA-Z]+Id\b');
+    final matches = idPattern.allMatches(codeContent);
+    // Filter out common false positives like 'nodeId', 'clientId' which are not schema types
+    final schemaIdCandidates = matches.where((m) {
+      final match = m.group(0)!;
+      // Schema IDs typically have format like: UserId, NotificationsId, SmsRecordsId
+      // Exclude common field names that end in Id
+      final excludePatterns = ['Id(', 'nodeId', 'clientId', 'sessionId', 'requestId', 'transactionId'];
+      for (final exclude in excludePatterns) {
+        if (match.toLowerCase() == exclude.toLowerCase()) return false;
+      }
+      return true;
+    });
+    if (schemaIdCandidates.isNotEmpty) {
+      return true;
+    }
+    // If no schema IDs are used, the import is unused
+    return false;
+  }
+
+  // Check for literals.dart types
+  if (import.uri.contains('literals.dart')) {
+    // Check for literal types that start with $
+    final literalPattern = RegExp(r'\$\w+Literal');
+    if (literalPattern.hasMatch(codeContent)) {
+      return true;
+    }
+    // If no literal types are used, the import is unused
+    return false;
+  }
+
+  // Check for index.dart (barrel exports) - these are typically used
+  if (import.uri.endsWith('index.dart')) {
+    // Barrel exports usually re-export many classes, keep them
+    return true;
+  }
+
+  // Check if the import path suggests a model/class name
+  // e.g., '../models/json/my_model.dart' -> MyModel
+  final snakeCaseName = lastPart;
+  final pascalCaseName = snakeCaseName
+      .split('_')
+      .map((part) => part.isEmpty ? '' : '${part[0].toUpperCase()}${part.substring(1)}')
+      .join('');
+
+  if (pascalCaseName.isNotEmpty) {
+    final classPattern = RegExp(r'\b' + RegExp.escape(pascalCaseName) + r'\b');
+    if (classPattern.hasMatch(codeContent)) {
+      return true;
+    }
+    // Also check for Doc suffix (common pattern)
+    final docPattern = RegExp(r'\b' + RegExp.escape(pascalCaseName) + r'Doc\b');
+    if (docPattern.hasMatch(codeContent)) {
+      return true;
+    }
+  }
+
+  // If we can't determine usage, keep the import to be safe
+  // But for known generated imports that follow patterns, we can be more aggressive
+  if (import.uri.contains('../') || import.uri.contains('./')) {
+    // Relative imports in generated code - check more carefully
+
+    // For box files importing schema/literals that aren't used
+    if (import.uri.endsWith('schema.dart') || import.uri.endsWith('literals.dart')) {
+      // Already checked above, if we're here it means they're not used
+      return false;
+    }
+  }
+
+  // Default: keep the import
+  return true;
 }
