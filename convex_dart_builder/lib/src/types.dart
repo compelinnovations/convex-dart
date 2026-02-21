@@ -541,16 +541,17 @@ class FunctionBuildContext {
           '      if ($fieldName.isDefined) \'$jsonKey\': ${_generateToJsonValue(fieldType, "$fieldName.asDefined().value")},',
         );
       } else {
-        // Check if this is a nullable union (e.g., StorageId | null)
+        // Check if this is a nullable union (any union containing null)
         final isNullableUnion =
-            fieldType is JsUnion &&
-            fieldType.value.any((t) => t is JsNull) &&
-            !fieldType.isRealUnion;
+            fieldType is JsUnion && fieldType.value.any((t) => t is JsNull);
 
         if (isNullableUnion) {
+          final nullableUnionFieldValue = fieldType.isRealUnion
+              ? '$fieldName!'
+              : fieldName;
           // For nullable required fields, only include in JSON if not null
           classBuffer.writeln(
-            '      if ($fieldName != null) \'$jsonKey\': ${_generateToJsonValue(fieldType, fieldName)},',
+            '      if ($fieldName != null) \'$jsonKey\': ${_generateToJsonValue(fieldType, nullableUnionFieldValue)},',
           );
         } else {
           classBuffer.writeln(
@@ -2711,15 +2712,13 @@ ${functionContext.classBuffer.toString()}""";
         final mapping = resolveMapping(fieldPathSegments);
         final isEmbedded =
             (mapping?.isEmbedded ?? false) && entry.value.fieldType is JsObject;
-        // Detect date/timestamp fields by common naming patterns
-        // BUT only if the underlying type is actually a number type
+        final hasExplicitDateMapping = _hasDateMappingOverride(mapping);
+        final isNumericDateCandidate = _isNumericType(entry.value.fieldType);
+        // Detect date/timestamp fields by common naming patterns,
+        // with explicit mapping override support for edge cases.
         final isDateField =
-            (entry.key.contains('At') ||
-                entry.key.contains('Date') ||
-                entry.key.contains('Expire') ||
-                entry.key.endsWith('Time')) &&
-            // Only treat as date field if it's actually a number type
-            _isNumericType(entry.value.fieldType);
+            isNumericDateCandidate &&
+            (hasExplicitDateMapping || _looksLikeDateFieldName(entry.key));
 
         JsObject? embeddedSchema;
         String? embeddedClassName;
@@ -2777,13 +2776,6 @@ ${functionContext.classBuffer.toString()}""";
         embeddedDefinitions.values.any(
           (definition) => definition.fields.any((field) => field.storeAsJson),
         );
-
-    // Check if we need schema.dart import (only needed when using typed IDs)
-    final needsSchemaImport = fieldContexts.any((field) {
-      final fieldType = field.field.fieldType;
-      return fieldType is ConvexId ||
-          (fieldType is JsUnion && fieldType.value.any((t) => t is ConvexId));
-    });
 
     final buffer = StringBuffer("import 'package:objectbox/objectbox.dart';");
     if (needsJsonConvert) {
@@ -3248,16 +3240,19 @@ ${functionContext.classBuffer.toString()}""";
         // Determine if this field is a union type that needs special deserialization
         final isUnionType = field.field.fieldType is JsUnion;
 
-        // For JSON fields, we need to get the correct type name from the mapping
-        final jsonTypeName = _getJsonTypeForField(
-          originalName,
-          fieldContexts,
-          context,
-          function,
-        );
-
         // Check if there's a custom mapping for this field
         final hasCustomMapping = field.mapping != null;
+        // Prefer the resolved field mapping to avoid fallback-to-dynamic lookups.
+        final jsonTypeName =
+            field.mapping?.name ??
+            _getJsonTypeForField(
+              originalName,
+              fieldContexts,
+              context,
+              function,
+            );
+        final canUseMappedJsonFactory =
+            hasCustomMapping && jsonTypeName != 'dynamic' && jsonTypeName != '';
 
         if (field.field.optional) {
           // Check if this is a list of ID types that need special handling
@@ -3267,13 +3262,22 @@ ${functionContext.classBuffer.toString()}""";
             buffer.writeln(
               "      $originalName: $fieldName != null ? Defined((jsonDecode($fieldName!) as List<dynamic>).map((e) => $idTypeName(e as String)).toList().toIList()) : const Undefined(),",
             );
-          } else if (hasCustomMapping) {
+          } else if (canUseMappedJsonFactory) {
             // Fields with custom mappings use fromJson() with the mapped type
             buffer.writeln(
               "      $originalName: $fieldName != null ? Defined($jsonTypeName.fromJson(jsonDecode($fieldName!) as Map<String, dynamic>)) : const Undefined(),",
             );
-          } else if (isUnionType || field.field.fieldType is JsRecord) {
-            // Union types and records (without mapping) deserialize directly - constructor handles wrapping
+          } else if (isUnionType) {
+            final unionType = field.field.fieldType as JsUnion;
+            final unionExpr = _generateUnionFieldFromJsonForObjectBox(
+              unionType,
+              'jsonDecode($fieldName!)',
+            );
+            buffer.writeln(
+              "      $originalName: $fieldName != null ? Defined($unionExpr) : const Undefined(),",
+            );
+          } else if (field.field.fieldType is JsRecord) {
+            // Records (without mapping) deserialize directly.
             buffer.writeln(
               "      $originalName: $fieldName != null ? Defined(jsonDecode($fieldName!)) : const Undefined(),",
             );
@@ -3316,7 +3320,7 @@ ${functionContext.classBuffer.toString()}""";
             buffer.writeln(
               "      $originalName: (jsonDecode($fieldName) as List<dynamic>).map((e) => $idTypeName(e as String)).toList().toIList(),",
             );
-          } else if (hasCustomMapping) {
+          } else if (canUseMappedJsonFactory) {
             // Fields with custom mappings use fromJson() with the mapped type
             if (isNullableTypeUnion) {
               buffer.writeln(
@@ -3327,8 +3331,25 @@ ${functionContext.classBuffer.toString()}""";
                 "      $originalName: $jsonTypeName.fromJson(jsonDecode($fieldName) as Map<String, dynamic>),",
               );
             }
-          } else if (isUnionType || field.field.fieldType is JsRecord) {
-            // Union types and records (without mapping) deserialize directly - constructor handles wrapping
+          } else if (isUnionType) {
+            final unionType = field.field.fieldType as JsUnion;
+            if (isNullableTypeUnion) {
+              final unionExpr = _generateUnionFieldFromJsonForObjectBox(
+                unionType,
+                'jsonDecode($fieldName!)',
+              );
+              buffer.writeln(
+                "      $originalName: $fieldName != null ? $unionExpr : null,",
+              );
+            } else {
+              final unionExpr = _generateUnionFieldFromJsonForObjectBox(
+                unionType,
+                'jsonDecode($fieldName)',
+              );
+              buffer.writeln("      $originalName: $unionExpr,");
+            }
+          } else if (field.field.fieldType is JsRecord) {
+            // Records (without mapping) deserialize directly.
             if (isNullableTypeUnion) {
               buffer.writeln(
                 "      $originalName: $fieldName != null ? jsonDecode($fieldName!) : null,",
@@ -3384,6 +3405,12 @@ ${functionContext.classBuffer.toString()}""";
               );
             }
           }
+        }
+
+        if (hasCustomMapping && !canUseMappedJsonFactory) {
+          print(
+            "WARNING: Missing json model type mapping for $originalName in ${function.identifier}. Falling back to raw jsonDecode.",
+          );
         }
       } else if (field.isDateField) {
         if (field.field.optional) {
@@ -3709,7 +3736,7 @@ ${functionContext.classBuffer.toString()}""";
     };
   }
 
-  /// Get the properly typed IList<T> string for an array field
+  /// Get the properly typed `IList<T>` string for an array field
   String _getArrayTypeForOptionalField(JsArray array) {
     final elementType = array.value;
     final elementTypeStr = switch (elementType) {
@@ -3812,7 +3839,7 @@ ${functionContext.classBuffer.toString()}""";
   }
 
   /// Generate union field reconstruction from JSON for ObjectBox
-  /// When isOptional is true, wraps the result in Defined/Undefined for Optional<T> types
+  /// When `isOptional` is true, wraps the result in Defined/Undefined for `Optional<T>` types.
   String _generateUnionFieldFromJsonForObjectBox(
     JsUnion union,
     String jsonExpr, {
@@ -4188,6 +4215,41 @@ $saveFromDocMethod  // Read as API model
     };
   }
 
+  bool _looksLikeDateFieldName(String fieldName) {
+    return fieldName.contains('At') ||
+        fieldName.contains('Date') ||
+        fieldName.contains('Expire') ||
+        fieldName.endsWith('Time');
+  }
+
+  bool _hasDateMappingOverride(ObjectFieldMapping? mapping) {
+    final metadata = mapping?.metadata;
+    if (metadata == null) {
+      return false;
+    }
+
+    final explicitFlags = [
+      metadata['isDate'],
+      metadata['isDateField'],
+      metadata['date'],
+      metadata['dateField'],
+    ];
+    if (explicitFlags.any((value) => value == true)) {
+      return true;
+    }
+
+    final objectBoxType = metadata['objectBoxType'];
+    if (objectBoxType is String) {
+      final normalized = objectBoxType.toLowerCase();
+      return normalized == 'date' ||
+          normalized == 'datenano' ||
+          normalized == 'timestamp' ||
+          normalized == 'datetime';
+    }
+
+    return false;
+  }
+
   /// Checks if a type is a numeric type (JsNumber, JsBigInt, or nullable union of those)
   /// Used to determine if a date-named field should be treated as a timestamp
   bool _isNumericType(JsType dartType) {
@@ -4221,20 +4283,25 @@ $saveFromDocMethod  // Read as API model
   /// Simple primitive unions (e.g., `Union2<String, int>` without null) can be stored as strings.
   bool _unionContainsComplexType(JsUnion union) {
     // Check if union contains any complex types or multiple ID types
+    final nonNullTypes = union.value.where((t) => t is! JsNull).toList();
+    if (nonNullTypes.length > 1) {
+      // Multi-variant unions are lossy in scalar ObjectBox columns.
+      // Persist them as JSON so toAPI() can reconstruct the proper variant.
+      return true;
+    }
+
     int idCount = 0;
     bool hasLiteral = false;
 
-    for (final type in union.value) {
-      if (type is! JsNull) {
-        if (_isComplexType(type)) {
-          return true;
-        }
-        if (type is ConvexId) {
-          idCount++;
-        }
-        if (type is JsLiteral) {
-          hasLiteral = true;
-        }
+    for (final type in nonNullTypes) {
+      if (_isComplexType(type)) {
+        return true;
+      }
+      if (type is ConvexId) {
+        idCount++;
+      }
+      if (type is JsLiteral) {
+        hasLiteral = true;
       }
     }
 
@@ -5378,16 +5445,17 @@ class JsObject extends JsType with JsObjectMappable {
           '      if ($fieldName.isDefined) \'$jsonKey\': ${context._generateToJsonValue(fieldType, "$fieldName.asDefined().value")},',
         );
       } else {
-        // Check if this is a nullable union (e.g., StorageId | null)
+        // Check if this is a nullable union (any union containing null)
         final isNullableUnion =
-            fieldType is JsUnion &&
-            fieldType.value.any((t) => t is JsNull) &&
-            !fieldType.isRealUnion;
+            fieldType is JsUnion && fieldType.value.any((t) => t is JsNull);
 
         if (isNullableUnion) {
+          final nullableUnionFieldValue = fieldType.isRealUnion
+              ? '$fieldName!'
+              : fieldName;
           // For nullable required fields, only include in JSON if not null
           buffer.writeln(
-            '      if ($fieldName != null) \'$jsonKey\': ${context._generateToJsonValue(fieldType, fieldName)},',
+            '      if ($fieldName != null) \'$jsonKey\': ${context._generateToJsonValue(fieldType, nullableUnionFieldValue)},',
           );
         } else {
           buffer.writeln(
