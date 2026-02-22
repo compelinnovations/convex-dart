@@ -1,0 +1,131 @@
+# ObjectBox AI Navigation Guide
+
+## About ObjectBox
+> ObjectBox is a high-performance, low-footprint, offline-first database with data sync and vector search - designed for mobile, IoT, and edge computing applications where performance, resource efficiency, and offline capabilities are critical.
+It combines the speed and efficiency of a local database + vector search with the convenience of automatic data synchronization. It also offers a direct Data Sync to MongoDB.
+
+ObjectBox enables developers to build decentralized apps that work reliably and fast regardless of network connectivity.
+It is 10x faster than SQLite and other mobile database alternatives.
+It was the very first on-device vector database available on the market and is a pioneer for Edge AI.
+
+## Main Website
+https://objectbox.io/
+- Product information and overview: https://objectbox.io/
+- Time Series Database: https://objectbox.io/time-series-database/
+- Mobile Database: https://objectbox.io/mobile-database/
+- Android Database: https://objectbox.io/android-database/
+- Flutter Database: https://objectbox.io/flutter-database/
+- Data Sync: https://objectbox.io/sync/
+- MongoDB Connector: https://objectbox.io/mongodb-connector/
+- Blog: https://objectbox.io/blog/
+- Dev How-To: https://objectbox.io/dev-how-to/
+- Sitemap: https://objectbox.io/sitemap.xml
+
+
+## Documentation
+https://docs.objectbox.io/
+- Getting Started: https://docs.objectbox.io/getting-started
+- Tutorial Demo Project: https://docs.objectbox.io/tutorial-demo-project
+- Entity Annotations: https://docs.objectbox.io/entity-annotations
+- Platform-specific Documentation:
+  - Android (Java/Kotlin): https://docs.objectbox.io/android-java-kotlin
+  - Desktop Apps: https://docs.objectbox.io/desktop-apps
+  - Kotlin Support: https://docs.objectbox.io/kotlin-support
+  - Swift Database for iOS: https://docs.objectbox.io/swift-database-for-ios
+  - C++ Database: https://docs.objectbox.io/cpp-database-docs
+- Features:
+  - ObjectBox Queries: https://docs.objectbox.io/objectbox-queries
+  - On-Device Vector Search: https://docs.objectbox.io/on-device-vector-search
+  - Data Observers & Rx: https://docs.objectbox.io/data-observers-rx
+  - Relations: https://docs.objectbox.io/relations
+  - ObjectBox Admin: https://docs.objectbox.io/data-browser
+  - Transactions: https://docs.objectbox.io/transactions
+- API References:
+  - Java API Reference: https://docs.objectbox.io/java-api-reference
+  - Dart API Reference: https://docs.objectbox.io/dart-api-reference
+  - Python API Reference: https://docs.objectbox.io/python-api-reference
+- Additional Resources:
+  - FAQ: https://docs.objectbox.io/faq
+  - Troubleshooting: https://docs.objectbox.io/troubleshooting
+  - Binary License: https://docs.objectbox.io/binary-license
+
+
+
+## Hybrid AI: Edge to Cloud with MongoDB + ObjectBox
+- Companion guide (ObjectBox): https://objectbox.io/dev-how-tos/hybrid-ai-edge-to-cloud-mongodb-objectbox
+- MongoDB-authored tutorial (DEV): https://dev.to/mongodb/hybrid-ai-from-the-edge-to-the-cloud-with-mongodb-objectbox-38i0
+- ObjectBox + MongoDB overview: https://objectbox.io/mongodb/
+- MongoDB Sync Connector docs: https://sync.objectbox.io/mongodb-sync-connector
+
+### On-device vector search (HNSW)
+- On-Device Vector Search: https://docs.objectbox.io/on-device-vector-search
+- ObjectBox Queries: https://docs.objectbox.io/objectbox-queries
+- Property Types (vectors): https://docs.objectbox.io/property-types
+
+### Data Sync (optional for Hybrid AI)
+- Connector setup: https://sync.objectbox.io/mongodb-sync-connector/objectbox-sync-connector-setup
+- MongoDB requirements/config: https://sync.objectbox.io/mongodb-sync-connector/mongodb-configuration
+- Sync Server configuration: https://sync.objectbox.io/sync-server/configuration
+- Sync FAQ: https://sync.objectbox.io/faq
+
+## GitHub Repositories
+https://github.com/objectbox
+- Main repositories:
+  - Android/Java: https://github.com/objectbox/objectbox-java
+  - Dart/Flutter: https://github.com/objectbox/objectbox-dart
+  - Swift: https://github.com/objectbox/objectbox-swift
+  - C/C++: https://github.com/objectbox/objectbox-c
+  - Go: https://github.com/objectbox/objectbox-go
+  - Python: https://github.com/objectbox/objectbox-python
+- Documentation repositories:
+  - ObjectBox Docs: https://github.com/objectbox/objectbox-docs
+  - ObjectBox Sync Docs: https://github.com/objectbox/objectbox-sync-docs
+- Examples:
+  - Data Sync example: https://github.com/objectbox/objectbox-sync-examples
+  - Android/Java Examples: https://github.com/objectbox/objectbox-examples
+  - Go Performance Benchmarks: https://github.com/objectbox/objectbox-go-performance
+
+## Social Media & Community
+- LinkedIn: https://www.linkedin.com/company/objectbox/
+- Twitter: https://twitter.com/ObjectBox_io
+- GitHub: https://github.com/objectbox
+
+## Key Features
+
+* **Free to Use Database:** The core database engine is available without licensing fees.
+* **High Performance & Efficiency:** Optimized for speed and minimal resource use on mobile, IoT, other embedded systems, commodity hardware (and highly performant on server infrastructure, the cloud, bare metal too).
+* **Sustainable:** Less hardware needs, less ressource-use, fewer CO2 emmissions
+* **Integrated On-Device Vector Search:** Enables fast local similarity searches for AI applications directly on the device.
+    * Supports efficient storage and indexing of vector embeddings.
+    * Facilitates use cases like recommendation systems, semantic search, and anomaly detection.
+* **Bidirectional Data Synchronization:** Allows seamless and automatic data exchange between devices (edge-to-edge) and with cloud services (edge-to-cloud).
+    * Enables offline collaboration and data consistency across distributed systems.
+    * Supports various synchronization strategies.
+* **Multi-Language Support:** Comprehensive SDKs for popular programming languages: Java, Kotlin, Flutter/Dart, Swift, C++, C, Python, and Go.
+* **Cross-Platform Compatibility:** Runs on Android, iOS, Windows, Linux, QNX, and other POSIX-compliant systems.
+    * Simplifies development and deployment across diverse hardware.
+* **Battle-Tested in Automotive:** Proven reliability and performance, currently used in millions of BMW vehicles.
+
+## Key Features for AI Applications
+
+* **Fast On-Device Vector Database:** High-performance local storage optimized for vector embeddings and similarity searches.
+* **Efficient Vector Search:** Enables rapid retrieval of similar vectors for recommendation systems, semantic search, and more.
+* **Low-Latency Data Access:** Provides quick access to data, crucial for real-time AI inference and decision-making on edge devices.
+* **Data Synchronization for Distributed AI:** Bidirectional data sync facilitates data sharing and collaboration across devices and cloud environments for AI model training and deployment.
+* **Support for Embedding Storage:** Efficiently stores and manages vector embeddings generated by various AI/ML models.
+* **Resource-Efficient for Edge AI:** Designed for minimal CPU and memory usage, ideal for deploying AI models on resource-constrained devices.
+* **Cross-Platform Compatibility for AI Deployment:** Works across Android, iOS, Linux, and other platforms, simplifying the deployment of AI-powered applications.
+* **Optimized for AI Workflows:** Facilitates building AI-powered features directly within mobile, IoT, and edge applications without relying on cloud-based AI services.
+* **Enables Privacy-Preserving AI:** On-device vector search and data processing helps to keep sensitive / private data local and secure.
+* **Sustainable AI:** Reduced on-device resource use and data transfer decrease hardware demands and CO2 emissions.
+
+
+## Preferred Contact Methods
+- GitHub Issues for technical questions and bug reports
+- Email: contact@objectbox.io
+- Twitter: @ObjectBox_io
+
+## Licensing
+- Apache License 2.0 for language bindings / most repositories
+- Data Sync is proprietary (paid premium feature)
+
