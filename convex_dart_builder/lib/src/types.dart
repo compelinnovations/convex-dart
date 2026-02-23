@@ -75,6 +75,17 @@ class ClientBuildContext {
   final Map<String, bool> typedefReturnsArray = {};
   // Maps response type names to their responseList class name (for list fields)
   final Map<String, String> responseListClassName = {};
+  // Collects args schemas per shared request type name for merging
+  final Map<String, Map<String, JsField>> mergedRequestArgs = {};
+  // Stores the function spec for generating merged request models
+  final Map<String, FunctionSpec> requestTypeFunctionSpec = {};
+  // Tracks functions that have type conflicts with the shared model
+  // Maps function identifier -> unique model name override
+  final Map<String, String> typeConflictOverrides = {};
+  // Stores original args for functions with type conflicts
+  final Map<String, JsObject> typeConflictArgs = {};
+  // Stores function specs for type conflict functions
+  final Map<String, FunctionSpec> typeConflictFunctions = {};
 
   ClientBuildContext({
     this.mappingData,
@@ -1666,23 +1677,87 @@ class FunctionsSpec with FunctionsSpecMappable {
         // Get custom type names from configuration
         final customNames = _getCustomTypeNames(context, function);
 
-        // Generate REQUEST JSON models if the function has argument classes
+        // Collect REQUEST arg fields for deferred merged model generation
         if (function.args is JsObject &&
             (function.args as JsObject).value.isNotEmpty) {
-          final jsonModelCode = _buildJsonModel(functionContext, function);
           final requestTypeName =
               customNames['requestType'] ?? function.functionName;
+          final argsObj = function.args as JsObject;
 
-          final jsonModelPath = path.join(
-            "src",
-            "models",
-            "json",
-            "${requestTypeName.snakeCase}.dart",
-          );
-          context.outputs[jsonModelPath] = jsonModelCode;
-          print(
-            "DEBUG: Generated request JSON model: ${requestTypeName.snakeCase}.dart",
-          );
+          if (!context.mergedRequestArgs.containsKey(requestTypeName)) {
+            // First function with this request type - store all fields and context
+            context.mergedRequestArgs[requestTypeName] = Map.from(argsObj.value);
+            context.requestTypeFunctionSpec[requestTypeName] = function;
+          } else {
+            // Check for type conflicts before merging
+            final existing = context.mergedRequestArgs[requestTypeName]!;
+            bool hasTypeConflict = false;
+            for (final entry in argsObj.value.entries) {
+              if (existing.containsKey(entry.key)) {
+                final existingType = existing[entry.key]!.fieldType;
+                final newType = entry.value.fieldType;
+                // Compare by runtimeType - different JsType subclasses = conflict
+                if (existingType.runtimeType != newType.runtimeType) {
+                  hasTypeConflict = true;
+                  print(
+                    "WARNING: Type conflict for field '${entry.key}' in shared model '$requestTypeName': "
+                    "${existingType.runtimeType} vs ${newType.runtimeType}. "
+                    "Function ${function.convexFunctionIdentifier} will get its own model.",
+                  );
+                  break;
+                }
+              }
+            }
+
+            if (hasTypeConflict) {
+              // This function has a type conflict - give it its own unique model
+              final uniqueModelName = function.functionName;
+              context.typeConflictOverrides[function.convexFunctionIdentifier] =
+                  uniqueModelName;
+              context.typeConflictArgs[function.convexFunctionIdentifier] =
+                  argsObj;
+              context.typeConflictFunctions[function.convexFunctionIdentifier] =
+                  function;
+
+              // Update the already-generated function file to use the unique model
+              final filePath = path.join(
+                "src",
+                "functions",
+                function.folderName,
+                function.fileName,
+              );
+              if (context.outputs.containsKey(filePath)) {
+                final oldClassName = requestTypeName.pascalCase;
+                final newClassName = uniqueModelName.pascalCase;
+                context.outputs[filePath] = context.outputs[filePath]!
+                    .replaceAll(
+                      'import "../../models/json/${requestTypeName.snakeCase}.dart";',
+                      'import "../../models/json/${uniqueModelName.snakeCase}.dart";',
+                    )
+                    .replaceAll(oldClassName, newClassName);
+              }
+            } else {
+              // No type conflict - merge fields normally
+              for (final entry in argsObj.value.entries) {
+                if (!existing.containsKey(entry.key)) {
+                  // New field not in previous functions - add as optional
+                  existing[entry.key] = JsField(
+                    entry.value.fieldType,
+                    true, // make optional since not all functions have it
+                  );
+                }
+              }
+              // Mark existing fields as optional if they don't appear in this function
+              for (final key in existing.keys.toList()) {
+                if (!argsObj.value.containsKey(key)) {
+                  final existingField = existing[key]!;
+                  if (!existingField.optional) {
+                    existing[key] = JsField(existingField.fieldType, true);
+                  }
+                }
+              }
+            }
+          }
         }
 
         // Generate RESPONSE JSON models based on configuration
@@ -1886,6 +1961,69 @@ class FunctionsSpec with FunctionsSpecMappable {
         );
       }
     }
+    // Generate deferred request JSON models from merged arg schemas
+    for (final entry in context.mergedRequestArgs.entries) {
+      final requestTypeName = entry.key;
+      final mergedFields = entry.value;
+      final function = context.requestTypeFunctionSpec[requestTypeName]!;
+
+      // Create a merged JsObject with all collected fields
+      final mergedArgsObj = JsObject(mergedFields, 'object');
+
+      // Create a fresh function context for generating the merged model
+      final mergedContext = FunctionBuildContext(
+        context,
+        currentFunction: function,
+      );
+      mergedContext.generateClassDefinition(
+        requestTypeName.pascalCase,
+        mergedArgsObj,
+        mergedContext._currentFieldContext,
+      );
+
+      final jsonModelCode = _buildJsonModel(mergedContext, function);
+      final jsonModelPath = path.join(
+        "src",
+        "models",
+        "json",
+        "${requestTypeName.snakeCase}.dart",
+      );
+      context.outputs[jsonModelPath] = jsonModelCode;
+      print(
+        "DEBUG: Generated merged request JSON model: ${requestTypeName.snakeCase}.dart with fields: ${mergedFields.keys.toList()}",
+      );
+    }
+
+    // Generate unique models for functions with type conflicts
+    for (final entry in context.typeConflictOverrides.entries) {
+      final functionId = entry.key;
+      final uniqueModelName = entry.value;
+      final argsObj = context.typeConflictArgs[functionId]!;
+      final function = context.typeConflictFunctions[functionId]!;
+
+      final conflictContext = FunctionBuildContext(
+        context,
+        currentFunction: function,
+      );
+      conflictContext.generateClassDefinition(
+        uniqueModelName.pascalCase,
+        argsObj,
+        conflictContext._currentFieldContext,
+      );
+
+      final jsonModelCode = _buildJsonModel(conflictContext, function);
+      final jsonModelPath = path.join(
+        "src",
+        "models",
+        "json",
+        "${uniqueModelName.snakeCase}.dart",
+      );
+      context.outputs[jsonModelPath] = jsonModelCode;
+      print(
+        "DEBUG: Generated unique request model for type conflict: ${uniqueModelName.snakeCase}.dart (function: $functionId)",
+      );
+    }
+
     // Create the client.dart file
     buildClient(context);
     // Create the schema.dart file
@@ -2071,7 +2209,19 @@ class ConvexClient {
 import "package:convex_dart/src/convex_dart_for_generated_code.dart";
 """);
 
+    // Deduplicate literals by class name to avoid duplicate definitions
+    // when different literal values produce the same class name
+    // (e.g., 'LSA PAYG' and 'LSA-PAYG' both produce $LSAPAYGLiteral)
+    final seenClassNames = <String>{};
     for (final literal in context.literals) {
+      final className = literal.literalTypeName;
+      if (seenClassNames.contains(className)) {
+        print(
+          "WARNING: Duplicate literal class name '$className' for value '${literal.value}' - skipping duplicate",
+        );
+        continue;
+      }
+      seenClassNames.add(className);
       literalsBuffer.writeln(literal._literalCode);
     }
     context.outputs[path.join("src", "literals.dart")] = literalsBuffer
@@ -6124,9 +6274,24 @@ class JsObject extends JsType with JsObjectMappable {
   }
 
   /// Generate proper object conversion from JSON for separate model files
+  /// Constructs a Dart record from a JSON map instead of returning an IMap
   String _getSeparateFileObjectFromJson(JsObject obj, String jsonValue) {
-    // For simple objects, convert to IMap
-    return "($jsonValue as Map<String, dynamic>).toIMap()";
+    final context = FunctionBuildContext.dummyForRecordType();
+    final recordFields = obj.value.entries
+        .map((entry) {
+          final jsonKey = entry.key;
+          final dartField = dartSafeName(entry.key);
+          final field = entry.value;
+          final valueExpr = context._generateFieldFromJsonMapWithOptional(
+            field,
+            "map['$jsonKey']",
+            jsonKey,
+          );
+          return '$dartField: $valueExpr';
+        })
+        .join(', ');
+
+    return "() { final map = $jsonValue as Map<String, dynamic>; return ($recordFields); } ()";
   }
 
   String _getSeparateFileUnionFromJson(JsUnion union, String jsonValue) {
@@ -6145,8 +6310,8 @@ class JsObject extends JsType with JsObjectMappable {
               '$jsonValue != null ? ${convexId.typeName}($jsonValue as String) : null',
             JsLiteral literal =>
               '$jsonValue != null ? ${literal.literalTypeName}.validate($jsonValue) : null',
-            JsObject _ =>
-              '$jsonValue != null ? ($jsonValue as Map<String, dynamic>).toIMap() : null',
+            JsObject obj =>
+              '$jsonValue != null ? ${_getSeparateFileObjectFromJson(obj, jsonValue)} : null',
             JsArray _ =>
               '$jsonValue != null ? ($jsonValue as List<dynamic>) : null',
             _ => jsonValue, // For primitives, no special handling needed
@@ -6157,7 +6322,7 @@ class JsObject extends JsType with JsObjectMappable {
             ConvexId convexId => '${convexId.typeName}($jsonValue as String)',
             JsLiteral literal =>
               '${literal.literalTypeName}.validate($jsonValue)',
-            JsObject _ => '($jsonValue as Map<String, dynamic>).toIMap()',
+            JsObject obj => _getSeparateFileObjectFromJson(obj, jsonValue),
             JsArray _ => '$jsonValue as List<dynamic>',
             _ => jsonValue, // For primitives, no special handling needed
           };
