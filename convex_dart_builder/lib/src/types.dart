@@ -86,6 +86,8 @@ class ClientBuildContext {
   final Map<String, JsObject> typeConflictArgs = {};
   // Stores function specs for type conflict functions
   final Map<String, FunctionSpec> typeConflictFunctions = {};
+  // Tracks richness of generated separate JSON models so richer variants win.
+  final Map<String, int> extractedModelRichnessByPath = {};
 
   ClientBuildContext({
     this.mappingData,
@@ -144,6 +146,19 @@ String _resolveObjectBoxFieldName(String originalName, bool hasDbIdField) {
     return 'idRef';
   }
   return _dartSafeName(originalName);
+}
+
+bool _isNullableObjectUnionType(JsType fieldType) {
+  if (fieldType is! JsUnion) {
+    return false;
+  }
+  final hasObject = fieldType.value.any((t) => t is JsObject);
+  final hasNull = fieldType.value.any((t) => t is JsNull);
+  return hasObject && hasNull;
+}
+
+bool _isObjectLikeType(JsType fieldType) {
+  return fieldType is JsObject || _isNullableObjectUnionType(fieldType);
 }
 
 class _ObjectBoxFieldContext {
@@ -408,6 +423,7 @@ class FunctionBuildContext {
       'DartValue',
       'BTreeMapStringValue',
       'Uint8List',
+      'Uint8ListWithEquality',
       'Literal',
     };
     // Table IDs (like StorageId, FieldAgentsId, etc.) are defined in schema.dart
@@ -477,8 +493,13 @@ class FunctionBuildContext {
         );
         final extractedClassName = mapping?.name;
         String defaultValue;
-        if (extractedClassName != null && entry.value.fieldType is JsObject) {
-          defaultValue = '$extractedClassName.empty()';
+        if (extractedClassName != null &&
+            _isObjectLikeType(entry.value.fieldType)) {
+          if (_isNullableObjectUnionType(entry.value.fieldType)) {
+            defaultValue = 'null';
+          } else {
+            defaultValue = '$extractedClassName.empty()';
+          }
         } else {
           defaultValue = _getDefaultValueForType(entry.value.fieldType);
         }
@@ -512,9 +533,14 @@ class FunctionBuildContext {
       );
       final extractedClassName = mapping?.name;
       String fromJsonValue;
-      if (extractedClassName != null && fieldType is JsObject) {
-        fromJsonValue =
-            '$extractedClassName.fromJson(json[\'$jsonKey\'] as Map<String, dynamic>)';
+      if (extractedClassName != null && _isObjectLikeType(fieldType)) {
+        if (_isNullableObjectUnionType(fieldType)) {
+          fromJsonValue =
+              "json['$jsonKey'] != null ? $extractedClassName.fromJson(json['$jsonKey'] as Map<String, dynamic>) : null";
+        } else {
+          fromJsonValue =
+              '$extractedClassName.fromJson(json[\'$jsonKey\'] as Map<String, dynamic>)';
+        }
       } else {
         fromJsonValue = _generateFromJsonValue(
           fieldType,
@@ -611,7 +637,7 @@ class FunctionBuildContext {
 
           if (entry.value.optional) {
             if (extractedClassName != null &&
-                entry.value.fieldType is JsObject) {
+                _isObjectLikeType(entry.value.fieldType)) {
               classBuffer.writeln(
                 '      $fieldName: record.$docField.isDefined ? Defined($extractedClassName.fromRecord(record.$docField.asDefined().value)) : const Undefined(),',
               );
@@ -622,10 +648,16 @@ class FunctionBuildContext {
             }
           } else {
             if (extractedClassName != null &&
-                entry.value.fieldType is JsObject) {
-              classBuffer.writeln(
-                '      $fieldName: $extractedClassName.fromRecord(record.$docField),',
-              );
+                _isObjectLikeType(entry.value.fieldType)) {
+              if (_isNullableObjectUnionType(entry.value.fieldType)) {
+                classBuffer.writeln(
+                  '      $fieldName: record.$docField != null ? $extractedClassName.fromRecord(record.$docField) : null,',
+                );
+              } else {
+                classBuffer.writeln(
+                  '      $fieldName: $extractedClassName.fromRecord(record.$docField),',
+                );
+              }
             } else if (extractedClassName != null &&
                 entry.value.fieldType is JsArray) {
               classBuffer.writeln(
@@ -708,7 +740,7 @@ class FunctionBuildContext {
 
           if (entry.value.optional) {
             if (extractedClassName != null &&
-                entry.value.fieldType is JsObject) {
+                _isObjectLikeType(entry.value.fieldType)) {
               classBuffer.writeln(
                 '      $fieldName: body.$docField.isDefined ? Defined($extractedClassName.fromRecord(body.$docField.asDefined().value)) : const Undefined(),',
               );
@@ -719,10 +751,25 @@ class FunctionBuildContext {
             }
           } else {
             if (extractedClassName != null &&
-                entry.value.fieldType is JsObject) {
-              classBuffer.writeln(
-                '      $fieldName: $extractedClassName.fromRecord(body.$docField),',
-              );
+                _isObjectLikeType(entry.value.fieldType)) {
+              if (_isNullableObjectUnionType(entry.value.fieldType)) {
+                classBuffer.writeln('      $fieldName: (() {');
+                classBuffer.writeln(
+                  '        final dynamic value = body.$docField;',
+                );
+                classBuffer.writeln('        if (value == null) return null;');
+                classBuffer.writeln(
+                  '        if (value is $extractedClassName) return value;',
+                );
+                classBuffer.writeln(
+                  '        return $extractedClassName.fromRecord(value);',
+                );
+                classBuffer.writeln('      })() as $extractedClassName?,');
+              } else {
+                classBuffer.writeln(
+                  '      $fieldName: $extractedClassName.fromRecord(body.$docField),',
+                );
+              }
             } else if (extractedClassName != null &&
                 entry.value.fieldType is JsArray) {
               // Handle arrays of custom classes
@@ -767,7 +814,7 @@ class FunctionBuildContext {
 
           if (entry.value.optional) {
             if (extractedClassName != null &&
-                entry.value.fieldType is JsObject) {
+                _isObjectLikeType(entry.value.fieldType)) {
               classBuffer.writeln(
                 '      $fieldName: doc.$docField.isDefined ? Defined($extractedClassName.fromRecord(doc.$docField.asDefined().value)) : const Undefined(),',
               );
@@ -778,10 +825,25 @@ class FunctionBuildContext {
             }
           } else {
             if (extractedClassName != null &&
-                entry.value.fieldType is JsObject) {
-              classBuffer.writeln(
-                '      $fieldName: $extractedClassName.fromRecord(doc.$docField),',
-              );
+                _isObjectLikeType(entry.value.fieldType)) {
+              if (_isNullableObjectUnionType(entry.value.fieldType)) {
+                classBuffer.writeln('      $fieldName: (() {');
+                classBuffer.writeln(
+                  '        final dynamic value = doc.$docField;',
+                );
+                classBuffer.writeln('        if (value == null) return null;');
+                classBuffer.writeln(
+                  '        if (value is $extractedClassName) return value;',
+                );
+                classBuffer.writeln(
+                  '        return $extractedClassName.fromRecord(value);',
+                );
+                classBuffer.writeln('      })() as $extractedClassName?,');
+              } else {
+                classBuffer.writeln(
+                  '      $fieldName: $extractedClassName.fromRecord(doc.$docField),',
+                );
+              }
             } else if (extractedClassName != null &&
                 entry.value.fieldType is JsArray) {
               // Handle arrays of custom classes
@@ -818,7 +880,8 @@ class FunctionBuildContext {
         clearFieldContext();
 
         if (entry.value.optional) {
-          if (extractedClassName != null && entry.value.fieldType is JsObject) {
+          if (extractedClassName != null &&
+              _isObjectLikeType(entry.value.fieldType)) {
             classBuffer.writeln(
               '      $docField: $fieldName.isDefined ? Defined($fieldName.asDefined().value.toRecord()) : const Undefined(),',
             );
@@ -826,8 +889,13 @@ class FunctionBuildContext {
             classBuffer.writeln('      $docField: $fieldName,');
           }
         } else {
-          if (extractedClassName != null && entry.value.fieldType is JsObject) {
-            classBuffer.writeln('      $docField: $fieldName.toRecord(),');
+          if (extractedClassName != null &&
+              _isObjectLikeType(entry.value.fieldType)) {
+            if (_isNullableObjectUnionType(entry.value.fieldType)) {
+              classBuffer.writeln('      $docField: $fieldName?.toRecord(),');
+            } else {
+              classBuffer.writeln('      $docField: $fieldName.toRecord(),');
+            }
           } else {
             classBuffer.writeln('      $docField: $fieldName,');
           }
@@ -868,7 +936,8 @@ class FunctionBuildContext {
         clearFieldContext();
 
         if (entry.value.optional) {
-          if (extractedClassName != null && entry.value.fieldType is JsObject) {
+          if (extractedClassName != null &&
+              _isObjectLikeType(entry.value.fieldType)) {
             classBuffer.writeln(
               '      $fieldName: record.$docField.isDefined ? Defined($extractedClassName.fromRecord(record.$docField.asDefined().value)) : const Undefined(),',
             );
@@ -876,12 +945,73 @@ class FunctionBuildContext {
             classBuffer.writeln('      $fieldName: record.$docField,');
           }
         } else {
-          if (extractedClassName != null && entry.value.fieldType is JsObject) {
-            classBuffer.writeln(
-              '      $fieldName: $extractedClassName.fromRecord(record.$docField),',
-            );
+          if (extractedClassName != null &&
+              _isObjectLikeType(entry.value.fieldType)) {
+            if (_isNullableObjectUnionType(entry.value.fieldType)) {
+              classBuffer.writeln(
+                '      $fieldName: record.$docField != null ? $extractedClassName.fromRecord(record.$docField) : null,',
+              );
+            } else {
+              classBuffer.writeln(
+                '      $fieldName: $extractedClassName.fromRecord(record.$docField),',
+              );
+            }
           } else {
             classBuffer.writeln('      $fieldName: record.$docField,');
+          }
+        }
+      }
+      classBuffer.writeln('    );');
+      classBuffer.writeln('  }');
+
+      classBuffer.writeln();
+
+      // Add toRecord() method - converts class back to record type
+      classBuffer.writeln(
+        '  /// Convert to inline record (inverse of fromRecord)',
+      );
+      classBuffer.writeln('  ({');
+      for (final entry in obj.value.entries) {
+        final fieldName = _dartSafeName(entry.key);
+        final specialPrefix = entry.key.startsWith('_') ? '\$' : '';
+        final docField = '$specialPrefix${fieldName.replaceFirst('\$', '')}';
+        final fieldType = entry.value.dartType(this);
+        classBuffer.writeln('    $fieldType $docField,');
+      }
+      classBuffer.writeln('  }) toRecord() {');
+      classBuffer.writeln('    return (');
+      for (final entry in obj.value.entries) {
+        final fieldName = _dartSafeName(entry.key);
+        final specialPrefix = entry.key.startsWith('_') ? '\$' : '';
+        final docField = '$specialPrefix${fieldName.replaceFirst('\$', '')}';
+
+        setFieldContext(fieldName, fieldContext ?? "args");
+        final fullPath = getFullFieldPath(fieldName);
+        final mapping =
+            getObjectFieldMapping(fullPath, getCurrentFieldContext()) ??
+            getObjectFieldMapping(fieldName, getCurrentFieldContext());
+        final extractedClassName = mapping?.name;
+        clearFieldContext();
+
+        if (entry.value.optional) {
+          if (extractedClassName != null &&
+              _isObjectLikeType(entry.value.fieldType)) {
+            classBuffer.writeln(
+              '      $docField: $fieldName.isDefined ? Defined($fieldName.asDefined().value.toRecord()) : const Undefined(),',
+            );
+          } else {
+            classBuffer.writeln('      $docField: $fieldName,');
+          }
+        } else {
+          if (extractedClassName != null &&
+              _isObjectLikeType(entry.value.fieldType)) {
+            if (_isNullableObjectUnionType(entry.value.fieldType)) {
+              classBuffer.writeln('      $docField: $fieldName?.toRecord(),');
+            } else {
+              classBuffer.writeln('      $docField: $fieldName.toRecord(),');
+            }
+          } else {
+            classBuffer.writeln('      $docField: $fieldName,');
           }
         }
       }
@@ -990,6 +1120,7 @@ class FunctionBuildContext {
       JsNumber _ => '$jsonValue as double',
       JsBigInt _ => '$jsonValue as int',
       JsBoolean _ => '$jsonValue as bool',
+      JsBytes _ => _generateBytesFromJson(jsonValue),
       JsArray array => _generateArrayFromJson(array, jsonValue),
       JsObject obj => _generateObjectFromJson(
         obj,
@@ -997,10 +1128,15 @@ class FunctionBuildContext {
         fieldName: fieldName,
       ),
       JsUnion union => _generateUnionFromJson(union, jsonValue),
+      JsRecord record => _generateRecordFromJson(record, jsonValue),
       ConvexId convexId => "${convexId.typeName}($jsonValue as String)",
       JsLiteral literal => _generateLiteralFromJson(literal, jsonValue),
       _ => jsonValue, // fallback for complex types
     };
+  }
+
+  String _generateBytesFromJson(String jsonValue) {
+    return "($jsonValue is Uint8ListWithEquality ? $jsonValue : ($jsonValue is Uint8List ? Uint8ListWithEquality($jsonValue) : Uint8ListWithEquality.fromList(($jsonValue as List<dynamic>).cast<int>())))";
   }
 
   String _generateObjectFromJson(
@@ -1087,7 +1223,25 @@ class FunctionBuildContext {
     }
 
     // For other real unions, return as-is (needs more complex runtime handling)
-    return jsonValue;
+    final containsNull = union.value.any((e) => e is JsNull);
+    final unionTypeName = 'Union${realTypes.length}';
+    final typeParams = realTypes.map(_getDartTypeForField).join(', ');
+    final fullUnionType = '$unionTypeName<$typeParams>';
+
+    final tryBlocks = <String>[];
+    for (var i = 0; i < realTypes.length; i++) {
+      final inMethod = 'in${i + 1}';
+      final variantExpr = _generateUnionVariantFromJson(realTypes[i], 'v');
+      tryBlocks.add(
+        'try { return $fullUnionType.$inMethod($variantExpr); } catch (_) {}',
+      );
+    }
+
+    final validateExpr =
+        '((v) { ${tryBlocks.join(' ')} throw ArgumentError(\'Invalid union value for $unionTypeName: \$v\'); })($jsonValue)';
+    return containsNull
+        ? '$jsonValue != null ? $validateExpr : null'
+        : validateExpr;
   }
 
   String _generateLiteralFromJson(JsLiteral literal, String jsonValue) {
@@ -1103,10 +1257,18 @@ class FunctionBuildContext {
       return "($jsonValue as List<dynamic>).cast<String>().toIList()";
     } else if (elementType is JsNumber) {
       return "($jsonValue as List<dynamic>).cast<double>().toIList()";
+    } else if (elementType is JsBigInt) {
+      return "($jsonValue as List<dynamic>).cast<int>().toIList()";
     } else if (elementType is JsBoolean) {
       return "($jsonValue as List<dynamic>).cast<bool>().toIList()";
+    } else if (elementType is JsBytes) {
+      return "($jsonValue as List<dynamic>).map((e) => ${_generateBytesFromJson('e')}).toList().toIList()";
     } else if (elementType is ConvexId) {
       return "($jsonValue as List<dynamic>).map((e) => ${elementType.typeName}(e as String)).toList().toIList()";
+    } else if (elementType is JsRecord) {
+      return "($jsonValue as List<dynamic>).map((e) => ${_generateRecordFromJson(elementType, 'e')}).toList().toIList()";
+    } else if (elementType is JsUnion) {
+      return "($jsonValue as List<dynamic>).map((e) => ${_generateUnionFromJson(elementType, 'e')}).toList().toIList()";
     } else if (elementType is JsObject) {
       // For inline record objects, reconstruct the record from JSON
       return _generateArrayOfObjectsFromJson(elementType, jsonValue);
@@ -1166,6 +1328,7 @@ class FunctionBuildContext {
       JsNumber _ => 'double',
       JsBigInt _ => 'int',
       JsBoolean _ => 'bool',
+      JsBytes _ => 'Uint8ListWithEquality',
       ConvexId convexId => convexId.typeName,
       JsLiteral literal => literal.literalTypeName,
       JsArray array => 'IList<${_getDartTypeForField(array.value)}>',
@@ -1216,6 +1379,7 @@ class FunctionBuildContext {
       JsNumber _ => '$jsonExpr as double',
       JsBigInt _ => '$jsonExpr as int',
       JsBoolean _ => '$jsonExpr as bool',
+      JsBytes _ => _generateBytesFromJson(jsonExpr),
       ConvexId convexId => '${convexId.typeName}($jsonExpr as String)',
       JsLiteral literal => '${literal.literalTypeName}.validate($jsonExpr)',
       JsArray array => _generateArrayFromJson(array, jsonExpr),
@@ -1229,14 +1393,11 @@ class FunctionBuildContext {
   String _generateRecordFromJson(JsRecord record, String jsonExpr) {
     // Generate IMap conversion from JSON map
     // The value type determines how we convert each value
-    final valueType = record.values.fieldType;
-    final valueConverter = switch (valueType) {
-      JsString _ => 'e.value as String',
-      JsNumber _ => 'e.value as double',
-      JsBigInt _ => 'e.value as int',
-      JsBoolean _ => 'e.value as bool',
-      _ => 'e.value', // For complex types (any, objects, etc.), keep as dynamic
-    };
+    final valueConverter = _generateFieldFromJsonMap(
+      record.values.fieldType,
+      'e.value',
+      '',
+    );
     return 'IMap.fromEntries(($jsonExpr as Map<String, dynamic>).entries.map((e) => MapEntry(e.key, $valueConverter)))';
   }
 
@@ -1291,9 +1452,25 @@ class FunctionBuildContext {
     }
 
     // For other real unions (mixed types), we need to generate a switch statement
-    // This is complex and would require runtime type checking
-    // For now, fall back to dynamic
-    return jsonExpr;
+    final containsNull = union.value.any((e) => e is JsNull);
+    final unionTypeName = 'Union${realTypes.length}';
+    final typeParams = realTypes.map(_getDartTypeForField).join(', ');
+    final fullUnionType = '$unionTypeName<$typeParams>';
+
+    final tryBlocks = <String>[];
+    for (var i = 0; i < realTypes.length; i++) {
+      final inMethod = 'in${i + 1}';
+      final variantExpr = _generateUnionVariantFromJson(realTypes[i], 'v');
+      tryBlocks.add(
+        'try { return $fullUnionType.$inMethod($variantExpr); } catch (_) {}',
+      );
+    }
+
+    final validateExpr =
+        '((v) { ${tryBlocks.join(' ')} throw ArgumentError(\'Invalid union value for $unionTypeName: \$v\'); })($jsonExpr)';
+    return containsNull
+        ? '$jsonExpr != null ? $validateExpr : null'
+        : validateExpr;
   }
 
   /// Generate code to deserialize a union of literal types from JSON
@@ -1301,27 +1478,51 @@ class FunctionBuildContext {
     List<JsLiteral> literals,
     String jsonExpr,
   ) {
-    // Generate a helper function inline that maps string values to the appropriate literal
-    // e.g., for Union7<$StringLiteral, $NumberLiteral, ...>:
-    // (() { final v = jsonExpr as String; switch(v) { case 'string': return Union7<...>.in1(const $StringLiteral()); ... } })()
     final unionTypeName = 'Union${literals.length}';
-    // Build the full type annotation for the Union (e.g., Union7<$StringLiteral, $NumberLiteral, ...>)
     final typeParams = literals.map((l) => l.literalTypeName).join(', ');
     final fullUnionType = '$unionTypeName<$typeParams>';
+    final tryBlocks = <String>[];
+    for (var i = 0; i < literals.length; i++) {
+      final literal = literals[i];
+      final inMethod = 'in${i + 1}';
+      tryBlocks.add(
+        'try { return $fullUnionType.$inMethod(${literal.literalTypeName}.validate(v)); } catch (_) {}',
+      );
+    }
+    return "((v) { ${tryBlocks.join(' ')} throw ArgumentError('Unknown value: \$v'); })($jsonExpr)";
+  }
 
-    final cases = literals
-        .asMap()
-        .entries
-        .map((entry) {
-          final index = entry.key;
-          final literal = entry.value;
-          final literalValue = literal.value;
-          final literalTypeName = literal.literalTypeName;
-          return "case '$literalValue': return $fullUnionType.in${index + 1}(const $literalTypeName());";
-        })
-        .join(' ');
+  String _generateUnionVariantFromJson(JsType type, String jsonExpr) {
+    return switch (type) {
+      JsString _ => '$jsonExpr as String',
+      JsNumber _ => '$jsonExpr as double',
+      JsBigInt _ => '$jsonExpr as int',
+      JsBoolean _ => '$jsonExpr as bool',
+      JsBytes _ => _generateBytesFromJson(jsonExpr),
+      ConvexId convexId => '${convexId.typeName}($jsonExpr as String)',
+      JsLiteral literal => '${literal.literalTypeName}.validate($jsonExpr)',
+      JsArray array => _generateArrayFromJson(array, jsonExpr),
+      JsObject obj => _generateObjectFromJson(obj, jsonExpr),
+      JsRecord record => _generateRecordFromJson(record, jsonExpr),
+      JsUnion union => _generateUnionFromJson(union, jsonExpr),
+      _ => jsonExpr,
+    };
+  }
 
-    return "(() { final v = $jsonExpr as String; switch(v) { $cases default: throw ArgumentError('Unknown value: \$v'); } })()";
+  String _generateUnionVariantToJson(JsType type, String valueExpr) {
+    return switch (type) {
+      ConvexId _ => '$valueExpr.value',
+      JsLiteral _ => '$valueExpr.value',
+      JsBytes _ => '$valueExpr.value',
+      JsArray array => _generateToJsonArrayValue(array, valueExpr),
+      JsObject obj => _generateObjectToJsonValue(obj, valueExpr),
+      JsRecord record => _generateRecordToJsonValue(record, valueExpr),
+      JsUnion union =>
+        union.isRealUnion
+            ? _generateUnionToJsonValue(union, valueExpr)
+            : _generateNullableUnionToJsonValue(union, valueExpr),
+      _ => valueExpr,
+    };
   }
 
   String _generateToJsonValue(JsType fieldType, String fieldValue) {
@@ -1337,6 +1538,7 @@ class FunctionBuildContext {
       JsLiteral _ => '$fieldValue.value',
       // ConvexId types need .value to extract the string ID
       ConvexId _ => '$fieldValue.value',
+      JsBytes _ => '$fieldValue.value',
       // Nested objects: check if extracted class or inline record
       JsObject obj => _generateObjectToJsonValue(obj, fieldValue),
       // Arrays need to map over items and convert each
@@ -1385,19 +1587,17 @@ class FunctionBuildContext {
 
   String _generateUnionToJsonValue(JsUnion union, String fieldValue) {
     final realTypes = union.value.where((e) => e is! JsNull).toList();
+    final containsNull = union.value.any((e) => e is JsNull);
 
-    // Check if any of the union types need special conversion
-    final hasConvexId = realTypes.any((e) => e is ConvexId);
-    final hasLiteral = realTypes.any((e) => e is JsLiteral);
-
-    // If union contains ConvexIds or Literals, generate code that handles recursive extraction
-    if (hasConvexId || hasLiteral) {
-      // Generate inline code: check if the unwrapped value is a primitive, otherwise extract .value
-      return '($fieldValue.value is String ? $fieldValue.value : ($fieldValue.value as dynamic).value)';
+    final callbacks = <String>[];
+    for (var i = 0; i < realTypes.length; i++) {
+      final argName = 'u${i + 1}';
+      final jsonExpr = _generateUnionVariantToJson(realTypes[i], argName);
+      callbacks.add('($argName) => $jsonExpr');
     }
 
-    // For simple unions without special types, just extract .value
-    return '$fieldValue.value';
+    final splitExpr = '$fieldValue.split(${callbacks.join(', ')})';
+    return containsNull ? '$fieldValue == null ? null : $splitExpr' : splitExpr;
   }
 
   String _generateNullableUnionToJsonValue(JsUnion union, String fieldValue) {
@@ -1416,6 +1616,7 @@ class FunctionBuildContext {
         return switch (singleType) {
           ConvexId _ => '$fieldValue?.value',
           JsLiteral _ => '$fieldValue?.value',
+          JsBytes _ => '$fieldValue?.value',
           JsObject obj =>
             '$fieldValue != null ? ${_generateObjectToJsonValue(obj, '$fieldValue!')} : null',
           JsArray array =>
@@ -1429,6 +1630,7 @@ class FunctionBuildContext {
         return switch (singleType) {
           ConvexId _ => '$fieldValue.value',
           JsLiteral _ => '$fieldValue.value',
+          JsBytes _ => '$fieldValue.value',
           JsObject obj => _generateObjectToJsonValue(obj, fieldValue),
           JsArray array => _generateToJsonArrayValue(array, fieldValue),
           JsRecord record => _generateRecordToJsonValue(record, fieldValue),
@@ -1456,6 +1658,7 @@ class FunctionBuildContext {
       JsLiteral _ => '$fieldValue.map((k, v) => MapEntry(k, v.value)).unlock',
       // If values are ConvexIds, need to extract .value
       ConvexId _ => '$fieldValue.map((k, v) => MapEntry(k, v.value)).unlock',
+      JsBytes _ => '$fieldValue.map((k, v) => MapEntry(k, v.value)).unlock',
       // If values are arrays, need to convert each array
       JsArray array =>
         '$fieldValue.map((k, v) => MapEntry(k, ${_generateToJsonArrayValue(array, "v")})).unlock',
@@ -1478,6 +1681,11 @@ class FunctionBuildContext {
       JsLiteral _ => '$fieldValue.map((item) => item.value).toList()',
       // Arrays of IDs need .value extraction
       ConvexId _ => '$fieldValue.map((item) => item.value).toList()',
+      // Arrays of bytes need unwrapping
+      JsBytes _ => '$fieldValue.map((item) => item.value).toList()',
+      // Arrays of records need recursive conversion
+      JsRecord record =>
+        '$fieldValue.map((item) => ${_generateRecordToJsonValue(record, 'item')}).toList()',
       // Primitive arrays just convert from IList to List
       _ => '$fieldValue.toList()',
     };
@@ -1520,6 +1728,7 @@ class FunctionBuildContext {
             : _generateNullableUnionToJsonValue(union, fieldValue),
       JsLiteral _ => '$fieldValue.value',
       ConvexId _ => '$fieldValue.value',
+      JsBytes _ => '$fieldValue.value',
       JsObject obj => _generateInlineObjectToJson(obj, fieldValue),
       JsArray array => _generateToJsonArrayValue(array, fieldValue),
       JsRecord record => _generateRecordToJsonValue(record, fieldValue),
@@ -1559,6 +1768,7 @@ class FunctionBuildContext {
       JsNumber _ => "0.0",
       JsBigInt _ => "0",
       JsBoolean _ => "false",
+      JsBytes _ => "Uint8ListWithEquality.fromList(const <int>[])",
       JsArray array => _getDefaultValueForArray(array),
       JsObject obj => _getDefaultValueForObject(obj),
       JsUnion union => _getDefaultValueForUnion(union),
@@ -1617,8 +1827,14 @@ class FunctionBuildContext {
       return "<String>[].toIList()";
     } else if (elementType is JsNumber) {
       return "<double>[].toIList()";
+    } else if (elementType is JsBigInt) {
+      return "<int>[].toIList()";
     } else if (elementType is JsBoolean) {
       return "<bool>[].toIList()";
+    } else if (elementType is JsBytes) {
+      return "<Uint8ListWithEquality>[].toIList()";
+    } else if (elementType is JsUnion) {
+      return "<${_getUnionTypeString(elementType)}>[].toIList()";
     } else if (elementType is JsObject) {
       // For inline record objects, generate the record type annotation
       final recordType = _generateRecordTypeAnnotation(elementType);
@@ -1676,6 +1892,13 @@ class FunctionsSpec with FunctionsSpecMappable {
 
         // Get custom type names from configuration
         final customNames = _getCustomTypeNames(context, function);
+        final shouldCreateObjectBox = _shouldCreateObjectBoxModel(
+          context,
+          function,
+        );
+        final shouldCreateJsonResponseModels =
+            _shouldCreateJsonResponseModels(context, function) ||
+            shouldCreateObjectBox;
 
         // Collect REQUEST arg fields for deferred merged model generation
         if (function.args is JsObject &&
@@ -1686,7 +1909,9 @@ class FunctionsSpec with FunctionsSpecMappable {
 
           if (!context.mergedRequestArgs.containsKey(requestTypeName)) {
             // First function with this request type - store all fields and context
-            context.mergedRequestArgs[requestTypeName] = Map.from(argsObj.value);
+            context.mergedRequestArgs[requestTypeName] = Map.from(
+              argsObj.value,
+            );
             context.requestTypeFunctionSpec[requestTypeName] = function;
           } else {
             // Check for type conflicts before merging
@@ -1761,7 +1986,8 @@ class FunctionsSpec with FunctionsSpecMappable {
         }
 
         // Generate RESPONSE JSON models based on configuration
-        if (customNames.containsKey('responseType')) {
+        if (shouldCreateJsonResponseModels &&
+            customNames.containsKey('responseType')) {
           final responseTypeName = customNames['responseType']!;
 
           // Only generate the typedef mapping and JSON model for the FIRST function that uses this response type
@@ -1825,7 +2051,8 @@ class FunctionsSpec with FunctionsSpecMappable {
         }
 
         // Generate RESPONSE LIST JSON models if specified
-        if (customNames.containsKey('responseList')) {
+        if (shouldCreateJsonResponseModels &&
+            customNames.containsKey('responseList')) {
           final responseListTypeName = customNames['responseList']!;
 
           // Store the responseList class name for use in fromDoc generation
@@ -1838,19 +2065,27 @@ class FunctionsSpec with FunctionsSpecMappable {
             );
           }
 
-          final returnsSchema = function.returns;
+          final returnsSchema = _extractTypeFromUnion(function.returns);
 
-          if (returnsSchema is JsObject) {
-            // Find the list field in the response schema
+          if (returnsSchema != null) {
             final valueSchema = returnsSchema.value;
+            final responseListFieldName = _resolveResponseListFieldName(
+              context,
+              function,
+              valueSchema,
+              responseListTypeName,
+              requireExplicitMatch: true,
+            );
             print(
-              "DEBUG: Looking for 'list' field in schema keys: ${valueSchema.keys}",
+              "DEBUG: Looking for responseList field in schema keys: ${valueSchema.keys}; resolved: $responseListFieldName",
             );
 
-            final listField = valueSchema['list'];
+            final listField = responseListFieldName != null
+                ? valueSchema[responseListFieldName]
+                : null;
             if (listField != null) {
               print(
-                "DEBUG: Found list field with fieldType: ${listField.fieldType.runtimeType}",
+                "DEBUG: Found responseList field '$responseListFieldName' with fieldType: ${listField.fieldType.runtimeType}",
               );
 
               if (listField.fieldType is JsArray) {
@@ -1862,6 +2097,9 @@ class FunctionsSpec with FunctionsSpecMappable {
                     responseListTypeName,
                     listItemSchema.value,
                     context,
+                    basePathSegments: responseListFieldName != null
+                        ? [responseListFieldName]
+                        : const [],
                   );
                   final responseListModelPath = path.join(
                     "src",
@@ -1881,26 +2119,20 @@ class FunctionsSpec with FunctionsSpecMappable {
                 }
               } else {
                 print(
-                  "DEBUG: Cannot generate responseList JSON model: ${responseListTypeName.snakeCase}.dart (list fieldType is not JsArray, it's ${listField.fieldType.runtimeType})",
+                  "DEBUG: Cannot generate responseList JSON model: ${responseListTypeName.snakeCase}.dart (responseList field '$responseListFieldName' is not JsArray, it's ${listField.fieldType.runtimeType})",
                 );
               }
             } else {
               print(
-                "DEBUG: Cannot generate responseList JSON model: ${responseListTypeName.snakeCase}.dart (no list field found)",
+                "DEBUG: Cannot generate responseList JSON model: ${responseListTypeName.snakeCase}.dart (no responseList array<object> field found)",
               );
             }
           } else {
             print(
-              "DEBUG: Cannot generate responseList JSON model: ${responseListTypeName.snakeCase}.dart (returns is not a JsObject)",
+              "DEBUG: Cannot generate responseList JSON model: ${responseListTypeName.snakeCase}.dart (returns is not a JsObject/union object)",
             );
           }
         }
-
-        // Check if ObjectBox models should be generated for this function
-        final shouldCreateObjectBox = _shouldCreateObjectBoxModel(
-          context,
-          function,
-        );
 
         if (shouldCreateObjectBox) {
           // ObjectBox generation logic:
@@ -2345,6 +2577,107 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
     return null;
   }
 
+  Map<String, dynamic>? _getFunctionMappingForContext(
+    ClientBuildContext? context,
+    FunctionSpec function,
+  ) {
+    if (context?.mappingData == null) {
+      return null;
+    }
+
+    final possibleKeys = [
+      function.convexFunctionIdentifier,
+      _generateHttpEndpointKey(function),
+    ];
+
+    for (final key in possibleKeys) {
+      if (key.isNotEmpty && context!.mappingData!.containsKey(key)) {
+        return context.mappingData![key] as Map<String, dynamic>?;
+      }
+    }
+
+    return null;
+  }
+
+  String? _resolveResponseListFieldName(
+    ClientBuildContext? context,
+    FunctionSpec function,
+    Map<String, JsField> returnsSchema,
+    String? responseListTypeName, {
+    bool requireExplicitMatch = false,
+  }) {
+    final arrayObjectFieldNames = <String>[];
+    for (final entry in returnsSchema.entries) {
+      final fieldType = entry.value.fieldType;
+      if (fieldType is JsArray && fieldType.value is JsObject) {
+        arrayObjectFieldNames.add(entry.key);
+      }
+    }
+
+    if (arrayObjectFieldNames.isEmpty) {
+      return null;
+    }
+
+    if (arrayObjectFieldNames.contains('list')) {
+      return 'list';
+    }
+
+    if (responseListTypeName != null) {
+      final functionMapping = _getFunctionMappingForContext(context, function);
+      final objectFields =
+          functionMapping?['objectFields'] as Map<String, dynamic>?;
+      final returnsObjectFields =
+          objectFields?['returns'] as Map<String, dynamic>?;
+
+      if (returnsObjectFields != null) {
+        for (final fieldName in arrayObjectFieldNames) {
+          final direct = _parseObjectFieldMapping(
+            returnsObjectFields[fieldName],
+          );
+          if (direct?.name == responseListTypeName) {
+            return fieldName;
+          }
+
+          final prefixed = _parseObjectFieldMapping(
+            returnsObjectFields['list.$fieldName'],
+          );
+          if (prefixed?.name == responseListTypeName) {
+            return fieldName;
+          }
+        }
+
+        for (final entry in returnsObjectFields.entries) {
+          final mapping = _parseObjectFieldMapping(entry.value);
+          if (mapping?.name != responseListTypeName) {
+            continue;
+          }
+
+          final normalizedKey = entry.key.startsWith('list.')
+              ? entry.key.substring(5)
+              : entry.key;
+
+          if (!normalizedKey.contains('.') &&
+              arrayObjectFieldNames.contains(normalizedKey)) {
+            return normalizedKey;
+          }
+        }
+      }
+    }
+
+    if (requireExplicitMatch) {
+      return null;
+    }
+
+    if (arrayObjectFieldNames.length == 1) {
+      return arrayObjectFieldNames.first;
+    }
+
+    print(
+      "DEBUG: Multiple array<object> response fields found for ${function.convexFunctionIdentifier}; defaulting to '${arrayObjectFieldNames.first}'",
+    );
+    return arrayObjectFieldNames.first;
+  }
+
   /// Gets custom type names from configuration files
   ///
   /// Auto-generates default type names with Args/Result suffixes when:
@@ -2510,6 +2843,42 @@ import "package:convex_dart/src/convex_dart_for_generated_code.dart";
     return false;
   }
 
+  /// Determines whether JSON response models should be generated for this function.
+  ///
+  /// `createClass` is independent from `createBox`:
+  /// - createClass=true, createBox=false -> generate JSON classes only
+  /// - createClass=true, createBox=true  -> generate JSON + ObjectBox models
+  /// - createClass=false, createBox=false -> skip JSON response class generation
+  /// If `createClass` is missing, defaults to true for backward compatibility.
+  bool _shouldCreateJsonResponseModels(
+    ClientBuildContext context,
+    FunctionSpec function,
+  ) {
+    if (context.mappingData != null) {
+      final possibleKeys = [
+        function.convexFunctionIdentifier,
+        _generateHttpEndpointKey(function),
+      ];
+
+      for (final key in possibleKeys) {
+        if (key.isNotEmpty && context.mappingData!.containsKey(key)) {
+          final functionMapping =
+              context.mappingData![key] as Map<String, dynamic>?;
+          if (functionMapping != null &&
+              functionMapping.containsKey('createClass')) {
+            final createClass = functionMapping['createClass'];
+            print(
+              "DEBUG: Function ${function.convexFunctionIdentifier} has explicit createClass: $createClass (matched key: $key)",
+            );
+            return createClass != false;
+          }
+        }
+      }
+    }
+
+    return true;
+  }
+
   String _buildJsonModel(
     FunctionBuildContext functionContext,
     FunctionSpec function,
@@ -2539,8 +2908,9 @@ import "../../literals.dart";
     FunctionSpec function,
     String typeName,
     Map<String, JsField> returnsSchema,
-    ClientBuildContext? context,
-  ) {
+    ClientBuildContext? context, {
+    List<String> basePathSegments = const [],
+  }) {
     print(
       "DEBUG: Processing $typeName with JsField keys: ${returnsSchema.keys}",
     );
@@ -2568,16 +2938,25 @@ import "../../literals.dart";
     }
 
     if (responseListTypeName != null) {
-      // Look for the 'list' field and replace its array type with the responseList class
-      if (returnsSchema.containsKey('list')) {
-        final listField = returnsSchema['list']!;
+      // Find primary array<object> field and replace its item type with responseList class.
+      final responseListFieldName = _resolveResponseListFieldName(
+        context,
+        function,
+        returnsSchema,
+        responseListTypeName,
+        requireExplicitMatch: true,
+      );
+
+      if (responseListFieldName != null &&
+          returnsSchema.containsKey(responseListFieldName)) {
+        final listField = returnsSchema[responseListFieldName]!;
         if (listField.fieldType is JsArray) {
           // Replace the complex array with a simple string reference to the responseList class
           // This creates an artificial field that will generate IList<ResponseListClassName>
           final modifiedReturnsSchema = Map<String, JsField>.from(
             returnsSchema,
           );
-          modifiedReturnsSchema['list'] = JsField(
+          modifiedReturnsSchema[responseListFieldName] = JsField(
             JsArray(
               JsString('String'),
               'array',
@@ -2599,6 +2978,11 @@ import "../../literals.dart";
             context!,
             currentFunction: function,
           );
+          for (final segment in basePathSegments) {
+            if (segment.isNotEmpty) {
+              functionContext.pushFieldPath(segment);
+            }
+          }
 
           // Set field context to "returns" for processing response fields
           functionContext.setFieldContext("", "returns");
@@ -2633,25 +3017,25 @@ import "../../literals.dart";
           // Now manually replace the list field type in the generated code
           var generatedCode = functionContext.classBuffer.toString();
           generatedCode = generatedCode.replaceAll(
-            'final IList<String> list;',
-            'final IList<$responseListTypeName> list;',
+            'final IList<String> $responseListFieldName;',
+            'final IList<$responseListTypeName> $responseListFieldName;',
           );
           generatedCode = generatedCode.replaceAll(
-            'list: (json[\'list\'] as List<dynamic>).cast<String>().toIList()',
-            'list: (json[\'list\'] as List<dynamic>).map((item) => $responseListTypeName.fromJson(item as Map<String, dynamic>)).toList().toIList()',
+            "$responseListFieldName: (json['$responseListFieldName'] as List<dynamic>).cast<String>().toIList()",
+            "$responseListFieldName: (json['$responseListFieldName'] as List<dynamic>).map((item) => $responseListTypeName.fromJson(item as Map<String, dynamic>)).toList().toIList()",
           );
           generatedCode = generatedCode.replaceAll(
-            '<String>[].toIList()',
-            '<$responseListTypeName>[].toIList()',
+            '$responseListFieldName: <String>[].toIList()',
+            '$responseListFieldName: <$responseListTypeName>[].toIList()',
           );
           generatedCode = generatedCode.replaceAll(
-            'IList<String>? list,',
-            'IList<$responseListTypeName>? list,',
+            'IList<String>? $responseListFieldName,',
+            'IList<$responseListTypeName>? $responseListFieldName,',
           );
           // Fix the fromDoc method to convert the list items
           generatedCode = generatedCode.replaceAll(
-            'list: doc.list,',
-            'list: doc.list.map((item) => $responseListTypeName.fromRecord(item)).toIList(),',
+            '$responseListFieldName: doc.$responseListFieldName,',
+            '$responseListFieldName: doc.$responseListFieldName.map((item) => $responseListTypeName.fromRecord(item)).toIList(),',
           );
 
           return """// ignore_for_file: type=lint, unused_import, unnecessary_question_mark, dead_code
@@ -2682,6 +3066,11 @@ $generatedCode""";
       context!,
       currentFunction: function,
     );
+    for (final segment in basePathSegments) {
+      if (segment.isNotEmpty) {
+        functionContext.pushFieldPath(segment);
+      }
+    }
 
     // Set field context to "returns" for processing response fields
     functionContext.setFieldContext("", "returns");
@@ -2760,6 +3149,8 @@ ${functionContext.classBuffer.toString()}""";
     final customNames = _getCustomTypeNames(context, function);
     final isResponseList = customNames.containsKey('responseList');
 
+    String? responseListFieldName;
+
     if (isResponseList) {
       // For responseList types, use the individual item schema from the list field
       final parentSchema = _extractTypeFromUnion(function.returns);
@@ -2768,7 +3159,15 @@ ${functionContext.classBuffer.toString()}""";
           'ResponseList parent schema is not an object type or valid union',
         );
       }
-      final listField = parentSchema.value['list'];
+      responseListFieldName = _resolveResponseListFieldName(
+        context,
+        function,
+        parentSchema.value,
+        customNames['responseList'],
+      );
+      final listField = responseListFieldName != null
+          ? parentSchema.value[responseListFieldName]
+          : null;
       if (listField?.fieldType is JsArray) {
         final arrayType = listField!.fieldType as JsArray;
         if (arrayType.value is JsObject) {
@@ -2778,7 +3177,7 @@ ${functionContext.classBuffer.toString()}""";
         }
       } else {
         throw Exception(
-          'ResponseList parent schema does not contain a list field',
+          'ResponseList parent schema does not contain a valid array<object> field',
         );
       }
     } else {
@@ -2790,7 +3189,9 @@ ${functionContext.classBuffer.toString()}""";
       obj = extracted;
     }
 
-    final baseSegments = isResponseList ? ['list'] : <String>[];
+    final baseSegments = isResponseList && responseListFieldName != null
+        ? [responseListFieldName]
+        : <String>[];
 
     final functionIdentifiers = <String>{
       function.convexFunctionIdentifier,
@@ -2892,8 +3293,9 @@ ${functionContext.classBuffer.toString()}""";
         }
 
         final fieldName = _resolveObjectBoxFieldName(entry.key, hasDbIdField);
+        final canUseFlex = _canStoreWithFlex(entry.value.fieldType);
         final storeAsJson =
-            !isEmbedded && _isComplexType(entry.value.fieldType);
+            !isEmbedded && _isComplexType(entry.value.fieldType) && !canUseFlex;
         final objectBoxType = isEmbedded
             ? embeddedClassName!
             : isDateField
@@ -2926,12 +3328,22 @@ ${functionContext.classBuffer.toString()}""";
         embeddedDefinitions.values.any(
           (definition) => definition.fields.any((field) => field.storeAsJson),
         );
+    final needsTypedData =
+        fieldContexts.any((field) => field.objectBoxType == 'Uint8List') ||
+        embeddedDefinitions.values.any(
+          (definition) => definition.fields.any(
+            (field) => field.objectBoxType == 'Uint8List',
+          ),
+        );
 
     final buffer = StringBuffer("import 'package:objectbox/objectbox.dart';");
     if (needsJsonConvert) {
       buffer.writeln("\nimport 'dart:convert';");
     } else {
       buffer.writeln();
+    }
+    if (needsTypedData) {
+      buffer.writeln("import 'dart:typed_data';");
     }
     // Add import for the JSON models and required dependencies
     buffer.writeln("import 'package:convex_dart/convex_dart.dart';");
@@ -2956,6 +3368,12 @@ ${functionContext.classBuffer.toString()}""";
           buffer.writeln('  @Embedded()');
           buffer.writeln(
             '  ${field.embeddedClassName}$optionalSuffix ${field.fieldName};',
+          );
+        } else if (!field.storeAsJson &&
+            _usesFlexPropertyType(field.field.fieldType)) {
+          buffer.writeln('  @Property(type: PropertyType.flex)');
+          buffer.writeln(
+            '  ${field.objectBoxType}$optionalSuffix ${field.fieldName};',
           );
         } else {
           buffer.writeln(
@@ -3089,6 +3507,12 @@ ${functionContext.classBuffer.toString()}""";
         buffer.writeln(
           '  ${field.embeddedClassName}$optionalSuffix ${field.fieldName};',
         );
+      } else if (!field.storeAsJson &&
+          _usesFlexPropertyType(field.field.fieldType)) {
+        buffer.writeln('  @Property(type: PropertyType.flex)');
+        buffer.writeln(
+          '  ${field.objectBoxType}$optionalSuffix ${field.fieldName};',
+        );
       } else {
         buffer.writeln(
           '  ${field.objectBoxType}$optionalSuffix ${field.fieldName};',
@@ -3138,24 +3562,19 @@ ${functionContext.classBuffer.toString()}""";
             buffer.writeln(
               "      $fieldName: model.$originalName.isDefined ? jsonEncode(model.$originalName.asDefined().value.toJson()) : null,",
             );
+          } else if (field.field.fieldType is JsAny) {
+            buffer.writeln(
+              "      $fieldName: model.$originalName.isDefined ? jsonEncode(model.$originalName.asDefined().value) : null,",
+            );
           } else if (isUnionType) {
-            // Union types need value extraction - check if contains ConvexIds/Literals
             final union = field.field.fieldType as JsUnion;
-            final realTypes = union.value.where((e) => e is! JsNull).toList();
-            final hasConvexId = realTypes.any((e) => e is ConvexId);
-            final hasLiteral = realTypes.any((e) => e is JsLiteral);
-
-            if (hasConvexId || hasLiteral) {
-              // Generate runtime type check for nested value extraction
-              buffer.writeln(
-                "      $fieldName: model.$originalName.isDefined ? jsonEncode(model.$originalName.asDefined().value.value is String ? model.$originalName.asDefined().value.value : (model.$originalName.asDefined().value.value as dynamic).value) : null,",
-              );
-            } else {
-              // Simple union - just extract .value
-              buffer.writeln(
-                "      $fieldName: model.$originalName.isDefined ? jsonEncode(model.$originalName.asDefined().value.value) : null,",
-              );
-            }
+            final toJsonExpr = _generateUnionToJsonForObjectBox(
+              union,
+              'model.$originalName.asDefined().value',
+            );
+            buffer.writeln(
+              "      $fieldName: model.$originalName.isDefined ? jsonEncode($toJsonExpr) : null,",
+            );
           } else if (field.field.fieldType is JsRecord) {
             // Records (IMap) need .unlock to convert to plain Map
             buffer.writeln(
@@ -3210,6 +3629,10 @@ ${functionContext.classBuffer.toString()}""";
             buffer.writeln(
               "      $fieldName: jsonEncode(model.$originalName.toJson()),",
             );
+          } else if (field.field.fieldType is JsAny) {
+            buffer.writeln(
+              "      $fieldName: jsonEncode(model.$originalName),",
+            );
           } else if (isNullableSingleTypeUnion && underlyingType is JsObject) {
             // Nullable JsObject type (T?) - generate inline conversion with null check
             final toJsonExpr = _generateInlineObjectToJsonForObjectBox(
@@ -3229,23 +3652,12 @@ ${functionContext.classBuffer.toString()}""";
               "      $fieldName: model.$originalName != null ? jsonEncode($toJsonExpr) : null,",
             );
           } else if (isUnionType && !isNullableSingleTypeUnion) {
-            // Real union types (multiple non-null types) need value extraction
             final union = field.field.fieldType as JsUnion;
-            final realTypes = union.value.where((e) => e is! JsNull).toList();
-            final hasConvexId = realTypes.any((e) => e is ConvexId);
-            final hasLiteral = realTypes.any((e) => e is JsLiteral);
-
-            if (hasConvexId || hasLiteral) {
-              // Generate runtime type check for nested value extraction
-              buffer.writeln(
-                "      $fieldName: jsonEncode(model.$originalName.value is String ? model.$originalName.value : (model.$originalName.value as dynamic).value),",
-              );
-            } else {
-              // Simple union - just extract .value
-              buffer.writeln(
-                "      $fieldName: jsonEncode(model.$originalName.value),",
-              );
-            }
+            final toJsonExpr = _generateUnionToJsonForObjectBox(
+              union,
+              'model.$originalName',
+            );
+            buffer.writeln("      $fieldName: jsonEncode($toJsonExpr),");
           } else if (field.field.fieldType is JsRecord) {
             // Records (IMap) need .unlock to convert to plain Map
             buffer.writeln(
@@ -3297,19 +3709,49 @@ ${functionContext.classBuffer.toString()}""";
       } else if (field.field.optional) {
         // Check if this is an ID type that needs .value extraction
         final fieldType = field.field.fieldType;
+        final isBytes = fieldType is JsBytes;
+        final isNullableBytesUnion =
+            fieldType is JsUnion &&
+            !fieldType.isRealUnion &&
+            fieldType.value.any((t) => t is JsNull) &&
+            fieldType.value.any((t) => t is JsBytes);
         final isConvexId = fieldType is ConvexId;
         final isRealUnion = fieldType is JsUnion && fieldType.isRealUnion;
         final isLiteralUnion =
             fieldType is JsUnion &&
             fieldType.value.every((t) => t is JsLiteral || t is JsNull);
-        if (isConvexId) {
+        final isLiteral = fieldType is JsLiteral;
+        if (isBytes) {
+          buffer.writeln(
+            "      $fieldName: model.$originalName.isDefined ? model.$originalName.asDefined().value.value : null,",
+          );
+        } else if (isNullableBytesUnion) {
+          buffer.writeln(
+            "      $fieldName: model.$originalName.isDefined ? model.$originalName.asDefined().value?.value : null,",
+          );
+        } else if (isConvexId) {
           buffer.writeln(
             "      $fieldName: model.$originalName.isDefined ? model.$originalName.asDefined().value.value : null,",
           );
         } else if (isRealUnion) {
-          // Real Union2/Union3 types in optional fields - use .split() to extract string value
+          final toJsonExpr = _generateUnionToJsonForObjectBox(
+            fieldType,
+            'model.$originalName.asDefined().value',
+          );
           buffer.writeln(
-            "      $fieldName: model.$originalName.isDefined ? model.$originalName.asDefined().value.split((id) => id.value, (str) => str) : null,",
+            "      $fieldName: model.$originalName.isDefined ? $toJsonExpr : null,",
+          );
+        } else if (isLiteral) {
+          buffer.writeln(
+            "      $fieldName: model.$originalName.isDefined ? model.$originalName.asDefined().value.value : null,",
+          );
+        } else if (fieldType is JsRecord) {
+          final recordExpr = _generateRecordToJsonForObjectBox(
+            fieldType,
+            'model.$originalName.asDefined().value',
+          );
+          buffer.writeln(
+            "      $fieldName: model.$originalName.isDefined ? $recordExpr : null,",
           );
         } else if (isLiteralUnion) {
           // Literal unions in optional fields - extract .value
@@ -3324,17 +3766,43 @@ ${functionContext.classBuffer.toString()}""";
       } else {
         // Check field type to determine if special handling is needed
         final fieldType = field.field.fieldType;
+        final isBytes = fieldType is JsBytes;
+        final isNullableBytesUnion =
+            fieldType is JsUnion &&
+            !fieldType.isRealUnion &&
+            fieldType.value.any((t) => t is JsNull) &&
+            fieldType.value.any((t) => t is JsBytes);
         final isConvexId = fieldType is ConvexId;
         final isLiteralUnion =
             fieldType is JsUnion &&
             fieldType.value.every((t) => t is JsLiteral || t is JsNull);
         final isRealUnion = fieldType is JsUnion && fieldType.isRealUnion;
+        final isLiteral = fieldType is JsLiteral;
 
-        if (isRealUnion) {
-          // Real Union2/Union3 types - use .split() to extract string value
+        if (isBytes) {
           buffer.writeln(
-            "      $fieldName: model.${_dartSafeName(originalName)}.split((id) => id.value, (str) => str),",
+            "      $fieldName: model.${_dartSafeName(originalName)}.value,",
           );
+        } else if (isNullableBytesUnion) {
+          buffer.writeln(
+            "      $fieldName: model.${_dartSafeName(originalName)}?.value,",
+          );
+        } else if (isRealUnion) {
+          final toJsonExpr = _generateUnionToJsonForObjectBox(
+            fieldType,
+            'model.${_dartSafeName(originalName)}',
+          );
+          buffer.writeln("      $fieldName: $toJsonExpr,");
+        } else if (isLiteral) {
+          buffer.writeln(
+            "      $fieldName: model.${_dartSafeName(originalName)}.value,",
+          );
+        } else if (fieldType is JsRecord) {
+          final recordExpr = _generateRecordToJsonForObjectBox(
+            fieldType,
+            'model.${_dartSafeName(originalName)}',
+          );
+          buffer.writeln("      $fieldName: $recordExpr,");
         } else if (isConvexId || isLiteralUnion) {
           buffer.writeln(
             "      $fieldName: model.${_dartSafeName(originalName)}.value,",
@@ -3426,6 +3894,10 @@ ${functionContext.classBuffer.toString()}""";
             buffer.writeln(
               "      $originalName: $fieldName != null ? Defined($unionExpr) : const Undefined(),",
             );
+          } else if (field.field.fieldType is JsAny) {
+            buffer.writeln(
+              "      $originalName: $fieldName != null ? Defined(jsonDecode($fieldName!)) : const Undefined(),",
+            );
           } else if (field.field.fieldType is JsRecord) {
             // Records (without mapping) deserialize directly.
             buffer.writeln(
@@ -3497,6 +3969,14 @@ ${functionContext.classBuffer.toString()}""";
                 'jsonDecode($fieldName)',
               );
               buffer.writeln("      $originalName: $unionExpr,");
+            }
+          } else if (field.field.fieldType is JsAny) {
+            if (isNullableTypeUnion) {
+              buffer.writeln(
+                "      $originalName: $fieldName != null ? jsonDecode($fieldName!) : null,",
+              );
+            } else {
+              buffer.writeln("      $originalName: jsonDecode($fieldName),");
             }
           } else if (field.field.fieldType is JsRecord) {
             // Records (without mapping) deserialize directly.
@@ -3573,28 +4053,44 @@ ${functionContext.classBuffer.toString()}""";
       } else if (field.field.optional) {
         // Check if this is an ID type or Union type that needs reconstruction
         final fieldType = field.field.fieldType;
+        final isBytes = fieldType is JsBytes;
+        final isNullableBytesUnion =
+            fieldType is JsUnion &&
+            !fieldType.isRealUnion &&
+            fieldType.value.any((t) => t is JsNull) &&
+            fieldType.value.any((t) => t is JsBytes);
+        final isLiteral = fieldType is JsLiteral;
+        final literalTypeName = isLiteral ? fieldType.literalTypeName : null;
         final idClassName = _getIdClassNameFromField(field);
         final isRealUnion = fieldType is JsUnion && fieldType.isRealUnion;
 
-        if (idClassName != null) {
+        if (isBytes || isNullableBytesUnion) {
+          buffer.writeln(
+            "      $originalName: $fieldName != null ? Defined(Uint8ListWithEquality($fieldName!)) : const Undefined(),",
+          );
+        } else if (isLiteral) {
+          buffer.writeln(
+            "      $originalName: $fieldName != null ? Defined($literalTypeName.validate($fieldName!)) : const Undefined(),",
+          );
+        } else if (fieldType is JsRecord) {
+          final recordExpr = _generateRecordFromJsonForObjectBox(
+            fieldType,
+            '$fieldName!',
+          );
+          buffer.writeln(
+            "      $originalName: $fieldName != null ? Defined($recordExpr) : const Undefined(),",
+          );
+        } else if (idClassName != null) {
           buffer.writeln(
             "      $originalName: $fieldName != null ? Defined($idClassName($fieldName!)) : const Undefined(),",
           );
         } else if (isRealUnion) {
-          // Reconstruct Union2/Union3 for optional fields
-          final union = fieldType;
-          final firstType = union.value.where((t) => t is! JsNull).first;
-          if (firstType is ConvexId) {
-            final idTypeName = firstType.typeName;
-            buffer.writeln(
-              "      $originalName: $fieldName != null ? Defined(Union2.in1($idTypeName($fieldName!))) : const Undefined(),",
-            );
-          } else {
-            // Fallback - wrap in Defined but use string directly as second variant
-            buffer.writeln(
-              "      $originalName: $fieldName != null ? Defined(Union2.in2($fieldName!)) : const Undefined(),",
-            );
-          }
+          final unionExpr = _generateUnionFieldFromJsonForObjectBox(
+            fieldType,
+            fieldName,
+            isOptional: true,
+          );
+          buffer.writeln("      $originalName: $unionExpr,");
         } else {
           buffer.writeln(
             "      $originalName: $fieldName != null ? Defined($fieldName!) : const Undefined(),",
@@ -3603,21 +4099,40 @@ ${functionContext.classBuffer.toString()}""";
       } else {
         // Check if this is a real Union2/Union3 type that needs reconstruction
         final fieldType = field.field.fieldType;
+        final isBytes = fieldType is JsBytes;
+        final isNullableBytesUnion =
+            fieldType is JsUnion &&
+            !fieldType.isRealUnion &&
+            fieldType.value.any((t) => t is JsNull) &&
+            fieldType.value.any((t) => t is JsBytes);
+        final isLiteral = fieldType is JsLiteral;
+        final literalTypeName = isLiteral ? fieldType.literalTypeName : null;
         final isRealUnion = fieldType is JsUnion && fieldType.isRealUnion;
 
-        if (isRealUnion) {
-          // Reconstruct Union2/Union3 - assume first type is the ID type
-          final union = fieldType;
-          final firstType = union.value.first;
-          if (firstType is ConvexId) {
-            final idClassName = firstType.typeName;
-            buffer.writeln(
-              "      $originalName: Union2.in1($idClassName($fieldName)),",
-            );
-          } else {
-            // Fallback - just use the value as-is
-            buffer.writeln("      $originalName: $fieldName,");
-          }
+        if (isBytes) {
+          buffer.writeln(
+            "      $originalName: Uint8ListWithEquality($fieldName),",
+          );
+        } else if (isNullableBytesUnion) {
+          buffer.writeln(
+            "      $originalName: $fieldName != null ? Uint8ListWithEquality($fieldName!) : null,",
+          );
+        } else if (isLiteral) {
+          buffer.writeln(
+            "      $originalName: $literalTypeName.validate($fieldName),",
+          );
+        } else if (fieldType is JsRecord) {
+          final recordExpr = _generateRecordFromJsonForObjectBox(
+            fieldType,
+            fieldName,
+          );
+          buffer.writeln("      $originalName: $recordExpr,");
+        } else if (isRealUnion) {
+          final unionExpr = _generateUnionFieldFromJsonForObjectBox(
+            fieldType,
+            fieldName,
+          );
+          buffer.writeln("      $originalName: $unionExpr,");
         } else {
           // Check if this is an ID type that needs ID class reconstruction
           final idClassName = _getIdClassNameFromField(field);
@@ -3721,6 +4236,15 @@ ${functionContext.classBuffer.toString()}""";
       return '$fieldValue.map((item) => item.value).toList()';
     } else if (elementType is JsLiteral) {
       return '$fieldValue.map((item) => item.value).toList()';
+    } else if (elementType is JsBytes) {
+      return '$fieldValue.map((item) => item.value).toList()';
+    } else if (elementType is JsUnion) {
+      final itemExpr = elementType.isRealUnion
+          ? _generateUnionToJsonForObjectBox(elementType, 'item')
+          : _generateNullableUnionToJsonForObjectBox(elementType, 'item');
+      return '$fieldValue.map((item) => $itemExpr).toList()';
+    } else if (elementType is JsRecord) {
+      return '$fieldValue.map((item) => ${_generateRecordToJsonForObjectBox(elementType, 'item')}).toList()';
     } else {
       // For primitives, just convert to list
       return '$fieldValue.toList()';
@@ -3732,10 +4256,75 @@ ${functionContext.classBuffer.toString()}""";
     return switch (fieldType) {
       ConvexId _ => '$fieldValue.value',
       JsLiteral _ => '$fieldValue.value',
+      JsBytes _ => '$fieldValue.value',
       JsArray array => _generateArrayToJsonForObjectBox(array, fieldValue),
       JsObject obj => _generateInlineObjectToJsonForObjectBox(obj, fieldValue),
-      JsUnion union => union.isRealUnion ? '$fieldValue.value' : fieldValue,
+      JsRecord record => _generateRecordToJsonForObjectBox(record, fieldValue),
+      JsUnion union =>
+        union.isRealUnion
+            ? _generateUnionToJsonForObjectBox(union, fieldValue)
+            : _generateNullableUnionToJsonForObjectBox(union, fieldValue),
       _ => fieldValue,
+    };
+  }
+
+  String _generateRecordToJsonForObjectBox(JsRecord record, String fieldValue) {
+    final convertedValue = _generateFieldToJsonForObjectBox(
+      record.values.fieldType,
+      'v',
+    );
+    return '$fieldValue.map((k, v) => MapEntry(k, $convertedValue)).unlock';
+  }
+
+  String _generateNullableUnionToJsonForObjectBox(
+    JsUnion union,
+    String fieldValue,
+  ) {
+    final realTypes = union.value.where((e) => e is! JsNull).toList();
+    final containsNull = union.value.any((e) => e is JsNull);
+    if (realTypes.length != 1) {
+      return fieldValue;
+    }
+    final singleType = realTypes.first;
+    final converted = _generateUnionVariantToJsonForObjectBox(
+      singleType,
+      fieldValue,
+    );
+    return containsNull ? '$fieldValue != null ? $converted : null' : converted;
+  }
+
+  String _generateUnionToJsonForObjectBox(JsUnion union, String fieldValue) {
+    final realTypes = union.value.where((e) => e is! JsNull).toList();
+    final containsNull = union.value.any((e) => e is JsNull);
+    final callbacks = <String>[];
+    for (var i = 0; i < realTypes.length; i++) {
+      final argName = 'u${i + 1}';
+      final converted = _generateUnionVariantToJsonForObjectBox(
+        realTypes[i],
+        argName,
+      );
+      callbacks.add('($argName) => $converted');
+    }
+    final splitExpr = '$fieldValue.split(${callbacks.join(', ')})';
+    return containsNull ? '$fieldValue == null ? null : $splitExpr' : splitExpr;
+  }
+
+  String _generateUnionVariantToJsonForObjectBox(
+    JsType type,
+    String valueExpr,
+  ) {
+    return switch (type) {
+      ConvexId _ => '$valueExpr.value',
+      JsLiteral _ => '$valueExpr.value',
+      JsBytes _ => '$valueExpr.value',
+      JsArray array => _generateArrayToJsonForObjectBox(array, valueExpr),
+      JsObject obj => _generateInlineObjectToJsonForObjectBox(obj, valueExpr),
+      JsRecord record => _generateRecordToJsonForObjectBox(record, valueExpr),
+      JsUnion union =>
+        union.isRealUnion
+            ? _generateUnionToJsonForObjectBox(union, valueExpr)
+            : _generateNullableUnionToJsonForObjectBox(union, valueExpr),
+      _ => valueExpr,
     };
   }
 
@@ -3801,8 +4390,16 @@ ${functionContext.classBuffer.toString()}""";
       return "($jsonExpr as List<dynamic>).cast<String>().toIList()";
     } else if (elementType is JsNumber) {
       return "($jsonExpr as List<dynamic>).cast<double>().toIList()";
+    } else if (elementType is JsBigInt) {
+      return "($jsonExpr as List<dynamic>).cast<int>().toIList()";
     } else if (elementType is JsBoolean) {
       return "($jsonExpr as List<dynamic>).cast<bool>().toIList()";
+    } else if (elementType is JsBytes) {
+      return "($jsonExpr as List<dynamic>).map((e) => ${_generateBytesFromJsonForObjectBox('e')}).toList().toIList()";
+    } else if (elementType is JsUnion) {
+      return "($jsonExpr as List<dynamic>).map((e) => ${_generateUnionFieldFromJsonForObjectBox(elementType, 'e')}).toList().toIList()";
+    } else if (elementType is JsRecord) {
+      return "($jsonExpr as List<dynamic>).map((e) => ${_generateRecordFromJsonForObjectBox(elementType, 'e')}).toList().toIList()";
     } else {
       // For other complex types, cast
       return "($jsonExpr as List).cast()";
@@ -3826,6 +4423,8 @@ ${functionContext.classBuffer.toString()}""";
         baseExpr = '$jsonExpr as int';
       case JsBoolean _:
         baseExpr = '$jsonExpr as bool';
+      case JsBytes _:
+        baseExpr = _generateBytesFromJsonForObjectBox(jsonExpr);
       case ConvexId convexId:
         baseExpr = '${convexId.typeName}($jsonExpr as String)';
       case JsLiteral literal:
@@ -3857,15 +4456,15 @@ ${functionContext.classBuffer.toString()}""";
 
   String _generateRecordFromJsonForObjectBox(JsRecord record, String jsonExpr) {
     // Generate IMap conversion from JSON map for ObjectBox
-    final valueType = record.values.fieldType;
-    final valueConverter = switch (valueType) {
-      JsString _ => 'e.value as String',
-      JsNumber _ => 'e.value as double',
-      JsBigInt _ => 'e.value as int',
-      JsBoolean _ => 'e.value as bool',
-      _ => 'e.value', // For complex types (any, objects, etc.), keep as dynamic
-    };
+    final valueConverter = _generateFieldFromJsonForObjectBox(
+      record.values.fieldType,
+      'e.value',
+    );
     return 'IMap.fromEntries(($jsonExpr as Map<String, dynamic>).entries.map((e) => MapEntry(e.key, $valueConverter)))';
+  }
+
+  String _generateBytesFromJsonForObjectBox(String jsonExpr) {
+    return "($jsonExpr is Uint8ListWithEquality ? $jsonExpr : ($jsonExpr is Uint8List ? Uint8ListWithEquality($jsonExpr) : Uint8ListWithEquality.fromList(($jsonExpr as List<dynamic>).cast<int>())))";
   }
 
   /// Get the Dart type string for an Optional field wrapper
@@ -3875,6 +4474,7 @@ ${functionContext.classBuffer.toString()}""";
       JsNumber _ => 'double',
       JsBigInt _ => 'int',
       JsBoolean _ => 'bool',
+      JsBytes _ => 'Uint8ListWithEquality',
       ConvexId convexId => convexId.typeName,
       JsLiteral literal => literal.literalTypeName,
       JsArray array => _getArrayTypeForOptionalField(array),
@@ -3894,6 +4494,7 @@ ${functionContext.classBuffer.toString()}""";
       JsNumber _ => 'double',
       JsBigInt _ => 'int',
       JsBoolean _ => 'bool',
+      JsBytes _ => 'Uint8ListWithEquality',
       ConvexId convexId => convexId.typeName,
       JsLiteral literal => literal.literalTypeName,
       JsObject obj => _getObjectRecordType(obj),
@@ -3910,6 +4511,7 @@ ${functionContext.classBuffer.toString()}""";
       JsNumber _ => 'double',
       JsBigInt _ => 'int',
       JsBoolean _ => 'bool',
+      JsBytes _ => 'Uint8ListWithEquality',
       ConvexId convexId => convexId.typeName,
       JsLiteral literal => literal.literalTypeName,
       JsObject obj => _getObjectRecordType(obj),
@@ -3959,6 +4561,7 @@ ${functionContext.classBuffer.toString()}""";
             JsNumber _ => 'double',
             JsBigInt _ => 'int',
             JsBoolean _ => 'bool',
+            JsBytes _ => 'Uint8ListWithEquality',
             _ => 'dynamic',
           };
         })
@@ -4003,11 +4606,16 @@ ${functionContext.classBuffer.toString()}""";
         final baseExpr = switch (singleType) {
           ConvexId convexId => '${convexId.typeName}($jsonExpr as String)',
           JsLiteral literal => '${literal.literalTypeName}.validate($jsonExpr)',
+          JsBytes _ => _generateBytesFromJsonForObjectBox(jsonExpr),
           JsObject obj => _generateNestedObjectFromJsonForObjectBox(
             obj,
             jsonExpr,
           ),
           JsArray array => _generateArrayFromJsonForObjectBox(array, jsonExpr),
+          JsRecord record => _generateRecordFromJsonForObjectBox(
+            record,
+            jsonExpr,
+          ),
           _ => jsonExpr,
         };
         if (isOptional) {
@@ -4084,9 +4692,47 @@ ${functionContext.classBuffer.toString()}""";
       }
     }
 
-    // For other real unions with mixed types, return as-is (becomes dynamic)
-    // This is a limitation - complex unions would need custom handling
-    return jsonExpr;
+    final unionTypeName = 'Union${realTypes.length}';
+    final typeParams = realTypes.map(_getDartTypeForOptionalField).join(', ');
+    final fullUnionType = '$unionTypeName<$typeParams>';
+    final tryBlocks = <String>[];
+    for (var i = 0; i < realTypes.length; i++) {
+      final inMethod = 'in${i + 1}';
+      final valueExpr = _generateUnionVariantFromJsonForObjectBox(
+        realTypes[i],
+        'v',
+      );
+      tryBlocks.add(
+        'try { return $fullUnionType.$inMethod($valueExpr); } catch (_) {}',
+      );
+    }
+    final validateExpr =
+        '((v) { ${tryBlocks.join(' ')} throw ArgumentError(\'Invalid union value for $unionTypeName: \$v\'); })($jsonExpr)';
+
+    if (isOptional) {
+      return '($jsonExpr != null ? Defined($validateExpr) : const Undefined()) as Optional<$fullUnionType>';
+    }
+    return validateExpr;
+  }
+
+  String _generateUnionVariantFromJsonForObjectBox(
+    JsType type,
+    String jsonExpr,
+  ) {
+    return switch (type) {
+      JsString _ => '$jsonExpr as String',
+      JsNumber _ => '$jsonExpr as double',
+      JsBigInt _ => '$jsonExpr as int',
+      JsBoolean _ => '$jsonExpr as bool',
+      JsBytes _ => _generateBytesFromJsonForObjectBox(jsonExpr),
+      ConvexId convexId => '${convexId.typeName}($jsonExpr as String)',
+      JsLiteral literal => '${literal.literalTypeName}.validate($jsonExpr)',
+      JsArray array => _generateArrayFromJsonForObjectBox(array, jsonExpr),
+      JsObject obj => _generateNestedObjectFromJsonForObjectBox(obj, jsonExpr),
+      JsRecord record => _generateRecordFromJsonForObjectBox(record, jsonExpr),
+      JsUnion union => _generateUnionFieldFromJsonForObjectBox(union, jsonExpr),
+      _ => jsonExpr,
+    };
   }
 
   /// Gets the JSON model type name for a field stored as JSON in ObjectBox.
@@ -4325,11 +4971,13 @@ $saveFromDocMethod  // Read as API model
       JsNumber _ => "double",
       JsBigInt _ => "int",
       JsBoolean _ => "bool",
+      JsBytes _ => "Uint8List",
+      JsLiteral literal => _getObjectBoxTypeFromLiteral(literal),
+      JsRecord _ => "Map<String, dynamic>",
       JsArray _ => "String", // Store arrays as JSON strings
       JsObject _ => "String", // Store objects as JSON strings
       JsUnion union => _getObjectBoxTypeFromUnion(union),
       ConvexId _ => "String", // Store IDs as strings
-      JsLiteral _ => "String", // Store literals as strings
       _ => "String", // Fallback to String
     };
   }
@@ -4349,6 +4997,8 @@ $saveFromDocMethod  // Read as API model
       if (type is JsNumber) return "double";
       if (type is JsBigInt) return "int";
       if (type is JsString) return "String";
+      if (type is JsBytes) return "Uint8List";
+      if (type is JsLiteral) return _getObjectBoxTypeFromLiteral(type);
     }
 
     // For complex unions (multiple types, objects, arrays, etc.), store as JSON
@@ -4360,9 +5010,31 @@ $saveFromDocMethod  // Read as API model
       JsObject _ => true,
       JsArray _ => true,
       JsRecord _ => true,
+      JsAny _ => true,
       JsUnion union => _unionContainsComplexType(union),
       _ => false,
     };
+  }
+
+  bool _canStoreWithFlex(JsType dartType) {
+    return switch (dartType) {
+      JsRecord _ => true,
+      _ => false,
+    };
+  }
+
+  bool _usesFlexPropertyType(JsType dartType) {
+    return switch (dartType) {
+      JsRecord _ => true,
+      _ => false,
+    };
+  }
+
+  String _getObjectBoxTypeFromLiteral(JsLiteral literal) {
+    final literalValue = literal.literalValueCode;
+    if (literalValue is bool) return "bool";
+    if (literalValue is num) return "double";
+    return "String";
   }
 
   bool _looksLikeDateFieldName(String fieldName) {
@@ -5296,11 +5968,8 @@ class JsRecord extends JsType with JsRecordMappable {
   const JsRecord(this.keys, this.values, super.type);
   @override
   String dartType(FunctionBuildContext context) {
-    if (keys is! JsString) {
-      throw UnimplementedError(
-        "Record keys must be a string. If you are seeing this, please file an issue on GitHub.",
-      );
-    }
+    // Convex records may declare key validators as string, id, or unions of key validators.
+    // On the wire all keys are string-like map keys, so generated Dart models normalize to String.
     return "IMap<String, ${values.dartType(context)}>";
   }
 
@@ -5559,9 +6228,15 @@ class JsObject extends JsType with JsObjectMappable {
       final extractedClassName = mapping?.name;
 
       String fromJsonValue;
-      if (extractedClassName != null && entry.value.fieldType is JsObject) {
-        fromJsonValue =
-            "$extractedClassName.fromJson(json['$jsonKey'] as Map<String, dynamic>)";
+      if (extractedClassName != null &&
+          _isObjectLikeType(entry.value.fieldType)) {
+        if (_isNullableObjectUnionType(entry.value.fieldType)) {
+          fromJsonValue =
+              "json['$jsonKey'] != null ? $extractedClassName.fromJson(json['$jsonKey'] as Map<String, dynamic>) : null";
+        } else {
+          fromJsonValue =
+              "$extractedClassName.fromJson(json['$jsonKey'] as Map<String, dynamic>)";
+        }
       } else {
         fromJsonValue = _getSeparateFileFromJsonValue(
           entry.value.fieldType,
@@ -5669,7 +6344,7 @@ class JsObject extends JsType with JsObjectMappable {
 
           if (entry.value.optional) {
             if (extractedClassName != null &&
-                entry.value.fieldType is JsObject) {
+                _isObjectLikeType(entry.value.fieldType)) {
               buffer.writeln(
                 '      $fieldName: body.$docField.isDefined ? Defined($extractedClassName.fromRecord(body.$docField.asDefined().value)) : const Undefined(),',
               );
@@ -5680,10 +6355,23 @@ class JsObject extends JsType with JsObjectMappable {
             }
           } else {
             if (extractedClassName != null &&
-                entry.value.fieldType is JsObject) {
-              buffer.writeln(
-                '      $fieldName: $extractedClassName.fromRecord(body.$docField),',
-              );
+                _isObjectLikeType(entry.value.fieldType)) {
+              if (_isNullableObjectUnionType(entry.value.fieldType)) {
+                buffer.writeln('      $fieldName: (() {');
+                buffer.writeln('        final dynamic value = body.$docField;');
+                buffer.writeln('        if (value == null) return null;');
+                buffer.writeln(
+                  '        if (value is $extractedClassName) return value;',
+                );
+                buffer.writeln(
+                  '        return $extractedClassName.fromRecord(value);',
+                );
+                buffer.writeln('      })() as $extractedClassName?,');
+              } else {
+                buffer.writeln(
+                  '      $fieldName: $extractedClassName.fromRecord(body.$docField),',
+                );
+              }
             } else if (extractedClassName != null &&
                 entry.value.fieldType is JsArray) {
               // Handle arrays of custom classes
@@ -5727,7 +6415,7 @@ class JsObject extends JsType with JsObjectMappable {
 
           if (entry.value.optional) {
             if (extractedClassName != null &&
-                entry.value.fieldType is JsObject) {
+                _isObjectLikeType(entry.value.fieldType)) {
               buffer.writeln(
                 '      $fieldName: doc.$docField.isDefined ? Defined($extractedClassName.fromRecord(doc.$docField.asDefined().value)) : const Undefined(),',
               );
@@ -5738,10 +6426,23 @@ class JsObject extends JsType with JsObjectMappable {
             }
           } else {
             if (extractedClassName != null &&
-                entry.value.fieldType is JsObject) {
-              buffer.writeln(
-                '      $fieldName: $extractedClassName.fromRecord(doc.$docField),',
-              );
+                _isObjectLikeType(entry.value.fieldType)) {
+              if (_isNullableObjectUnionType(entry.value.fieldType)) {
+                buffer.writeln('      $fieldName: (() {');
+                buffer.writeln('        final dynamic value = doc.$docField;');
+                buffer.writeln('        if (value == null) return null;');
+                buffer.writeln(
+                  '        if (value is $extractedClassName) return value;',
+                );
+                buffer.writeln(
+                  '        return $extractedClassName.fromRecord(value);',
+                );
+                buffer.writeln('      })() as $extractedClassName?,');
+              } else {
+                buffer.writeln(
+                  '      $fieldName: $extractedClassName.fromRecord(doc.$docField),',
+                );
+              }
             } else if (extractedClassName != null &&
                 entry.value.fieldType is JsArray) {
               // Handle arrays of custom classes
@@ -5784,7 +6485,8 @@ class JsObject extends JsType with JsObjectMappable {
         context.clearFieldContext();
 
         if (entry.value.optional) {
-          if (extractedClassName != null && entry.value.fieldType is JsObject) {
+          if (extractedClassName != null &&
+              _isObjectLikeType(entry.value.fieldType)) {
             buffer.writeln(
               '      $docField: $fieldName.isDefined ? Defined($fieldName.asDefined().value.toRecord()) : const Undefined(),',
             );
@@ -5792,8 +6494,13 @@ class JsObject extends JsType with JsObjectMappable {
             buffer.writeln('      $docField: $fieldName,');
           }
         } else {
-          if (extractedClassName != null && entry.value.fieldType is JsObject) {
-            buffer.writeln('      $docField: $fieldName.toRecord(),');
+          if (extractedClassName != null &&
+              _isObjectLikeType(entry.value.fieldType)) {
+            if (_isNullableObjectUnionType(entry.value.fieldType)) {
+              buffer.writeln('      $docField: $fieldName?.toRecord(),');
+            } else {
+              buffer.writeln('      $docField: $fieldName.toRecord(),');
+            }
           } else {
             buffer.writeln('      $docField: $fieldName,');
           }
@@ -5843,7 +6550,8 @@ class JsObject extends JsType with JsObjectMappable {
         context.clearFieldContext();
 
         if (entry.value.optional) {
-          if (extractedClassName != null && entry.value.fieldType is JsObject) {
+          if (extractedClassName != null &&
+              _isObjectLikeType(entry.value.fieldType)) {
             buffer.writeln(
               '      $fieldName: record.$docField.isDefined ? Defined($extractedClassName.fromRecord(record.$docField.asDefined().value)) : const Undefined(),',
             );
@@ -5851,10 +6559,17 @@ class JsObject extends JsType with JsObjectMappable {
             buffer.writeln('      $fieldName: record.$docField,');
           }
         } else {
-          if (extractedClassName != null && entry.value.fieldType is JsObject) {
-            buffer.writeln(
-              '      $fieldName: $extractedClassName.fromRecord(record.$docField),',
-            );
+          if (extractedClassName != null &&
+              _isObjectLikeType(entry.value.fieldType)) {
+            if (_isNullableObjectUnionType(entry.value.fieldType)) {
+              buffer.writeln(
+                '      $fieldName: record.$docField != null ? $extractedClassName.fromRecord(record.$docField) : null,',
+              );
+            } else {
+              buffer.writeln(
+                '      $fieldName: $extractedClassName.fromRecord(record.$docField),',
+              );
+            }
           } else {
             buffer.writeln('      $fieldName: record.$docField,');
           }
@@ -6033,7 +6748,15 @@ class JsObject extends JsType with JsObjectMappable {
     // Save the file to outputs
     final fileName = className.snakeCase;
     final filePath = "src/models/json/$fileName.dart";
-    context.clientContext.outputs[filePath] = finalContent;
+    final currentRichness = usedExtractedClasses.length;
+    final previousRichness =
+        context.clientContext.extractedModelRichnessByPath[filePath];
+
+    if (previousRichness == null || currentRichness >= previousRichness) {
+      context.clientContext.outputs[filePath] = finalContent;
+      context.clientContext.extractedModelRichnessByPath[filePath] =
+          currentRichness;
+    }
   }
 
   /// Helper methods for generating separate model files
@@ -6047,6 +6770,7 @@ class JsObject extends JsType with JsObjectMappable {
       JsNumber _ => "0.0",
       JsBigInt _ => "0",
       JsBoolean _ => "false",
+      JsBytes _ => "Uint8ListWithEquality.fromList(const <int>[])",
       JsArray _ => "const IListConst([])",
       JsObject obj => _getObjectDefaultValue(context, obj),
       ConvexId convexId => "${convexId.typeName}('')",
@@ -6079,6 +6803,7 @@ class JsObject extends JsType with JsObjectMappable {
             JsNumber _ => 'double',
             JsBigInt _ => 'int',
             JsBoolean _ => 'bool',
+            JsBytes _ => 'Uint8ListWithEquality',
             ConvexId convexId => convexId.typeName,
             JsLiteral literal => literal.literalTypeName,
             _ => 'dynamic',
@@ -6133,14 +6858,17 @@ class JsObject extends JsType with JsObjectMappable {
   }
 
   String _getFromJsonValue(JsType fieldType, String jsonValue) {
+    final context = FunctionBuildContext.dummyForRecordType();
     return switch (fieldType) {
       JsString _ => '$jsonValue as String',
       JsNumber _ => '$jsonValue as double',
       JsBigInt _ => '$jsonValue as int',
       JsBoolean _ => '$jsonValue as bool',
+      JsBytes _ => context._generateBytesFromJson(jsonValue),
       ConvexId convexId => "${convexId.typeName}($jsonValue as String)",
       JsArray array => _getArrayFromJsonValue(array, jsonValue),
       JsObject obj => _getObjectFromJsonValue(obj, jsonValue),
+      JsRecord record => context._generateRecordFromJson(record, jsonValue),
       _ => jsonValue,
     };
   }
@@ -6215,32 +6943,43 @@ class JsObject extends JsType with JsObjectMappable {
   }
 
   String _getSeparateFileFromJsonValue(JsType fieldType, String jsonValue) {
+    final context = FunctionBuildContext.dummyForRecordType();
     return switch (fieldType) {
       JsString _ => "$jsonValue as String",
       JsNumber _ => "$jsonValue as double",
       JsBigInt _ => "$jsonValue as int",
       JsBoolean _ => "$jsonValue as bool",
+      JsBytes _ => context._generateBytesFromJson(jsonValue),
       JsArray array => _getSeparateFileArrayFromJson(array, jsonValue),
       JsObject obj => _getSeparateFileObjectFromJson(obj, jsonValue),
       ConvexId convexId => "${convexId.typeName}($jsonValue as String)",
       JsUnion union => _getSeparateFileUnionFromJson(union, jsonValue),
-      JsRecord _ => "($jsonValue as Map<String, dynamic>).toIMap()",
+      JsRecord record => context._generateRecordFromJson(record, jsonValue),
       _ => jsonValue,
     };
   }
 
   /// Generate proper array conversion from JSON for separate model files
   String _getSeparateFileArrayFromJson(JsArray array, String jsonValue) {
+    final context = FunctionBuildContext.dummyForRecordType();
     final elementType = array.value;
 
     if (elementType is JsString) {
       return "($jsonValue as List<dynamic>).cast<String>().toIList()";
     } else if (elementType is JsNumber) {
       return "($jsonValue as List<dynamic>).cast<double>().toIList()";
+    } else if (elementType is JsBigInt) {
+      return "($jsonValue as List<dynamic>).cast<int>().toIList()";
     } else if (elementType is JsBoolean) {
       return "($jsonValue as List<dynamic>).cast<bool>().toIList()";
+    } else if (elementType is JsBytes) {
+      return "($jsonValue as List<dynamic>).map((e) => ${context._generateBytesFromJson('e')}).toList().toIList()";
     } else if (elementType is ConvexId) {
       return "($jsonValue as List<dynamic>).map((e) => ${elementType.typeName}(e as String)).toList().toIList()";
+    } else if (elementType is JsRecord) {
+      return "($jsonValue as List<dynamic>).map((e) => ${context._generateRecordFromJson(elementType, 'e')}).toList().toIList()";
+    } else if (elementType is JsUnion) {
+      return "($jsonValue as List<dynamic>).map((e) => ${context._generateUnionFromJson(elementType, 'e')}).toList().toIList()";
     } else if (elementType is JsObject) {
       // For inline record objects, reconstruct the record from JSON
       return _getSeparateFileArrayOfObjectsFromJson(elementType, jsonValue);
@@ -6295,6 +7034,7 @@ class JsObject extends JsType with JsObjectMappable {
   }
 
   String _getSeparateFileUnionFromJson(JsUnion union, String jsonValue) {
+    final context = FunctionBuildContext.dummyForRecordType();
     // For nullable unions like `StorageId | null`, handle the single non-null type
     if (!union.isRealUnion) {
       final realTypes = union.value.where((e) => e is! JsNull).toList();
@@ -6310,6 +7050,8 @@ class JsObject extends JsType with JsObjectMappable {
               '$jsonValue != null ? ${convexId.typeName}($jsonValue as String) : null',
             JsLiteral literal =>
               '$jsonValue != null ? ${literal.literalTypeName}.validate($jsonValue) : null',
+            JsBytes _ =>
+              '$jsonValue != null ? ${context._generateBytesFromJson(jsonValue)} : null',
             JsObject obj =>
               '$jsonValue != null ? ${_getSeparateFileObjectFromJson(obj, jsonValue)} : null',
             JsArray _ =>
@@ -6322,6 +7064,7 @@ class JsObject extends JsType with JsObjectMappable {
             ConvexId convexId => '${convexId.typeName}($jsonValue as String)',
             JsLiteral literal =>
               '${literal.literalTypeName}.validate($jsonValue)',
+            JsBytes _ => context._generateBytesFromJson(jsonValue),
             JsObject obj => _getSeparateFileObjectFromJson(obj, jsonValue),
             JsArray _ => '$jsonValue as List<dynamic>',
             _ => jsonValue, // For primitives, no special handling needed
@@ -6336,15 +7079,32 @@ class JsObject extends JsType with JsObjectMappable {
     // Check if all types are literals - if so, generate literal union deserialization
     final allLiterals = realTypes.every((t) => t is JsLiteral);
     if (allLiterals && realTypes.isNotEmpty) {
-      final context = FunctionBuildContext.dummyForRecordType();
       return context._generateLiteralUnionFromJson(
         realTypes.cast<JsLiteral>(),
         jsonValue,
       );
     }
 
-    // For other real unions, return as-is
-    return jsonValue;
+    final containsNull = union.value.any((e) => e is JsNull);
+    final unionTypeName = 'Union${realTypes.length}';
+    final typeParams = realTypes.map(context._getDartTypeForField).join(', ');
+    final fullUnionType = '$unionTypeName<$typeParams>';
+    final tryBlocks = <String>[];
+    for (var i = 0; i < realTypes.length; i++) {
+      final inMethod = 'in${i + 1}';
+      final variantExpr = context._generateUnionVariantFromJson(
+        realTypes[i],
+        'v',
+      );
+      tryBlocks.add(
+        'try { return $fullUnionType.$inMethod($variantExpr); } catch (_) {}',
+      );
+    }
+    final validateExpr =
+        '((v) { ${tryBlocks.join(' ')} throw ArgumentError(\'Invalid union value for $unionTypeName: \$v\'); })($jsonValue)';
+    return containsNull
+        ? '$jsonValue != null ? $validateExpr : null'
+        : validateExpr;
   }
 }
 
